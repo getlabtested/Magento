@@ -1,0 +1,188 @@
+<script type="text/javascript">
+<!--
+
+function selectLab(labId) {
+    var request = new Ajax.Request(
+        '<?php echo $this->getUrl("medivo/local/selectlab") ?>',
+        {
+            method: 'post',
+            onComplete: function(transport){},
+            parameters: labId    // Seriallizing the form input values
+        }
+    );
+}
+
+function is_int(value){
+   for (i = 0 ; i < value.length ; i++) {
+      if ((value.charAt(i) < '0') || (value.charAt(i) > '9'))
+      {
+          return false;
+      }
+    }
+   return true;
+}
+
+function handlerFunction()
+{
+	$('location_submit_button').disabled = true;
+	document.getElementById('LoadLocation').style.display='block';
+    var request = new Ajax.Request(
+        '<?php echo $this->getUrl("medivo/local/getlabs") ?>',
+        {
+            method: 'post',
+            onComplete: function(transport){ // Defining Complete Callback Function
+
+                // Getting Ajax Response Text Which is JSON Object
+                var jsonResponse=transport.responseText;
+
+                //Checking JSON Objects property and performing related action
+                // You will understand the response Text format after going through the controller description (Below)
+                if(jsonResponse.error){
+                    alert("Error Occured");
+                    return false;
+                }
+                else{
+                    document.getElementById('location_submit_button').disabled = false;
+                    document.getElementById('LoadLocation').style.display='none';
+                    document.getElementById("location_results").innerHTML = jsonResponse;
+                }
+            },
+            parameters: Form.serialize($("labs-by-zip"))    // Seriallizing the form input values
+        }
+    );
+}
+
+function submitenter(e)
+{
+    var keycode;
+    if (window.event)
+    {
+        keycode = window.event.keyCode;
+    } else if (e)
+    {
+        keycode = e.which;
+    } else
+    {
+        return true;
+    }
+
+    if (keycode == 13)
+   {
+       document.getElementById('location_submit_button').click();
+       return false;
+   }
+   else
+       return true;
+}
+//-->
+</script>
+
+<h1 class="no-border">Enter zipcode to find the nearest testing location</h1>
+<h2>Over 4,000 locations to test privately open until 5:00 p.m. or later</h2>
+
+<div id="left_col">
+	<div id="location_module">
+		<div class="zip-back">
+			<form id="labs-by-zip" method="post">
+				<div class="enter-zip-label">Enter<br />zip code</div>
+				<input class="text" id="zip_code" onKeyPress="return submitenter(event);" name="zip_code" type="text" value="<?php echo ($this->getRequest()->getPost('zip_code')? $this->getRequest()->getPost('zip_code') : Mage::getSingleton('core/session')->getZip());?>"/> 
+				<input type="hidden" name="ref_page" value="test-locally" /> 
+				<!-- div class="submit btn_orange_32_reflection" id="location_submit_div" onclick="this.innerHTML='Loading';" -->
+				<input id="location_submit_button" class="submit btn_orange_32_reflection" type="button" onClick="handlerFunction();return false;" value="Submit" />
+			</form>
+		</div>
+		<?php
+		if ($this->getPostedZipCode())
+        {
+			if (Mage::getSingleton('core/session')->getIsNnr()) { ?>
+				<h3>Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, pricing may vary.</h3>
+			<?php }
+		} ?>
+
+		<div align="center" id="LoadLocation" style="display:none; padding-top:10px;"><img alt="loading" src="http://c0001470.cdn1.cloudfiles.rackspacecloud.com/ajaxloading.gif"></div>
+		<div style="clear:both;"></div>
+		<div id="location_results">
+		<?php if (!$this->getPostedZipCode()) { ?>
+			<h3>Results will appear below after entering your zip code.</h3>
+		<?php }
+        if ($this->getPostedZipCode())
+        {
+            $locations = $this->getLabsByZip();
+
+            $is_state_not_allowed = $this->isNotAllowedLabLookupState();
+
+            if ($is_state_not_allowed)
+            {
+                $messaging = Mage::helper('medivo/labs')->getNotAllowedLabLookupStateMessaging();
+                echo "<h3>$messaging</h3>";
+            }
+            else if ($this->locationsWereFound($locations)) {
+                echo "<h3>We apologize - it appears your zip code is invalid or there are no testing locations within 100 miles.
+                Call 866-749-6269 and we'll help determine the best private option for testing.
+                Alternately, click 'ORDER NOW' to order at home STD testing.</h3>";
+            }
+            else
+            {
+                echo "<h3>Select location below. Many labs open until 5:00 PM or later.</h3>";
+                $number_of_labs_listed = 0;
+
+                foreach ($locations as $location) {
+                    if ($number_of_labs_listed < 6) { ?>
+                        <div class="item">
+                            <form name="lab" action="<?php echo $this->getSelectLabAction() ?>" method="post">
+                                <?php if ($location['lab-id'] == Mage::helper('medivo/labs')->getLabcorpLabId()) {
+                                    $name = "Labcorp";
+                                ?>
+                                    <h4><?php echo $location['address'];?></h4>
+                                <?php } else {
+                                    $name = "Quest Diagnostics";
+                                ?>
+                                    <h4>Exact address displayed after test selection</h4>
+                                <?php } ?>
+                                <div class="location">
+                                    <p><?php echo $name; ?></p>
+                                    <?php echo ucwords(strtolower($location['city']));?>, <?php echo $location['state'];?> <?php echo $location['zip'];?><br /> <span class="blue">866-749-6269</span></p>
+                                </div>
+                                <div class="hours">
+                                    <p class="header">Hours</p>
+                                    <p><?php echo str_ireplace("|Sa","<br>Sa",$location['hours']);?></p>
+                                </div>
+
+                                <div id="loc-sub" style="float: left;">
+                                    <input type="button" value="" onclick="this.form.submit();" class="btn_orange_32_reflection-location submit "/>
+                                </div>
+
+                                <?php if (isset($location['id'])) { ?>
+                                    <input type="hidden" name="lab_id" value="<?php echo $location['id'];?>">
+                                <?php } else { ?>
+                                    <input type="hidden" name="lab_id" value="<?php echo $location['nnr_id'];?>">
+                                <?php } ?>
+
+                                <input type="hidden" name="lab_type" value="<?php echo $location['lab-id'];?>">
+                                <!-- button type="submit" >Order & Test Here</button -->
+                            </form>
+                        </div>
+        <?php           $number_of_labs_listed++;
+                    }
+                }
+	        }
+        }
+        else
+        { ?>
+	        <div><img style="margin-top:20px;" src="http://c240340.r40.cf1.rackcdn.com/gst-locations-zipcode-gray.gif" /></div>
+        <?php } ?>
+		</div>
+	</div>
+</div>
+
+<div id="right_col">
+
+	<div class="box_col b-3">
+		<h2>Questions?<br /><span>Or To Order By Phone</span></h2>
+		<span class="t1">CALL US AT</span><br />
+		<span class="t2">(877) 317-3178</span>
+		<p>M-F 7:00am - 6:30pm<br />Sat-Sun 9am-3pm CST</p>
+	</div>
+	
+</div>
+<!-- /right_col -->

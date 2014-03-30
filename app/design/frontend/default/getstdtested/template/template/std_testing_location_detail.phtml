@@ -1,0 +1,264 @@
+<?php
+
+	$detail = $this->getLocaleDetail();
+	
+	$locales = $this->getLocaleList();
+	
+	$state =  $this->getCurState();
+	
+	$stateFull = $this->getCurStateFull();
+	
+	$city = $this->getCurCity();
+
+?>  
+
+
+<?php
+
+	$baseDir = Mage::getBaseDir();
+			
+?> 
+
+            
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+				<a href="/std-test-centers">All National STD Testing Centers</a>
+                <span class="separator"> > </span>
+                <a href="/std-test-centers/<?php echo str_replace(" ","-",strtolower($stateFull));?>-<?php echo strtolower($state);?>"><?php echo ucwords($stateFull); ?> STD Testing</a>
+                <span class="separator"> > </span>
+                <a href="/std-test-centers/<?php echo str_replace(" ","-", strtolower($stateFull));?>-<?php echo strtolower($state);?>/<?php echo strtolower($city);?>" class="current"><?php echo ucwords($city); ?> STD Testing</a>
+				<span class="separator"> > </span>
+                <b><a href="#" class="current"><?php echo ucwords($detail->getName()); ?></a></b>
+            </div> <!-- /breadcrumbs -->
+            
+            <div id="content">
+
+                <div id="std_testing_location_module">
+				
+					<div id="schema" itemscope itemtype="http://schema.org/MedicalOrganization">
+						<h1 class="page-title"><span itemprop="name"><?php echo $detail->getName(); ?></span></h1>
+						<p>
+							Location Number <?php echo $detail->getId(); ?><br />
+							<span itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+								<span itemprop="addressLocality"><?php echo $detail->getCity(); ?></span>, <span itemprop="addressRegion"><?php echo $detail->getState(); ?></span> <span itemprop="postalCode"><?php echo $detail->getZip(); ?></span><br />
+								<span itemprop="telephone"><span class="blue">866-749-6269</span></span>
+							</span>
+						</p>
+					</div>
+                    
+                    <div class="content_left">
+                    	
+                    	<p><b><?php echo $detail->getName(); ?>:</b> Test for STDs today in the privacy of your own home or at a local <?php echo $detail->getCity(); ?> lab within the <?php echo $detail->getZip(); ?> zip code.  No wait, complete privacy, results within 1-5 days, treatment for many curable STDs, and no insurance reporting.</p>
+                    	
+                    	<h3>Many <?php echo ucwords($city); ?> labs open until 5:00 p.m. or later. Order and test as soon as today.</h3>
+                    	
+                        <p>
+                            <a href="/std-testing-options"><img src="/media/images/btn_orange_test_prices.png" style="float: left; margin-right: 20px;"/></a>
+                            <b>STD tests include:</b> chlamydia test, gonorrhea test, hiv test, trichomoniasis test, hepatitis b test, hepatitis c test, syphilis test, oral herpes test, and genital herpes test. <span class="blue_light">Prices start at $30.</span>
+                        </p>
+                    </div> <!-- /.content_left -->
+                    
+                    <!-- div class="content_right">
+                     <b>STD Testing: <span class="blue_light">Chicago, IL</span></b>
+                        <img src="/media/images/sample_location_map.jpg" />
+                    </div --> <!-- /.content_right -->
+                    
+                </div> <!-- /std_testing_location_module -->
+                
+                <div class="clear"></div>
+                <div class="sep15"></div>
+                
+<style type="text/css">
+#testingCentersSteps { background-image:url(http://c1470.r70.cf1.rackcdn.com/steps-std-testing-backg.jpg); width:988px; height:230px; font-family:Tahoma, Geneva, sans-serif; }
+#stepHeads { font-size:17px; font-weight:bold; color:#FFF; margin-top:22px; float:left; }
+#stepContent { margin-top:15px; float:left; font-size:12px; }
+#testingCentersSteps {
+    background-image: url("http://c1470.r70.cf1.rackcdn.com/steps-std-testing-backg.jpg");
+    height: 230px;
+    width: 988px;
+}
+#testingCentersSteps h2 {
+	margin-top:10px;
+	padding-bottom:0px;
+}
+.loc-list-link a { color: #028AFB; font-weight:bold; }
+.loc-list-link a:hover { text-decoration:underline; }
+</style>
+
+
+<div id="testingCentersSteps">
+                        <h2>Get STD Testing in <?php echo ucwords($detail->getCity()); ?>, <?php echo ucwords($detail->getState()); ?> in 4 Easy Steps:</h2>
+                        <div style="width:195px; margin-left:10px; margin-top:13px;" id="stepHeads">STEP 1: Order</div>
+                        <div style="width:375px; margin-top:13px;" id="stepHeads">STEP 2: Test</div>
+                        <div style="width:218px; margin-top:13px;" id="stepHeads">STEP 3: Results</div>
+                        <div style="margin-top:13px;" id="stepHeads">STEP 4: Treatment</div>
+                        
+                        <div style="width:195px; margin-left:10px;" id="stepContent">
+                            <div>Order STD test(s)</div>
+                            <div style="margin-top:5px; margin-bottom:5px;">Select testing location:<br />LOCAL LAB or IN-HOME</div>
+                            <div>Pay with credit card, e-check, or anonymously with cash</div>
+                        </div>
+                        <div style="width:155px; margin-right:10px;" id="stepContent">
+                            <b>LOCAL LAB</b><br />
+                            <div>1-3 days to results</div>
+                            <div style="margin-top:5px; margin-bottom:5px;">Print requisition form or have it faxed directly to lab</div>
+                            <div>Visit lab for testing; 15-20 minutes</div>
+                        </div>
+                        <div style="width:210px;" id="stepContent">
+                            <b>IN-HOME</b><br />
+                            <div>7-10 days to results</div>
+                            <div style="margin-top:5px;">Receive home testing kit via USPS*</div>
+                            <div style="font-size:10px;">Follow detailed testing instructions and mail completed test to our lab network</div>
+                        </div>
+                        <div style="width:180px; margin-right:40px;" id="stepContent">
+                            View test results via private, online portal or phone
+                        </div>
+                        <div style="width:170px;" id="stepContent">
+                            <div>Discuss results with our in-house physicians</div>
+                            <div style="margin-top:5px;">Receive prescription for treatment of chlamydia, gonorrhea, herpes, and trichomoniasis</div>
+                        </div>
+                    </div>
+
+<div class="clear"></div>
+<div class="sep15"></div>
+<div id="locations" style="width:300px; margin-right:30px; float:left;">
+	
+<h2 style="margin-top:0px; margin-bottom:0px; padding-bottom:0px;"><?php echo ucwords($city); ?> STD Testing Centers</h2>
+<br />
+<a href="/std-test-centers/<?php echo str_replace(" ","-",$stateFull);?>-<?php echo $state;?>/<?php echo str_replace(" ","-",$city);?>">[See All <?php echo ucwords($city); ?> STD Testing Centers]</a><br />
+* More Details Available During Ordering<br /><br />
+<div>
+
+<?php
+                        
+	foreach ($locales as $local) {
+		
+		//print_r($local); exit();
+						
+	?>
+					                        
+		<!-- <div class="pin"><img src="images/pin_sample.png" /></div> -->
+		<div class="location">
+			<div itemscope itemtype="http://schema.org/MedicalClinic">
+				<span class="loc-list-link"><a title="<?php echo $local->getName(); ?>" href="/std-test-centers/<?php echo strtolower(str_replace(" ","-",$stateFull));?>-<?php echo strtolower($state);?>/<?php echo str_replace(" ","-",strtolower($city));?>/<?php echo $local->getDynamicId();?>-<?php echo $local->getZip();?>"><span itemprop="name"><?php echo $local->getName(); ?></span></a></span><br />
+				<div itemprop="address" itemscope itemtype="http://schema.org/PostalAddress">
+					<span itemprop="addressLocality"><?php echo $local->getCity(); ?></span>, <span itemprop="addressRegion"><?php echo $local->getState(); ?></span> <span itemprop="postalCode"><?php echo $local->getZip(); ?></span><br />
+				</div>
+				<?php //if (strlen($local->getPhone()) > 1) { ?>
+				<span itemprop="telephone">866-749-6269</span><br />
+				<?php //} ?>
+				<div style="margin-bottom:10px;"><a style="color:red;" href="/std-testing-options">Order Online</a></div>
+			</div>
+		</div>
+	<?php 
+
+	}
+
+	?> 
+</div>
+
+</div>
+               
+<div id="col1" class="location-level-col-1" style="width:300px; margin-right:30px;">
+<h3>About STD Testing in <?php echo ucwords($city); ?></h3>
+STD Testing <?php echo ucwords($city); ?>, <?php echo ucwords($state); ?> is available as soon as today. We understand time is of the essence and offer two painless STD testing options: test at a local, private lab within the zip code or test for STDs at home.
+<br /><br />
+Backed by nationwide medical experts, thousands of people - from their twenties to their eighties - trust getstdtested.com for their routine std testing needs.
+<br /><br />
+Our testing is fast, offers complete privacy, and is analyzed by the same labs used by doctors and hospitals nationwide. Results are available within 1 - 5 days and include a free consult with our on-staff physician network to answer questions, get treatment, and help interpreting test results. STD test results will not appear on insurance records.
+<br /><br />
+Get tested. Get treated. Get on with your life.
+<br /><br />
+STD Counselors Standing By:<br />
+<span class="blue_light">866-749-6269</span><br /><br /><br />
+
+<h3><?php echo ucwords($city); ?> STD Testing Options</h3>
+
+<strong>Popular Tests Package</strong><br />
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Complete STD Test Package</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$245</span></em><br /><br />
+	</span>
+</div>
+
+<strong>Individual Tests</strong><br />
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Chlamydia Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Gonorrhea Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">HIV Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Hepatitis B Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Hepatitis C Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Oral Herpes Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Genital Herpes Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Trichomoniasis Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em><br />
+	</span>
+</div>
+<div itemscope itemtype="http://schema.org/Product">
+	<span itemprop="name">Syphllis Test</span> - 
+	<span itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+		<em><span itemprop="price">$90</span></em>
+	</span>
+</div>
+
+</div> 
+
+<div id="col2" class="location-level-col-2" style="width:300px;">
+
+    <?php
+		//$url = 'http://search.twitter.com/search.atom?q=stds&rpp=5';
+		$url = 'http://api.twitter.com/1/getSTDtested/lists/std-talk/statuses.atom';
+		include_once $baseDir.'/rss/rss-twitter.php';
+	?>
+
+<br /><br />
+    
+    <?php 
+		//$url = 'http://news.google.com/news?pz=1&cf=all&ned=us&hl=en&as_scoring=r&geo=60614&as_maxm=5&q=transmitted+diseases+stds+OR+hiv+OR+syphilis+OR+chlamydia+OR+gonorrhea+OR+herpes+OR+hepatitis+OR+sexually&as_qdr=a&as_drrb=q&as_mind=19&as_minm=4&cf=all&as_maxd=19&output=rss';
+		$url = 'http://news.search.yahoo.com/rss?ei=UTF-8&va_vt=any&vo=std+hiv+herpes+syphilis+chlamydia+gonorrhea+hepatitis&vo_vt=any&ve_vt=any&vp_vt=any&fl=1&vl=lang_en&smonth=11&emonth=12&sday=8&eday=8&location='.str_replace(" ", "+", $city).'&catfilt=1&cat=health';
+		$url2 = 'http://news.search.yahoo.com/rss?ei=UTF-8&va_vt=any&vo=std+hiv+herpes+syphilis+chlamydia+gonorrhea+hepatitis&vo_vt=any&ve_vt=any&vp_vt=any&fl=1&vl=lang_en&smonth=11&emonth=12&sday=8&eday=8&catfilt=1&cat=health';
+		include_once $baseDir.'/rss/rss-news.php';
+	?>
+
+</div>                                                       
+            </div> <!-- /content -->
+            

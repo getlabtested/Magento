@@ -1,0 +1,18 @@
+
+<form enctype="multipart/form-data" method="post" name="edit-results" id="edit-results" action="<?php echo Mage::helper("adminhtml")->getUrl("tests/adminhtml_req/post"); ?>">
+<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+<table cellspacing="10px" cellpadding="10px">
+
+<tr>
+		<td>
+			Req File: 
+		</td>
+		<td>
+			<input type="file" name="req" />
+		</td>
+	</tr>
+
+</table>
+<button type="submit">Submit</button>
+
+</form>

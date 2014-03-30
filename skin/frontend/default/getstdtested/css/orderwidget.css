@@ -1,0 +1,271 @@
+
+.first {
+	float: left;
+	width: 99px;
+	padding-top: 12px;
+}
+
+#your-zip-code {
+	float: left;
+	width: 300px;
+	height: 55px;
+	margin: 0;
+	padding: 22px 0 0 0;
+	color: #005f7e;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+#your-zip-code #location_form {
+	padding: 2px 0 0 0;
+	overflow: hidden;
+}
+
+#your-zip-code #location_form .text {
+	width: 118px;
+	height:	30px;
+	margin: 3px 0 0 0;
+	padding: 0 3px 0 4px;
+    color: #7A7A7A;
+    font-family: Arial,Helvetica,sans-serif;
+    font-size: 16px;
+	font-weight: bold;
+	border: 1px solid #999;
+}
+
+#your-zip-code #location_form .submit {
+}
+
+#order #location_results {
+	margin: 0;
+	padding: 0;
+}
+
+#order_module2 {
+	clear: both;
+	width: 960px;
+	height: 415px;
+	background: #fff url(../images/order-widget-bg.jpg) left 35px no-repeat;
+}
+
+#order_module2 #orderWidget {
+	margin: -20px 0 0 0;
+}
+
+#order_module2 #at_home {
+	width: 255px;
+	height: 375px;
+	float: left;
+	overflow: hidden;
+}
+
+#order_module2 #at_home .header {
+	width: 255px;
+	height: 134px;
+	display: block;
+	text-indent: -9999px;
+}
+
+#order_module2 #at_home .content {
+	padding: 10px 0 0 26px;
+}
+
+#order_module2 #at_home ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#order_module2 #at_home li {
+	float: left;
+	display: block;
+	width: 170px;
+	padding-bottom: 8px;
+	color: #5c5c5c;
+	font-size: 13px;
+	line-height: 18px;
+	list-style: none;
+}
+
+#order_module2 #at_home li input {
+	margin: 0 8px 0 0;
+	padding: 0;
+}
+
+#order_module2 #at_home li.price {
+	float: right;
+	width: 50px;
+	padding-top: 1px;
+	color: #e75716;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+#order_module2 #lab_package {
+	width: 218px;
+	height: 375px;
+	float: left;
+	overflow: hidden;
+}
+
+#order_module2 #lab_package .header {
+	width: 218px;
+	height: 109px;
+	display: block;
+	text-indent: -9999px;
+}
+
+#order_module2 #lab_package .content {
+	height: 216px;
+	padding: 12px 0 0 47px;
+}
+
+#order_module2 #lab_package ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#order_module2 #lab_package li {
+	float: left;
+	display: block;
+	width: 170px;
+	padding: 0 0 8px 26px;
+	color: #005f7e;
+	font-size: 13px;
+	font-weight: bold;
+	background: transparent url(../images/order-widget-checkmark.png) left 2px no-repeat;
+}
+
+#order_module2 #lab_package li.price {
+	float: right;
+	width: 50px;
+	padding-top: 1px;
+	color: #e75716;
+	font-size: 13px;
+	font-weight: bold;
+}
+
+#order_module2 #lab_packapge_footer {
+}
+
+#order_module2 #lab_packapge_footer .price {
+	float: left;
+	display: block;
+	width: 76px;
+	text-indent: -9999px;
+}
+
+#order_module2 #lab_packapge_footer input#expert_package {
+	display: block;
+	float: left;
+	width: 25px;
+	height: 20px;
+	margin-top: 0;
+}
+
+#order_module2 #lab_packapge_footer label {
+	float: left;
+	display: block;
+	width: 90px;
+	height: 18px;
+	text-indent: -9999px;
+	cursor: pointer;
+}
+
+#order_module2 #lab_tests1 {
+	width: 255px;
+	height: 375px;
+	float: left;
+	overflow: hidden;
+}
+
+#order_module2 #lab_tests1 .header {
+	width: 255px;
+	height: 134px;
+	display: block;
+	text-indent: -9999px;
+}
+
+#order_module2 #lab_tests1 .content {
+	padding: 10px 0 0 26px;
+}
+
+#order_module2 #lab_tests1 ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#order_module2 #lab_tests1 li {
+	float: left;
+	display: block;
+	width: 170px;
+	padding-bottom: 7px;
+	color: #5c5c5c;
+	font-size: 13px;
+	line-height: 18px;
+	list-style: none;
+}
+
+#order_module2 #lab_tests1 li input {
+	margin: 0 8px 0 0;
+	padding: 0;
+}
+
+#order_module2 #lab_tests1 li.price {
+	float: right;
+	width: 50px;
+	color: #e75716;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+#order_module2 #your_order {
+	float: right;
+	width: 185px;
+	height: 375px;
+	text-align: right;
+	border: 0;
+}
+
+#order_module2 .your_order_side {
+	width: 100% !important;
+}
+
+#order_module2 #your_order .total {
+	padding: 262px 60px 6px 0;
+	color: #023a4c;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: bold;	
+	letter-spacing: -1px;
+}
+
+#order_module2 #your_order #total_price {
+	padding: 4px 0 18px 0;
+	color: #e86b2c;
+	font-size: 19px;
+	font-weight: bold;
+	text-align: right;
+}
+
+#order_module2 #your_order .submit {
+	clear: both;
+	margin: 0;
+}
+
+
+
+#order_side_widget ul li {
+	padding-bottom: 2px;
+}
+
+#right_col p {
+	padding: 25px 15px;
+	color: #7a7a7a;
+	font-size: 12px;
+}

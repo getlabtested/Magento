@@ -1,0 +1,198 @@
+#wizard .next { display: inline; }
+/* #wizardAll div { font-family: 'lucida grande', helvetica, verdana, arial, sans-serif; font-size:12px; } */
+
+#wizardOutterBorder {
+	border: solid 1px #008C8A;
+	width:650px;
+}
+
+#wizard {
+	background: #f2f2f2;
+	width: 648px;
+	overflow: hidden;
+	border: 1px solid white;
+}
+
+#wizard-rightSideTop {
+	font-size:13px;
+}
+
+#wizard-rightSideTop p {
+	padding-bottom:8px;
+	padding-top:8px;
+    line-height: 15px;
+    margin: 0px;
+}
+
+#wizard-rightSideTop ul {
+	margin-left:30px;
+	margin-top:5px;
+	margin-bottom:5px;
+}
+
+#wizard-rightSideBottom {
+	margin-top:40px;
+	font-size:11px;
+}
+
+#wizard .title {
+	padding-left: 8px;
+	padding-right: 5px;
+	height: 33px;
+	background: #dfdfdf;
+	border-top: 1px solid #fff;
+	background: -moz-linear-gradient(bottom, #D9D9D9, #EDEDED);
+	background: -webkit-gradient(linear, center bottom, center top, from(#D9D9D9), to(#EDEDED));
+}
+
+#wizard .next {
+	display: none;
+	float: right;
+	cursor: pointer;
+	background: url('http://c1470.r70.cf1.rackcdn.com/next.jpg') no-repeat;
+	width: 57px;
+	height: 42px;
+}
+
+#wizard .previous {
+	float: right;
+	cursor: pointer;
+	background: #f2f2f2 url('http://c1470.r70.cf1.rackcdn.com/previous.jpg') no-repeat;
+	width: 57px;
+	height: 42px;
+}
+
+#wizard .content_area {
+	float: left;
+	width: 550px;
+	padding: 6px;
+	height: 65px;
+}
+
+#wizard .question_text {
+	float: left;
+	width: 600px;
+	font-size:13px;
+	/*font-weight:bold;*/
+	color:#000;
+	margin-top:8px;
+}
+
+#wizard .qa_form_back {
+	background-color: #F2F2F2;
+	border: solid 1px #BEBEBE;
+	height: 85px;
+}
+
+.submitTestRec[disabled] {
+	display: block;
+	width: auto;
+	height: 32px;
+	padding: 7px 10px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	background: url(/media/images/btn_orange_32_reflection.png) center center no-repeat;
+	-moz-border-radius: 5px;
+ 	border-radius: 5px;
+	border: none;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+	cursor: default;
+}
+
+.submitTestRec[disabled]:hover {
+	display: block;
+	width: auto;
+	height: 32px;
+	padding: 7px 10px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	background: url(/media/images/btn_orange_32_reflection.png) center center no-repeat;
+	-moz-border-radius: 5px;
+ 	border-radius: 5px;
+	border: none;
+	opacity:0.5;
+	filter:alpha(opacity=50);
+	cursor: default;
+}
+
+.submitTestRec {
+	display: block;
+	width: auto;
+	height: 32px;
+	padding: 7px 10px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	background: url(/media/images/btn_orange_32_reflection.png) center center no-repeat;
+	-moz-border-radius: 5px;
+ 	border-radius: 5px;
+	border: none;
+}
+
+.submitTestRec:hover {
+	display: block;
+	width: auto;
+	height: 32px;
+	padding: 7px 10px;
+	font-size: 15px;
+	font-weight: bold;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+	background: url(/media/images/btn_orange_32_reflection.png) center center no-repeat;
+	-moz-border-radius: 5px;
+ 	border-radius: 5px;
+	border: none;
+	opacity:0.8;
+	filter:alpha(opacity=80);
+	cursor:pointer;
+}
+
+.uncheck {
+	float:right;
+	width:28px;
+	height:30px;
+	background:url('http://c1470.r70.cf1.rackcdn.com/uncheck.png') no-repeat;
+}
+
+.check {
+	float:right;
+	width:28px;
+	height:30px;
+	background:url('http://c1470.r70.cf1.rackcdn.com/check.png') no-repeat;
+}
+
+.progresso {
+	height:10px;
+	width: 0%;
+	background: url('http://c1470.r70.cf1.rackcdn.com/progress.jpg') repeat-x;
+}
+
+#btnStartSTDOrderBlue a {
+	font-size: 0em; 
+	line-height: 0em; 
+	background: url(http://c189814.r14.cf1.rackcdn.com/start-std-test-order-btn-blue.png) no-repeat top left; display: block; width: 200px; height: 36px; text-indent: -9999px;
+}
+
+#btnStartSTDOrderBlue a:hover {
+	background-position: bottom left;
+}
+
+#btnStartSTDOrderOrange a {
+	font-size: 0em; 
+	line-height: 0em; 
+	background: url(http://c189814.r14.cf1.rackcdn.com/start-std-test-order-btn-orange.png) no-repeat top left; display: block; width: 200px; height: 36px; text-indent: -9999px;
+}
+
+#btnStartSTDOrderOrange a:hover {
+	background-position: bottom left;
+}

@@ -1,0 +1,309 @@
+<div class="onestepcheckout-payment-methods">
+	
+	<?php //if ((Mage::getSingleton('checkout/session')->getQuote()->getOrderType() == 1 || Mage::getSingleton('core/session')->getOrderType() == 1) && !Mage::getModel('core/session')->getScript() && !Mage::getModel('core/session')->getIsNnr()) { ?>
+	<?php /* <a id="pay_cash_head" class="pay_opt_head" onclick="javascript: showPayOpt('pay_cash');save_shipping_method(shipping_method_url);document.getElementById('p_method_paynearme').checked='checked';return false;" href="">Pay with Cash</a> */ ?>
+	<?php //} ?>
+	<dl class="sp-methods" id="checkout-payment-method-load">
+			
+		<div id="payments_content">
+
+			<?php
+				if (Mage::getSingleton('checkout/session')->getQuote()->getOrderType() == 1 || Mage::getSingleton('core/session')->getOrderType() == 1) { 
+			?>
+			
+					<script type="text/javascript" src="https://getstdtested.com/skin/frontend/default/getstdtested/js/jquery.qtip-1.0.0-rc3.min.js"></script>
+					<script type="text/javascript">
+					// Create the tooltips only on document load
+					jQuery(document).ready(function() {
+						// Match all link elements with href attributes within the content div
+						jQuery('.onestepcheckout-header a[href]').qtip({
+							content: 'For your security, we ask for a billing address to protect you against fraudulent purchases and unauthorized access to your results. We will <u>never</u> send you mail or give your address to another party.',
+							style: {
+								border: {
+									width: 6,
+									radius: 8,
+									color: '#0B6D91'
+								},
+								background: '#f6f6f6',
+								color: '#555',
+								padding: 14, 
+								textAlign: 'center',
+								tip: true
+							}
+						});
+					});
+					</script>
+
+                    <?php $digit_to_show = (Mage::helper('ppmd_tests')->cartRequiresLabSelection()) ? 3 : 2; ?>
+
+					<div class="onestepcheckout-header">
+						<div class="onestepcheckout-header-digit"><?php echo $digit_to_show ?></div>
+						<h2><span style="float: left;">Billing Information</span> <a href="#" style="float: left; margin-left: 10px;"><img src="http://getstdtested.com/skin/frontend/default/getstdtested/images/onestepcheckout/tooltip.png" border="0" alt="" /></a></h2>
+					</div>
+			<?php
+				} else {
+			?>
+                    <?php $digit_to_show = (Mage::helper('ppmd_tests')->cartRequiresLabSelection()) ? 3 : 2; ?>
+					<div class="onestepcheckout-header">
+						<div class="onestepcheckout-header-digit"><?php echo $digit_to_show ?></div>
+						<h2>Billing Information</h2>
+					</div>
+			<?php
+				}
+			?>
+
+	        <div id="pay_cc_content" class="bg_grey_round box pay_opt_content" style="display: block;">
+	            <div style="display: none;"><input type="radio" class="radio" checked="checked" title="Credit Card (Authorize.net)" name="payment[method]" value="authorizenet" id="p_method_authorizenet"></div>
+	        
+	        	
+	        	<div class="payment-method" id="container_payment_method_authorizenet">
+					<ul style="list-style-type:none;" id="payment_form_authorizenet" class="form-list">
+
+
+	<?php if (Mage::getSingleton('checkout/session')->getQuote()->getOrderType() == 1 || Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+		<li style="clear: both; margin-top: 5px; margin-bottom: 5px;">
+			<div class="input-box">
+				<label for="billing:street1">Address:&nbsp;</label><br />
+				<input type="text" class="input-text required-entry" value="<?php echo $street1;?>" id="billing:street1" name="billing[street][]" title="Street Address">
+			</div>
+			
+			<div class="input-box">
+				<label for="billing:street2">Apt/Ste:&nbsp;</label><br />
+				<input type="text" class="input-text" value="<?php echo $street2;?>" id="billing:street2" name="billing[street][]" title="Street Address 2" style="width: 63px;">
+			</div>
+			<div style="clear:both;"></div>
+		</li>
+
+		<li style="clear: both; margin-bottom: 5px;">
+			<div class="input-box">
+				<label for="billing:city">City:&nbsp;</label><br />
+				<input style="margin-top:5px; margin-bottom:5px;" type="text" id="billing:city" class="required-entry input-text" value="" name="billing[city]" title="City" style="width:180px;">
+			</div>
+			<div class="input-box" style="display: none;">
+				<label for="billing:country_id">Country </label><br />
+				<select style="width:135px" title="Country" class="validate-select required-entry" id="billing:country_id" name="billing[country_id]">
+					<option selected="selected" value="US">United States</option>
+				</select>			
+			</div>
+			<div class="input-box">
+				<label for="billing:region">State:&nbsp;</label><br />
+				<select class="validate-select required-entry" title="State/Province" name="billing[region_id]" id="billing:region_id" defaultvalue="">
+					<option value=""></option>
+					<option <?php echo ($regId == 1?"selected='selected'":"");?> value="1">Alabama</option>
+					<option <?php echo ($regId == 2?"selected='selected'":"");?> value="2">Alaska</option>
+					<option <?php echo ($regId == 4?"selected='selected'":"");?> value="4">Arizona</option>
+					<option <?php echo ($regId == 5?"selected='selected'":"");?> value="5">Arkansas</option>
+					<option <?php echo ($regId == 12?"selected='selected'":"");?>  value="12">California</option>
+					<option <?php echo ($regId == 13?"selected='selected'":"");?>  value="13">Colorado</option>
+					<option <?php echo ($regId == 14?"selected='selected'":"");?>  value="14">Connecticut</option>
+					<option <?php echo ($regId == 17?"selected='selected'":"");?>  value="15">Delaware</option>
+					<option <?php echo ($regId == 16?"selected='selected'":"");?>  value="16">District of Columbia</option>
+					<option <?php echo ($regId == 18?"selected='selected'":"");?>  value="18">Florida</option>
+					<option <?php echo ($regId == 19?"selected='selected'":"");?>  value="19">Georgia</option>
+					<option <?php echo ($regId == 21?"selected='selected'":"");?>  value="21">Hawaii</option>
+					<option <?php echo ($regId == 22?"selected='selected'":"");?>  value="22">Idaho</option>
+					<option <?php echo ($regId == 23?"selected='selected'":"");?>  value="23">Illinois</option>
+					<option <?php echo ($regId == 24?"selected='selected'":"");?>  value="24">Indiana</option>
+					<option <?php echo ($regId == 25?"selected='selected'":"");?>  value="25">Iowa</option>
+					<option <?php echo ($regId == 26?"selected='selected'":"");?>  value="26">Kansas</option>
+					<option <?php echo ($regId == 27?"selected='selected'":"");?>  value="27">Kentucky</option>
+					<option <?php echo ($regId == 28?"selected='selected'":"");?>  value="28">Louisiana</option>
+					<option <?php echo ($regId == 29?"selected='selected'":"");?>  value="29">Maine</option>
+					<option <?php echo ($regId == 31?"selected='selected'":"");?>  value="31">Maryland</option>
+					<option <?php echo ($regId == 32?"selected='selected'":"");?>  value="32">Massachusetts</option>
+					<option <?php echo ($regId == 33?"selected='selected'":"");?>  value="33">Michigan</option>
+					<option <?php echo ($regId == 34?"selected='selected'":"");?>  value="34">Minnesota</option>
+					<option <?php echo ($regId == 35?"selected='selected'":"");?>  value="35">Mississippi</option>
+					<option <?php echo ($regId == 36?"selected='selected'":"");?>  value="36">Missouri</option>
+					<option <?php echo ($regId == 37?"selected='selected'":"");?>  value="37">Montana</option>
+					<option <?php echo ($regId == 38?"selected='selected'":"");?>  value="38">Nebraska</option>
+					<option <?php echo ($regId == 39?"selected='selected'":"");?>  value="39">Nevada</option>
+					<option <?php echo ($regId == 40?"selected='selected'":"");?>  value="40">New Hampshire</option>
+					<option <?php echo ($regId == 41?"selected='selected'":"");?>  value="41">New Jersey</option>
+					<option <?php echo ($regId == 42?"selected='selected'":"");?>  value="42">New Mexico</option>
+					<option <?php echo ($regId == 43?"selected='selected'":"");?>  value="43">New York</option>
+					<option <?php echo ($regId == 44?"selected='selected'":"");?>  value="44">North Carolina</option>
+					<option <?php echo ($regId == 45?"selected='selected'":"");?>  value="45">North Dakota</option>
+					<option <?php echo ($regId == 47?"selected='selected'":"");?>  value="47">Ohio</option>
+					<option <?php echo ($regId == 48?"selected='selected'":"");?>  value="48">Oklahoma</option>
+					<option <?php echo ($regId == 49?"selected='selected'":"");?>  value="49">Oregon</option>
+					<option <?php echo ($regId == 51?"selected='selected'":"");?>  value="51">Pennsylvania</option>
+					<option <?php echo ($regId == 53?"selected='selected'":"");?>  value="53">Rhode Island</option>
+					<option <?php echo ($regId == 54?"selected='selected'":"");?>  value="54">South Carolina</option>
+					<option <?php echo ($regId == 55?"selected='selected'":"");?>  value="55">South Dakota</option>
+					<option <?php echo ($regId == 56?"selected='selected'":"");?>  value="56">Tennessee</option>
+					<option <?php echo ($regId == 57?"selected='selected'":"");?>  value="57">Texas</option>
+					<option <?php echo ($regId == 58?"selected='selected'":"");?>  value="58">Utah</option>
+					<option <?php echo ($regId == 59?"selected='selected'":"");?>  value="59">Vermont</option>
+					<option <?php echo ($regId == 61?"selected='selected'":"");?>  value="61">Virginia</option>
+					<option <?php echo ($regId == 62?"selected='selected'":"");?>  value="62">Washington</option>
+					<option <?php echo ($regId == 63?"selected='selected'":"");?>  value="63">West Virginia</option>
+					<option <?php echo ($regId == 64?"selected='selected'":"");?>  value="64">Wisconsin</option>
+					<option <?php echo ($regId == 65?"selected='selected'":"");?>  value="65">Wyoming</option>
+				</select>
+				<script type="text/javascript">
+						$('billing:region_id').setAttribute('defaultValue',  "");
+				</script>
+				<input type="text" style="display:none" class="input-text" title="State/Province" value="" name="billing[region]" id="billing:region">
+			</div>
+			<div class="input-box" style="width: 100px;">
+				<label for="billing:postcode">Zip Code:&nbsp;</label><br />
+				<input type="text" class="validate-zip-international required-entry input-text" value="" id="billing:postcode" name="billing[postcode]" title="Zip/Postal Code" maxlength="5" style="width: 61px;">
+                <img style="display:none;float:right;" id="zipcode-ajax-loader-gif-co" src="/media/images/ajax-loader.gif" />
+			</div>
+			<div style="clear:both;"></div>
+		</li>
+		<li>
+			<input type="hidden" value="1" id="billing:use_for_shipping" name="billing[use_for_shipping]">
+		</li>
+		<?php } ?>						
+						<li>
+							<div class="input-box">
+								<label class="required" for="authorizenet_cc_type" style="margin-right: 10px;">Credit Card Type: </label><br />
+								<select class="required-entry validate-cc-type-select" name="payment[cc_type]" id="authorizenet_cc_type">
+								<option value="">--Please Select--</option>
+									<option value="AE">American Express</option>
+									<option value="VI">Visa</option>
+									<option value="MC">MasterCard</option>
+									<option value="DI">Discover</option>
+								</select>
+							</div>							
+							<div class="input-box">
+								<label class="required" for="authorizenet_cc_number" style="margin-right: 10px;">Credit Card #: </label><br />
+								<input type="text" maxlength="16" value="" class="input-text validate-cc-number validate-cc-type" title="Credit Card Number" name="payment[cc_number]" id="authorizenet_cc_number">
+							</div>
+                            <div class="input-box" style="width:200px;">
+                                <label class="required" for="authorizenet_cc_cid" style="margin-right: 10px;">Card Verification Number: </label><br />
+                                <input type="text" maxlength="4" value="" class="input-text input-cc-cid-field required-entry" style="width: 50px;" title="Card Verification Number" name="payment[cc_cid]" id="authorizenet_cc_cid">
+                            </div>
+                        </li>
+						<li id="authorizenet_cc_type_exp_div">						
+							<div class="input-box">
+								<label class="required" for="authorizenet_expiration" style="margin-right: 10px;">Expiration Date: </label><br />			
+								<select class="month validate-cc-exp required-entry" name="payment[cc_exp_month]" id="authorizenet_expiration">
+									<option selected="selected" value="">Month</option>
+									<option value="1">01 - January</option>
+									<option value="2">02 - February</option>
+									<option value="3">03 - March</option>
+									<option value="4">04 - April</option>
+									<option value="5">05 - May</option>
+									<option value="6">06 - June</option>
+									<option value="7">07 - July</option>
+									<option value="8">08 - August</option>
+									<option value="9">09 - September</option>
+									<option value="10">10 - October</option>
+									<option value="11">11 - November</option>
+									<option value="12">12 - December</option>
+								</select>
+							</div>
+							<div class="input-box">
+								<label class="required" for="authorizenet_expiration_yr" style="margin-right: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br />	
+								<select class="year required-entry" name="payment[cc_exp_year]" id="authorizenet_expiration_yr">
+									<option selected="selected" value="">Year</option>
+									<option value="2012">2012</option>
+									<option value="2013">2013</option>
+									<option value="2014">2014</option>
+									<option value="2015">2015</option>
+									<option value="2016">2016</option>
+									<option value="2017">2017</option>
+									<option value="2018">2018</option>
+									<option value="2019">2019</option>
+									<option value="2020">2020</option>
+									<option value="2021">2021</option>
+								</select>
+							</div>
+							<div class="input-box">
+								<label class="required" for="authorizenet_expiration_yr" style="margin-right: 10px;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label><br />	
+								<img src="/media/images/cc-logos-small-ckout-3.png" alt="visa mastercard american express discover">
+							</div>
+						</li>						
+					</ul>
+					<div style="clear:both;"></div>
+					<div style="margin-top:15px; color:#0F5489;"><b>To protect your privacy, payment billed as "AQZ Services"</b></div>
+				</div>
+ 
+	        
+	        </div>
+	        
+	        
+	        
+	        <div id="pay_cash_content" class="bg_grey_round box pay_opt_content" style="display: none;">
+	        	<div style="display: none;"><input type="radio" class="radio" title="Pay Near Me" name="payment[method]" value="paynearme" id="p_method_paynearme"></div>
+	        
+	        	
+
+
+
+				
+				
+				<div style="display: block;padding-bottom: 24px;padding-left: 2px;padding-right: 2px;" id="cash-option" class="payment">
+						 <br>
+             <img width="45" style="float:right;margin-left: 4px;" src="/media/images/7-Eleven.jpg" alt="7 Eleven">
+             Looking for an anonymous payment option? We offer a completely paper trail free way to pay; pay with cash at a nearby 7-11 store. After selecting this option, you'll receive a confirmation email, which includes a payment slip. Simply bring the payment slip to any 7-11 store to pay with cash. The payment slip will not include any personal or testing information - no one will know what your're paying for. <!-- To view 7-11 locations in your area, <a onclick="window.open('https://getstdtested.com/paynearme-locations?zipcode=91367','pnm','location=0,status=0,scrollbars=1,width=850,height=800')" href="javascript: void(0)">Click here</a> -->
+              <br><br>
+              <label style="font-weight: bold;"><input id="cash" type="checkbox" style="margin-right: 10px;vertical-align: bottom;position: relative; width: 13px;" name="cash">Select Cash Payment Option. I will pay at a local 7-11 store.</label>
+            <br><br>
+            <span style="float: right;font-weight: bold;">Have Questions? Wish to order by phone? Call 866-749-6269</span>
+            
+          </div>
+
+		
+
+
+
+
+
+
+	        	
+	        </div>
+    	    	
+    	</div>
+			
+	
+	
+	</dl>
+</div>
+<div class="tool-tip" id="payment-tool-tip" style="display:none;">
+	<div class="btn-close"><a href="#" id="payment-tool-tip-close" title="<?php echo $this->__('Close') ?>"><?php echo $this->__('Close') ?></a></div>
+	<div class="tool-tip-content"><img src="<?php echo $this->getSkinUrl('images/cvv.gif') ?>" alt=" <?php echo $this->__('Card Verification Number Visual Reference') ?> " title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+$$('#checkout-payment-method-load dt input').invoke('observe', 'click', function(e) {
+    var element = e.element();
+    var name = 'payment_form_' + element.value;
+    
+    /* Hide all other forms */
+    $$('dd.payment-method').invoke('hide');
+    
+    if(element.checked) {
+        var form = $(name);
+        var container = $('container_payment_method_' + element.value);
+
+        if(element !== null && container !== null)    {
+            container.show();
+            $(name).show();
+        }
+    }    
+});
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+	function toggleToolTip(event){
+		if($('payment-tool-tip')){
+			$('payment-tool-tip').setStyle({
+				top: (Event.pointerY(event)-560)+'px'//,
+				//left: (Event.pointerX(event)+100)+'px'
+			})
+			$('payment-tool-tip').toggle();
+		}
+		Event.stop(event);
+	}
+	if($('payment-tool-tip-close')){
+		Event.observe($('payment-tool-tip-close'), 'click', toggleToolTip);
+	}
+	
+	initWhatIsCvvListeners();	
+//]]>
+</script>

@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <medivo_local_index>
+        <reference name="content">
+            <block type="medivo/medivo" name="testlocally" template="medivo/test-locally.phtml" />
+        </reference>
+    </medivo_local_index>
+    <medivo_local_getlabs>
+		<block type="medivo/medivo"  name="root" output="toHtml"  template="medivo/locations.phtml"/>
+	</medivo_local_getlabs>
+	 <medivo_local_getlabsmobile>
+		<block type="medivo/medivo"  name="root" output="toHtml"  template="medivo/locations_mobile.phtml"/>
+	</medivo_local_getlabsmobile>
+	<medivo_local_getlabsorder>
+		<block type="medivo/medivo"  name="root" output="toHtml"  template="medivo/locations_order.phtml"/>
+	</medivo_local_getlabsorder>
+	<medivo_local_getlabscheckout>
+		<block type="medivo/medivo"  name="root" output="toHtml"  template="medivo/locations_checkout.phtml"/>
+	</medivo_local_getlabscheckout>
+</layout> 

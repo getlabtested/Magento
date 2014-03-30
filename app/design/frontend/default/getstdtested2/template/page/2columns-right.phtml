@@ -1,0 +1,101 @@
+<?php
+
+if (Mage::app()->getRequest()->getRequestString() == '/my-results' || Mage::app()->getRequest()->getRequestString() == '/my-results/') {
+
+	header("Location: https://getstdtested.com/my-results");
+
+}
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8 ie7" xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9 ie8" xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js gt-ie8 ie9" xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>"> <!--<![endif]-->
+<head>
+<?php echo $this->getChildHtml('head') ?>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-10462432-1']);
+  _gaq.push(['_setDomainName', 'getstdtested.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+</head>
+<body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>> <!-- 2columns-right layout -->
+
+	<div class="bg_white" id="header_wrapper">    
+            <?php echo $this->getChildHtml('header') ?> 
+    </div> <!-- /.bg_white -->
+
+	<?
+    $page = Mage::app()->getFrontController()->getRequest()->getRouteName(); 
+    if ($page == 'core' && Mage::getSingleton('cms/page')->getIdentifier() == 'home'):
+		echo $this->getChildHtml('content');
+	else:
+    ?>
+        <div class="bg_white">
+			<div class="all">
+				<?php echo $this->getChildHtml('after_body_start') ?>
+                <?php echo $this->getChildHtml('global_notices') ?>
+                <?php echo $this->getChildHtml('global_messages') ?> 
+                <?php //echo $this->getChildHtml('breadcrumbsContainer'); ?>
+                <div id="content">
+	                <div id="left_col">
+						<?php echo $this->getChildHtml('content') ?>
+                    </div>
+                    <div id="right_col" class="sidebar">
+						<?php echo $this->getChildHtml('right') ?>
+                        <?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('questions-order-by-phone')->toHTML();?>
+						<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('trusted-accredited-banner')->toHTML();?>
+                   </div>
+                </div>
+                
+			</div> <!-- /.all -->
+        </div> <!-- /.bg_white -->
+        
+        
+    <?php 
+	endif; 
+	?>
+
+	<?php echo $this->getChildHtml('footer') ?> 
+	<?php echo $this->getAbsoluteFooter() ?>
+
+</body>
+</html>

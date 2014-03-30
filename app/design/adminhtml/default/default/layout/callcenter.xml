@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <callcenter_adminhtml_callcenter_index>
+        <reference name="content">
+            <block type="callcenter/adminhtml_callcenter" name="callcenter" />
+        </reference>
+    </callcenter_adminhtml_callcenter_index>
+    <callcenter_adminhtml_order_index>
+    	<reference name="head">
+    		<action method="addCss"><stylesheet>css/createorder.css</stylesheet></action>
+    	</reference>
+        <reference name="content">
+            <block type="callcenter/adminhtml_createorder" name="createorder" template="callcenter/createorder.phtml"/>
+        </reference>
+    </callcenter_adminhtml_order_index>
+    <callcenter_adminhtml_order_getlabs>
+		<block type="callcenter/adminhtml_medivo"  name="root" output="toHtml"  template="callcenter/locations.phtml"/>
+	</callcenter_adminhtml_order_getlabs>
+</layout>

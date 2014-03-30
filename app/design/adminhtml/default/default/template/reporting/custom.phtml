@@ -1,0 +1,1351 @@
+<?php 
+
+	$params = Mage::app()->getRequest()->getParams();
+	
+	//print_r($params);
+
+?>
+
+<div>
+    <div class="entry-edit">
+    <form method="get" action="<?php echo Mage::helper('adminhtml')->getUrl('reporting/adminhtml_reporting/index'); ?>" id="filter_form"><div></div><div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend">Filter</h4>
+    <div class="form-buttons">
+    
+    <div class="buttons-set form-buttons btn-only">
+			        <button type="submit" class="button" style="background-color:#FFAC47;padding: 2px 6px;margin-bottom: 0px;" title="Submit"><span><span>Submit</span></span></button>
+			    </div>
+    </div>
+	</div>
+    <div id="sales_report_base_fieldset" class="fieldset ">
+    <div class="hor-scroll">
+                        <table cellspacing="0" class="form-list">
+            <tbody>
+                <tr>
+        <td class="hidden" colspan="2"><input type="hidden" value="" name="store_ids" id="sales_report_store_ids"></td>
+    </tr>
+
+<tr>
+        <td class="label"><label for="sales_report_period_type">Period</label></td>
+    <td class="value">
+        <select class=" select" title="Period" name="period_type" id="sales_report_period_type">
+<option value="day">Day</option>
+<option value="month">Month</option>
+<option value="year">Year</option>
+</select>            </td>
+    </tr>
+<tr>
+        <td class="label"><label for="sales_report_from">From <span class="required">*</span></label></td>
+    <td class="value">
+        <input type="text" style="width:110px !important;" class=" required-entry input-text" title="From" value="" id="sales_report_from" name="from"> <img style="" title="Select Date" id="sales_report_from_trig" class="v-middle" alt="" src="https://admin.getstdtested.com/skin/adminhtml/default/enterprise/images/grid-cal.gif">
+            <script type="text/javascript">
+            //&lt;![CDATA[
+                Calendar.setup({
+                    inputField: "sales_report_from",
+                    ifFormat: "%m/%e/%y",
+                    showsTime: false,
+                    button: "sales_report_from_trig",
+                    align: "Bl",
+                    singleClick : true
+                });
+            //]]&gt;
+            </script>            </td>
+    </tr>
+<tr>
+        <td class="label"><label for="sales_report_to">To <span class="required">*</span></label></td>
+    <td class="value">
+        <input type="text" style="width:110px !important;" class=" required-entry input-text" title="To" value="" id="sales_report_to" name="to"> <img style="" title="Select Date" id="sales_report_to_trig" class="v-middle" alt="" src="https://admin.getstdtested.com/skin/adminhtml/default/enterprise/images/grid-cal.gif">
+            <script type="text/javascript">
+            //&lt;![CDATA[
+                Calendar.setup({
+                    inputField: "sales_report_to",
+                    ifFormat: "%m/%e/%y",
+                    showsTime: false,
+                    button: "sales_report_to_trig",
+                    align: "Bl",
+                    singleClick : true
+                });
+            //]]&gt;
+            </script>            </td>
+    </tr>
+
+            </tbody>
+        </table>
+            </div>
+        </div>
+        
+</form></div>
+</div>
+
+
+
+<?php
+function week_start_date($wk_num, $yr, $first = 1, $format = 'Y-m-d')
+{
+    $wk_ts  = strtotime('+' . $wk_num . ' weeks', strtotime($yr . '0101'));
+    $mon_ts = strtotime('-' . date('w', $wk_ts) + $first . ' days', $wk_ts);
+    return date($format, $mon_ts);
+}
+
+$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+
+$path = Mage::getBaseDir();
+
+function getCalls($start = null,$end = null,$period = null) {
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+	
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+			
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+	
+	switch ($period) {
+		
+		case 'day':
+			
+		$q = 'select DATE(created_at) as dte, count(*) as calls FROM  sales_flat_quote WHERE ppmd_rep != 99 and created_at > "'.$start.'" and created_at < "'.$end.'" group by DATE(created_at - INTERVAL 6 HOUR);';  
+		
+		//echo $q; echo "<br>"; echo "<br>";
+		
+		
+		break;
+		
+		case null:
+		default:
+		
+		$q = 'select count(*) as calls FROM  sales_flat_quote WHERE ppmd_rep != 99 and created_at > "'.$start.'" and created_at < "'.$end.'";';  
+		
+		break;
+		
+		}
+			
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetchAll());
+	
+	$objArr = array();
+	
+	foreach ($obj->getData() as $k=>$v) {
+	
+		$objArr[$v['dte']] = $v;
+	
+	}
+	
+	//print_r($obj->getData());
+		
+	return $objArr;
+
+}
+
+require_once($path.'/rd/analytics_api.php');
+
+$login = 'getstdtested';
+	$password = 'Pinpoint4US';
+	$idg = 'ga:21076454';
+ 
+	$api = new analytics_api();
+	$api->login($login, $password);
+
+
+function makeGoogle($start = null,$end = null,$api) {
+
+	$path = Mage::getBaseDir();
+
+	require_once($path.'/rd/analytics_api.php');
+	
+	$idg = 'ga:21076454';
+	
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+		
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+
+	//$d2 = $api->data($idg, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, '2011-11-13', '2011-11-20', 1000000, 1, $filters);
+	
+	//print_r($d2); exit();
+
+
+	$data = $api->data($idg, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, $start, $end, 1000000, 1, $filters);
+	$visitorCount = $data['ga:visitors'];
+	
+	return $visitorCount;
+
+}
+
+
+function makeReport($start = null,$end = null,$period = null) {
+
+	$cur = 0;
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$startGa = date('Y-m-d',$start);
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+		
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+		
+	$methods[] = 'authorizenet';
+	$methods[] = 'paylater';
+	$methods[] = 'paynearme';
+		
+	for ($i = 0; $i <= 2; $i++) {
+
+	$tv = $visitorCount;
+
+	$meth = 'online';
+	
+	switch ($period) {
+		
+		case 'day':
+
+		$q = "select count(*) as sales,DATE(a.created_at) as dte,IFNULL(b.method,'".$methods[$i]."') as method,IFNULL(SUM(a.grand_total),0) as gross from sales_flat_order as a join sales_flat_order_payment as b on b.parent_id = a.entity_id where a.created_at > '".$start."' and a.created_at < '".$end."' and a.ppmd_rep = 99 and b.method = '".$methods[$i]."' group by DATE(a.created_at - INTERVAL 6 HOUR);";
+		
+		//echo $q; echo "<br>"; echo "<br>";
+		
+		break;
+		
+		case null:
+		default:
+		
+		$q = "select count(*) as sales,IFNULL(b.method,'".$methods[$i]."') as method,IFNULL(SUM(a.grand_total),0) as gross from sales_flat_order as a join sales_flat_order_payment as b on b.parent_id = a.entity_id where a.created_at > '".$start."' and a.created_at < '".$end."' and a.ppmd_rep = 99 and b.method = '".$methods[$i]."';";
+		
+		$cur = 1;
+				
+		break;
+		
+		}
+	
+								
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetchAll());
+		
+	//$bigObj[$meth][$methods[$i]] = $obj->getData();
+	
+		/*
+if ($cur == 1) {
+	
+		$bigObj[$meth][$methods[$i]][0]['dte'] = $startGa;
+	
+		}
+*/
+	$objArr = array();
+		
+		foreach ($obj->getData() as $k=>$v) {
+	
+		$objArr[$v['dte']] = $v;
+	
+		}
+	
+		$bigObj[$meth][$methods[$i]] = $objArr;
+	
+	}
+	
+	for ($i = 0; $i <= 2; $i++) {
+
+	$meth = 'phone';
+	
+	switch ($period) {
+		
+		case 'day':
+
+	$q = "select DATE(a.created_at) as dte,count(*) as sales,IFNULL(b.method,'".$methods[$i]."') as method,IFNULL(SUM(a.grand_total),0) as gross from sales_flat_order as a join sales_flat_order_payment as b on b.parent_id = a.entity_id where a.created_at > '".$start."' and a.created_at < '".$end."' and a.ppmd_rep != 99 and b.method = '".$methods[$i]."' group by DATE(a.created_at - INTERVAL 6 HOUR);";
+	
+		//echo $q; echo "<br>"; echo "<br>";
+	
+		break;
+		
+		case null:
+		default:
+		
+		$q = "select count(*) as sales,IFNULL(b.method,'".$methods[$i]."') as method,IFNULL(SUM(a.grand_total),0) as gross from sales_flat_order as a join sales_flat_order_payment as b on b.parent_id = a.entity_id where a.created_at > '".$start."' and a.created_at < '".$end."' and a.ppmd_rep != 99 and b.method = '".$methods[$i]."';";
+		
+		break;
+		
+		}
+			
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetchAll());
+	
+	$objArr = array();
+	
+	foreach ($obj->getData() as $k=>$v) {
+	
+		$objArr[$v['dte']] = $v;
+	
+	}
+	
+	
+	$bigObj[$meth][$methods[$i]] = $objArr;
+	
+	}
+
+	//echo "<pre>";print_r($bigObj); exit();
+	
+	for ($i = 0; $i <= 2; $i++) {
+		
+	$meth = 'online_totals';
+	
+		switch ($period) {
+		
+		case 'day':
+		
+		$q = "select DATE(a.updated_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.updated_at > '".$start."' and a.updated_at < '".$end."' and b.ppmd_rep = 99 and b.status IN ('complete','closed') and c.method = '".$methods[$i]."' group by DATE(a.updated_at - INTERVAL 6 HOUR);";
+		
+		$q = "select DATE(a.created_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.created_at > '".$start."' and a.created_at < '".$end."' and b.ppmd_rep = 99 and c.method = '".$methods[$i]."' group by DATE(a.created_at - INTERVAL 6 HOUR);";
+		
+		//echo $q; echo "<br>"; echo "<br>";
+		
+		break;
+		
+		case null:
+		default:
+		
+		$q = "select DATE(a.updated_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.updated_at > '".$start."' and a.updated_at < '".$end."' and b.ppmd_rep = 99 and b.status IN ('complete','closed') and c.method = '".$methods[$i]."';";
+				
+		break;
+		
+		}
+														
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetchAll());
+	
+	$objArr = array();
+	
+	foreach ($obj->getData() as $k=>$v) {
+	
+		$objArr[$v['dte']] = $v;
+	
+	}
+	
+	
+	$bigObj[$meth][$methods[$i]] = $objArr;
+	
+	}
+	
+	for ($i = 0; $i <= 2; $i++) {
+			
+	$meth = 'phone_totals';
+	
+	switch ($period) {
+		
+		case 'day':
+	
+	
+	$q = "select DATE(a.updated_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.updated_at > '".$start."' and a.updated_at < '".$end."' and b.ppmd_rep != 99  and b.status IN ('complete','closed') and c.method = '".$methods[$i]."' group by DATE(a.updated_at - INTERVAL 6 HOUR);";
+	
+	$q = "select DATE(a.created_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.created_at > '".$start."' and a.created_at < '".$end."' and b.ppmd_rep != 99 and c.method = '".$methods[$i]."' group by DATE(a.created_at - INTERVAL 6 HOUR);";
+	
+	
+	
+	//echo $q; echo "<br>"; echo "<br>";
+		
+		break;
+		
+		case null:
+		default:
+		
+		$q = "select DATE(a.updated_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.updated_at > '".$start."' and a.updated_at < '".$end."' and b.ppmd_rep != 99 and b.status IN ('complete','closed') and c.method = '".$methods[$i]."';";
+				
+		break;
+		
+	}
+								
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetchAll());
+	
+	$objArr = array();
+	
+	foreach ($obj->getData() as $k=>$v) {
+	
+		$objArr[$v['dte']] = $v;
+	
+	}
+	
+	$bigObj[$meth][$methods[$i]] = $objArr;
+	
+	}
+	
+	/*
+echo "<!-- ";
+	print_r($bigObj);
+	echo " -->";
+*/
+	
+	return $bigObj;
+	
+}
+
+function getRefunds($start = null,$end = null) {
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+		
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+	
+	if ($start == $end) {
+	
+		$start = date("Y-m-d",strtotime($start))." 06:00:00";
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+	
+	}
+	
+	$q = "select IFNULL(SUM(base_grand_total),0) as refund from sales_flat_creditmemo where created_at > '".$start."' and created_at < '".$end."';";
+	
+	//echo $q;
+	
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+    $r = $sth->fetchAll();
+	
+	return $r[0]['refund'];
+
+}
+
+$date = date('Y-m-d')." 00:00:00";
+	
+$date = strtotime("-6 hours");
+		
+$date = date('Y-m-d',$date)." 06:00:00";
+
+$dateTime = strtotime($date);
+
+$dateGa = date('Y-m-d',$dateTime);
+
+$yesterday = date('Y-m-d H:i:s',strtotime("-1 day",$dateTime));
+
+$yesterdayGa = date('Y-m-d',strtotime("-1 day",$dateTime));
+
+$lastSunday = date('Y-m-d H:i:s',strtotime("last sunday, 6:00AM",$dateTime));
+
+$lastSundayTs = strtotime("last sunday, 6:00AM");
+
+$lastSundayGa = date('Y-m-d',$lastSundayTs);
+
+$thisWeek = date('Y-m-d H:i:s',strtotime("+7 days",$lastSundayTs));
+
+$thisWeekGa = date('Y-m-d',strtotime("+7 days",$lastSundayTs));
+
+$twoSundaysAgo = date('Y-m-d H:i:s',strtotime("-1 week",$lastSundayTs));
+
+$twoSundaysAgoGa = date('Y-m-d',strtotime($twoSundaysAgo));
+
+$curMonth = date('Y-m',$dateTime)."-01 06:00:00";
+
+$curMonthTs = strtotime($curMonth);
+
+$curMonthGa = date('Y-m',$curMonthTs)."-01";
+
+$currentMonth = date('Y-m',strtotime("+1 month",$curMonthTs))."-01 06:00:00";
+
+$curMonthTs = strtotime(date('Y-m',$dateTime));
+
+$lastMonth = date('Y-m-d H:i:s',strtotime("-1 month +6 hours",$curMonthTs));
+
+
+if ($params['from']) {
+
+$s = strtotime($params['from']);
+
+$startGa = date('Y-m-d',$s);
+		
+$start = date('Y-m-d',$s)." 06:00:00";
+
+}
+
+if ($params['to']) {
+
+$e = strtotime($params['to']);
+
+$endGa = date('Y-m-d',$e);
+		
+$end = date('Y-m-d',$e)." 06:00:00";
+
+}
+
+
+$days = (strtotime($end) - strtotime($start)) / (60 * 60 * 24);
+
+	$dArr[] = $startGa;
+
+for ($i = 1; $i <= $days; $i++) {
+
+	$t = strtotime($start);
+	
+	$dArr[] = date('Y-m-d',strtotime("+".$i." day",$t));
+
+}
+
+//print_r($dArr);
+
+  
+/*
+$loginGHT = 'dtcmdinc';
+$passwordGHT = 'dtcmd4gst';
+$idGHT = 'ga:25576591';
+ 
+$apiGHT = new analytics_api();
+if(!$apiGHT->login($loginGHT, $passwordGHT)) die("cant login to google GHT analytics");
+ 
+$googleDataGHT = $apiGHT->data($idGHT, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, $date, $date, 10, 1, $filters);
+$visitorCountTodayGHT = $googleDataGHT['ga:visitors'];
+ 
+ 
+$loginSTD = 'stdtesting.com';
+$passwordSTD = 'dtcmd4gst';
+$idSTD = 'ga:34493893';
+ 
+$apiSTD = new analytics_api();
+if(!$apiSTD->login($loginSTD, $passwordSTD)) die("cant login to google GHT analytics");
+ 
+$googleDataSTD = $apiSTD->data($idSTD, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, $date, $date, 10, 1, $filters);
+$visitorCountTodaySTD = $googleDataSTD['ga:visitors'];
+*/
+
+//echo $visitorCountTodaySTD;
+
+$db = new PDO ('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+?>
+<div class="grid">
+	
+	<?php
+	
+	$query = 'select count(*) as num, b.method, SUM(grand_total) as revenue, IFNULL(SUM(base_total_refunded),0) as refunded, (SUM(grand_total) - IFNULL(SUM(base_total_refunded),0)) as total from sales_flat_invoice as a join sales_flat_order_payment as b on b.parent_id = a.order_id group by b.method where a.updated_at > "'.$start.'" and a.updated_at < "'.$end.'";';  
+			     	    
+    $sth = $db->prepare($query);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$in = new Varien_Object();
+	$in->setData($sth->fetchAll());
+	
+	$query = 'select count(*) as num from sales_flat_order_payment group by method;';  
+			     	    
+    $sth = $db->prepare($query);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$o = new Varien_Object();
+	$o->setData($sth->fetchAll());
+	
+	//echo "<pre>";
+	
+	//print_r($in->getData());
+	
+	//echo "</pre>";
+	
+	
+	
+	?>
+	
+<!--
+	<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4>Total</h4>
+	</div>
+	<fieldset class="np">
+	<table width="100%" cellspacing="0" cellpadding="0" border="0">
+		<tbody>
+		<thead>
+		<tr class="headings" >
+			<th class="no-link" width="15%" >Payment Method</td>
+			<th class="no-link" width="15%">Total Sales</td>
+			<th class="no-link" width="15%">Total Paid</td>
+			<th class="no-link" width="15%">Revenue</td>
+			<th class="no-link" width="15%">Refunds</td>
+			<th class="no-link" width="15%">Total</td>
+		</tr>
+		</thead>
+		<?php
+		
+			$id = $in->getData();
+			$od = $o->getData();
+		?>
+		<?php for ($i = 0; $i <= 2; $i++) { ?>
+		<tr>
+			<td><?php echo $id[$i]['method'];?></td>
+			<td><?php echo $od[$i]['num'];?></td>
+			<td><?php echo $id[$i]['num'];?></td>
+			<td>$<?php echo round($id[$i]['revenue'],2);?></td>
+			<td>$<?php echo round($id[$i]['refunded'],2);?></td>
+			<td>$<?php echo round($id[$i]['total'],2);?></td>
+		</tr>
+		<?php } ?>
+		</tbody>
+	</table>
+		</fieldset>
+	</div>
+-->
+
+
+	
+
+
+
+<?php
+
+
+if ($params['from']) {
+
+$s = strtotime($params['from']);
+
+$startGa = date('Y-m-d',$s);
+		
+$start = date('Y-m-d',$s)." 06:00:00";
+
+}
+
+if ($params['to']) {
+
+$e = strtotime($params['to']);
+
+$endGa = date('Y-m-d',$e);
+		
+$end = date('Y-m-d',$e)." 06:00:00";
+
+}
+
+
+$period = $params['period_type'];
+
+if (!$period) {
+
+	$period = null;
+
+}
+
+if (!$start) {
+
+	$start = null;
+
+}
+
+if (!$end) {
+
+	$end = null;
+
+}
+
+	$phone = getCalls($start,$end,$period);
+		
+	$sales = makeReport($start,$end,$period);
+	
+	//$tv = 1000;
+					
+	$query = 'select DATE(created_at) as dte,count(*) as sales,
+			SUM(total_paid) as total 
+		FROM 
+			sales_flat_order 
+		WHERE 
+			product_line >= 2 
+			and status = "complete" 
+			and created_at > "'.$start.'" 
+			and created_at < "'.$end.'"
+			group by DATE(created_at - INTERVAL 6 HOUR);';  
+			
+		//echo "here";echo $query;
+			     	    
+    $sth = $db->prepare($query);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$scripts = new Varien_Object();
+	//$scripts->setData($sth->fetchAll());
+	
+	//if (count($scripts) > 1) {
+	
+		foreach ($sth->fetchAll() as $sc) {
+				
+			$scriptsArr[$sc['dte']] = $sc['total'];
+		
+		}
+	
+	//} else {
+	
+		//$scriptsArr[$scripts->getDte()] = $scripts->getTotal();	
+	//}
+	
+	//print_r($scriptsArr);
+
+	
+	$query = 'select DATE(b.updated_at) as dte, SUM(a.lab_revenue) as total 
+		FROM 
+			sales_flat_order as a left join sales_flat_invoice as b on b.order_id = a.entity_id 
+		WHERE 
+			a.order_type = 1 and 
+			a.ppmd_provider != 1 
+			and b.updated_at > "'.$start.'" 
+			and b.updated_at < "'.$end.' " 
+			group by DATE(b.updated_at - INTERVAL 6 HOUR);';   
+						
+	echo $query; echo "<br>"; 
+     	    
+    $sth = $db->prepare($query);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$nnr = new Varien_Object();
+	$nnr->setData($sth->fetchAll());
+	
+	foreach ($nnr->getData() as $k=>$v) {
+	
+		$nnArr[$v['dte']] = $v['total'];
+	
+	}
+	
+	/*
+echo "<pre>";
+	print_r($sales);
+	echo  "</pre>";
+*/
+		
+		
+?>
+
+<div class="entry-edit">
+		<div class="entry-edit-head">
+			<h4><?php echo $startGa; echo " - "; echo $endGa;?></h4>
+		</div>
+		<fieldset class="np">
+
+
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<tbody>
+	<thead>
+	<tr class="headings" >
+	    <td class="no-link">Date</td>
+		<td class="no-link">Site</td>
+		<th class="no-link" colspan="3">Visitor Count</td>
+		<th class="no-link" colspan="11">Sales</td>
+		<th class="no-link" onmouseover="this.T_SHADOWWIDTH=2;this.T_WIDTH=200;return escape('Todays conv rates based off a 59.20% pay later conversion')" colspan="3">* Conv Rates</td>
+		<th class="no-link" colspan="10">Revenue</td>
+		<th class="no-link" colspan="3">Avg. Sale Price</td>
+	</tr>
+	</thead>
+	<tr>
+		<td></td>
+		<td></td>
+		<td style="">Phone</td>
+		<td>Online</td>
+		<td style="background-color:#F6F6F6;">Total</td>
+		
+		<td align="center" style="" colspan="4">Phone</td>
+		<td align="center" style="" colspan="3">Online</td>
+		<td align="center" style="" colspan="4">Total</td>
+		
+		<td>Phone</td>
+		<td>Online</td>
+		<td style="background-color:#F6F6F6;">Total</td>
+		
+		<td>Phone</td>
+		<td>Online</td>
+		<td>Script</td>
+		<td>PL</td>
+		<td>PC</td>
+		<td>Ref</td>
+		<td>NNR</td>
+		<td style="background-color:#F6F6F6;">Sales</td>
+		<td style="background-color:#F6F6F6;">Paid</td>
+		<td style="background-color:#F6F6F6;">Cash</td>
+		
+		<td>Phone</td>
+		<td>Online</td>
+		<td style="background-color:#F6F6F6;">Total</td>
+	</tr>
+	<tr>
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="background-color:#F6F6F6;">&nbsp;</td>
+		
+		<td style="">PN</td>
+		<td style="">PL</td>
+		<td style="">PC</td>
+		<td style="background-color:#F6F6F6;">T</td>
+		
+		<td style="">PN</td>
+		<td style="">PC</td>
+		<td style="background-color:#F6F6F6;">T</td>
+		
+		<td style="">PN</td>
+		<td style="">PL</td>
+		<td style="">PC</td>
+		<td style="background-color:#F6F6F6;">T</td>
+		
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="background-color:#F6F6F6;">&nbsp;</td>
+		
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="background-color:#F6F6F6;">&nbsp;</td>
+		<td style="background-color:#F6F6F6;">&nbsp;</td>
+		<td style="background-color:#F6F6F6;">&nbsp;</td>
+				
+		<td style="">&nbsp;</td>
+		<td style="">&nbsp;</td>
+		<td style="background-color:#F6F6F6;">&nbsp;</td>
+	</tr>
+	
+	<?php 
+	
+	$pGross = 0;
+	$oGross = 0;
+	
+	for ($r = 0; $r <= count($dArr)-2; $r++) { ?>
+	
+    <tr bgcolor="white">    
+    	<td style=""><?php echo $dArr[$r];?></td> 
+    	<td style="">gst</td>      
+      	<?php 
+      	
+      	$tv = makeGoogle($dArr[$r], $dArr[$r],$api); 
+      	$ref = getRefunds($dArr[$r], $dArr[$r]);
+      	
+      	//echo $ref; exit();
+      	
+      	?>
+      	<td class="phoneVisits" style=""><?php echo $phone[$dArr[$r]]['calls'];?></td>
+      	<td class="onlineVisits"><?php echo $tv; ?></td>
+      	<td style="background-color:#F6F6F6;"><?php echo $phone[$dArr[$r]]['calls']+$tv;?></td>
+      	      	
+      	<td class="phoneAuthSales"><?php echo $sales['phone']['authorizenet'][$dArr[$r]]['sales'];?></td>
+      	<td class="phonePaylaterSales"><?php echo $sales['phone']['paylater'][$dArr[$r]]['sales'];?></td>
+      	<td class="phonePaynearmeSales"><?php echo ($sales['phone']['paynearme'][$dArr[$r]]['sales']?$sales['phone']['paynearme'][$dArr[$r]]['sales']:0);?></td>
+      	<?php
+      	
+      	$pt = $sales['phone']['authorizenet'][$dArr[$r]]['sales']+$sales['phone']['paylater'][$dArr[$r]]['sales']+$sales['phone']['paynearme'][$dArr[$r]]['sales'];
+      	
+      	?>
+      	<td style="background-color:#F6F6F6;"><?php echo $pt; ?></td>
+      	      	
+      	<td class="onlineAuthSales"><?php echo $sales['online']['authorizenet'][$dArr[$r]]['sales'];?></td>
+      	<td class="onlinePaynearmeSales"><?php echo $sales['online']['paynearme'][$dArr[$r]]['sales'];?></td>
+      	<?php
+      	
+      	$ot =  $sales['online']['authorizenet'][$dArr[$r]]['sales']+$sales['online']['paynearme'][$dArr[$r]]['sales'];
+      	
+      	?>
+      	<td style="background-color:#F6F6F6;"><?php echo $ot;?></td>
+      	      	
+      	<td><?php echo $sales['phone']['authorizenet'][$dArr[$r]]['sales']+$sales['online']['authorizenet'][$dArr[$r]]['sales'];?></td>
+      	<td><?php echo $sales['phone']['paylater'][$dArr[$r]]['sales']?></td>
+      	<td><?php echo $sales['phone']['paynearme'][$dArr[$r]]['sales']+$sales['online']['paynearme'][$dArr[$r]]['sales'];?></td>
+      	<td style="background-color:#F6F6F6;"><?php echo $pt+$ot;?></td>
+      	
+      	
+      	<?php $at = $pt; 
+      	
+      		$rate = ($at/$phone[$dArr[$r]]['calls'])*100;
+      	
+      	?>
+      	
+      	<td><?php echo round($rate,2);?>%</td>
+      	
+      	<?php 
+      	
+      		$to = $sales['online']['paynearme'][$dArr[$r]]['sales'];
+      		
+      		$tor = round($to/1.8);
+      		      		
+      		$at = $ot - $tor; 
+      	
+      		$rate = ($at/$tv)*100;
+      	
+      	?>
+      	
+      	<td><?php echo round($rate,2);?>%</td>
+      	
+      	<?php 
+      	      	
+      	      	
+      	    $vt = $tv + $phone[$dArr[$r]]['calls'];
+      	      	
+      		$totalOrders = $at + $pt;
+      		      		      		
+      		$at = $totalOrders;
+      	
+      		$rate = ($at/$vt)*100;
+      		      		      	
+      	?>
+      	
+      	
+      	<td style="background-color:#F6F6F6;"><?php echo round($rate,2);?>%</td>
+ <?php 
+ 
+
+		$gpt = $sales['phone_totals']['authorizenet'][$dArr[$r]]['total']+$sales['phone_totals']['paynearme'][$dArr[$r]]['total']+$sales['phone_totals']['paylater'][$dArr[$r]]['total'];
+		
+		$got =  $sales['online_totals']['authorizenet'][$dArr[$r]]['total']+$sales['online_totals']['paynearme'][$dArr[$r]]['total'];
+
+ 
+  ?>
+       	
+      	<td class="phoneTotal">$<?php echo round($sales['phone_totals']['authorizenet'][$dArr[$r]]['total']);?></td>
+      	<td class="onlineTotal">$<?php echo round($sales['online_totals']['authorizenet'][$dArr[$r]]['total']);?></td>
+      	
+      	<td class="scriptsTotal">$<?php echo round($scriptsArr[$dArr[$r]]);?></td>
+      	
+      	<td class="paylaterTotal">$<?php echo round($sales['phone_totals']['paylater'][$dArr[$r]]['total']);?></td>
+      	<td class="paycashTotal">$<?php echo round($sales['phone_totals']['paynearme'][$dArr[$r]]['total']+$sales['online_totals']['paynearme'][$dArr[$r]]['total']);?></td>
+      	
+      	
+      	
+      	
+      	<?php
+      	
+      	$gross = $sales['phone']['authorizenet'][$dArr[$r]]['gross']+$sales['phone']['paylater'][$dArr[$r]]['gross']+$sales['phone']['paynearme'][$dArr[$r]]['gross']+$sales['online']['authorizenet'][$dArr[$r]]['gross']+$sales['online']['paynearme'][$dArr[$r]]['gross'];
+      	      	
+      	
+      	$tr = $sales['phone_totals']['authorizenet'][$dArr[$r]]['refunded']
+      			+$sales['phone_totals']['paylater'][$dArr[$r]]['refunded']
+      			+$sales['phone_totals']['paynearme'][$dArr[$r]]['refunded']
+      			+$sales['online_totals']['authorizenet'][$dArr[$r]]['refunded']
+      			+$sales['online_totals']['paynearme'][$dArr[$r]]['refunded'];
+      	      	
+      	?>
+      	
+      	<td class="refundTotal">$<?php echo round($ref); ?></td>
+      	
+      	<?php
+      	
+      		
+      	
+      	?>
+      	
+      	<td class="nnrTotal">$<?php echo round($nnArr[$dArr[$r]]);?></td>
+      	
+      	<td class="grossTotal" style="background-color:#F6F6F6;">$<?php echo round($gross); ?></td>
+      	<td class="paidTotal" style="background-color:#F6F6F6;">$<?php echo round($gpt+$got); ?></td>
+      	<td class="cashTotal" style="background-color:#F6F6F6;">$<?php echo round((($gpt+$got)-$ref)); ?></td>
+      	
+      	<?php
+      	
+      	$pGross += $sales['phone']['authorizenet'][$dArr[$r]]['gross']+$sales['phone']['paynearme'][$dArr[$r]]['gross']+$sales['phone']['paylater'][$dArr[$r]]['gross'];
+      	
+      	$pAvg = ($sales['phone']['authorizenet'][$dArr[$r]]['gross']+$sales['phone']['paynearme'][$dArr[$r]]['gross']+$sales['phone']['paylater'][$dArr[$r]]['gross'])/$pt;
+      	
+      	$oGross += $sales['online']['authorizenet'][$dArr[$r]]['gross']+$sales['online']['paynearme'][$dArr[$r]]['gross'];
+      	
+      	$oAvg = ($sales['online']['authorizenet'][$dArr[$r]]['gross']+$sales['online']['paynearme'][$dArr[$r]]['gross'])/$ot;
+      	
+      	$tAvg = $gross/($pt+$ot);
+      	
+      	?>
+      	<div style="display:none;" class="pGross"><?php echo $pGross;?></div>
+      	<div style="display:none;" class="oGross"><?php echo $oGross;?></div>
+      	<td>$<?php echo round($pAvg);?></td>
+      	<td>$<?php echo round($oAvg);?></td>
+      	<td style="background-color:#F6F6F6;">$<?php echo round($tAvg);?></td>
+    </tr>
+   
+   <?php } ?>
+   
+    <tr style="">
+    	<td style=""></td> 
+   		<td>TOTAL</td>
+   		
+   		<td id="pVisitsTotal"></td>
+      	<td id="oVisitsTotal"></td>
+      	<td id="visitsTotal" style="background-color:#F6F6F6;"></td>
+      	
+      	<td id="pAuthSalesTotal"></td>
+      	<td id="pPaylaterSalesTotal"></td>
+      	<td id="pPaynearmeSalesTotal"></td>
+
+      	<td id="pSalesTotal" style="background-color:#F6F6F6;"></td>
+      	      	
+      	<td id="oAuthSalesTotal"></td>
+      	<td id="oPaynearmeSalesTotal"></td>
+      	
+      	<td id="oSalesTotal" style="background-color:#F6F6F6;"></td>
+      	      	
+      	<td id="tAuthSalesTotal"></td>
+      	<td id="tPaylaterSalesTotal"></td>
+      	<td id="tPaynearmeSalesTotal"></td>
+      	<td id="tSalesTotal" style="background-color:#F6F6F6;"></td>
+      	
+      	<td id="pRate"></td>
+      	<td id="oRate"></td>      	
+      	<td id="tRate" style="background-color:#F6F6F6;"></td>
+       	
+      	<td id="tPhoneTotal"></td>
+      	<td id="tOnlineTotal"></td>
+      	
+      	<td id="tScriptsTotal"></td>
+      	
+      	<td id="tPaylaterTotal"></td>
+      	<td id="tPaycashTotal"></td>
+      	
+      	<td id="tRefundTotal"></td>
+      	
+      	<td id="tNnrTotal"></td>
+      	      	
+      	
+      	<td id="tGrossTotal" style="background-color:#F6F6F6;"></td>
+      	<td id="tPaidTotal" style="background-color:#F6F6F6;"></td>
+      	<td id="tCashTotal" style="background-color:#F6F6F6;"></td>
+      	
+      	<td id="tPhoneAvg"></td>
+      	<td id="tOnlineAvg"></td>
+      	<td id="tTotalAvg" style="background-color:#F6F6F6;"></td>
+    </tr>
+</tbody>
+</table>
+
+
+
+		</fieldset>
+	</div>
+	
+	
+
+
+</div>
+
+
+
+<script type="text/javascript">
+
+	phoneVisits = $$('.phoneVisits');
+	phoneVisitsTotal = 0;
+		
+	for (i = 0; i < phoneVisits.length; i++) {
+						
+		phoneVisitsTotal = phoneVisitsTotal +  Number(phoneVisits[i].innerHTML);
+
+	}
+	
+	document.getElementById('pVisitsTotal').innerHTML = phoneVisitsTotal;
+	
+	onlineVisits = $$('.onlineVisits');
+	onlineVisitsTotal = 0;
+		
+	for (i = 0; i < onlineVisits.length; i++) {
+						
+		onlineVisitsTotal = onlineVisitsTotal +  Number(onlineVisits[i].innerHTML);
+
+	}
+	
+	document.getElementById('oVisitsTotal').innerHTML = onlineVisitsTotal;
+	
+	document.getElementById('visitsTotal').innerHTML = onlineVisitsTotal+phoneVisitsTotal;
+	
+	visitsTotal = onlineVisitsTotal+phoneVisitsTotal;
+	
+/* PHONE GROSS SALES COUNT */
+
+	phoneAuthSales = $$('.phoneAuthSales');
+	phoneAuthSalesTotal = 0;
+		
+	for (i = 0; i < phoneAuthSales.length; i++) {
+						
+		phoneAuthSalesTotal = phoneAuthSalesTotal +  Number(phoneAuthSales[i].innerHTML);
+
+	}
+	
+	document.getElementById('pAuthSalesTotal').innerHTML = phoneAuthSalesTotal;
+	
+	
+	phonePaylaterSales = $$('.phonePaylaterSales');
+	phonePaylaterSalesTotal = 0;
+		
+	for (i = 0; i < phonePaylaterSales.length; i++) {
+						
+		phonePaylaterSalesTotal = phonePaylaterSalesTotal +  Number(phonePaylaterSales[i].innerHTML);
+
+	}
+	
+	document.getElementById('pPaylaterSalesTotal').innerHTML = phonePaylaterSalesTotal;
+	
+	
+	phonePaynearmeSales = $$('.phonePaynearmeSales');
+	phonePaynearmeSalesTotal = 0;
+		
+	for (i = 0; i < phonePaynearmeSales.length; i++) {
+						
+		phonePaynearmeSalesTotal = phonePaynearmeSalesTotal +  Number(phonePaynearmeSales[i].innerHTML);
+
+	}
+	
+	document.getElementById('pPaynearmeSalesTotal').innerHTML = phonePaynearmeSalesTotal;
+	
+	document.getElementById('pSalesTotal').innerHTML  = phoneAuthSalesTotal+phonePaylaterSalesTotal+phonePaynearmeSalesTotal;
+	
+	pSalesTotal = phoneAuthSalesTotal+phonePaylaterSalesTotal+phonePaynearmeSalesTotal;
+	
+/* ONLINE GROSS SALES COUNT */
+
+	onlineAuthSales = $$('.onlineAuthSales');
+	onlineAuthSalesTotal = 0;
+		
+	for (i = 0; i < onlineAuthSales.length; i++) {
+						
+		onlineAuthSalesTotal = onlineAuthSalesTotal +  Number(onlineAuthSales[i].innerHTML);
+
+	}
+	
+	document.getElementById('oAuthSalesTotal').innerHTML = onlineAuthSalesTotal;
+			
+	onlinePaynearmeSales = $$('.onlinePaynearmeSales');
+	onlinePaynearmeSalesTotal = 0;
+		
+	for (i = 0; i < onlinePaynearmeSales.length; i++) {
+						
+		onlinePaynearmeSalesTotal = onlinePaynearmeSalesTotal +  Number(onlinePaynearmeSales[i].innerHTML);
+
+	}
+	
+	document.getElementById('oPaynearmeSalesTotal').innerHTML = onlinePaynearmeSalesTotal;
+	
+	document.getElementById('oSalesTotal').innerHTML  = onlineAuthSalesTotal+onlinePaynearmeSalesTotal;
+	
+	oSalesTotal = onlineAuthSalesTotal+onlinePaynearmeSalesTotal;
+
+/* TOTAL GROSS SALES COUNT */	
+
+	document.getElementById('tAuthSalesTotal').innerHTML  = onlineAuthSalesTotal+phoneAuthSalesTotal;
+	document.getElementById('tPaylaterSalesTotal').innerHTML  = phonePaylaterSalesTotal;
+	document.getElementById('tPaynearmeSalesTotal').innerHTML  = phonePaynearmeSalesTotal+onlinePaynearmeSalesTotal;
+	
+	document.getElementById('tSalesTotal').innerHTML = onlineAuthSalesTotal+phoneAuthSalesTotal+phonePaylaterSalesTotal+phonePaynearmeSalesTotal+onlinePaynearmeSalesTotal;
+	
+	tSalesTotal = onlineAuthSalesTotal+phoneAuthSalesTotal+phonePaylaterSalesTotal+phonePaynearmeSalesTotal+onlinePaynearmeSalesTotal;
+	
+	pRate = (pSalesTotal/phoneVisitsTotal)*100;
+	
+	oRate = ((oSalesTotal-(Math.round(onlinePaynearmeSalesTotal*(0.55))))/onlineVisitsTotal)*100;
+	
+	adju = oSalesTotal-(Math.round(onlinePaynearmeSalesTotal*(0.55)));
+	
+	tRate = ((pSalesTotal+adju)/visitsTotal)*100;
+		
+	document.getElementById('pRate').innerHTML = Math.round(pRate*100)/100+"%";
+	
+	document.getElementById('oRate').innerHTML = Math.round(oRate*100)/100+"%";
+	
+	document.getElementById('tRate').innerHTML = Math.round(tRate*100)/100+"%";
+	
+	phoneTotals = $$('.phoneTotal');
+	tPhoneTotal = 0;
+		
+	for (i = 0; i < phoneTotals.length; i++) {
+						
+		tPhoneTotal = tPhoneTotal +  Number(phoneTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tPhoneTotal').innerHTML = '$'+tPhoneTotal;
+	
+	onlineTotals = $$('.onlineTotal');
+	tOnlineTotal = 0;
+		
+	for (i = 0; i < onlineTotals.length; i++) {
+						
+		tOnlineTotal = tOnlineTotal +  Number(onlineTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tOnlineTotal').innerHTML = '$'+tOnlineTotal;
+	
+	
+	paylaterTotals = $$('.paylaterTotal');
+	tPaylaterTotal = 0;
+		
+	for (i = 0; i < paylaterTotals.length; i++) {
+						
+		tPaylaterTotal = tPaylaterTotal +  Number(paylaterTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tPaylaterTotal').innerHTML = '$'+tPaylaterTotal;
+	
+	
+	paycashTotals = $$('.paycashTotal');
+	tPaycashTotal = 0;
+		
+	for (i = 0; i < paycashTotals.length; i++) {
+						
+		tPaycashTotal = tPaycashTotal +  Number(paycashTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tPaycashTotal').innerHTML = '$'+tPaycashTotal;
+	
+	
+	scriptsTotals = $$('.scriptsTotal');
+	tScriptsTotal = 0;
+		
+	for (i = 0; i < scriptsTotals.length; i++) {
+						
+		tScriptsTotal = tScriptsTotal +  Number(scriptsTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tScriptsTotal').innerHTML = '$'+tScriptsTotal;
+	
+	
+	nnrTotals = $$('.nnrTotal');
+	tNnrTotal = 0;
+		
+	for (i = 0; i < nnrTotals.length; i++) {
+						
+		tNnrTotal = tNnrTotal +  Number(nnrTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tNnrTotal').innerHTML = '$'+tNnrTotal;
+	
+	
+	refundTotals = $$('.refundTotal');
+	tRefundTotal = 0;
+		
+	for (i = 0; i < refundTotals.length; i++) {
+						
+		tRefundTotal = tRefundTotal +  Number(refundTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tRefundTotal').innerHTML = '$'+tRefundTotal;
+	
+	
+	grossTotals = $$('.grossTotal');
+	tGrossTotal = 0;
+		
+	for (i = 0; i < grossTotals.length; i++) {
+						
+		tGrossTotal = tGrossTotal +  Number(grossTotals[i].innerHTML.substring(1));
+
+	}
+		
+	document.getElementById('tGrossTotal').innerHTML = '$'+tGrossTotal;
+		
+	paidTotals = $$('.paidTotal');
+	tPaidTotal = 0;
+		
+	for (i = 0; i < paidTotals.length; i++) {
+						
+		tPaidTotal = tPaidTotal +  Number(paidTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tPaidTotal').innerHTML = '$'+tPaidTotal;
+		
+	cashTotals = $$('.cashTotal');
+	tCashTotal = 0;
+			
+	for (i = 0; i < cashTotals.length; i++) {
+							
+		tCashTotal = tCashTotal +  Number(cashTotals[i].innerHTML.substring(1));
+
+	}
+	
+	document.getElementById('tCashTotal').innerHTML = '$'+tCashTotal;
+	
+	
+	tPhoneGross = $$('.pGross');
+	tPG = 0;
+		
+	for (i = 0; i < tPhoneGross.length; i++) {
+						
+		tPG = tPG + Number(tPhoneGross[i].innerHTML);
+
+	}
+	
+	tOnlineGross = $$('.oGross');
+	tOG = 0;
+		
+	for (i = 0; i < tOnlineGross.length; i++) {
+						
+		tOG = tOG + Number(tOnlineGross[i].innerHTML);
+
+	}
+	
+		
+	tPhoneAvg = tPG/pSalesTotal;
+	
+	tOnlineAvg = tOG/oSalesTotal;
+	
+	tTotalAvg = tGrossTotal/tSalesTotal;
+	
+	//alert(tPhoneAvg);
+	
+	document.getElementById('tPhoneAvg').innerHTML = '$'+Math.round(tPhoneAvg);
+	document.getElementById('tOnlineAvg').innerHTML = '$'+Math.round(tOnlineAvg);
+	document.getElementById('tTotalAvg').innerHTML = '$'+Math.round(tTotalAvg);
+	
+	
+</script>

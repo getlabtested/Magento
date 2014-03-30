@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<notes module="notes">
+			<title>Notes</title>
+			<sort_order>71</sort_order>               
+			<children>
+				<notes module="notes">
+					<title>Manage Notes</title>
+					<sort_order>0</sort_order>
+					<action>notes/adminhtml_notes</action>
+				</notes>
+			</children>
+		</notes>
+	</menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <notes translate="title" module="notes">
+          		<title>Notes</title>
+                <sort_order>40</sort_order>
+	            <children>
+		              <notes translate="title">
+		                <title>Manage Notes</title>
+		                <sort_order>100</sort_order>
+		              </notes>
+	            </children>
+          </notes>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>

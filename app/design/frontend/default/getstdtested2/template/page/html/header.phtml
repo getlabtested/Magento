@@ -1,0 +1,335 @@
+<?php
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+
+<?php
+/*
+echo "<!-- ";
+echo Mage::app()->getRequest()->getRequestString();
+echo " -->";
+*/
+?>
+
+<?php 
+	// run a check for mobile devices only once and only on home page
+	if ($_GET['mobile'] == "false")
+		setcookie("GSTmobile", "no", time()+8640, "/", "getstdtested.com");
+	
+	if ((Mage::getSingleton('cms/page')->getIdentifier() == 'home') && !isset($_COOKIE['GSTmobile']) && ($_GET['mobile'] != "false")) : 
+?>
+<script type="text/javascript" src="/js/detect-mobile.js"></script>
+<script type="text/javascript">
+	try {
+		var mobile = getQuerystring('Mobile');
+		if (mobile == "") var mobile = getQuerystring('mobile', true);
+
+		if ((mobile != "False") && (mobile != "false")) {
+			//detectMobile(navigator.userAgent || navigator.vendor || window.opera, 'http://getstdtested.com/m/04/');
+		}
+	} catch (err) { };
+</script>
+<?php 
+	endif;
+?>
+
+<!-- Fancybox for Test Recommender -->
+<link rel="stylesheet" type="text/css" href="/test-recommender/jquery.fancybox-1.3.4.css" media="screen" />
+<script type="text/javascript" src="/test-recommender/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript">
+	jQuery(document).ready(function() {
+		jQuery("#test-recommender").fancybox({
+			'width'				: 695,
+			'height'			: 615,
+			'autoScale'			: false,
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type'				: 'iframe',
+			'titleShow'			: false
+		});
+		jQuery("a.test-recommender").fancybox({
+			'width'				: 695,
+			'height'			: 615,
+			'autoScale'			: false,
+			'transitionIn'		: 'none',
+			'transitionOut'		: 'none',
+			'type'				: 'iframe',
+			'titleShow'			: false
+		});
+	});
+	function closeFancyboxAndRedirectToUrl(url){
+		jQuery.fancybox.close();
+		window.location = url;
+	}
+</script>
+<!-- EOF: Fancybox for Test Recommender -->
+
+
+<script type="text/javascript">
+	function hideSticky() {
+		if (jQuery(window).width() < 1235) jQuery("#b-get-tested-sticky").hide();
+		else jQuery("#b-get-tested-sticky").show();
+	}
+	jQuery(document).ready(hideSticky);
+	jQuery(window).resize(hideSticky);
+</script>
+
+
+<style type="text/css">
+	#user_nav_logout {
+		float: left;		
+	}
+</style>
+
+
+<?php // PAP Header Tracking
+
+//if (isset($_GET['a_aid'])) { $_SESSION['a_aid'] = $_GET['a_aid']; } else { $_SESSION['a_aid'] = 0; }
+if (isset($_GET['a_aid'])) { $_SESSION['a_aid'] = $_GET['a_aid']; }
+
+if (isset($_SESSION['a_aid'])) { //create div for tracking
+	//$model = Mage::getModel('affiliates/affiliates');
+	//$collection = $model->getCollection();
+	
+	echo "<!-- jagmedia -->";
+	
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+
+	$db = new PDO ('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	$affiliate_exists = false;
+	
+	Mage::getSingleton('core/session')->setAffiliateId($_SESSION['a_aid']);
+	Mage::getSingleton('core/session')->setPpmdAffiliate($_SESSION['a_aid']);
+	
+	$q = 'select phone from affiliates where referral_id = "'.$_SESSION['a_aid'].'";';
+	
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    	$sth->execute();  
+    		
+    	$res = $sth->fetchAll();
+    	
+    	$sth = "";
+    	
+    
+        	    	
+    $phone = $res[0]['phone'];
+    
+    //echo $phone; 
+
+	/*
+foreach($collection as $item){
+		if($item->getData('referral_id') == $_SESSION['a_aid']) {
+			$affiliate_exists = true;
+			$affiliate = $item;
+		}
+	}
+*/
+	if ($phone){
+	//if($affiliate_exists && $affiliate->getData('phone')) {
+	
+	
+			//$phone = $affiliate->getData('phone');		
+		
+			$phone = str_replace("-","",$phone);
+			$phone = str_replace(".","",$phone);
+			$phone = str_replace(" ","",$phone);
+			
+			$p1 = substr($phone,0,3);
+			$p2 = substr($phone,3,3);
+			$p3 = substr($phone,6,4);
+			
+			/*
+$j("#header_phone").innerHTML = phone;
+			$j("#question_side_widget .content p .orange").innerHTML = phone;
+			$j("#question_form_side_widget .content p.large .orange").innerHTML = phone;
+*/
+			$phone = $p1."-".$p2."-".$p3;
+				
+		?>
+		<div id="affiliate" style="display:none;">
+			<div class="promoNumber">
+				<?php echo $phone; ?>
+			</div>
+		</div>
+		
+		
+		
+		<?php
+		
+	} else {
+	
+		//$phone = Mage::getStoreConfig('general/store_information/phone');
+		$phone = "855-287-6195";
+	
+	}
+	
+}
+
+// END PAP Header Tracking
+
+?>
+
+<?php if (empty($_SERVER['HTTPS']) && ($this->getRequest()->getModuleName() != 'orderwidget') && (Mage::getSingleton('cms/page')->getIdentifier() != 'home')) { ?>
+	<a href="http://getstdtested.com/std-testing-options#order" id="b-get-tested-sticky">Get Tested</a>
+<?php } ?>
+
+<div id="header" class="all">
+
+	<!-- <div class="cart-header top-cart">
+		<?php // echo $this->getChildHtml('topcart')?>
+	</div> -->
+            
+    <a id="logo" <?php if (!empty($_SERVER['HTTPS'])) { ?>style="background-image: url('/media/images/logo.png');"<?php } ?> href="http://getstdtested.com"></a>
+
+    <div class="paypal_header_banner">
+        <?php echo $this->getChildHtml('paypal.header'); ?>
+    </div>
+
+    <?php if (empty($_SERVER['HTTPS']) && ($this->getRequest()->getModuleName() == 'blog') && (Mage::getSingleton('cms/page')->getIdentifier() != 'home')) { ?>
+    <div id="social">	
+        <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=106286916143413&amp;xfbml=1"></script><fb:like href="http://getstdtested.com" send="false" layout="button_count" width="auto" show_faces="false" action="recommend" font=""></fb:like>
+		<script type="text/javascript" src="//apis.google.com/js/plusone.js"></script>
+		<g:plusone size="small" href="http://getstdtested.com"></g:plusone>
+    </div> <!-- /social -->
+
+    <div class="phone orange" id="header_phone" style="padding: 0 0 12px 0;">
+    <?php } else { ?>
+    <div class="phone orange" id="header_phone">
+    <?php } ?>
+    	<span id="header_phone_tagline">Questions? Call Now</span>
+    	<div class="promoNumber" id="pnumber">
+    		866-749-6269
+    		<?php //echo Mage::getStoreConfig('general/store_information/phone'); ?>
+    	</div> 
+    </div>
+    
+    	<script type="text/javascript">
+    	
+    		p = '<?php echo $phone; ?>';
+    		
+    		if (p.length > 6) {
+		
+				document.getElementById('pnumber').innerHTML = '<?php echo $phone; ?>';
+				document.getElementById('#question_side_widget .content p .orange').innerHTML = '<?php echo $phone; ?>';
+				document.getElementById('#question_form_side_widget .content p.large .orange').innerHTML = '<?php echo $phone; ?>';
+			
+			}
+		
+		</script>
+   
+    <div id="user_nav">
+    	
+    	<?php if (Mage::getSingleton('customer/session')->getCustomer()->getId() && Mage::app()->getRequest()->getRequestString() != '/checkout/onepage/success/') { ?>
+    	<div id="user_nav_logout">
+    		<a class="header" href="/customer/account/logout">Log Out</a>
+    	</div>
+    	<?php } ?>
+
+<?php /*
+        <div id="user_nav_account" class="user_nav_box">
+            <a class="header" href="/sample-results">My Results</a>
+        </div> <!-- /account -->
+*/ ?>
+	
+    </div> <!-- /user_nav -->
+    
+    <div class="clear"></div>
+    
+    <div id="top_menu">
+        <div class="content">
+            <ul>
+                <li<?php if (Mage::getSingleton('cms/page')->getIdentifier() == 'std-tests') echo ' id="top_menu_current"'; ?>><a href="/std-tests" class="first" title="STD Tests">STD Tests</a>
+                	<div class="top_submenu" id="submenu-tests">
+						<ul>
+							<li><strong>Popular Tests Package</strong></li>
+							<li><a href="/complete-std-test-package-information" title="Complete STD Test Package">Complete STD Test Package</a></li>
+						</ul>
+						<ul style="float: left;">
+							<li><br /><strong>Individual Tests</strong></li>
+							<li><a href="/chlamydia-test" title="Chlamydia Test">Chlamydia Test</a></li>
+							<li><a href="/gonorrhea-test" title="Gonorrhea Test">Gonorrhea Test</a></li>
+							<li><a href="/hiv-test" title="HIV Test">HIV Test</a></li>
+							<li><a href="/hepatitis-b-test" title="Hepatitis B Test">Hepatitis B Test</a></li>
+							<li><a href="/hepatitis-c-test" title="Hepatitis C Test">Hepatitis C Test</a></li>
+						</ul>
+						<ul style="float: left;">
+							<li><br /><strong>&nbsp;</strong></li>
+							<li><a href="/oral-herpes-test" title="Oral Herpes Test">Oral Herpes Test</a></li>
+							<li><a href="/genital-herpes-test" title="Genital Herpes Test">Genital Herpes Test</a></li>
+							<li><a href="/trichomoniasis-test" title="Trichomoniasis Test">Trichomoniasis Test</a></li>
+							<li><a href="/syphilis-test" title="Syphilis Test">Syphllis Test</a></li>
+						</ul>
+                    </div>
+				</li>
+                <li<?php if (Mage::getSingleton('cms/page')->getIdentifier() == 'how-std-testing-works') echo ' id="top_menu_current"'; ?>><a href="/how-std-testing-works" title="How It Works">How It Works</a></li>
+	            <li><a href="/locate-testing-center" title="Find A Location">Find A Location</a>
+					<div class="top_submenu" id="submenu-location">
+						<ul>
+							<li><strong>Enter Your Zip Code</strong></li>
+							<div id="find_location">
+							<p>The most lab locations of any provider</p>
+							<form action="/locate-testing-center" method="post">
+								<input class="text" name="zip_code" type="text" value="Zip Code" onfocus="if (this.value=='Zip Code') this.value='';" onblur="if (this.value=='') this.value='Zip Code';">
+								<input name="ref_page" type="hidden" value="home">
+								<input class="submit" type="submit" value="find a lab">
+							</form>
+							</div>
+						</ul>
+					</div>
+	            </li>
+                <li<?php if (Mage::getSingleton('cms/page')->getIdentifier() == 'your-results') echo ' id="top_menu_current"'; ?> class="last"><a href="/sample-results" title="My Results">My Results</a></li>
+            </ul>
+        </div>
+    </div> <!-- /top_menu -->
+    
+    <a id="order_now" class="btn_orange" href="<?php echo rtrim(Mage::getUrl('std-testing-options',array('_secure'=>false)),"/"); ?>">order now</a>
+
+</div> <!-- /header -->
+
+<div class="clear"></div>
+<div class="sep20"></div>
+<?php
+/*
+echo "<!-- ";
+echo "\n-- core --\n";
+print_r(Mage::getSingleton('core/session')->getData());
+echo "\n-- checkout quote--\n";
+print_r(Mage::getSingleton('checkout/session')->getQuote()->getData());
+echo "\n-- customer --\n";
+print_r(Mage::getSingleton('customer/session')->getCustomer()->getData());
+echo "\n-- core messages --\n";
+print_r(Mage::getSingleton('core/session')->getMessages()->getErrors());
+echo "\n-- checkout messages --\n";
+print_r(Mage::getSingleton('checkout/session')->getMessages()->getErrors());
+echo "\n-- checkout data --\n";
+print_r(Mage::getSingleton('checkout/session')->getData());
+echo " -->"; 
+*/
+?>

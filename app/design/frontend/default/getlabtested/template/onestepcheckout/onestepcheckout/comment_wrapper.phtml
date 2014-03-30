@@ -1,0 +1,27 @@
+<div id="commentWrapper">
+    <div id="comment" style="padding: 40px 0 0 0;">
+	
+    	<div class="box_col b-4">
+        	<div class="box_head">
+        		<h2>Order Summary</h2>
+           	</div>
+            <?php echo $this->getChildHtml('onstepcheckout_order_summary') ?>
+        </div>
+		
+        <?php if (Mage::getSingleton('checkout/session')->getQuote()->getProductLine() != 2) { ?>
+            <?php if (!Mage::getSingleton('core/session')->getIsNnr() && !Mage::getModel('core/session')->getScript()) { ?>
+                <?php echo $this->getChildHtml('onstepcheckout_coupon') ?>
+            <?php } ?>
+        <?php } ?>
+
+        <?php if (!$this->isCustomerLoggedIn()) { ?>
+        <div class="box_col b-6">
+        	<a href="#">
+				<h4>Existing customer?</h4>
+				<a onclick="showloginbox('<?php echo $this->getLoginUrl() ?>');return false;" id="show-login" href="#"><h3>Log in to Save 5%</h3></a>
+			</a>
+        </div>
+        <?php } ?>
+
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<layout version="0.0.1">
+    <upsell_upsell_index>
+        <reference name="head">
+            <action method="addJs"><script>magestore/onestepcheckout.js</script></action>
+            <action method="addJs"><script>magestore/tinybox.js</script></action>
+            <action method="addJs"><script>magestore/coupon.js</script></action>
+            <action method="addJs"><script>magestore/upsell.js</script></action>
+
+            <action method="addCss"><stylesheet>css/magestore/onestepcheckout.css</stylesheet></action>
+            <action method="addCss"><stylesheet>css/magestore/tinybox.css</stylesheet></action>
+
+            <action method="setTitle"><title>Confirm Your Order &amp; Purchase Your Lab Testing Package</title></action>
+        </reference>
+        <reference name="content">
+            <block type="onestepcheckout/commentwrapper" name="onestepcheckout_comment_wrapper" as="onestepcheckout.comment.wrapper" template="onestepcheckout/onestepcheckout/comment_wrapper.phtml">
+                <block type="onestepcheckout/commentwrapper" name="onstepcheckout_order_summary" template="onestepcheckout/onestepcheckout/order_summary.phtml" />
+                <block type="onestepcheckout/coupon" name="onstepcheckout_coupon" template="onestepcheckout/onestepcheckout/coupon.phtml" />
+            </block>
+            <block type="upsell/upsell" name="upsell_content" template="onestepcheckout/upsell.phtml"/>
+        </reference>
+    </upsell_upsell_index>
+</layout>

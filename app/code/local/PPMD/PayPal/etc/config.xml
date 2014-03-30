@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_PayPal>
+            <version>0.0.1</version>
+        </PPMD_PayPal>
+    </modules>
+
+    <global>
+        <models>
+            <ppmd_paypal>
+                <class>PPMD_PayPal_Model</class>
+            </ppmd_paypal>
+        </models>
+
+        <blocks>
+            <ppmd_paypal>
+                <class>PPMD_PayPal_Block</class>
+            </ppmd_paypal>
+        </blocks>
+
+        <events>
+            <paypal_prepare_line_items>
+                <observers>
+                    <set_discount_not_to_be_item>
+                        <type>singleton</type>
+                        <class>ppmd_paypal/observer</class>
+                        <method>setDiscountNotToBeItem</method>
+                    </set_discount_not_to_be_item>
+                </observers>
+            </paypal_prepare_line_items>
+        </events>
+
+    </global>
+
+    <frontend>
+        <routers>
+            <paypaluk>
+                <args>
+                    <modules>
+                        <PPMD_PayPal before="Mage_PaypalUk">PPMD_PayPal</PPMD_PayPal>
+                    </modules>
+                </args>
+            </paypaluk>
+        </routers>
+
+        <layout>
+            <updates>
+                <ppmd_paypal>
+                    <file>paypal.xml</file>
+                </ppmd_paypal>
+            </updates>
+        </layout>
+    </frontend>
+
+    <default>
+        <ppmd_paypal>
+            <banner_url>//paypal.adtag.where.com/merchant.js</banner_url>
+            <header_type>468x60</header_type>
+            <sidebar_type>250x250</sidebar_type>
+            <banner_pubid>7116b9a06f</banner_pubid>
+        </ppmd_paypal>
+    </default>
+</config>

@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <orderwidget_index_index>
+        <reference name="content">
+            <block type="orderwidget/orderwidget" name="orderwidget" template="orderwidget/orderwidget.phtml" />
+        </reference>
+    </orderwidget_index_index>
+
+    <orderwidget_index_alternate>
+        <reference name="content">
+            <block type="orderwidget/orderwidget" name="orderwidget" template="orderwidget/alternatewidget.phtml" />
+        </reference>
+    </orderwidget_index_alternate>
+</layout> 

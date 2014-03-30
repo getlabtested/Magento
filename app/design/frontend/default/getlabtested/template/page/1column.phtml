@@ -1,0 +1,159 @@
+<?php
+
+if (Mage::app()->getRequest()->getRequestString() == '/my-results' || Mage::app()->getRequest()->getRequestString() == '/my-results/') {
+
+	header("Location: https://getstdtested.com/my-results");
+
+}
+
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+?>
+<?php
+/**
+ * Template for Mage_Page_Block_Html
+ */
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $this->getLang() ?>" lang="<?php echo $this->getLang() ?>">
+<head>
+<?php echo $this->getChildHtml('head') ?>
+</head>
+
+<body<?php echo $this->getBodyClass()?' class="'.$this->getBodyClass().'"':'' ?>> <!-- 1column layout -->
+
+    <?php echo $this->getChildHtml('first_body_block') ?>
+
+	<?php echo $this->getChildHtml('header') ?>
+
+	<?php
+    $page = Mage::app()->getFrontController()->getRequest()->getRouteName();
+	
+    if ( (($page == 'core') && (Mage::getSingleton('cms/page')->getIdentifier() == 'home')) || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home') || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home-2') || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home-3') || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home-4') || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home-5') || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home-8') || (Mage::getSingleton('cms/page')->getIdentifier() == 'lp/home-9') ):
+		echo "<!-- home (piotr) -->\n";
+	?>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script type="text/javascript">
+		jQuery(document).ready(function() {
+		
+			function hideTestOverlays() {
+				$('#hero-tests-chlamydia-overlay').stop(true, true).hide();
+				$('#hero-tests-gonorrhea-overlay').stop(true, true).hide();
+				$('#hero-tests-hiv-overlay').stop(true, true).hide();
+				$('#hero-tests-syphilis-overlay').stop(true, true).hide();
+				$('#hero-tests-oral-herpes-overlay').stop(true, true).hide();
+				$('#hero-tests-genital-herpes-overlay').stop(true, true).hide();
+				$('#hero-tests-hep-b-overlay').stop(true, true).hide();
+				$('#hero-tests-hep-c-overlay').stop(true, true).hide();
+			}
+
+			$('#hero-tests').hover(function() {
+				$('#hero-tests').css('position', 'absolute').css('box-shadow', '0 0 36px 0 #555');
+				$('#hero-tests').animate({
+					width: '650px'
+				}, 250, function () {
+				});
+				$('#hero-tests-chlamydia').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-chlamydia-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-gonorrhea').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-gonorrhea-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-hiv').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-hiv-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-syphilis').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-syphilis-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-oral-herpes').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-oral-herpes-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-genital-herpes').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-genital-herpes-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-hep-b').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-hep-b-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+				$('#hero-tests-hep-c').hover(function() {
+					hideTestOverlays();
+					$('#hero-tests-hep-c-overlay').stop(true, true).delay(50).fadeIn(200);
+				}, function() {
+				});
+			}, function() {
+				$('#hero-tests').stop();
+				$('#hero-tests').css('position', 'relative').css('width', '226px').css('box-shadow', '0 0 6px 0 #999');
+			});
+
+			/*$('#hero-tests-chlamydia').hover(function() {
+				$('#hero-tests').css('position', 'absolute').css('box-shadow', '0 0 36px 0 #555');
+				$('#hero-tests').animate({
+					width: '650px'
+				}, 250, function () {
+					$('#hero-tests-chlamydia-overlay').fadeIn(300);
+				});
+			}, function() {
+				$('#hero-tests-chlamydia-overlay').hide();
+				$('#hero-tests').css('position', 'relative').css('width', '226px').css('box-shadow', '0 0 6px 0 #999');
+			});*/
+			
+		});
+		</script>
+	<?php
+		echo $this->getChildHtml('content');
+	else:
+		echo "<!-- not home (piotr) -->\n";
+    ?>
+        <div id="content">
+			<?php echo $this->getChildHtml('after_body_start') ?>
+			<?php echo $this->getChildHtml('global_notices') ?>
+			<?php echo $this->getChildHtml('global_messages') ?>
+			<?php //echo $this->getChildHtml('breadcrumbsContainer'); ?>
+			<?php echo $this->getChildHtml('content') ?>
+        </div>
+    <?php 
+	endif; 
+	?>
+
+	<?php echo $this->getChildHtml('footer') ?> 
+	<?php echo $this->getAbsoluteFooter() ?>
+
+    <?php echo $this->getChildHtml('last_body_block') ?>
+
+</body>
+</html>

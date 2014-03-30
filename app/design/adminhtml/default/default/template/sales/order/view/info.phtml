@@ -1,0 +1,826 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+ 
+?>
+<?php $_order = $this->getOrder() 
+
+?>
+
+
+<?php $_customer = $this->getCustomer() ?>
+<?php
+$orderAdminDate = $this->formatDate($_order->getCreatedAtDate(), 'medium', true);
+$orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', true);
+?>
+<?php echo "<!-- "; print_r($_customer->getData()); echo get_class($this); echo " -->"; ?>
+<div class="box-left">
+    <!--Order Information-->
+    <div class="entry-edit">
+        <?php if ($_order->getEmailSent()):
+            $_email = Mage::helper('sales')->__('the order confirmation email was sent');
+        else:
+            $_email = Mage::helper('sales')->__('the order confirmation email is not sent');
+        endif; ?>
+        <div class="entry-edit-head">
+        <?php if ($this->getNoUseOrderLink()): ?>
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?> (<?php echo $_email ?>)</h4>
+        <?php else: ?>
+            <a href="<?php echo $this->getViewUrl($_order->getId()) ?>"><?php echo Mage::helper('sales')->__('Order # %s', $_order->getRealOrderId()) ?></a>
+            <strong>(<?php echo $_email ?>)</strong>
+        <?php endif; ?>
+        </div>
+        <div class="fieldset">
+            <table cellspacing="0" class="form-list">
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date') ?></label></td>
+                <td class="value"><strong><?php echo $orderAdminDate ?></strong></td>
+            </tr>
+            <?php if ($orderAdminDate != $orderStoreDate):?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Date (%s)', $_order->getCreatedAtStoreDate()->getTimezone()) ?></label></td>
+                <td class="value"><strong><?php echo $orderStoreDate ?></strong></td>
+            </tr>
+            <?php endif;?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Order Status') ?></label></td>
+                <td class="value"><strong><span id="order_status"><?php echo $_order->getStatusLabel() ?></span></strong></td>
+            </tr>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Purchased From') ?></label></td>
+                <td class="value"><strong><?php echo $this->getOrderStoreName() ?></strong></td>
+            </tr>
+            <?php if($_order->getRelationChildId()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the New Order') ?></label></td>
+                <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationChildId()) ?>">
+                    <?php echo $_order->getRelationChildRealId() ?>
+                </a></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getRelationParentId()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Link to the Previous Order') ?></label></td>
+                <td class="value"><a href="<?php echo $this->getViewUrl($_order->getRelationParentId()) ?>">
+                    <?php echo $_order->getRelationParentRealId() ?>
+                </a></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getRemoteIp()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Placed from IP') ?></label></td>
+                <td class="value"><strong><?php echo $_order->getRemoteIp(); echo ($_order->getXForwardedFor())?' (' . $_order->getXForwardedFor() . ')':''; ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getGlobalCurrencyCode() != $_order->getBaseCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getGlobalCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?php echo $_order->getBaseToGlobalRate() ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            <?php if($_order->getBaseCurrencyCode() != $_order->getOrderCurrencyCode()): ?>
+            <tr>
+                <td class="label"><label><?php echo Mage::helper('sales')->__('%s / %s rate:', $_order->getOrderCurrencyCode(), $_order->getBaseCurrencyCode()) ?></label></td>
+                <td class="value"><strong><?php echo $_order->getBaseToOrderRate() ?></strong></td>
+            </tr>
+            <?php endif; ?>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="box-right">
+    <!--Account Information-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-account"><?php echo Mage::helper('sales')->__('Account Information') ?></h4>
+            <div class="tools"><?php echo $this->getAccountEditLink()?></div>
+        </div>
+        <div class="fieldset">
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Name') ?></label></td>
+                    <td class="value">
+                    <?php if ($_customerUrl=$this->getCustomerViewUrl()) : ?>
+                        <a href="<?php echo $_customerUrl ?>" target="_blank"><strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong></a>
+                    <?php else: ?>
+                        <strong><?php echo $this->htmlEscape($_order->getCustomerName()) ?></strong>
+                    <?php endif; ?>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Email') ?></label></td>
+                    <td class="value"><a href="mailto:<?php echo $_customer->getEmail() ?>"><strong><?php echo $_customer->getEmail() ?></strong></a></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Phone') ?></label></td>
+                    <td class="value"><strong><?php echo $_customer->getPpmdPhone() ?></strong></td>
+                </tr>
+                <?php
+                
+                	$gender = '';
+
+                	if ($_customer->getGender() == 1) {
+                		
+						$gender = 'Male';
+                	} else {
+                		
+						$gender = 'Female';
+						
+                	}
+                
+                ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Gender') ?></label></td>
+                    <td class="value"><?php echo $gender; ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('DOB') ?></label></td>
+                    <td class="value"><?php echo $_customer->getDob() ?></td>
+                </tr>
+                <?php 
+                
+                	$notify = '';
+
+                	if ($_customer->getPpmdNotify() == 12) {
+                		
+						$notify = 'Phone';
+						
+                	} else {
+                		
+						$notify = 'Email';
+						
+                	}
+                
+                ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Notification') ?></label></td>
+                    <td class="value"><?php echo $notify ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Rep') ?></label></td>
+                    <td class="value"><?php echo Mage::getModel('admin/user')->load($_order->getPpmdRep())->getUsername(); ?></td>
+                </tr>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Affiliate') ?></label></td>
+                    <td class="value"><?php echo $_order->getPpmdAffiliate(); ?></td>
+                </tr>
+                <?php /* if ($_groupName = $this->getCustomerGroupName()) : ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Group') ?></label></td>
+                    <td class="value"><strong><?php echo $_groupName ?></strong></td>
+                </tr>
+                <?php endif; */ ?>
+                <?php foreach ($this->getCustomerAccountData() as $data):?>
+                <tr>
+                    <td class="label"><label><?php echo $data['label'] ?></label></td>
+                    <td class="value"><strong><?php echo $data['value'] ?></strong></td>
+                </tr>
+                <?php endforeach;?>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="clear"></div>
+
+<div class="box-left">
+    <!--Billing Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Location Information') ?></h4>
+            <div class="tools"></div>
+        </div>
+        <fieldset>
+            <div class="hor-scroll">
+                <table cellspacing="0" class="form-list">
+            	<?php 
+            
+            	$orderType = '';
+
+            	if ($_order->getOrderType() == 1) {
+            		
+					$orderType = 'Lab';
+					
+            	} else {
+            		
+					$orderType = 'Home';
+					
+            	}
+            
+                ?>
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Location Type') ?></label></td>
+                    <td class="value"><?php echo $orderType;?> </td>
+                </tr>
+                
+                <?php 
+                
+                $lab = unserialize($_order->getPpmdLab());             		
+                		
+               $customerAddressId = $_customer->getDefaultBilling();
+				
+				if ($customerAddressId){
+				
+			       $address = Mage::getModel('customer/address')->load($customerAddressId);
+			       $ad = $address->getData();	
+			       
+			       //print_r($ad);
+			       			             
+				} 
+                				
+				if ($orderType == "Lab") { ?>
+								
+                <tr>
+                    <td class="label"><label><?php echo Mage::helper('sales')->__('Location Address') ?></label></td>
+                    <td class="value">
+                    	<?php echo $lab['name'];?> <br>
+                    	<?php echo $lab['address'];?> <br>
+                    	<?php echo $lab['city'];?> <?php echo $lab['state'];?>, <?php echo $lab['zip'];?><br>
+                    	<?php echo $lab['telephone'];?> <br>
+                    	<?php echo $lab['hours'];?> <br>
+                    </td>
+                </tr>
+                
+                <?php } else { ?>
+
+                		
+                <tr>	
+                <td class="label"><label><?php echo Mage::helper('sales')->__('Location Address') ?></label></td>
+                    <td class="value">
+                    	<?php echo $ad['street'];?> <br>
+                    	<?php echo $ad['city'];?> <?php echo $ad['region'];?>, <?php echo $ad['postcode'];?><br>
+                    	<?php echo $ad['telephone'];?> <br>
+                    </td>
+                </tr>
+                	
+                	
+                					
+				<?php } ?>                
+               
+                </table>
+            </div>
+        </fieldset>        
+    </div>
+</div>
+
+
+<div class="box-right">
+    <!-- Results Info-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Result Information') ?></h4>
+            <div class="tools"></div>
+        </div>
+        <fieldset>
+            <div class="hor-scroll">
+            <table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('DTC / ORDER ID') ?></label></td>
+	                    <td class="value"><?php echo $_order->getIncrementId();?></td>
+	                </tr>
+                </table>
+            	<table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer ID') ?></label></td>
+	                    <td class="value"><?php echo $_order->getPpmdCustId();?></td>
+	                </tr>
+                </table>
+                <table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Acct') ?></label></td>
+	                    <td class="value"><?php echo $_order->getPpmdCustAcct();?></td>
+	                </tr>
+                </table>
+                <table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Customer Conf') ?></label></td>
+	                    <td class="value"><?php echo $_order->getPpmdCustConf();?></td>
+	                </tr>
+                </table>
+                <table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Order Active') ?></label></td>
+	                    <td class="value">
+	                    	
+	                    	<?php 
+	                    	
+	                    	if($_order->getPpmdActivate() == 1) {
+	                    	
+	                    		echo 'YES';
+								
+							} else {
+								
+								echo '<span style="color:#FF0000;font-weight:bold;">NO</span>';
+								
+							}
+	                    	
+	                    	?>
+	                    		                    	
+	                    </td>
+	                </tr>
+                </table>
+                <table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Requisition File') ?></label></td>
+	                    <td class="value"><a href="#" onclick="getMedivo(<?php echo ($_order->getPpmdCustId()?$_order->getPpmdCustId():0);?>,<?php echo $_order->getIncrementId();?>,<?php echo $_order->getId();?>,1);">Download</a></td>
+	                </tr>
+                </table>
+                
+                <script type="text/javascript">
+				    //<![CDATA[
+				    //var sendmailForm = new VarienForm('sendmailForm', true);
+				    function getMedivo(custId,incId,orderId,typeId){ 
+				
+				        var url = '<?php echo Mage::helper('adminhtml')->getUrl('medivo/adminhtml_medivo/pullmedivo'); ?>';
+				        new Ajax.Request(
+				        url,
+				        { 
+				            method: 'get', 
+				            parameters: {cust_id: custId, inc_id: incId, order_id: orderId, type: typeId},
+				            onComplete: function(transport){
+				                
+				              if (transport.responseText == 'no pdf') {  
+				              
+				                alert(transport.responseText);
+				                
+				              } else {
+				              
+				                
+				               window.location = transport.responseText;
+				               
+				              }
+				                //$('messages_product_view').innerHTML = transport.responseText;
+				            }}
+				    );
+				    }
+				
+				    //]]>
+				</script>
+                
+                <table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Result File') ?></label></td>
+	                    <td class="value"><a href="#" onclick="getMedivo(<?php echo ($_order->getPpmdCustId()?$_order->getPpmdCustId():0);?>,<?php echo $_order->getIncrementId();?>,<?php echo $_order->getId();?>,2);">Download</a></td>
+	                </tr>
+             	</table>
+             	<table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Interpret Results') ?></label></td>
+	                    <td class="value"><a onclick="window.open('<?php echo Mage::helper("adminhtml")->getUrl("tests/adminhtml_editbulk/index/",array("customer_id"=>$_customer->getId(),"order_id"=>$_order->getId()));?>', 'interpret', 'width=1000, height=400, scrollbars=1');return false;" href="#" target="_blank">Interpret Results</a></td>
+	                </tr>
+             	</table>
+             	<table cellspacing="0" class="form-list">
+	                <tr>
+	                    <td class="label"><label><?php echo Mage::helper('sales')->__('Upload Req') ?></label></td>
+	                    <td class="value"><a onclick="window.open('<?php echo Mage::helper("adminhtml")->getUrl("tests/adminhtml_req/index/",array("customer_id"=>$_customer->getId(),"order_id"=>$_order->getId()));?>', 'req', 'width=600, height=400');return false;" href="#" target="_blank">Upload Req</a></td>
+	                </tr>
+             	</table>
+            </div>
+        </fieldset>
+    </div>
+</div>
+
+<div class="clear"></div>
+<?php if (stripos(Mage::app()->getRequest()->getRequestString(), 'creditmemo') < 1) { ?>
+<div class="box-right">
+    <!-- Order Actions Info-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('Order Actions') ?></h4>
+            <div class="tools"></div>
+        </div>
+        <fieldset>
+			<?php
+			$templates = Mage::helper('sendmail')->getTemplates();
+			?>
+			<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+			<form action="" onsubmit="return " id="sendmailForm" method="post">
+			    <div class="fieldset">
+			        <ul class="form-list">
+			            <li class="fields" style="">
+			                <div class="field">
+			                    <label style="float: left;margin-right: 17px;padding-top: 3px;" for="cur_order_status"><?php echo Mage::helper('sendmail')->__('Results Status: ') ?></label>
+			                    <h3><?php 
+			                    
+			                    switch ($_order->getPpmdStatus()) {
+			                    
+									case 0:
+										
+										echo "Pending";
+										
+									break;
+									
+									case 1: 
+			                    	
+			                    		echo "Interpretation";
+									
+									break;
+									
+									case 2: 
+			                    	
+			                    		echo "Complete";
+									
+									break;
+									
+									case 3: 
+			                    	
+			                    		echo "Customer Recieved";
+									
+									break;
+
+			                    	
+			                    }
+			                    	
+			                    	
+			                    ?></h3>
+			                </div>
+			            </li>
+			            
+			            <input type="hidden" name="order_id" id="order_id" value="<?php echo $_order->getId();?>"/>
+			
+			            <li class="fields">
+			                <div class="field">
+			                    <label for="ppmd_status" class="required" style="float: left;margin-right: 17px;"><?php echo Mage::helper('sendmail')->__('Update Status: ') ?></label>
+			                    <div class="input-box">
+			
+			                        <select name="ppmd_status" id="ppmd_status" title="<?php echo Mage::helper('sendmail')->__('Results Status') ?>"  class="input-text" >
+			                            <option value="">Select Status</option>
+			                            <option <?php if($_order->getPpmdStatus() == 0){ ?>selected='selected'<?php } ?> value="0">Pending</option>
+			                            <option <?php if($_order->getPpmdStatus() == 1){ ?>selected='selected'<?php } ?>  value="1">Interpretation</option>
+			                            <option <?php if($_order->getPpmdStatus() == 2){ ?>selected='selected'<?php } ?>  value="2">Complete</option>
+			                            <option <?php if($_order->getPpmdStatus() == 3){ ?>selected='selected'<?php } ?>  value="3">Customer Notified</option>
+			                        </select>
+			                    </div>
+			                </div>
+			            </li>
+			
+			        </ul>
+			       			        
+			        
+			        <ul class="form-list" style="padding-top:35px;">
+			            <li class="fields" style="">
+			                <div class="field">
+			                    <label style="float: left;margin-right: 17px;padding-top: 3px;" for="cur_followup_status"><?php echo Mage::helper('sendmail')->__('Follow Up Status: ') ?></label>
+			                    <h3><?php 
+			                    
+			                    switch ($_order->getFollowUp()) {
+			                    
+									case 0:
+										
+										echo "";
+										
+									break;
+									
+									case 1: 
+			                    	
+			                    		echo "Mail Homekit";
+									
+									break;
+									
+									case 2: 
+			                    	
+			                    		echo "Fax Req";
+									
+									break;
+									
+									case 7: 
+			                    	
+			                    		echo "Upload Req";
+									
+									break;
+									
+									case 3: 
+			                    	
+			                    		echo "Send Invoice";
+									
+									break;
+									
+									case 4: 
+			                    	
+			                    		echo "Doc Consultation";
+									
+									break;
+									
+									case 5: 
+			                    	
+			                    		echo "Needs Call";
+									
+									break;
+									
+									case 6: 
+			                    	
+			                    		echo "Other";
+									
+									break;
+									
+									case 8: 
+			                    	
+			                    		echo "Call Lab";
+									
+									break;
+
+			                    }
+			                    	
+			                    ?></h3>
+			                </div>
+			            </li>
+			            			
+			            <li class="fields">
+			                <div class="field">
+			                    <label for="followup_status" class="" style="float: left;margin-right: 17px;"><?php echo Mage::helper('sendmail')->__('Update Status: ') ?></label>
+			                    <div class="input-box">
+			
+			                        <select name="followup_status" id="followup_status" title="<?php echo Mage::helper('sendmail')->__('Follow Up Status') ?>"  class="input-text required-entry " >
+			                            <option value="">Select Status</option>
+			                            <option <?php if ($_order->getFollowUp() == 7){ ?>selected='selected'<?php } ?> value="7">Upload Req</option>
+			                            <option <?php if ($_order->getFollowUp() == 1){ ?>selected='selected'<?php } ?> value="1">Mail Homekit</option>
+			                            <option <?php if ($_order->getFollowUp() == 2){ ?>selected='selected'<?php } ?> value="2">Fax Req</option>
+			                            
+			                            <option <?php if ($_order->getFollowUp() == 8){ ?>selected='selected'<?php } ?> value="8">Call Lab</option>
+			                            
+			                            <option <?php if ($_order->getFollowUp() == 3){ ?>selected='selected'<?php } ?> value="3">Send Invoice</option>
+			                            <option <?php if ($_order->getFollowUp() == 4){ ?>selected='selected'<?php } ?> value="4">Doc Consultation</option>
+			                            <option <?php if ($_order->getFollowUp() == 5){ ?>selected='selected'<?php } ?> value="5">Needs Call</option>
+			                            <option <?php if ($_order->getFollowUp() == 6){ ?>selected='selected'<?php } ?> value="6">Other</option>
+			                        </select>
+			                    </div>
+			                </div>
+			            </li>
+			
+			        </ul>
+			        
+			        
+			        
+			        
+			        <ul class="form-list"  style="padding-top:35px;">
+			            <li class="fields" style="">
+			                <div class="field">
+			                    <label style="float: left;margin-right: 17px;padding-top: 3px;" for="cur_order_status"><?php echo Mage::helper('sendmail')->__('Payment Status: ') ?></label>
+			                    <h3><?php echo $_order->getStatus(); ?></h3>
+			                </div>
+			            </li>
+			            			
+			            <li class="fields">
+			                <div class="field">
+			                    <label for="order_status_change" class="required" style="float: left;margin-right: 17px;"><?php echo Mage::helper('sendmail')->__('Update Status: ') ?></label>
+			                    <div class="input-box">
+			
+			                        <select name="order_status_change" id="order_status_change" title="<?php echo Mage::helper('sendmail')->__('Payment Status') ?>"  class="input-text" >
+			                            <option value="">Select Status</option>
+			                            <option value="pending">Pending</option>
+			                            <option value="complete">Complete</option>
+			                        </select>
+			                    </div>
+			                </div>
+			            </li>
+			
+			        </ul>
+			        
+			        
+			        
+			        
+			        
+			    </div>
+			    <div class="buttons-set form-buttons btn-only">
+			        <button type="button" onclick="updateStatus()" class="button" style="background-color:#FFAC47;padding: 2px 6px;margin-bottom: 0px;" title="Submit"><span><span>Submit</span></span></button>
+			    </div>
+			</form>
+			<script type="text/javascript">
+			    //<![CDATA[
+			    //var sendmailForm = new VarienForm('sendmailForm', true);
+			    function updateStatus(){ 
+			    	
+			    	var f = document.getElementById("followup_status");
+					var fstatus = f.options[f.selectedIndex].value;
+					
+					var r = document.getElementById("ppmd_status");
+					var rstatus = r.options[r.selectedIndex].value;
+					
+					var o = document.getElementById("order_status_change");
+					var ostatus = o.options[o.selectedIndex].value;
+					
+					//alert(fstatus);
+			    				
+			        var url = '<?php echo Mage::helper('adminhtml')->getUrl('admindashboard/adminhtml_index/index'); ?>';
+			        new Ajax.Request(
+			        url,
+			        { 
+			            method: 'get', 
+			            parameters: {order_id: <?php echo $_order->getId();?>, status: rstatus, followup_status: fstatus, order_status: ostatus, admin: '<?php echo Mage::getSingleton('admin/session')->getUser()->getUsername(); ?>'},
+			            onComplete: function(transport){
+			                
+			               window.location.reload();
+			                //$('messages_product_view').innerHTML = transport.responseText;
+			            }}
+			    );
+			    }
+			
+			    //]]>
+			</script>
+
+
+
+        </fieldset>
+    </div>
+</div>
+
+<?php } ?>
+
+<?php if (stripos(Mage::app()->getRequest()->getRequestString(), 'creditmemo') < 1) { ?>
+<div class="box-left">
+    <!-- Ecommunications Info-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-billing-address"><?php echo Mage::helper('sales')->__('ECommunications') ?></h4>
+            <div class="tools"></div>
+        </div>
+        <fieldset>
+			<?php
+			$templates = Mage::helper('sendmail')->getTemplates();
+			?>
+			<div id="messages_product_view_e"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+			<form action="" onsubmit="return " id="sendmailForm" method="post">
+				<?php if ($_order->getStatus() != 'complete') { ?>
+				<p><b><span style="color:#FF0000; font-weight: bold;">** CUSTOMER MUST PAY BEFORE RECIVING RESULTS **</span></b></p>
+			    <?php } ?>
+			    <div class="fieldset">
+			        <ul class="form-list">
+			            <li class="fields" style="display:none;">
+			                <div class="field">
+			                    <label for="email"><em>*</em><?php echo Mage::helper('sendmail')->__('Email') ?></label>
+			                    <div class="input-box">
+			                        <input name="customer_id" id="customer_id" value="<?php echo $_order->getCustomerId();?>" type="hidden" />
+			                    </div>
+			                </div>
+			            </li>
+			            
+			            <input type="hidden" name="order_id" id="order_id" value="<?php echo $_order->getId();?>"/>
+			
+			            <li class="fields">
+			                <div class="field">
+			                    <label for="email" class="required" style="float: left;margin-right: 17px;"><?php echo Mage::helper('sendmail')->__('Select Template: ') ?></label>
+			                    <div class="input-box">
+			                    
+			                    <input name="admin" type="hidden" value="<?php echo Mage::getSingleton('admin/session')->getUser()->getUsername();?>">
+			
+			                        <select name="template" id="template" title="<?php echo Mage::helper('sendmail')->__('Email') ?>"  class="input-text required-entry " >
+			                            <option value="">Select Template</option>
+			                            <?php if ($_order->getStatus() == 'complete') { ?>
+			                            <option value="ppmd_test_results_available_paid">Test Results Available Paid</option>
+			                            <?php } ?>
+			                            <option value="ppmd_test_results_available_unpaid">PPMD Test Results Available Unpaid</option>
+			                            <option value="ppmd_order_confirmation_lab">Order Confirmation Lab</option>
+			                            <option value="ppmd_order_confirmation_home">Order Confirmation Home</option>
+			                            <option value="ppmd_order_confirmation_pwc_active">Order Confirmation PWC Active</option>
+			                            <option value="ppmd_order_activation_pwc">Order Activation PWC</option>
+			                            <!-- <option value="ppmd_order_activation_pwc_1">Order Activation PWC 1</option> -->
+			                            <!-- <option value="ppmd_test_results_reminder_pwc_active_8">Order Reminder PWC Active 8</option>
+			                            <option value="ppmd_test_results_reminder_pwc_active_14">Order Reminder PWC Active 14</option>
+			                            <option value="ppmd_test_results_reminder_14">PPMD Test Results Reminder 14</option> -->
+			                            <option value="ppmd_order_confirmation_lab_paid_nnr">PPMD Order Confirmation NNR</option>
+			                            <option value="ppmd_prescription_conf">PPMD Prescription Order Placed</option>
+			                            <option value="ppmd_prescription_available">PPMD Prescription Available</option>
+			                        </select>
+			                    </div>
+			                </div>
+			            </li>
+			
+			        </ul>
+			    </div>
+			    <div class="buttons-set form-buttons btn-only">
+			        <button type="button" onclick="addNotification()" class="button" style="background-color:#FFAC47;padding: 2px 6px;margin-bottom: 0px;" title="Submit"><span><span>Submit</span></span></button>
+			    </div>
+			</form>
+			<script type="text/javascript">
+			    //<![CDATA[
+			    //var sendmailForm = new VarienForm('sendmailForm', true);
+			    function addNotification(){ 
+			
+			        var url = '<?php echo Mage::helper('adminhtml')->getUrl('sendmail/adminhtml_index/send'); ?>';
+			        new Ajax.Request(
+			        url,
+			        { 
+			            method: 'get', 
+			            parameters: {order_id: $('order_id').value, customer_id: $('customer_id').value, template: $('template').value, admin: '<?php echo Mage::getSingleton('admin/session')->getUser()->getUsername(); ?>'},
+			            onComplete: function(transport){
+			                $('messages_product_view_e').innerHTML = 'Message Sent';
+			            }}
+			    );
+			    }
+			
+			    //]]>
+			</script>
+
+
+			
+			<br><br>
+			
+			
+			 <fieldset>
+			<div id="messages_product_view_e"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+			<form action="" onsubmit="return " id="sendfaxForm" method="post">
+			 <input name="admin" type="hidden" value="<?php echo Mage::getSingleton('admin/session')->getUser()->getUsername();?>">
+			    <div class="fieldset">
+			        <ul class="form-list">
+
+			            <li class="fields">
+			                <div class="field">
+			                 <label for="efaxname" class="required" style="float: left;margin-right: 17px;"><?php echo Mage::helper('sendmail')->__('Name: ') ?></label>
+			                    <div class="input-box">
+			
+								<input type="text" id="efaxname" name="efaxname">
+	
+			                    </div><br>
+			                    <label for="efax" class="required" style="float: left;margin-right: 17px;"><?php echo Mage::helper('sendmail')->__('Fax Number: ') ?></label>
+			                    <div class="input-box">
+			
+								<input type="text" id="efax" name="efax">
+	
+			                    </div>
+			                </div>
+			            </li>
+			
+			        </ul>
+			    </div>
+			    <div class="buttons-set form-buttons btn-only">
+			        <button type="button" onclick="addFax()" class="button" style="background-color:#FFAC47;padding: 2px 6px;margin-bottom: 0px;" title="Submit"><span><span>Submit</span></span></button>
+			    </div>
+			</form>
+			<script type="text/javascript">
+			    //<![CDATA[
+			    //var sendmailForm = new VarienForm('sendmailForm', true);
+			    function addFax(){ 
+			
+			        var url = '<?php echo Mage::helper('adminhtml')->getUrl('sendmail/adminhtml_index/efax'); ?>';
+			        new Ajax.Request(
+			        url,
+			        { 
+			            method: 'get', 
+			            parameters: {order_id: $('order_id').value, customer_id: $('customer_id').value, efax: $('efax').value, efaxname: $('efaxname').value, admin: '<?php echo Mage::getSingleton('admin/session')->getUser()->getUsername(); ?>'},
+			            onComplete: function(transport){
+			                $('messages_product_view_e').innerHTML = 'Message Sent';
+			            }}
+			    );
+			    }
+			
+			    //]]>
+			</script>
+
+
+
+        </fieldset>
+			
+			
+			
+			
+
+
+
+        </fieldset>
+    </div>
+</div>
+<?php } ?>
+
+<div class="clear"></div>
+
+
+
+
+<?php /* if (!$this->getOrder()->getIsVirtual()): ?>
+<div class="box-right">
+    <!--Shipping Address-->
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="icon-head head-shipping-address"><?php echo Mage::helper('sales')->__('Shipping Address') ?></h4>
+            <div class="tools"><?php echo $this->getAddressEditLink($_order->getShippingAddress())?></div>
+        </div>
+        <fieldset>
+            <address><?php echo $_order->getShippingAddress()->getFormated(true) ?></address>
+        </fieldset>
+    </div>
+</div>
+<div class="clear"></div>
+<?php endif; */ ?>

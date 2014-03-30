@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_ImmuneTech>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Jag_Sendmail />
+            </depends>
+        </PPMD_ImmuneTech>
+    </modules>
+</config>

@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Google>
+            <version>0.0.1</version>
+        </Jag_Google>
+    </modules>
+
+    <global>
+        <models>
+            <jag_google>
+                <class>Jag_Google_Model</class>
+            </jag_google>
+        </models>
+
+        <blocks>
+            <jag_google>
+                <class>Jag_Google_Block</class>
+            </jag_google>
+        </blocks>
+        
+        <helpers>
+            <jag_google>
+                <class>Jag_Google_Helper</class>
+            </jag_google>
+        </helpers>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <jag_google_layout>
+                    <file>jag_google.xml</file>
+                </jag_google_layout>
+            </updates>
+        </layout>
+
+        <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <add_ecommerce_tracking_ga_js>
+                        <type>singleton</type>
+                        <class>jag_google/observer</class>
+                        <method>addEcommerceTrackingGaJs</method>
+                    </add_ecommerce_tracking_ga_js>
+                </observers>
+            </checkout_onepage_controller_success_action>
+        </events>
+    </frontend>
+
+    <default>
+        <google_maps_settings>
+            <width>300</width>
+            <height>300</height>
+        </google_maps_settings>
+    </default>
+</config>

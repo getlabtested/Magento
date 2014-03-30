@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<PPMD_Testrecommender>
+			<version>0.1.0</version>
+		</PPMD_Testrecommender>
+	</modules>	
+<!--	
+	<global>
+		<blocks>
+			<testrecommender>
+				<class>PPMD_Testrecommender_Block</class>
+			</testrecommender>
+		</blocks>
+	</global>
+-->	
+	<frontend>
+		<routers>
+			<testrecommender>
+				<use>standard</use>
+				<args>
+					<module>PPMD_Testrecommender</module>
+					<frontName>testrecommender</frontName>
+				</args>
+			</testrecommender>
+		</routers>
+		<layout>
+			<updates>
+				<testrecommender module="PPMD_Testrecommender">
+					<file>testrecommender.xml</file>
+				</testrecommender>
+			</updates>
+		</layout> 
+	</frontend>
+</config>

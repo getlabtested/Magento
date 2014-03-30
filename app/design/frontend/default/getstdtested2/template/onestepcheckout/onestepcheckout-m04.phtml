@@ -1,0 +1,330 @@
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<style>
+
+body {
+	margin: 0;
+	padding: 0;
+	color: #666;
+	font-family: arial, tahoma, helvetica, verdana, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	background: #fff;
+}
+
+.all {
+    left: 0;
+    margin-left: 0;
+    position: relative;
+    width: auto;
+}
+
+#header_wrapper { display: none; }
+
+#header {
+	height: 58px;
+	margin: 0 0 5px 0;
+	padding: 0;
+	color: #888;
+	font-size: 11px;
+	line-height: 17px;
+	text-align: center;
+	background: #ededed;
+	border-bottom: 2px solid #3792b4;
+}
+
+#header #logo {
+	float: none;
+	display: block;
+	width: 300px;
+	height: 58px;
+	margin: 0 auto;
+	text-indent: -9999px;
+	background: transparent url(http://getstdtested.com/m/04/images/logo.jpg) center top no-repeat;
+}
+
+#coupon_box {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #DBDBDB;
+    border-radius: 10px 10px 10px 10px;
+    padding: 15px;
+     margin-top: 17px;
+}
+
+#coupon_box label {
+    color: #E97640;
+    font-size: 15px;
+    font-weight: bold;   
+}
+
+#error {
+    background-color: #FDD8C6;
+    border: 1px solid #E77640;
+    color: #BF511C;
+    margin-bottom: 17px;
+    padding: 8px;
+    width: 72%;
+}
+
+#error ul {	
+	list-style: none outside none;
+    margin: 0;
+    padding-left: 10px;	
+}
+
+
+#checkout_location {
+    width: 100%;
+    margin-bottom: 20px;
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#checkout_location h2.first {
+	padding-left: 15px;
+	padding-right: 15px;
+	font-size: 15px;
+	font-weight: normal;
+}
+
+#checkout_location .location_form label {
+    font-weight: normal;
+}
+
+#checkout_location #location_results .item {
+    float: none;
+    height: 67px;
+    width: 91%;
+	margin-left: 10px;
+}
+
+#checkout_location #location_results .item .content {
+    width: 242px;
+}
+
+.one-step-checkout {
+    width: 300px;
+}
+
+.one-step-checkout .address-information {
+    width: 300px;
+	padding: 10px 0;
+}
+
+.one-step-checkout .address-information h3#billing_step_header {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+.one-step-checkout .address-information fieldset {
+	margin: 0;
+	padding: 0 15px;
+}
+
+.one-step-checkout input.text, .one-step-checkout input.input-text {
+	width: 139px;
+}
+
+.one-step-checkout select {
+	margin-right: 5px;
+	padding: 3px 2px;
+}
+
+.one-step-checkout ul, .one-step-checkout .address-information ul {
+	padding-left: 0;
+}
+
+.one-step-checkout .button-set {
+	margin-top: 0;
+	padding-top: 10px;
+}
+
+.one-step-checkout .box {
+	border-color: #f3f3f3;
+}
+
+#pay_cc_content, #pay_cash_content {
+    padding: 0 15px;
+}
+
+</style>
+
+<div id="header">
+	<a href="http://getstdtested.com/m/04/" id="logo" title="Home | STD Testing">STD Testing</a>
+</div>
+
+<div style="width: 300px; margin: 20px auto 0 auto; border: 0px solid red;">
+
+<?php
+$data = Mage::getSingleton('core/session')->getVisitorData();
+//$q = Mage::getSingleton('checkout/session')->getQuote();
+
+if ($data && isset($data['customer_id']) && $customerId = $data['customer_id']) {
+	$_customer = Mage::getModel('customer/customer')->load($customerId);
+	Mage::getSingleton('core/session')->setCustomerData($_customer->getData());
+	$adresses = $_customer->getAddresses();
+}
+?>
+
+<?php echo $this->getChildHtml('onestepcheckout.errors') ?>
+
+<div style="width: 300px; margin-bottom: 20px;">
+	<div id="order_review_js" class="box">
+		<label>Order Summary</label><br>
+		<p>
+		<?php if (!Mage::getModel('core/session')->getScript()) { ?>
+			<b>Your Test(s):</b>
+		<?php } else { ?>
+			<b>Your Order:</b>
+		<?php } ?>
+		</p>
+
+        <?php echo $this->getChildChildHtml("onestepcheckout.comment.wrapper", "onstepcheckout_order_summary") ?>
+
+	</div>
+	<?php if (Mage::getSingleton('checkout/session')->getQuote()->getProductLine() != 2) { ?>
+        <?php if (!Mage::getSingleton('core/session')->getIsNnr() && !Mage::getModel('core/session')->getScript()) { ?>
+            <?php echo $this->getChildChildHtml("onestepcheckout.comment.wrapper", "onstepcheckout_coupon") ?>
+        <?php } ?>
+	<?php } ?>
+</div>
+
+<form id="one-step-checkout-form" method="post" action="<?php echo $this->getCheckoutUrl(); ?>">
+
+    <?php echo $this->getChildHtml('onestepcheckout.lab.selector') ?>
+
+    <ul class="one-step-checkout">
+        <li class="address-order">
+            <!-- <form id="one-step-checkout-form" method="post" action="<?php echo $this->getCheckoutUrl(); ?>"> -->
+            <div id="left-info">
+                <?php if (Mage::getSingleton('core/session')->getScript()) {
+                    echo "<div style='display:none;'>";
+                } ?>
+                <?php echo $this->getChildHtml('onestepcheckout.contact.information') ?>
+                <?php if (Mage::getModel('core/session')->getScript()) {
+                    echo "</div>";
+                } ?>
+
+                <div class="order-information <?php if ($this->configData['page_layout'] == '3columns'):?>order-info-3-columns<?php endif;?>">
+                    <ul style="list-style-type:none; padding-left:0px;">
+                        <?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?>
+                        <li class="shipping-method">
+                            <h3  id="shipping_method_step_header" class="step_2">
+                                <?php echo $this->__('SHIPPING METHOD'); ?>
+                            </h3>
+                            <div class="onestepcheckout-shipping-method-section">
+                                <?php echo $this->getChildHtml('onestepcheckout.shipping_method'); ?>
+                            </div>
+                            <div class="ajax-loader1" id="ajax-loader1" style="display:none;"></div>
+                        </li>
+                        <?php elseif (Mage::helper('onestepcheckout')->isHideShippingMethod()):?>
+                            <?php $_shippingMethod = $this->hasOnlyOneShippingMethod();?>
+                            <span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_shippingMethod;?>" id="s_method_<?php echo $_shippingMethod; ?>" checked="checked" /></span>
+                        <?php endif;?>
+
+                        <h3 id="payment_method_step_header" <?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?> class="step_3"<?php else:?> class="step_2"<?php endif;?>>
+
+                                <?php if (Mage::getSingleton('core/session')->getOrderType() == 2) { ?>
+                                <?php echo $this->__('<div style="margin-left:10px;">2. Payment Information</div>'); ?>
+                                <?php } else if (Mage::getSingleton('core/session')->getScript()) { ?>
+                                <div style="margin-left:10px;">Enter payment information.  After checkout, you'll receive an e-mail notification with further details.</div>
+                                <? } else { ?>
+                                <?php echo $this->__('<div style="margin-left:10px;">3. Payment Information</div>'); ?>
+                                <?php } ?>
+                            </h3>
+                        <li class="payment-method">
+                            <?php echo $this->getChildHtml('onestepcheckout.payment_method_m04'); ?>
+                        </li>
+                    </ul>
+                </div>
+                <div id="order-button-div" style="width: 300px;">
+                    <div class="content button-set clearfix">
+                        <p class="left">
+                            <?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>"><?php echo $this->__('Edit Your Cart') ?></a>
+                        </p>
+                        <p>
+
+                        <input <?php if (!empty($_SERVER['HTTPS'])) { ?><?php } ?> id="onestepcheckout-button-place-order" type="button" class="btn_orange_reflection" style="float:none; margin-left: auto; margin-right: auto; border:none;" onclick="this.disabled=true;document.getElementById('ajax-loader-gif').style.display = 'block';" value="Place Order">
+                        <!--   		<input id="onestepcheckout-button-place-order" type="button" class="btn_orange_reflection" onclick="this.disabled=true;document.getElementById('ajax-loader-gif').style.display = 'block';" value="Place Order"> <!-- this.form.submit(); -->
+
+                        <img style="display:none; float:left; margin-left:20px; margin-top:1%;" id="ajax-loader-gif" src="/media/images/ajax-loader.gif" />
+                        <div style="clear:both;"></div>
+
+                        <p>By clicking "place order", you agree to the <a style="color: #028AFB; font-weight: bold;" href="http://getstdtested.com/m/04/terms-of-service">terms of service</a> and will be automatically directed to an order confirmation page within 10 seconds.</p>
+                        <!-- button id="onestepcheckout-button-place-order" type="button" title="<?php echo $this->__('Place Order') ?>" class="button btn-red-2 right"><span><span><span><?php echo $this->__('Place Order') ?></span></span></span></button -->
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="order-review-section">
+                <ul>
+                    <li class="order-review-info box">
+                        <!-- <h3 id="review_step_header" <?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?> class="step_4" <?php else:?> class="step_3"<?php endif?>> -->
+                        <label><?php echo $this->__('Order Summary'); ?></label>
+                        <?php echo $this->getChildHtml('onestepcheckout.review') ?>
+                        <div class="ajax-loader3" id="ajax-loader3"  style="display:none;"></div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</form>
+
+<div class="clear">&nbsp;</div>
+<div class="sep20">&nbsp;</div>
+
+<script type="text/javascript">
+    var checkoutFormVerifier = new CheckoutFormVerification(<?php echo $this->generateSessionInfoJson() ?>);
+    checkoutFormVerifier.checkAjaxZipCodeConditions(<?php echo $this->generateAjaxZipCodeJson() ?>);
+</script>
+
+<script type="text/javascript">
+//<![CDATA[
+	var preloadImage = '<?php echo $this->getSkinUrl('images/onestepcheckout/preload.gif')?>';
+	var shipping_method_url = '<?php echo $this->getUrl('onestepcheckout/index/save_shipping', array('_secure' => true));?>';
+	var enable_update_payment = <?php echo $this->configData['update_payment'] ? 'true' : 'false'; ?>;
+    var login_url = '<?php echo $this->getUrl('onestepcheckout/index/show_login', array('_secure' => true));?>';
+	var show_login_link = <?php echo $this->configData['show_login_link'] ? 'true' : 'false'; ?>;
+	var show_term_condition_url = '<?php echo $this->getUrl('onestepcheckout/index/show_term_condition', array('_secure' => true));?>';
+	var form = $('one-step-checkout-form');
+	var reload_payment = <?php echo $this->configData['reload_payment']; ?>;
+	var error = '';
+
+	<?php if ($this->isCustomerLoggedIn()):?>
+        var save_address_url = '<?php echo $this->getUrl('onestepcheckout/index/save_address', array('_secure' => true))?>';
+        save_address_information(save_address_url);
+	<?php endif;?>
+//]]>
+</script>
+
+<!-- PerfectMatch conversion -> Checkout Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1005508428;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "0QDdCMzoggMQzK673wM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1005508428/?label=0QDdCMzoggMQzK673wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF PerfectMatch conversion -> Checkout Page -->
+
+
+<script language="javascript" type="text/javascript"> 
+	function hideURLbar() {
+		window.scrollTo(0, 1);
+	}
+	if (navigator.userAgent.indexOf('iPhone') != -1) {
+		addEventListener("load", function(){
+		setTimeout(hideURLbar, 0);}, false);
+	}
+</script>
+
+</div>

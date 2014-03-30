@@ -1,0 +1,15 @@
+<?php $_order=$this->getOrder(); 
+
+$lab = unserialize($_order->getPpmdLab());
+
+$lab = (array)$lab;
+
+?>
+<p style="margin-left:50px;">
+	
+	<b><?php echo $lab['name'];?></b><br /> 
+    <?php echo $lab['address'];?><br /> 
+    <?php echo $lab['city'];?>,<?php echo $lab['state'];?> <?php echo $lab['zip'];?><br /> 
+    Hours:<br /> <?php echo $lab['hours'];?><br>
+    Phone: <?php echo $lab['telephone'];?>
+</p>

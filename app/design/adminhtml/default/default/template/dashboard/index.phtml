@@ -1,0 +1,620 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+ini_set('display_errors', 0);
+
+?>
+
+<?php if (is_array($this->getChild('diagrams')->getTabsIds())) : ?>
+<script type="text/javascript">
+//<![CDATA[
+function changeDiagramsPeriod(periodObj) {
+    periodParam = periodObj.value ? 'period/' + periodObj.value + '/' : '';
+<?php foreach ($this->getChild('diagrams')->getTabsIds() as $tabId): ?>
+    ajaxBlockParam = 'block/tab_<?php echo $tabId ?>/';
+    ajaxBlockUrl = '<?php echo $this->getUrl('*/*/ajaxBlock', array('_current' => true, 'block' => '', 'period' => '')) ?>' + ajaxBlockParam + periodParam;
+    new Ajax.Request(ajaxBlockUrl, {
+        parameters: {isAjax: 'true', form_key: FORM_KEY},
+        onSuccess: function(transport) {
+            tabContentElementId = '<?php echo $this->getChild('diagrams')->getId() ?>_<?php echo $tabId ?>_content';
+            try {
+                if (transport.responseText.isJSON()) {
+                    var response = transport.responseText.evalJSON()
+                    if (response.error) {
+                        alert(response.message);
+                    }
+                    if(response.ajaxExpired && response.ajaxRedirect) {
+                        setLocation(response.ajaxRedirect);
+                    }
+                } else {
+                    $(tabContentElementId).update(transport.responseText);
+                }
+            }
+            catch (e) {
+                $(tabContentElementId).update(transport.responseText);
+            }
+        }
+    });
+<?php endforeach; ?>
+    ajaxBlockUrl = '<?php echo $this->getUrl('*/*/ajaxBlock', array('_current' => true, 'block' => 'totals', 'period' => '')) ?>' + periodParam;
+    new Ajax.Request(ajaxBlockUrl, {
+        parameters: {isAjax: 'true', form_key: FORM_KEY},
+        onSuccess: function(transport) {
+            tabContentElementId = 'dashboard_diagram_totals';
+            try {
+                if (transport.responseText.isJSON()) {
+                    var response = transport.responseText.evalJSON()
+                    if (response.error) {
+                        alert(response.message);
+                    }
+                    if(response.ajaxExpired && response.ajaxRedirect) {
+                        setLocation(response.ajaxRedirect);
+                    }
+                } else {
+                    $(tabContentElementId).replace(transport.responseText);
+                }
+            }
+            catch (e) {
+                $(tabContentElementId).replace(transport.responseText);
+            }
+        }
+    });
+}
+
+function toggleCal(id) {
+    $('dashboard_'+id+'_cal_div').toggle();
+    $('dashboard_'+id+'_range_div').toggle();
+}
+//]]>
+</script>
+<?php endif; ?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 class="head-dashboard"><?php echo $this->__('Dashboard') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="dashboard-container">
+    <?php echo $this->getChildHtml('store_switcher') ?>
+    <table cellspacing="25" width="100%">
+        <tr>
+            <td><?php echo $this->getChildHtml('sales') ?>
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Last 5 Orders') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('lastOrders'); ?></fieldset>
+                </div>
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Last 5 Search Terms') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('lastSearches'); ?></fieldset>
+                </div>
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Top 5 Search Terms') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('topSearches'); ?></fieldset>
+                </div>
+            </td>
+            <td>
+                <div class="entry-edit" style="border:1px solid #ccc;">
+                    <?php echo $this->getChildHtml('diagrams') ?>
+                    <?php if (is_array($this->getChild('diagrams')->getTabsIds())) : ?>
+                        <div id="diagram_tab_content"></div>
+                    <?php endif; ?>
+                    <div style="margin:20px;">
+                        <?php echo $this->getChildHtml('totals') ?>
+                    </div>
+                    <div style="margin:20px;">
+                        <?php echo $this->getChildHtml('grids') ?>
+                        <div id="grid_tab_content"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+    
+ <style>
+
+/* the div that holds the date picker calendar */
+.dpDiv {
+	}
+
+
+/* the table (within the div) that holds the date picker calendar */
+.dpTable {
+	font-family: Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	text-align: center;
+	color: #505050;
+	background-color: #ece9d8;
+	border: 1px solid #AAAAAA;
+	}
+
+
+/* a table row that holds date numbers (either blank or 1-31) */
+.dpTR {
+	}
+
+
+/* the top table row that holds the month, year, and forward/backward buttons */
+.dpTitleTR {
+	}
+
+
+/* the second table row, that holds the names of days of the week (Mo, Tu, We, etc.) */
+.dpDayTR {
+	}
+
+
+/* the bottom table row, that has the "This Month" and "Close" buttons */
+.dpTodayButtonTR {
+	}
+
+
+/* a table cell that holds a date number (either blank or 1-31) */
+.dpTD {
+	border: 1px solid #ece9d8;
+	}
+
+
+/* a table cell that holds a highlighted day (usually either today's date or the current date field value) */
+.dpDayHighlightTD {
+	background-color: #CCCCCC;
+	border: 1px solid #AAAAAA;
+	}
+
+
+/* the date number table cell that the mouse pointer is currently over (you can use contrasting colors to make it apparent which cell is being hovered over) */
+.dpTDHover {
+	background-color: #aca998;
+	border: 1px solid #888888;
+	cursor: pointer;
+	color: red;
+	}
+
+
+/* the table cell that holds the name of the month and the year */
+.dpTitleTD {
+	}
+
+
+/* a table cell that holds one of the forward/backward buttons */
+.dpButtonTD {
+	}
+
+
+/* the table cell that holds the "This Month" or "Close" button at the bottom */
+.dpTodayButtonTD {
+	}
+
+
+/* a table cell that holds the names of days of the week (Mo, Tu, We, etc.) */
+.dpDayTD {
+	background-color: #CCCCCC;
+	border: 1px solid #AAAAAA;
+	color: white;
+	}
+
+
+/* additional style information for the text that indicates the month and year */
+.dpTitleText {
+	font-size: 12px;
+	color: gray;
+	font-weight: bold;
+	}
+
+
+/* additional style information for the cell that holds a highlighted day (usually either today's date or the current date field value) */ 
+.dpDayHighlight {
+	color: 4060ff;
+	font-weight: bold;
+	}
+
+
+/* the forward/backward buttons at the top */
+.dpButton {
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: gray;
+	background: #d8e8ff;
+	font-weight: bold;
+	padding: 0px;
+	}
+
+
+/* the "This Month" and "Close" buttons at the bottom */
+.dpTodayButton {
+	font-family: Verdana, Tahoma, Arial, Helvetica, sans-serif;
+	font-size: 10px;
+	color: gray;
+	background: #d8e8ff;
+	font-weight: bold;
+	}
+	
+	
+.repTable {
+
+	border: 1px solid #000000;
+	float: left;
+	border-right: none;
+
+}
+
+.repCol {
+	float: left;
+	border-right: 1px solid #000000;
+	width: 80px;
+}
+
+#tables {
+    border-bottom: 0 none;
+    font-size: 11px;
+    height: 70px;
+    margin-bottom: 20px;
+    margin-left: 40px;
+    min-width: 1300px;
+    padding-bottom: 0.5em;
+    width: 1300px;
+}
+
+#tables table {
+	background-color: #FAFAFA;
+    border: 1px solid #D6D6D6;
+}
+
+#tables tr.headings {
+    background: url("http://admin.getstdtested.com/skin/adminhtml/default/enterprise/images/sort_row_bg.gif") repeat-x scroll 0 50% transparent;
+}
+
+#tables tr.headings th {
+    border-color: #F9F9F9 #D1CFCF #F9F9F9 #F9F9F9;
+    border-style: solid;
+    border-width: 1px;
+    font-size: 11px;
+    
+
+}
+
+
+
+#tables th{
+
+    color: #67767E;
+    padding-bottom: 1px;
+    padding-top: 2px;
+
+}
+
+#tables table td {
+    border-color: #DADFE0;
+    border-style: solid;
+    border-width: 0 1px 1px 0;
+}
+
+#tables th, #tables td {
+    padding: 2px 4px;
+    font-size: 11px;
+}
+
+#tables .super{
+    background: none repeat scroll 0 0 #6F8992;
+    padding: 2px 10px;
+    color: #FFFFFF;
+    text-align: left;
+}
+
+</style>
+    
+<?php
+
+
+/*
+$date = date('Y-m-d')." 00:00:00";
+	
+$date = strtotime("-6 hours");
+		
+$date = date('Y-m-d',$date)." 06:00:00";
+
+$dateTime = strtotime($date);
+
+$dateGa = date('Y-m-d',$dateTime);
+
+$yesterday = date('Y-m-d H:i:s',strtotime("-1 day",$dateTime));
+
+$yesterdayGa = date('Y-m-d',strtotime("-1 day",$dateTime));
+
+$lastSunday = date('Y-m-d H:i:s',strtotime("last sunday, 6:00AM"));
+
+$lastSundayTs = strtotime("last sunday, 6:00AM");
+
+$lastSundayGa = date('Y-m-d',$lastSundayTs);
+
+if (date('D',time()-21600) == 'Sun') {
+
+	$lastSunday = date('Y-m-d H:i:s',strtotime("last sunday, 6:00AM")-604800);
+
+	$lastSundayTs = strtotime("last sunday, 6:00AM")-604800;
+
+	$lastSundayGa = date('Y-m-d',$lastSundayTs);
+	
+
+}
+
+$thisWeek = date('Y-m-d H:i:s',strtotime("+7 days",$lastSundayTs));
+
+$thisWeekGa = date('Y-m-d',strtotime("+7 days",$lastSundayTs));
+
+$nextWeek = date('Y-m-d H:i:s',strtotime("+14 days",$lastSundayTs));
+
+$nextWeekGa = date('Y-m-d',strtotime("+14 days",$lastSundayTs));
+
+$twoSundaysAgo = date('Y-m-d H:i:s',strtotime("-7 days",$lastSundayTs));
+
+$twoSundaysAgoGa = date('Y-m-d',strtotime($twoSundaysAgo));
+
+$curMonth = date('Y-m',$dateTime)."-01 06:00:00";
+
+$curMonthTs = strtotime($curMonth);
+
+$curMonthGa = date('Y-m',$curMonthTs)."-01";
+
+$currentMonth = date('Y-m',strtotime("+1 month",$curMonthTs))."-01 06:00:00";
+
+$curMonthTs = strtotime(date('Y-m',$dateTime));
+
+$lastMonth = date('Y-m-d H:i:s',strtotime("-1 month +6 hours",$curMonthTs));
+*/
+
+require_once('/home/webapps/sites/magento/public/rd/analytics_api.php');
+require_once('/home/webapps/sites/magento/public/rd/datepicker.php');
+require_once('/home/webapps/sites/magento/public/rd/maketable.php');
+  
+$login = 'getstdtested';
+$password = 'Pinpoint4US';
+$idg = 'ga:21076454';
+ 
+$api = new analytics_api();
+$api->login($login, $password);
+  
+  
+$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+$db = new PDO ('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+date_default_timezone_set('America/Chicago');
+	
+$_GET['start'] = date('m/d/Y');
+
+$_GET['end'] = date('m/d/Y');
+
+$initStart = date('Y-m-d 00:00:00',strtotime($_GET['start']));
+
+$initEnd = date('Y-m-d 00:00:00',strtotime($_GET['end']));
+
+$start = gmdate('Y-m-d H:i:s',strtotime($initStart));	
+
+$startGa = gmdate('Y-m-d',strtotime($initStart));
+
+$end = gmdate('Y-m-d H:i:s',strtotime($initEnd));	
+
+$endGa = gmdate('Y-m-d',strtotime($initEnd));
+	
+//$data = $api->data($idg, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, '2012-01-01', '2012-01-31', 1000000, 1, $filters);
+
+?>
+
+<br>
+<div style="clear:both;"></div>
+<h3 style="margin-left:40px;">Today</h3>
+
+<?php
+
+
+require_once('/home/webapps/sites/magento/public/rd/today.php');
+
+$_GET['start'] = date('m/d/Y',time()-(60*60*24));
+
+$_GET['end'] = date('m/d/Y',time()-(60*60*24));
+
+$initStart = date('Y-m-d 00:00:00',strtotime($_GET['start']));
+
+$initEnd = date('Y-m-d 00:00:00',strtotime($_GET['end']));
+
+$start = gmdate('Y-m-d H:i:s',strtotime($initStart));	
+
+$startGa = gmdate('Y-m-d',strtotime($initStart));
+
+$end = gmdate('Y-m-d H:i:s',strtotime($initEnd));	
+
+$endGa = gmdate('Y-m-d',strtotime($initEnd));
+
+?>
+<h3 style="margin-left:40px;">Yesterday</h3>
+<?php
+
+require_once('/home/webapps/sites/magento/public/rd/yesterday.php');
+
+$_GET['start'] = date('m/d/Y',strtotime('last sunday'));
+
+$_GET['end'] = date('m/d/Y',strtotime('next sunday'));
+
+$tod = date('D');
+
+if ($tod == 'Sun') $_GET['start'] = date('m/d/Y');
+
+//echo $_GET['start']." ".$_GET['end']." ".$tod;
+
+$initStart = date('Y-m-d 00:00:00',strtotime($_GET['start']));
+
+$initEnd = date('Y-m-d 00:00:00',strtotime($_GET['end']));
+
+$start = gmdate('Y-m-d H:i:s',strtotime($initStart));	
+
+$startGa = gmdate('Y-m-d',strtotime($initStart));
+
+$end = gmdate('Y-m-d H:i:s',strtotime($initEnd));	
+
+$endGa = gmdate('Y-m-d',strtotime($initEnd));
+
+?>
+<h3 style="margin-left:40px;">This Week</h3>
+<?php
+require_once('/home/webapps/sites/magento/public/rd/thisweek.php');
+
+
+$_GET['start'] = date('m/d/Y',strtotime('2 sundays ago'));
+
+$_GET['end'] = date('m/d/Y',strtotime('last sunday'));
+
+/*
+echo date('D');
+
+echo $_GET['start']." ".$_GET['end'];
+*/
+$tod = date('D');
+
+if ($tod == 'Sun') $_GET['end'] = date('m/d/Y');
+
+//echo $_GET['start']." ".$_GET['end']." ".$tod;
+
+$initStart = date('Y-m-d 00:00:00',strtotime($_GET['start']));
+
+$initEnd = date('Y-m-d 00:00:00',strtotime($_GET['end']));
+
+$start = gmdate('Y-m-d H:i:s',strtotime($initStart));	
+
+$startGa = gmdate('Y-m-d',strtotime($initStart));
+
+$end = gmdate('Y-m-d H:i:s',strtotime($initEnd));	
+
+$endGa = gmdate('Y-m-d',strtotime($initEnd));
+
+?>
+<h3 style="margin-left:40px;">Last Week</h3>
+<?php
+
+require_once('/home/webapps/sites/magento/public/rd/lastweek.php');
+
+$_GET['start'] = date('m/01/Y');
+
+$m = date('m');
+
+if ($m != 12) {
+
+	$m = $m+1;
+
+} else {
+
+	$m = 1;
+
+}
+
+$_GET['end'] = date("$m/d/Y");
+
+$initStart = date('Y-m-d 00:00:00',strtotime($_GET['start']));
+
+$initEnd = date('Y-m-d 00:00:00',strtotime($_GET['end']));
+
+$start = gmdate('Y-m-d H:i:s',strtotime($initStart));	
+
+$startGa = gmdate('Y-m-d',strtotime($initStart));
+
+$end = gmdate('Y-m-d H:i:s',strtotime($initEnd));	
+
+$endGa = gmdate('Y-m-d',strtotime($initEnd));
+
+
+?>
+<h3 style="margin-left:40px;">This Month</h3>
+<?php
+
+require_once('/home/webapps/sites/magento/public/rd/currentmonth.php');
+
+
+
+$m = date('m');
+
+if ($m != 1) {
+
+	$m = $m-1;
+
+} else {
+
+	$m = 12;
+
+}
+
+$_GET['start'] = date("$m/d/Y");
+
+$_GET['end'] = date('m/01/Y');
+
+$initStart = date('Y-m-d 00:00:00',strtotime($_GET['start']));
+
+$initEnd = date('Y-m-d 00:00:00',strtotime($_GET['end']));
+
+$start = gmdate('Y-m-d H:i:s',strtotime($initStart));	
+
+$startGa = gmdate('Y-m-d',strtotime($initStart));
+
+$end = gmdate('Y-m-d H:i:s',strtotime($initEnd));	
+
+$endGa = gmdate('Y-m-d',strtotime($initEnd));
+
+?>
+<h3 style="margin-left:40px;">Last Month</h3>
+<?php
+
+require_once('/home/webapps/sites/magento/public/rd/lastmonth.php');
+
+
+  
+?>
+
+
+   
+</div>
+
+<div style="clear:both;"></div>
+<div style="clear:both; height:500px;">
+<br><br>
+<b>Total PN</b> =	Total phone and online PN orders<br>										
+<b>Total PL</b> =	Total phone and online PL orders<br>											
+<b>Total PC</b> =	Total phone and online PC orders<br>										
+<b>Total Phone</b> =	Total number of phone orders regardless of type<br>									
+<b>Total Online</b> =	Total number of online orders regardless of type<br>									
+<b>Phone Conversion Rate PN</b> =	PN phone orders / # phone visitors<br>								
+<b>Phone Conversion Rate Total</b> =	PN + PL + PC phone orders / # phone visitors <br>
+<b>Online Conversion Rate PN</b> =	PN online orders / # online visitors<br>						
+<b>Online Conversion Rate Total</b> = Online	PN + PL + PC online orders / # online visitors<br>
+<b>Average Sales Price Phone</b>	= Average sales price of all test orders (PN/PC/PL)<br>									
+<b>Average Sales Price Online</b> =	Average sales price of all test orders (PN/PC/PL)<br>
+<b>Revenue Phone PN</b> =	Total revenue from PN phone orders<br>						
+<b>Revenue Online PN</b> =	Total revenue from PN online orders<br>							
+<b>Revenue Scripts</b> =	Total revenue from online and call center script orders<br>
+<b>Revenue PL</b> =	Total cash collected by (day/week/month,etc) for PL orders<br>								
+<b>Revenue PC</b> =	Total cash collected by (day/week/month,etc) for PC orders<br>							
+<b>Refunds</b> =	Total refunds<br>
+<b>SALES</b> =	Total sales including PN/PL/PC<br>						
+<b>CASH</b> =	Total paid sales including PN/PL/PC MINUS refunds<br>								
+</div>

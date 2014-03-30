@@ -1,0 +1,7 @@
+<script type="text/javascript" data-pp-pubid="<?php echo $this->getPaypalBannerPubId() ?>" data-pp-placementtype="<?php echo $this->getPaypalSidebarBannerType() ?>">(function (d, t) {
+    "use strict";
+    var s = d.getElementsByTagName(t)[0], n = d.createElement(t);
+    n.src = "<?php echo $this->getPaypalBannerUrl() ?>";
+    s.parentNode.insertBefore(n, s);
+}(document, "script"));
+</script>

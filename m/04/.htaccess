@@ -1,0 +1,13 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+RewriteRule ^index.php$ http://getstdtested.com/m/04/ [L,NC,R=301]
+
+RewriteRule ^how-it-works$ how-it-works.php [L,NC]
+RewriteRule ^std-tests$ std-tests.php [L,NC]
+RewriteRule ^find-testing-center$ find-testing-center.php [L,NC]
+RewriteRule ^common-questions$ common-questions.php [L,NC]
+RewriteRule ^the-lab-experience$ the-lab-experience.php [L,NC]
+RewriteRule ^about-us$ about-us.php [L,NC]
+RewriteRule ^privacy-policy$ privacy-policy.php [L,NC]
+RewriteRule ^terms-of-service$ terms-of-service.php [L,NC]

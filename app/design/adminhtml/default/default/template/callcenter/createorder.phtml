@@ -1,0 +1,288 @@
+<?php Mage::getSingleton('core/session')->setIsNnr(0); ?>
+<script type="text/javascript">
+	
+	var total = 0;
+	
+	var curType = ''
+	
+	function updateTotal(id,price) {
+		
+		price = Number(price);
+			
+		total = Number(total);
+				
+		total = total + price;
+		
+		total = Number(total);
+
+		document.getElementById(id).value = price+(price*-1)*2;
+		
+		document.getElementById('order-total').innerHTML = "$"+total; 
+		
+	}
+	
+	function togglePayDisplay(id) {
+		
+		if (curType != ''){
+			
+			document.getElementById(curType).style.display = 'none';
+			
+		}
+		
+		curType = id;
+				
+		document.getElementById(curType).style.display = 'block';
+		
+	}
+	
+	function handlerFunction(){
+		var request = new Ajax.Request(
+			'<?php echo $this->getUrl('*/*/getlabs'); ?>',
+			{
+				method: 'post',
+				onComplete: function(transport){ // Defining Complete Callback Function
+					
+					var jsonResponse=transport.responseText;
+					
+					if(jsonResponse.error){
+						
+						alert("Error Occured");
+						return false;
+					
+					}else{
+			
+						document.getElementById('location_submit_button').disabled = false;
+						document.getElementById('loading-mask').style.display='none';
+						document.getElementById("location-results").innerHTML = jsonResponse;
+					}
+				},
+				parameters: Form.serialize($("labs-by-zip")) // Seriallizing the form input values
+			}
+		);
+	} 
+	
+</script>
+<div id="callcenter-order">
+	<div class="content-header">
+	    <h3><?=$this->__('Create Order')?></h3>
+	    <button onclick="callcenterForm.submit()" class="scalable save" type="button"><span>Submit my form</span></button>
+	</div>
+	<div id="callcenter-order-form">
+	    <form id="callcenter-form" name="edit_form" method="post" action="<?=$this->getUrl('*/*/post')?>">
+	        <input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey(); ?>" />
+	        <input name="lab-hidden" type="hidden" value="" />
+	        	<div id="order-info">
+		        	<div id="select-lab-products-div">
+		        		<h3>Lab Testing Products:</h3>
+		        		<?php $products = $this->getLabProducts();?>
+		        		<?php foreach ($products as $product) { ?>
+		        		<div class="product-checkbox">
+		        			<input onclick="updateTotal(this.id,this.value);" id="<?php echo $product->getSku();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="<?php echo ltrim(round($product->getPrice()),0);?>" />
+		        			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		        		</div>
+		        		<? } ?>
+		        	</div>
+		        	
+		        	<div id="select-home-products-div">
+		        		<h3>Home Testing Products:</h3>
+		        		<?php $products = $this->getHomeProducts();?>
+		        		<?php foreach ($products as $product) { ?>
+		        		<div class="product-checkbox">
+		        			<input onclick="updateTotal(this.id,this.value);" id="<?php echo $product->getSku();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="<?php echo ltrim(round($product->getPrice()),0);?>" />
+		        			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		        		</div>
+		        		<? } ?>
+		        	</div>
+		        
+		        
+					<div id="select-source-div">
+						<label for="order-source">Source:</label>
+		        		<?php $stores = Mage::app()->getStores();?>
+		        		<select name="source" id="order-source">
+		        			<option value=""></option>
+		        		<?php foreach ( $stores as $store) { ?>
+		        			<?php if ($store->getId() != 1) { ?>
+							<option value="<?php echo $store->getCode();?>"><?php echo $store->getName();?></option>		\
+							<?php } ?>			
+						<?php } ?>
+						</select>
+					</div>
+					<div id="select-promo-code-div">
+						<label for="promo-code">Promo code:</label>
+						<select name="promo-code" id="promo-code">
+							<option value=""></option>
+							<option value="">Promo Code ONE Women</option>
+						</select>
+					</div>
+					<div id="select-callreason-div">
+						<label for="call-reason">Call Reason:</label>
+						<select id="call-reason" name="callReasons">
+		                	<option value=""></option>
+			                <option value="4">Serious Interest</option>
+			                <option value="6">Wrong Number</option>
+		                  	<option value="7">Hang-up</option>
+		                  	<option value="1">Customer Service/Counseling</option>
+		                  	<option value="3">General Inquiry / STD Information</option>
+		                  	<option value="2">Free Testing</option>
+		                  	<option value="5">Tests Not Offered</option>
+		                	<option value="8">Solicitation</option>
+		                </select>
+					</div>
+					
+					<div id="order-total-div">
+						<label>Order Total:</label>
+						<div id="order-total"></div>
+					</div>
+					
+				</div> <!-- END order-info -->
+				
+				<div id="customer-info">
+					<h3>Customer Information:</h3>
+					<div class="customer-name">
+						<label for="customer-fname">First Name: </label>
+						<input type="text" name="customer-fname" id="customer-fname">
+						&nbsp;
+						<label for="customer-lname">Last Name: </label>
+						<input type="text" name="customer-lname" id="customer-lname" />
+						<br>
+						<label for="customer-gender">Email: </label>
+						<input type="text" name="customer-email" id="customer-email" />
+						<br>
+						<label for="customer-gender">Gender: </label>
+						<select autocomplete="off" id="customer-gender" name="customer-gender" title="Gender">
+							<option value="" selected="selected"></option>
+							<option value="1">Male</option>
+							<option value="2">Female</option>
+            			</select>
+            			&nbsp;
+            			<label for="customer-dob">DOB: </label>
+            			<select id="m_select" name="m_select">
+							<option value=""></option>
+							<option value="01">Jan</option>
+							<option value="02">Feb</option>
+							<option value="03">Mar</option>
+							<option value="04">Apr</option>
+							<option value="05">May</option>
+							<option value="06">Jun</option>
+							<option value="07">Jul</option>
+							<option value="08">Aug</option>
+							<option value="09">Set</option>
+							<option value="10">Oct</option>
+							<option value="11">Nov</option>
+							<option value="12">Dec</option>
+						</select>
+						&nbsp;
+						<select id="d_select" name="d_select">
+							<option value=""></option>
+							<option value="01">01</option>
+							<option value="02">02</option>
+							<option value="03">03</option>
+							<option value="04">04</option>
+							<option value="05">05</option>
+							<option value="06">06</option>
+							<option value="07">07</option>
+							<option value="08">08</option>
+							<option value="09">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>
+							<option value="24">24</option>
+							<option value="25">25</option>
+							<option value="26">26</option>
+							<option value="27">27</option>
+							<option value="28">28</option>
+							<option value="29">29</option>
+							<option value="30">30</option>
+							<option value="31">31</option>
+						</select>
+						&nbsp;
+						<select id="y_select" name="y_select">
+							<option value=""></option>
+							<?php for ($i = 1993; $i >= 1935; $i--) { ?>
+							<option value="<?php echo $i;?>"><?php echo $i;?></option>
+							<?php } ?>	
+						</select>
+					</div>
+					
+					<div class="customer-address">
+						<label for="customer-address1">Address: </label>
+						<input class="address1-input" type="text" name="customer-address1" id="customer-address1" />
+						&nbsp;<label for="customer-address2">Ste/Apt: </label>
+						<input class="address2-input" type="text" name="customer-address2" id="customer-address2" />
+						<br>
+						<label for="customer-city">City: </label>
+						<input class="city-input" type="text" name="customer-city" id="customer-city" />
+						&nbsp;<label for="customer-state">State: </label>
+						<select style="width: 135px;" class="validate-select" title="State/Province" name="state" id="state" defaultvalue="">
+						<option value="" ></option>
+						<option value="1">Alabama</option><option value="2">Alaska</option><option value="3">American Samoa</option><option value="4">Arizona</option><option value="5">Arkansas</option><option value="6">Armed Forces Africa</option><option value="7">Armed Forces Americas</option><option value="8">Armed Forces Canada</option><option value="9">Armed Forces Europe</option><option value="10">Armed Forces Middle East</option><option value="11">Armed Forces Pacific</option><option value="12">California</option><option value="13">Colorado</option><option value="14">Connecticut</option><option value="15">Delaware</option><option value="16">District of Columbia</option><option value="17">Federated States Of Micronesia</option><option value="18">Florida</option><option value="19">Georgia</option><option value="20">Guam</option><option value="21">Hawaii</option><option value="22">Idaho</option><option value="23">Illinois</option><option value="24">Indiana</option><option value="25">Iowa</option><option value="26">Kansas</option><option value="27">Kentucky</option><option value="28">Louisiana</option><option value="29">Maine</option><option value="30">Marshall Islands</option><option value="31">Maryland</option><option value="32">Massachusetts</option><option value="33">Michigan</option><option value="34">Minnesota</option><option value="35">Mississippi</option><option value="36">Missouri</option><option value="37">Montana</option><option value="38">Nebraska</option><option value="39">Nevada</option><option value="40">New Hampshire</option><option value="41">New Jersey</option><option value="42">New Mexico</option><option value="43">New York</option><option value="44">North Carolina</option><option value="45">North Dakota</option><option value="46">Northern Mariana Islands</option><option value="47">Ohio</option><option value="48">Oklahoma</option><option value="49">Oregon</option><option value="50">Palau</option><option value="51">Pennsylvania</option><option value="52">Puerto Rico</option><option value="53">Rhode Island</option><option value="54">South Carolina</option><option value="55">South Dakota</option><option value="56">Tennessee</option><option value="57">Texas</option><option value="58">Utah</option><option value="59">Vermont</option><option value="60">Virgin Islands</option><option value="61">Virginia</option><option value="62">Washington</option><option value="63">West Virginia</option><option value="64">Wisconsin</option><option value="65">Wyoming</option></select>
+						&nbsp;<label for="customer-zipcode">Zip: </label>
+						<input class="zip-input" type="text" name="customer-zipcode" id="customer-zipcode" />
+					</div>
+				</div> <!-- END customer-info -->
+				
+				<div id="customer-payment">
+					<span style="font-size:9pt;color:black">
+						<input type="radio" onclick="togglePayDisplay(this.value)" value="now" id="payTypeN" name="payType"> Credit Card&nbsp;&nbsp;
+						<input type="radio" onclick="togglePayDisplay(0)" value="eCheck" id="payTypeC" name="payType"> eCheck&nbsp;&nbsp;
+						<input type="radio" onclick="togglePayDisplay(0)" value="later" id="payTypeL" name="payType"> Pay After Testing&nbsp;&nbsp;
+						<input type="radio" onclick="togglePayDisplay(0)" value="PNM" id="payTypePNM" name="payType">Cash At 7-Eleven&nbsp;&nbsp;
+						<input type="radio" onclick="togglePayDisplay(0)" value="group_on" name="payType" id="payTypeGON">GroupOn&nbsp;&nbsp;
+					</span>
+					<div id="now" class="pay-types" style="display:none;">
+					<table id="payNowSection">
+			            <tbody>
+			            	<tr style="">
+			            		<td style="font-weight:bold">Card Number</td>
+			            		<td style="font-weight:bold">Exp Date</td>
+			            		<td style="font-weight:bold">CVV</td>
+			            	</tr>
+			            	<tr style="">
+			           			<td style="padding-right:10px">
+			           				<input type="text" maxlength="16" value="" name="ccnumber">
+			           			</td>
+			            		<td>
+				        			<select name="expmon">
+				                    	<option selected="" value="1">1 - January</option><option value="2">2 - February</option><option value="3">3 - March</option><option value="4">4 - April</option><option value="5">5 - May</option><option value="6">6 - June</option><option value="7">7 - July</option><option value="8">8 - August</option><option value="9">9 - September</option><option value="10">10 - October</option><option value="11">11 - November</option><option value="12">12 - December</option>
+									</select> 
+				                  	<select name="expyear">
+				                    	<option value="11">2011</option><option value="12">2012</option><option value="13">2013</option><option value="14">2014</option><option value="15">2015</option><option value="16">2016</option><option value="17">2017</option><option value="18">2018</option><option value="19">2019</option><option value="20">2020</option><option value="21">2021</option><option value="22">2022</option><option value="23">2023</option><option value="24">2024</option><option value="25">2025</option>
+									</select>&nbsp;
+			        			</td>
+			        			<td>
+			        				<input type="text" maxlength="4" style="width: 45px" id="cvv2" value="" name="cvv2">
+			        			</td>
+			            	</tr>
+			            </tbody>
+			    	</table>
+			    	</div>
+				</div>
+		
+	    </form>
+	</div> <!-- END callcenter-order-form -->
+	
+	<div style="clear:both;">&nbsp;</div>	
+	<div id="location-form-div">
+		<label for="labs-by-zip">Zip Code Lookup: </label>
+		<form method="post" id="labs-by-zip">
+			<input type="text" value="" name="zip_code" class="text"> 
+			<input type="hidden" value="test-locally" name="ref_page"> 
+			<input type="button" value="Submit" onclick="handlerFunction(); this.disabled='true';return false;" class="submit btn_orange_32_reflection" id="location_submit_button">
+		</form>
+	</div>
+	<div id="location-results"></div>
+</div>
+<script type="text/javascript">
+    var callcenterForm = new varienForm('callcenter-form');
+</script>

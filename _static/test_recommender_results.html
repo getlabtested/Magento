@@ -1,0 +1,256 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Dokument bez tytułu</title>
+    <link rel="stylesheet" href="css/template.css" type="text/css" />
+    <script type="text/javascript" language="javascript" src="js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/main.js"></script>
+</head>
+
+<body>
+	<div class="bg_white">
+        <div class="all">
+        
+            <div id="header">
+            
+                <a id="logo" href="frontpage.html"></a>
+                
+                <div id="social">
+                	<img src="images/social_sample.png" />
+                    <a href="#" class="fb"></a>
+                    <a href="#" class="google"></a>
+                </div> <!-- /social -->
+                
+                <div class="phone orange">866-749-6269</div>
+                
+                <div id="user_nav">
+                    <div id="user_nav_search" class="user_nav_box">
+                        <a class="header" href="javascript: void(0);" onclick="javascript: openTopSearch();">Search</a>
+                        <div id="user_nav_search_box" class="user_nav_content_box">
+                            Search module here
+                        </div>
+                    </div> <!-- /search -->
+                    <div id="user_nav_account" class="user_nav_box">
+                        <a class="header" href="javascript: void(0);" onclick="javascript: openTopAccount();">My Account</a>
+                        <div id="user_nav_account_box" class="user_nav_content_box">
+                            If not logged in - login form here
+                        </div>
+                    </div> <!-- /account -->
+                    <div id="user_nav_cart" class="user_nav_box">
+                        <a class="header" href="#">Cart</a>
+                    </div> <!-- /cart -->
+                </div> <!-- /user_nav -->
+                
+                <div class="clear"></div>
+                
+                <div id="top_menu">
+                    <div class="content">
+                        <ul>
+                            <li><a href="std_test_prices.html">STD Test & Prices</a></li>
+                            <li class="current active"><a href="how_it_works.html">How It Works</a></li>
+                            <li><a href="#">Home STD Testing</a></li>
+                            <li><a href="test_locally.html">Test Locally</a></li>
+                            <li><a href="blog_entry.html">Blog</a></li>
+                            <li class="last"><a href="#">Your Results</a></li>
+                        </ul>
+                    </div>
+                </div> <!-- /top_menu -->
+                
+                <a id="order_now" class="btn_orange" href="#">order now</a>
+                
+            </div> <!-- /header -->
+            
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+            	<a href="frontpage.html">Home</a>
+                <span class="separator"> > </span>
+                <a href="#" class="current">Test Recommender - Results</a>
+            </div> <!-- /breadcrumbs -->
+            	
+            <div id="content">
+            	<h1 class="page-title">Your STD test recommendation:</h1>
+                <h3>Your recommended tests are selected below</h3>
+                
+				<div id="left_col">
+                	
+                    <div id="test_recommender_results_module">
+                    	<p>Select more tests for additional savings</p>
+                        <div id="exact_results" class="box_grey_border">
+                        	<form action="" method="post">
+                            	<div class="test_items">
+                                	<div class="item">
+                                    	<input type="checkbox" name="test[Chlamydia]" value="1" /> <label>Chlamydia</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[Cherpes II]" value="1" /> <label>Cherpes II</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[Hepatitis B]" value="1" /> <label>Hepatitis B</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[Gonorrhea]" value="1" /> <label>Gonorrhea</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[HIV]" value="1" /> <label>HIV</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[Hepatitis C]" value="1" /> <label>Hepatitis C</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[Herpes I]" value="1" /> <label>Herpes I</label>
+                                    </div>
+                                    <div class="item">
+                                    	<input type="checkbox" name="test[Syphilis]" value="1" /> <label>Syphilis</label>
+                                    </div>
+                                </div> <!-- /test_items -->
+                                
+                                <div id="exact_results_price">
+                                	only <span class="orange">$225</span>
+                                </div>
+                                
+                                <input type="submit" class="submit btn_orange_32_reflection" value="order now" />
+                            </form>
+                            <div class="clear"></div>
+                        </div> <!-- /exact_results -->
+                        
+                        <h2 class="page-title">Have total peace of mind:</h2>
+                        <p>Order our Total Package (8 tests)</p>
+                        
+                        <div id="full_options" class="box_navy_border">
+                        	<form action="" method="post">
+                            	
+                                <div class="items">
+                                	<div class="item">Chlamydia</div>
+                                    <div class="item">HIV</div>
+                                    <div class="item">Gonorrhea</div>
+                                    <div class="item">Syphilis</div>
+                                    <div class="item">Herpes I</div>
+                                    <div class="item">Hepatitis B</div>
+                                    <div class="item">Herpes II</div>
+                                    <div class="item">Hepatitis C</div>
+                                </div>
+                                
+                                <div id="full_options_price">
+                                	only <span class="orange">$225</span>
+                                </div>
+                                
+                            	<input type="submit" class="submit btn_orange_32_reflection" value="order now" />
+                            
+                            	<input type="hidden" name="test[Chlamydia]" value="1" />
+                                <input type="hidden" name="test[Cherpes II]" value="1" />
+                                <input type="hidden" name="test[Hepatitis B]" value="1" />
+                                <input type="hidden" name="test[Gonorrhea]" value="1" /> 
+                                <input type="hidden" name="test[HIV]" value="1" />
+                                <input type="hidden" name="test[Hepatitis C]" value="1" />
+                                <input type="hidden" name="test[Herpes I]" value="1" />
+                                <input type="hidden" name="test[Syphilis]" value="1" /> 
+                            </form>
+                            <div class="clear"></div>
+                        </div> <!-- /full_options -->
+                        
+                    </div> <!-- /test_recommender_module -->
+                    
+                </div> <!-- /left_col -->
+                
+                <div id="right_col">
+                	
+                    <div id="test_recommender_sidebar_module">
+                    	<div class="info">
+                            <h3><img src="images/icon_lock_navy.png" align="absmiddle" /> Your answers are anonymous</h3>                        
+                            <p>Our test recommendation tool assesses your risk for having an STD based on advice from our Medical Advisory Board and national screening guidelines including the US Centers for Disease Control (CDC), US Agency for Healthcare Research and Quality (AHRQ), and the US Preventive Service Task Force (USPSTF). It is not a medical diagnostics tool and does not replace the advice of your doctor. Your answers are completely anonymous.</p>
+                        </div> <!-- /.info -->
+                        
+                    	<div class="box_blue_header">
+                            <div class="header">
+                                <h3>Trusted by our customers and the sexual health community</h3>
+                            </div>
+                            <div class="content">
+                            	<p><img src="images/trusted_logos_side.png" /></p>
+                                <hr />
+                                <p><b><span class="orange">4.5/5</span>star customer reviews</b></p>
+                                <p><img src="images/reviews_stars_single.png" /></p>
+                            </div>
+                        </div> <!-- /.box_blue_header -->
+                        
+                    </div> <!-- /test_recommender_sidebar_module -->
+                    
+                </div> <!-- /right_col -->
+                
+            </div> <!-- /content -->
+            
+        </div> <!-- /.all -->
+    </div> <!-- /.bg_white -->
+    
+    <div id="footer" class="all">
+    	<div id="menu_tests" class="border-right column">
+        	<h4>STD Tests</h4>
+        	<table>
+            	<tr>
+                	<td>
+                    	<ul>
+                        	<li><a href="#">Chlamydia Test </a></li>
+                            <li><a href="#">Gonorrhea Test </a></li>
+                            <li><a href="#">HIV Test</a></li>
+                            <li><a href="#">Syphllis Test</a></li>
+                            <li><a href="#">Hepatitis B Test </a></li>
+                        </ul>
+                    </td>
+                    <td>
+                    	<ul>
+                        	<li><a href="#">Hepatitits C Test </a></li>
+                            <li><a href="#">Home Tests </a></li>
+                            <li><a href="#">Oral Herpes Test </a></li>
+                            <li><a href="#">Genital Herpes Test </a></li>
+                            <li><a href="#">Trichomoniasis Test </a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div> <!-- /menu_test -->
+        <div id="menu_popular" class="border-right column">
+        	<h4>Popular Content</h4>
+            <ul>
+                <li><a href="#">STD Tests & Prices</a></li>
+                <li><a href="#">How STD Testing Works</a></li>
+                <li><a href="#">Find STD Test Location</a></li>
+                <li><a href="#">View STD Test results</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </div> <!-- /menu_popular -->
+        <div id="menu_pinpoint" class="border-right column">
+        	<h4>Meet PinpointMD</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Medical Advisory Board</a></li>
+                <li><a href="#">STD Counselors  </a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Site Map</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div> <!-- /menu_popular -->
+        <div id="menu_contact" class="column">
+        	<div class="box_dark">
+            	<h4>Test for STDs in Complete Privacy</h4>
+                <p>Fast, easy, and as accurate as hospital testing.</p>
+                <a class="btn_orange" href="#">order now</a>
+                <div class="clear"></div>
+            </div>
+            <h4 class="social">
+            	Stay in Touch: 
+                <a href="#" target="_blank" class="fb"><img src="images/icon_fb.png" /></a>
+                <a href="#" target="_blank" class="twitter"><img src="images/icon_tweeter.png" /></a>
+            </h4>
+            <div class="address">
+            	<div class="left">25 E. Washington St., Ste. 400 </div>
+               	<div class="right">Chicago, IL 60610</div>
+            </div>
+        </div> <!-- /menu_contact -->
+        <div class="clear"></div>
+    </div> <!-- /footer -->
+    
+</body>
+</html>

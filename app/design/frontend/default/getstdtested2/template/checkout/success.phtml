@@ -1,0 +1,716 @@
+<?php
+/*
+#
+#
+# BEGIN MOBILE BROWSER THANK YOU PAGE
+#
+#
+*/
+?>
+<?
+
+	if (isset($_SESSION['mobile_version'])) {
+
+?>
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;" />
+<style type="text/css">
+	#error-display { background-image:url('/media/images/error-popup-background.jpg'); background-repeat:no-repeat; width:523px; height:255px; }
+	#error-display .content { width:310px; height:255px; float:right; padding:15px; }
+	#error-display .content .text { text-align:left; margin-top:50px; }
+	#process-order-msg { width:920px; }
+	#process-order-msg ol { margin-left:0px; }
+	#process-order-msg .arrow-process-order { background-image:url('/media/images/arrow-process-order.gif'); background-repeat:no-repeat; width:259px; height:211px; float:left; margin:20px 20px 20px 0; }
+
+	body {
+		margin: 0;
+		padding: 0;
+		color: #666;
+		font-family: arial, tahoma, helvetica, verdana, sans-serif;
+		font-size: 12px;
+		line-height: 18px;
+		background: #fff;
+	}
+
+	.all {
+		position: relative;
+		left: 0;
+		width: 300px;
+		margin: 0 auto;
+	}
+
+	#header_wrapper { display: none; }	
+
+	#header {
+		height: 58px;
+		margin: 0 0 5px 0;
+		padding: 0;
+		color: #888;
+		font-size: 11px;
+		line-height: 17px;
+		text-align: center;
+		background: #ededed;
+		border-bottom: 2px solid #3792b4;
+	}
+
+	#header #logo {
+		float: none;
+		display: block;
+		width: 300px;
+		height: 58px;
+		margin: 0 auto;
+		text-indent: -9999px;
+		background: transparent url(http://getstdtested.com/m/04/images/logo.jpg) center top no-repeat;
+	}
+
+	h1 {
+		padding-left: 15px;
+		padding-right: 15px;
+		font-size: 18px;
+		font-weight: normal;
+	}
+
+	h2 {
+		padding-left: 15px;
+		padding-right: 15px;
+		font-size: 15px;
+		font-weight: normal;
+	}
+
+	#process-order-msg {
+		width: auto;
+	}	
+	
+	#footer { display: none; }
+
+</style>
+
+
+<div id="header">
+	<a href="http://getstdtested.com/m/04/" id="logo" title="Home | STD Testing">STD Testing</a>
+</div>
+
+
+<?php
+
+// echo get_class($this);
+// 
+// echo $this->getRealOrderId();
+// 
+// print_r(Mage::getModel('core/session')->getData()); 
+
+?>
+<?php $order = Mage::getModel('sales/order')->load($this->getRealOrderId());?>
+<?php 
+
+if (Mage::helper('medivo')->isNNRState($order->getOrderState())) {
+	
+	$isNnr = 1;
+	
+} else {
+	
+	$isNnr = 0;
+	
+}
+ 
+// 47 STATES, PAID NOW, LAB
+ 
+if (!$isNnr && (in_array($order->getPayment()->getMethod(), array("authorizenet", "paypaluk_express"))) && $order->getOrderType() == 1) {
+
+	$order->addStatusHistoryComment('Sent LAB Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent LAB Pay Now Email','EmailLog');
+
+?>
+
+	<div id="process-order-msg">
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol>
+        <li>Check your e-mail for detailed testing instructions. If you don't see it, please check your SPAM folder.</li> 
+        <li>Print the forms attached to the e-mail.  If you don't have a printer, we'll happily fax them on your behalf.</li>
+        <li>Visit the lab for testing.  No appointment needed.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+<?php 
+
+// 47 STATES, PAID NOW, HOME TEST
+	
+	} else if (!$isNnr && (in_array($order->getPayment()->getMethod(), array("authorizenet", "paypaluk_express"))) && $order->getOrderType() == 2) {
+	
+	$order->addStatusHistoryComment('Sent HOME KIT Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent HOME KIT Pay Now Email'.date('m/d/Y H:i'),'EmailLog');
+	
+
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Check your e-mail for the order confirmation, including detailed instructions.</li> 
+        <li>Keep an eye out for snail mail. The testing kit will arrive in discreet packaging within 3 business days.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+<?php
+
+// 47 STATES, PAID CASH, LAB TEST
+
+	} else if (!$isNnr && $order->getPayment()->getMethod() == 'paynearme') { 
+	
+	$order->addStatusHistoryComment('Sent LAB Pay Cash Email'.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent LAB Pay Cash Email '.date('m/d/Y H:i'),'EmailLog');
+
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Thank You.</h2>
+    <h1>Please activate your order.</h1>
+    <p>Click on the activation link included in an e-mail from "info@getlabtested.net".  The e-mail should arrive within 60 seconds. If you don't see it, please check your SPAM folder.</p>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+
+<?php 
+
+// NYNJRI, PAID NOW, LAB TEST
+
+	} else if ($isNnr == 1 && $order->getOrderType() == 1) {
+	
+	
+	$order->addStatusHistoryComment('Sent NNR LAB Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+	
+
+?>
+
+<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Within 24 hours you'll e-mail notification with detailed testing instructions. Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, orders take slightly longer to process in these states.</li>
+        <li>Print the forms attached to the e-mail.  If you don't have a printer, we'll happily fax them on your behalf.</li>
+        <li>Visit the lab for testing.  No appointment needed.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+</div>
+
+<?php 
+
+// NYNJRI, PAID NOW, HOME TEST
+
+	} else if ($isNnr == 1 && $order->getOrderType() == 2) { 
+	
+	$order->addStatusHistoryComment('Sent NNR HOME KIT Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+?>
+
+<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Check your e-mail for the order confirmation, including detailed instructions.</li> 
+        <li>Keep an eye out for snail mail. The testing kit will arrive in discreet packaging within 3 business days.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+</div>
+
+<?php
+	
+	} else if ($order->getProductLine() == 2) { 
+	
+	$order->addStatusHistoryComment('Sent Script Email '.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent Prescription Email '.date('m/d/Y H:i'),'EmailLog');
+	
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Thank You.</h2>
+    <h1>Your prescription order has been placed.</h1>
+    <p>Check your e-mail for further details.  If you don't see it,  please check your SPAM folder. And again, many thanks for your business and trust.</p>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+<?php } ?>
+
+<img src="https://www.emjcd.com/u?AMOUNT=<?php echo $order->getGrandTotal();?>P&CID=1515507&OID=<?php echo $order->getId();?>&TYPE=332501&DISCOUNT=0&CURRENCY=USD&METHOD=IMG" height="1" width="20">
+
+
+<!-- Google Code for Purchases Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 970946846;
+var google_conversion_language = "en_US";
+var google_conversion_format = "2";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "Ev9MCPqtrAgQnvL9zgM";
+var google_conversion_value = <?php echo $order->getGrandTotal();?>;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1047469408/?label=dbHnCJ6xkQEQ4Lq88wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF Google Code for Purchases Conversion Page -->
+
+<!-- Bing Conversion Campaign -->
+<script type="text/javascript"> if (!window.mstag) mstag = {loadTag : function(){},time : (new Date()).getTime()};</script>
+<script id="mstag_tops" type="text/javascript" src="//flex.msn.com/mstag/site/7ef34029-9ec8-466a-96d3-f7242f5e3885/mstag.js"></script>
+<script type="text/javascript"> mstag.loadTag("analytics", {dedup:"1",domainId:"2908191",type:"1",revenue:"",actionid:"230424"})</script>
+<noscript>
+    <iframe src="//flex.msn.com/mstag/tag/7ef34029-9ec8-466a-96d3-f7242f5e3885/analytics.html?dedup=1&domainId=2908191&type=1&revenue=&actionid=230424" frameborder="0" scrolling="no" width="1" height="1" style="visibility:hidden;display:none"></iframe>
+</noscript>
+
+<!-- Bing Conversion Campaign -->
+
+<?php /*
+<!-- MS Adcenter Code for GST -->
+<script type="text/javascript"> if (!window.mstag) mstag = {loadTag : function(){},time : (new Date()).getTime()};</script>
+<script id="mstag_tops" type="text/javascript" src="//flex.atdmt.com/mstag/site/5e72ea33-c2cd-4b0b-905b-7edadcb71e31/mstag.js"></script> 
+<script type="text/javascript"> mstag.loadTag("analytics", {dedup:"1",domainId:"1602591",type:"1",revenue:"",actionid:"60502"})</script> 
+<noscript> 
+<iframe src="//flex.atdmt.com/mstag/tag/5e72ea33-c2cd-4b0b-905b-7edadcb71e31/analytics.html?dedup=1&domainId=1602591&type=1&revenue=&actionid=60502" frameborder="0" scrolling="no" width="1" height="1" style="visibility:hidden;display:none"></iframe>
+</noscript>
+<!-- EOF: MS Adcenter Code for GST -->
+*/ ?>
+
+<!-- begin adBrite, Purchases/sales tracking -->
+<img border="0" hspace="0" vspace="0" width="1" height="1" src="//stats.adbrite.com/stats/stats.gif?_uid=845986&_pid=0" />
+<!-- end adBrite, Purchases/sales tracking -->
+
+
+<!-- 7Search Code for Conversion Page (start) -->
+<script language="JavaScript" type="text/javascript">
+var _7search_conversion_advid = 172883;
+var _7search_conversion_type = "purchase";
+var _7search_conversion_value = 185;
+</script>
+<script language="JavaScript" type="text/javascript" src="https://conversion.7search.com/conversion/v1/conversion.js"></script>
+<noscript><img width="1" height="1" border="0" src="https://conversion.7search.com/conversion/v1/?advid=172883&urlid=&type=purchase&value=185&noscript=1" /></noscript>
+<!-- 7Search Code for Conversion Page (end) -->
+
+
+<!-- AdKnowledge conversion code -->
+<script type="text/javascript">
+  (function() {
+    var adk = document.createElement('script');
+    adk.type = 'text/javascript'; adk.async = true;
+    adk.src = ('https:' == document.location.protocol ? 'https://' : 'http://') 
+    + 'bidsystem.adknowledge.com/conversion.js?cid=2bdbc4f5-ca1f-4d5e-9a5b-e261008797df';
+    var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(adk, s);
+  })();
+</script>
+<!-- Used when browser has javascript disabled. -->
+<noscript>
+    <img width="1" height="1" 
+    src="https://bidsystem.adknowledge.com/conversion.php?cid=2bdbc4f5-ca1f-4d5e-9a5b-e261008797df" />
+</noscript>
+<!-- EOF AdKnowledge conversion code -->
+
+
+<!-- Adwords Local Buildout Conversion -> Checkout Success -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 953851363;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "320ACLWh2wMQ47vqxgM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/953851363/?label=320ACLWh2wMQ47vqxgM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF Adwords Local Buildout Conversion -> Checkout Success -->
+
+
+<!-- Adwords Display Conversion -> checkout Success -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 947860611;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "J_s4CJ3v2QMQg-n8wwM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/947860611/?label=J_s4CJ3v2QMQg-n8wwM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF Adwords Display Conversion -> checkout Success -->
+
+
+<!-- ROI Rocket conversion code -->
+<iframe src="https://forwardrocketlaunch.com/p.ashx?o=1559&t=<?php echo $order->getId();?>&p=<?php echo $order->getGrandTotal();?>" height="1" width="1" frameborder="0"></iframe>
+<!-- EOF ROI Rocket conversion code -->
+<?
+
+ } else { 
+
+?>
+<?php
+/*
+#
+#
+# END MOBILE BROWSER THANK YOU PAGE
+#
+#
+*/
+?>
+
+<?php
+/*
+#
+#
+# BEGIN STANDARD BROWSER THANK YOU PAGE
+#
+#
+*/
+?>
+
+<style type="text/css">
+	#error-display { background-image:url('/media/images/error-popup-background.jpg'); background-repeat:no-repeat; width:523px; height:255px; }
+	#error-display .content { width:310px; height:255px; float:right; padding:15px; }
+	#error-display .content .text { text-align:left; margin-top:50px; }
+	#process-order-msg { width:920px; }
+	#process-order-msg ol { margin-left:0px; }
+	#process-order-msg .arrow-process-order { background-image:url('/media/images/arrow-process-order.gif'); background-repeat:no-repeat; width:259px; height:211px; float:left; margin:20px 20px 20px 0; }
+</style>
+
+<?php
+
+// echo get_class($this);
+// 
+// echo $this->getRealOrderId();
+// 
+// print_r(Mage::getModel('core/session')->getData()); 
+
+?>
+<?php $order = Mage::getModel('sales/order')->load($this->getRealOrderId());?>
+<?php 
+
+if (Mage::helper('medivo')->isNNRState($order->getOrderState())) {
+	
+	$isNnr = 1;
+	
+} else {
+	
+	$isNnr = 0;
+	
+}
+ 
+// 47 STATES, PAID NOW, LAB
+ 
+if (!$isNnr && (in_array($order->getPayment()->getMethod(), array("authorizenet", "paypaluk_express"))) && ($order->getOrderType() == 1)) {
+
+	$order->addStatusHistoryComment('Sent LAB Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent LAB Pay Now Email','EmailLog');
+
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Check your e-mail for detailed testing instructions. If you don't see it, please check your SPAM folder.</li> 
+        <li>Print the forms attached to the e-mail.  If you don't have a printer, we'll happily fax them on your behalf.</li>
+        <li>Visit the lab for testing.  No appointment needed.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+<?php 
+
+// 47 STATES, PAID NOW, HOME TEST
+	
+	} else if (!$isNnr && (in_array($order->getPayment()->getMethod(), array("authorizenet", "paypaluk_express"))) && $order->getOrderType() == 2) {
+	
+	$order->addStatusHistoryComment('Sent HOME KIT Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent HOME KIT Pay Now Email'.date('m/d/Y H:i'),'EmailLog');
+	
+
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Check your e-mail for the order confirmation, including detailed instructions.</li> 
+        <li>Keep an eye out for snail mail. The testing kit will arrive in discreet packaging within 3 business days.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+<?php
+
+// 47 STATES, PAID CASH, LAB TEST
+
+	} else if (!$isNnr && $order->getPayment()->getMethod() == 'paynearme') { 
+	
+	$order->addStatusHistoryComment('Sent LAB Pay Cash Email'.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent LAB Pay Cash Email '.date('m/d/Y H:i'),'EmailLog');
+
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Thank You.</h2>
+    <h1>Please activate your order.</h1>
+    <p>Click on the activation link included in an e-mail from "info@getlabtested.net".  The e-mail should arrive within 60 seconds. If you don't see it, please check your SPAM folder.</p>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+
+<?php 
+
+// NYNJRI, PAID NOW, LAB TEST
+
+	} else if ($isNnr == 1 && $order->getOrderType() == 1) {
+	
+	
+	$order->addStatusHistoryComment('Sent NNR LAB Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+	
+
+?>
+
+<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Within 24 hours you'll e-mail notification with detailed testing instructions. Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, orders take slightly longer to process in these states.</li>
+        <li>Print the forms attached to the e-mail.  If you don't have a printer, we'll happily fax them on your behalf.</li>
+        <li>Visit the lab for testing.  No appointment needed.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+</div>
+
+<?php 
+
+// NYNJRI, PAID NOW, HOME TEST
+
+	} else if ($isNnr == 1 && $order->getOrderType() == 2) { 
+	
+	$order->addStatusHistoryComment('Sent NNR HOME KIT Pay Now Email'.date('m/d/Y H:i'))->save();
+	
+?>
+
+<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Your order has been placed successfully.</h2>
+    Many thanks for your business and trust.
+    <h1>Here's what you need to do next:</h1>
+    <ol style="margin-left:260px;">
+        <li>Check your e-mail for the order confirmation, including detailed instructions.</li> 
+        <li>Keep an eye out for snail mail. The testing kit will arrive in discreet packaging within 3 business days.</li>
+    </ol>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+</div>
+
+<?php
+	
+	} else if ($order->getProductLine() == 2) { 
+	
+	$order->addStatusHistoryComment('Sent Script Email '.date('m/d/Y H:i'))->save();
+	
+	 Mage::getModel('medivo/medivo')->orderComment($order->getId(),'Sent Prescription Email '.date('m/d/Y H:i'),'EmailLog');
+	
+?>
+
+	<div id="process-order-msg">
+    <div class="arrow-process-order"></div>
+    <h2>Thank You.</h2>
+    <h1>Your prescription order has been placed.</h1>
+    <p>Check your e-mail for further details.  If you don't see it,  please check your SPAM folder. And again, many thanks for your business and trust.</p>
+    <b>Questions?</b><br>
+    We're at your service.  Just call us at <b>866.749.6269</b>
+	</div>
+
+<?php } ?>
+
+<img src="https://www.emjcd.com/u?AMOUNT=<?php echo $order->getGrandTotal();?>P&CID=1515507&OID=<?php echo $order->getId();?>&TYPE=332501&DISCOUNT=0&CURRENCY=USD&METHOD=IMG" height="1" width="20">
+
+
+<!-- Google Code for Purchases Conversion Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 970946846;
+var google_conversion_language = "en_US";
+var google_conversion_format = "2";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "Ev9MCPqtrAgQnvL9zgM";
+var google_conversion_value = <?php echo $order->getGrandTotal();?>;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1047469408/?label=dbHnCJ6xkQEQ4Lq88wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF Google Code for Purchases Conversion Page -->
+
+<!-- Bing Conversion Campaign -->
+<script type="text/javascript"> if (!window.mstag) mstag = {loadTag : function(){},time : (new Date()).getTime()};</script>
+<script id="mstag_tops" type="text/javascript" src="//flex.msn.com/mstag/site/7ef34029-9ec8-466a-96d3-f7242f5e3885/mstag.js"></script>
+<script type="text/javascript"> mstag.loadTag("analytics", {dedup:"1",domainId:"2908191",type:"1",revenue:"",actionid:"230424"})</script>
+<noscript>
+    <iframe src="//flex.msn.com/mstag/tag/7ef34029-9ec8-466a-96d3-f7242f5e3885/analytics.html?dedup=1&domainId=2908191&type=1&revenue=&actionid=230424" frameborder="0" scrolling="no" width="1" height="1" style="visibility:hidden;display:none"></iframe>
+</noscript>
+
+<!-- Bing Conversion Campaign -->
+
+
+<?php /*
+<!-- MS Adcenter Code for GST -->
+<script type="text/javascript"> if (!window.mstag) mstag = {loadTag : function(){},time : (new Date()).getTime()};</script>
+<script id="mstag_tops" type="text/javascript" src="//flex.atdmt.com/mstag/site/5e72ea33-c2cd-4b0b-905b-7edadcb71e31/mstag.js"></script> 
+<script type="text/javascript"> mstag.loadTag("analytics", {dedup:"1",domainId:"1602591",type:"1",revenue:"",actionid:"60502"})</script> 
+<noscript> 
+<iframe src="//flex.atdmt.com/mstag/tag/5e72ea33-c2cd-4b0b-905b-7edadcb71e31/analytics.html?dedup=1&domainId=1602591&type=1&revenue=&actionid=60502" frameborder="0" scrolling="no" width="1" height="1" style="visibility:hidden;display:none"></iframe>
+</noscript>
+<!-- EOF: MS Adcenter Code for GST -->
+*/ ?>
+
+<!-- begin adBrite, Purchases/sales tracking -->
+<img border="0" hspace="0" vspace="0" width="1" height="1" src="//stats.adbrite.com/stats/stats.gif?_uid=845986&_pid=0" />
+<!-- end adBrite, Purchases/sales tracking -->
+
+
+<!-- 7Search Code for Conversion Page (start) -->
+<script language="JavaScript" type="text/javascript">
+var _7search_conversion_advid = 172883;
+var _7search_conversion_type = "purchase";
+var _7search_conversion_value = 185;
+</script>
+<script language="JavaScript" type="text/javascript" src="https://conversion.7search.com/conversion/v1/conversion.js"></script>
+<noscript><img width="1" height="1" border="0" src="https://conversion.7search.com/conversion/v1/?advid=172883&urlid=&type=purchase&value=185&noscript=1" /></noscript>
+<!-- 7Search Code for Conversion Page (end) -->
+
+
+<!-- AdKnowledge conversion code -->
+<script type="text/javascript">
+  (function() {
+    var adk = document.createElement('script');
+    adk.type = 'text/javascript'; adk.async = true;
+    adk.src = ('https:' == document.location.protocol ? 'https://' : 'http://') 
+    + 'bidsystem.adknowledge.com/conversion.js?cid=2bdbc4f5-ca1f-4d5e-9a5b-e261008797df';
+    var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(adk, s);
+  })();
+</script>
+<!-- Used when browser has javascript disabled. -->
+<noscript>
+    <img width="1" height="1" 
+    src="https://bidsystem.adknowledge.com/conversion.php?cid=2bdbc4f5-ca1f-4d5e-9a5b-e261008797df" />
+</noscript>
+<!-- EOF AdKnowledge conversion code -->
+
+
+<!-- Adwords Local Buildout Conversion -> Checkout Success -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 953851363;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "320ACLWh2wMQ47vqxgM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/953851363/?label=320ACLWh2wMQ47vqxgM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF Adwords Local Buildout Conversion -> Checkout Success -->
+
+
+<!-- Adwords Display Conversion -> checkout Success -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 947860611;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "J_s4CJ3v2QMQg-n8wwM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/947860611/?label=J_s4CJ3v2QMQg-n8wwM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF Adwords Display Conversion -> checkout Success -->
+
+
+<!-- ROI Rocket conversion code -->
+<iframe src="https://forwardrocketlaunch.com/p.ashx?o=1559&t=<?php echo $order->getId();?>&p=<?php echo $order->getGrandTotal();?>" height="1" width="1" frameborder="0"></iframe>
+<!-- EOF ROI Rocket conversion code -->
+<?php
+/*
+#
+#
+# END STANDARD BROWSER THANK YOU PAGE
+#
+#
+*/
+?>
+
+<? } ?>
+
+<?php Mage::getSingleton('customer/session')->logout(); ?>
+

@@ -1,0 +1,3065 @@
+############################################
+## uncomment these lines for CGI mode
+## make sure to specify the correct cgi php binary file name
+## it might be /cgi-bin/php-cgi
+
+#    Action php5-cgi /cgi-bin/php5-cgi
+#    AddHandler php5-cgi .php
+
+############################################
+## GoDaddy specific options
+
+#   Options -MultiViews
+
+## you might also need to add this line to php.ini
+##     cgi.fix_pathinfo = 1
+## if it still doesn't work, rename php.ini to php5.ini
+
+############################################
+## this line is specific for 1and1 hosting
+
+    #AddType x-mapp-php5 .php
+    #AddHandler x-mapp-php5 .php
+
+############################################
+## default index file
+
+    DirectoryIndex index.php
+
+<IfModule mod_php5.c>
+
+############################################
+## adjust memory limit
+
+#    php_value memory_limit 64M
+    php_value memory_limit 256M
+    php_value max_execution_time 18000
+
+############################################
+## disable magic quotes for php request vars
+
+    php_flag magic_quotes_gpc off
+
+############################################
+## disable automatic session start
+## before autoload was initialized
+
+    php_flag session.auto_start off
+
+############################################
+## enable resulting html compression
+
+    #php_flag zlib.output_compression on
+
+###########################################
+# disable user agent verification to not break multiple image upload
+
+    php_flag suhosin.session.cryptua off
+
+###########################################
+# turn off compatibility with PHP4 when dealing with objects
+
+    php_flag zend.ze1_compatibility_mode Off
+
+</IfModule>
+
+<IfModule mod_security.c>
+###########################################
+# disable POST processing to not break multiple image upload
+
+    SecFilterEngine Off
+    SecFilterScanPOST Off
+</IfModule>
+
+<IfModule mod_deflate.c>
+
+############################################
+## enable apache served files compression
+## http://developer.yahoo.com/performance/rules.html#gzip
+
+    # Insert filter on all content
+    ###SetOutputFilter DEFLATE
+    # Insert filter on selected content types only
+    #AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css text/javascript
+
+    # Netscape 4.x has some problems...
+    #BrowserMatch ^Mozilla/4 gzip-only-text/html
+
+    # Netscape 4.06-4.08 have some more problems
+    #BrowserMatch ^Mozilla/4\.0[678] no-gzip
+
+    # MSIE masquerades as Netscape, but it is fine
+    #BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+
+    # Don't compress images
+    #SetEnvIfNoCase Request_URI \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+
+    # Make sure proxies don't deliver the wrong content
+    #Header append Vary User-Agent env=!dont-vary
+
+</IfModule>
+
+<IfModule mod_ssl.c>
+
+############################################
+## make HTTPS env vars available for CGI mode
+
+    SSLOptions StdEnvVars
+
+</IfModule>
+
+<IfModule mod_rewrite.c>
+
+############################################
+## enable rewrites
+
+    Options +FollowSymLinks
+    RewriteEngine on
+
+
+############################################
+## you can put here your magento root folder
+## path relative to web root
+
+    #RewriteBase /magento/
+
+	
+
+############################################
+## MOBILE SUB-DOMAIN REWRITE added by Piotr Bieszk on 4/16/2012
+
+RewriteCond %{HTTP_HOST} ^m.getstdtested.com
+RewriteRule ^index.php$ http://m.getstdtested.com [L]
+
+RewriteCond %{HTTP_HOST} ^m.getstdtested.com
+RewriteRule ^(.*)$ /m/04/$1 [L]
+
+## MOBILE SUB-DOMAIN REWRITE added by Piotr Bieszk on 4/16/2012
+############################################
+	
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/7/2011
+
+RewriteRule ^std-test-centers.php/(.*)$ http://getstdtested.com/std-test-centers/$1 [L,NC,R=301]
+
+RewriteRule ^free-std-clinics.php/(.*)$ http://getstdtested.com/free-std-clinics/$1 [L,NC,R=301]
+
+RewriteRule ^boston/$ http://getstdtested.com/std-test-centers/Massachusetts-MA/Boston [L,NC,R=301]
+RewriteRule ^std-resources/breaking-d$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/sexperation-infographic$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^uncategorized/std-testing-horror-stories-a-thing-of-the-past$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/enough-is-enough-you-get-a-cholesterol-test-so-get-an-std-test/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/a-positive-std-test-for-mrs-brady/feed$ http://getstdtested.com [L,NC,R=301]
+
+RewriteRule ^std-articles/std-fast-facts$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/internet-self-diag$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^uncategorized/porn-stars-love-std-check-ups-seriously$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/sexperation-in$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/genital-herpes$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^phoenix$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^pdfs/Trichomoniasis$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/oral-herpes$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/more-negative-hiv-tests-music-to-our-ears/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-clinics$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^stdtesting$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^uncategorized/even-without-genital-herpes-symptoms-the-virus-is-still-contagious/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/welcome-to-status-updates-std-blog$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/gonorrhea-syphilis-chlamydia-test-your-std-knowledge/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^stdtesting/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^washington-dc$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/internet-self-diag$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/avenue-of-the-arts/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/herpes-simplex-virus-1-and-2-what$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^status-updates-blog/page/4$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^philadelphia$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^news$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^boston$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/congenital-syphilis-on-the-rise-in-san-antonio$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/facts-about-stds$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test-recommendationB$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/the-std-testing-talk-your-all-star-shortstop/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/2834$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^boston/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test/gonorrhea$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/positive-std-test-just-say-no-to-over-the-counter-std-treatments/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^washington-dc.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/minneapolis-std-testing-centers/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/herpes-1-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^san-antonio.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^select-testing-center?item=hepatitis-c$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^san-diego.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/syphilis-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^seattle.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^los-angeles.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^genital-herpes-symptoms.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^uncategorized/std-testing-horror-stories-a-thing-of-the-past$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/std-testing-101-sex-on-campus-infographic$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/33584/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/how-to-have-the-std-test-talk-before-things-get-steamy/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas.php/chlamydia-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas.php/herpes-1-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^at-home-std-tests.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas.php/hiv-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^-test-details$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^od/treatment/f/chanctestfaq.htm$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/how-frequently-are-men-std-testing-for-chlamydia-and-other-stds/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^od/testingfaq/f/screenbeforedating.htm$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/std-testing-glossary$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/enough-is-enough-you-get-a-cholesterol-test-so-get-an-std-test/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/a-positive-std-test-for-mrs-brady/feed$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/breaking-d$ http://getstdtested.com [L,NC,R=301]
+
+# OLD TESTING CENTERS
+
+RewriteRule ^std-testing-centers/stds-testing/welsh-roadbroomall/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/westerleigh/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/ut/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/travis/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/wissahickson/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/wingate/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/syfilis/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/takoma-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/tasker/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/richardson/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/phoenix/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/penelope-neighbors/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/peterson/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/pasadena/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/staten-island/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/sunnyside/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/millbrook/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/new-brighton/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/ocean-parkway/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/mill-valley/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/marietta/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/free-std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/kingsbridge/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/hiv/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/homecrest/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/lawrenceville/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/little-neck/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/long-island-city/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/hinsdale/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/kirby/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/glen-oaks/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/kirkman/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/harrowgate/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fairmont/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/concourse-village/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fairfax/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/cummings/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/culver-city/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/evanston/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fordham/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/daly-city/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/coyote-valley/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/eastpointe/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/central-austin/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/clifton/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/cherry-creek/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/chlamydia/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/chevy-chase/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bromall/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/cahokia/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/boone-county/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/braintree/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/california/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/boston/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bloomfield/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/biddle-ave/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bayside/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/berkeley/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/annandale/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/arizona/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/baytown/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bayshore/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/alviso/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/91405/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/98057/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/98004/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/alexandria/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/80113/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/90048/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/75062/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/63117/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/78734/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43228/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/48187/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/63109/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/46077/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32883/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/48075/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/22204/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/30060/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/20740/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/20815/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/san-fernando-valley/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/the-castro/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/quincy/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/01940/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/atlanta-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/park-slope/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32836/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/free-herpes-testing/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/east-bay/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32824/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/coral-gables/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/conway/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/new-dorp/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/carver/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/miami-beach/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/alum-rock/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/22101/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/46260/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/syphilis-testing/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/testing/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/san-francisco-std-testing-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/gerritsen-beach/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+# BLOG REDIRECTS
+
+RewriteRule ^tag/stds$ http://getstdtested.com/blog/tag/STDs/ [L,NC,R=301]
+RewriteRule ^tag/std$ http://getstdtested.com/blog/tag/STDs/ [L,NC,R=301]
+
+RewriteRule ^tag/condoms$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/infographic-new-york$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/yeast-infection$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-medication$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-test/page/2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-epidemic$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-test-campaign$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hep-c-symptoms$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/pid$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/the-most-common-std-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/indirect-partners$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-outbreak$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-tests$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-simplex$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-dating$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hsv-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-outbreaks$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-testing/page/3$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hsv1$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-screening-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-tested$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-testing/page/2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-signs$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/how-many-people-have-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-checkup$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sexual-health$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-symptoms-in-men$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-symptoms$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-b-vaccines$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatits-b-shot$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/most-common-stds$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-symptoms-in-women$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/cure-for-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/teen-girls$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sti$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-treatment-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/zithromax$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-vaccines$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia-symptoms-in-women$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/genital-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/autoimmune-hepatitis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/facebook$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/at-home-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sex-partners$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/gonorrhea-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/symptoms-for-gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/symptoms-of-hep-c$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sexually-transmitted-infections$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-prevalence$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-tests$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/birth-control$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/trichomoniasis-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-outbreak$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sexperation$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/prevent-vaginal-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/stds$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hep-c-symptoms$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hpv$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/indirect-partners$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/amoxil$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/treatment-of-hep-c$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/test-for-hiv$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/std-testing/just-the-facts-genital-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/dinner-drinks-and-the-std-clinic-talking-with-your-partner-about-stds$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/about-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-test/positive-std-test-just-say-no-to-over-the-counter-std-treatments$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/new-at-home-collection-std-test-expands-consumer-access-to-trichomoniasis-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/vaginal-herpes/vaginal-herpes-increases-hiv-risk$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/webisodes-ensure-young-adults-get-the-message$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/vaginal-herpes/vaginal-herpes-increases-hiv-risk$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/confidential-online-std-testing-clinic-getstdtested-com-strengthens-partnership-with-asha-in-the-fight-against-stds$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/just-the-facts-genital-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/std-trivia-how-many-people-have-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/shiny-new-hep-c-treatment$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-test/positive-std-test-just-say-no-to-over-the-counter-std-treatments$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/about-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-test/the-std-testing-talk-your-all-star-shortstop$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/porn-stars-love-std-check-ups-seriously$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/not-a-pretty-picture-herpes-in-horses$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/getstdtested-com-launches-nationally$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/the-5-million-herpes-outbreak$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/std-testing-even-if-you-used-two-condoms$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-test/how-to-have-the-std-test-talk-before-things-get-steamy$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/fun-fact-you-yes-you-have-likely-had-sex-with-over-a-million-people$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/national-prevention-strategy-gives-shout-out-to-viral-hepatitis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/kiss-chlamydia-goodbye$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-screening/seniors-std-screening-a-match-made-in-retirement$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/you-cant-get-an-std-if-you-do-that-can-you$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-check-up-2/std-check-up-and-positive-std-test-results-what-does-it-all-mean$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/new-drugs-promise-treatment-for-hepatitis-c$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/welcome-to-status-updates-std-blog$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/facebook-spreading-stds$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/can-you-eat-your-way-to-fewer-herpes-outbreaks$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/unique-webisode-series-the-o-mission-helps-normalize-sexual-health-conversations-for-young-adults-as-social-networking-changes-the-dating-scene$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/std-drugs-without-std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/news/getstdtested-expands-payment-options-for-preventative-healthcare-to-become-more-accessible$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/std-symptoms-in-women-are-like-ninjas$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/herpes-test/your-grandma-might-have-herpes-zoster$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/more-std-testing-for-gaybisexual-women$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-test/more-std-tests-for-trich-stat$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/std-clinic-numbers-could-set-future-of-porn$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-treatment/antibiotics-for-chlamydia-work-fast-with-minimal-side-effects$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/std-check-up-a-dirty-trich$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/vaginal-herpes/celebrities-get-vaginal-herpes-too$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/the-most-common-std/the-most-common-std-hpv-affects-6-million-people-every-year$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/herpes-test/herpes-dating-spreading-the-love$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/even-without-genital-herpes-symptoms-the-virus-is-still-contagious-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/uncategorized/attention-ladies-dont-douche$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/california-bill-would-give-std-prevention-rights-to-kids$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/uncategorized/whats-drug-resistant-gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/faqs-about-online-std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-articles/about-chlamydia$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/is-that-herpes-simplex-on-your-thumb$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-testing/talking-the-talk-std-tests-and-sexual-health$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/std-screening/std-screening-is-important-for-married-couples-too$ http://getstdtested.com/blog [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/7/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/9/2011
+
+RewriteRule ^tag/std-prevalence$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/treatment-for-hepatitis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/at-home-std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/pictures-of-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/trimox$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/syphilis-screening$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-testing/page/5$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sex-partners$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/symptoms-of-hep-c$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-rates$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-questions-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/antibiotics-for-chlamydia$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-clinic$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/vaginal-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-check-up$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/oral-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/positive-std-results$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-symptom-checker$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hpv-vaccine$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/get-std-tested$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-c-checkup$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-c-testing$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/std-test/hepatitis-b-vaccines-preventing-clusterflubs-since-1981$ http://getstdtested.com/std-test/hepatitis-b-vaccines-preventing-clusterflubs-since-1981 [L,NC,R=301]
+RewriteRule ^blog/std-testing/std-testing-horror-stories-a-thing-of-the-past$ http://getstdtested.com/std-testing/std-testing-horror-stories-a-thing-of-the-past [L,NC,R=301]
+RewriteRule ^blog/std-testing/gonorrhea-syphilis-chlamydia-test-your-std-knowledge$ http://getstdtested.com/std-testing/gonorrhea-syphilis-chlamydia-test-your-std-knowledge [L,NC,R=301]
+RewriteRule ^blog/std-testing/can-you-name-the-hiv-symptoms-in-men$ http://getstdtested.com/std-testing/can-you-name-the-hiv-symptoms-in-men [L,NC,R=301]
+RewriteRule ^blog/news/shouldigetstdtested-com-experts-recommend-getting-to-know-your-sexual-health-risk$ http://getstdtested.com/news/shouldigetstdtested-com-experts-recommend-getting-to-know-your-sexual-health-risk [L,NC,R=301]
+RewriteRule ^blog/hiv-aids/the-relationship-between-herpes-zoster-genital-herpes-and-hivaids$ http://getstdtested.com/hiv-aids/the-relationship-between-herpes-zoster-genital-herpes-and-hivaids [L,NC,R=301]
+RewriteRule ^blog/news/cdc-award-winning-physician-hunter-handsfield-joins-getstdtested-com-medical-advisory-board$ http://getstdtested.com/news/cdc-award-winning-physician-hunter-handsfield-joins-getstdtested-com-medical-advisory-board [L,NC,R=301]
+RewriteRule ^blog/std-testing/e-notice-in-medical-records-boosts-hiv-testing-rates$ http://getstdtested.com/std-testing/e-notice-in-medical-records-boosts-hiv-testing-rates [L,NC,R=301]
+RewriteRule ^blog/std-testing/the-classic-no-show-symptoms-of-hep-c$ http://getstdtested.com/std-testing/the-classic-no-show-symptoms-of-hep-c [L,NC,R=301]
+RewriteRule ^blog/std-testing/how-do-you-spell-pelvic-inflammatory-disease-o-u-c-h$ http://getstdtested.com/std-testing/how-do-you-spell-pelvic-inflammatory-disease-o-u-c-h [L,NC,R=301]
+RewriteRule ^blog/std-testing/facebook-message-alerts-teen-about-std-exposure$ http://getstdtested.com/std-testing/facebook-message-alerts-teen-about-std-exposure [L,NC,R=301]
+RewriteRule ^blog/std-testing/birth-control-is-no-replacement-for-condoms-and-std-check-ups$ http://getstdtested.com/std-testing/birth-control-is-no-replacement-for-condoms-and-std-check-ups [L,NC,R=301]
+RewriteRule ^blog/std-articles/sexperation-infographic$ http://getstdtested.com/std-articles/sexperation-infographic [L,NC,R=301]
+
+RewriteRule ^std-testing-centers$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/danvers/?wpmp_switcher=mobile$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/neponsit/?wpmp_switcher=desktop$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/cohasset/?wpmp_switcher=mobile$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43229/?wpmp_switcher=desktop$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/33618/?wpmp_switcher=desktop$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/dallas-std-testing-centers/?wpmp_tp=2&wpmp_switcher=mobile$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/san-francisco-std-testing-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/midtown-west/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/aurora/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/goodyear/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/ditmars/?wpmp_switcher=desktop$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/rochdale-village/?wpmp_switcher=desktop$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/aurora/?wpmp_switcher=mobile$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^address=(.*)&zip=(.*)&city=(.*)&state=(.*) [NC]
+RewriteRule ^centers-map.php$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^zipcode=(.*) [NC]
+RewriteRule ^testing-location.php$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteRule ^my-result$ https://getstdtested.com/sample-results [L,NC,R=301]
+RewriteRule ^news/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^hiv-pcr-dna-test.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/welcome-to-status-updates-std-blog$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/2834$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^stdtesting/?Network=Search&SiteTarget=$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^chicago$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^houston$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^baltimore.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/oral-herpes$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/genital-herpes$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^pdfs/Trichomoniasis$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/std-testing-glossary$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^uncategorized/welcome-to-status-updates-std-blo$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^syphilis$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^news$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^denver$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/9/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/10/2011
+
+RewriteRule ^std-testing-centers/los-angeles-std-clinics/$ http://getstdtested.com/std-test-centers/California-CA/Los-Angeles [L,NC,R=301]
+RewriteRule ^memphis.php/trichomoniasis-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/um/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/trichtestfaq.htm$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^hiv-pcr-dna-test.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^manhuntcares/how-std-testing-works.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/welcome-to-status-updates-std-blog$ http://getstdtested.com/std-testing/welcome-to-status-updates-std-blog [L,NC,R=301]
+RewriteRule ^std-testing/2834$ http://getstdtested.com/std-testing [L,NC,R=301]
+RewriteRule ^vaginal-herpes/vaginal-herpes-or-yeast-infection$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^select-testing-center$ http://getstdtested.com/locate-testing-center [L,NC,R=301]
+RewriteRule ^how-std-testing-works.php$ http://getstdtested.com/how-std-testing-works [L,NC,R=301]
+RewriteRule ^std-testing-centers/washington-dc-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^memphis$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^tag/syphilis-screening$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/positive-std-results$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-symptom-checker$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/relationships$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-c-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/get-std-tested$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-c-checkup$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia-symptoms-in-men$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/positive-std-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-rash$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/oral-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-check-up$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-check-up/$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-risk$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-questions-2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/antibiotics-for-chlamydia$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-clinic$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-testing/page/4$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/testing-for-stds-at-home$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hpv-vaccine$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/vaginal-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-trichomoniasis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/what-is-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/test-for-gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/gonorrhea-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/truck-drivers$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-statistics$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/drug-resistant-gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-infection$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/trich$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/private-std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-rash$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/std-testing/more-negative-hiv-tests-music-to-our-ears$ http://getstdtested.com/std-testing/more-negative-hiv-tests-music-to-our-ears [L,NC,R=301]
+RewriteRule ^blog/std-testing/the-classic-no-show-symptoms-of-hep-c$ http://getstdtested.com/std-testing/the-classic-no-show-symptoms-of-hep-c [L,NC,R=301]
+RewriteRule ^blog/std-testing/seniors-sex-and-std-tests$ http://getstdtested.com/std-testing/seniors-sex-and-std-tests [L,NC,R=301]
+RewriteRule ^blog/std-testing/how-do-you-spell-pelvic-inflammatory-disease-o-u-c-h$ http://getstdtested.com/std-testing/how-do-you-spell-pelvic-inflammatory-disease-o-u-c-h [L,NC,R=301]
+RewriteRule ^blog/std-testing/facebook-message-alerts-teen-about-std-exposure$ http://getstdtested.com/std-testing/facebook-message-alerts-teen-about-std-exposure [L,NC,R=301]
+RewriteRule ^blog/std-testing/birth-control-is-no-replacement-for-condoms-and-std-check-ups$ http://getstdtested.com/std-testing/birth-control-is-no-replacement-for-condoms-and-std-check-ups [L,NC,R=301]
+RewriteRule ^blog/std-testing/std-drugs-without-std-testing$ http://getstdtested.com/std-testing/std-drugs-without-std-testing [L,NC,R=301]
+RewriteRule ^blog/std-testing/fda-does-not-approve-gardasil-for-older-women$ http://getstdtested.com/std-testing/fda-does-not-approve-gardasil-for-older-women [L,NC,R=301]
+RewriteRule ^blog/std-test/hepatitis-b-vaccines-preventing-clusterflubs-since-1981$ http://getstdtested.com/std-test/hepatitis-b-vaccines-preventing-clusterflubs-since-1981 [L,NC,R=301]
+RewriteRule ^blog/std-test/how-frequently-are-men-std-testing-for-chlamydia-and-other-stds$ http://getstdtested.com/std-test/how-frequently-are-men-std-testing-for-chlamydia-and-other-stds [L,NC,R=301]
+RewriteRule ^blog/std-articles/sexperation-infographic$ http://getstdtested.com/std-articles/sexperation-infographic [L,NC,R=301]
+RewriteRule ^blog/std-articles/stds-by-the-numbers$ http://getstdtested.com/std-articles/stds-by-the-numbers [L,NC,R=301]
+RewriteRule ^blog/news/college-age-females-can-kiss-chlamydia-goodbye-for-valentines-day$ http://getstdtested.com/news/college-age-females-can-kiss-chlamydia-goodbye-for-valentines-day [L,NC,R=301]
+RewriteRule ^blog/news/wall-street-journal-chlamydia-the-silent-std-that-can-cause-infertility$ http://getstdtested.com/news/wall-street-journal-chlamydia-the-silent-std-that-can-cause-infertility [L,NC,R=301]
+RewriteRule ^blog/news/online-personalized-std-test-recommendation$ http://getstdtested.com/news/online-personalized-std-test-recommendation [L,NC,R=301]
+RewriteRule ^blog/std-testing/life-with-herpes-dating$ http://getstdtested.com/std-testing/life-with-herpes-dating [L,NC,R=301]
+RewriteRule ^blog/std-test/a-bikini-wax-an-std-test-please$ http://getstdtested.com/std-test/a-bikini-wax-an-std-test-please [L,NC,R=301]
+RewriteRule ^blog/std-testing/hiv-testing-for-life$ http://getstdtested.com/std-testing/hiv-testing-for-life [L,NC,R=301]
+RewriteRule ^blog/std-testing/time-to-seek-treatment-of-hep-c$ http://getstdtested.com/std-testing/time-to-seek-treatment-of-hep-c [L,NC,R=301]
+RewriteRule ^blog/std-articles/new-gel-may-protect-against-hiv-and-herpes$ http://getstdtested.com/std-articles/new-gel-may-protect-against-hiv-and-herpes [L,NC,R=301]
+RewriteRule ^blog/hiv-testing/hiv-testing-still-a-national-priority$ http://getstdtested.com/hiv-testing/hiv-testing-still-a-national-priority [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^item=(.*) [NC]
+RewriteRule ^select-testing-center$ http://getstdtested.com/locate-testing-center? [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/10/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/11/2011
+
+RewriteRule ^symptoms-of-stds/blood-in-urine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-remedies$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-treatment$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sores-in-mouth$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/cold-sore-medicine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/cold-sores-&-fever-blister$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-face$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-lips$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/gential-herpes-pictures$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/get-rid-of-fever-blisters-fast$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/green-discharge$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/itchy-vagina$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/remedies-for-vaginal-yeast-infections$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/severe-vaginal-itching$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/unusual-vaginal-discharge$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/vaginal-spotting$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/white-blisters-in-mouth$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/white-blisters-on-lips$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/white-blisters-on-tongue$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/vagina-discharge-smell$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/bleeding-of-the-anus$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/left-abdominal-pain$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/burning-sensation$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/symptoms-for-hiv$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/red-bumps-penis$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-feces$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/bumps-genitals$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-poop$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/bloody-stool$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/chancre-sore$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/uti-symptoms$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/lumps-vagina$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/jock-itch$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/causes-of-dark-yellow-urine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/severe-vaginal-itching$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/green-discharge$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/cold-sore-medicine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/white-blisters-in-mouth$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/cold-sores-&-fever-blister$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/get-rid-of-fever-blisters-fast$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-treatment$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sores-in-mouth$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/itchy-vagina$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/white-blisters-on-lips$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-urine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-remedies$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-treatment$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sores-in-mouth$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/cold-sore-medicine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-urine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-remedies$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sore-treatment$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/canker-sores-in-mouth$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/cold-sore-medicine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-face$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-urine$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/vaginal-spotting$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/unusual-vaginal-discharge$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-face$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-lips$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/vagina-discharge-smell$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/uti-symptoms$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/jock-itch$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-poop$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/red-bumps-penis$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/unusual-vaginal-discharge$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-face$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/blood-in-feces$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/bleeding-of-the-anus$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/fever-blisters-on-lips$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+
+RewriteRule ^tag/positive-std-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-symptoms-in-men$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-rash$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/gonorrhea-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/truck-drivers$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-statistics$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-check-up/$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-statistics$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hepatitis-c-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/private-std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-risk$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/chlamydia-symptoms-in-men$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/trich$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/what-is-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/trichomoniasis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/testing-for-stds-at-home$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/test-for-gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-trichomoniasis$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-transmission$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-infection$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/genital-herpes-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/drug-resistant-gonorrhea$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/douching$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/std-testing/life-with-herpes-dating$ http://getstdtested.com/std-testing/life-with-herpes-dating [L,NC,R=301]
+RewriteRule ^blog/std-test/a-bikini-wax-an-std-test-please$ http://getstdtested.com/std-test/a-bikini-wax-an-std-test-please [L,NC,R=301]
+RewriteRule ^blog/std-testing/even-without-genital-herpes-symptoms-the-virus-is-still-contagious$ http://getstdtested.com/std-testing/even-without-genital-herpes-symptoms-the-virus-is-still-contagious [L,NC,R=301]
+RewriteRule ^blog/std-testing/hiv-testing-for-life$ http://getstdtested.com/std-testing/hiv-testing-for-life [L,NC,R=301]
+RewriteRule ^blog/std-testing/time-to-seek-treatment-of-hep-c$ http://getstdtested.com/std-testing/time-to-seek-treatment-of-hep-c [L,NC,R=301]
+RewriteRule ^blog/news/nbc-chicago-click-here-for-sex-ed-internet-resources-help-kids-parents$ http://getstdtested.com/news/nbc-chicago-click-here-for-sex-ed-internet-resources-help-kids-parents [L,NC,R=301]
+RewriteRule ^blog/std-testing/breaking-down-hiv-testing$ http://getstdtested.com/std-testing/breaking-down-hiv-testing [L,NC,R=301]
+RewriteRule ^blog/news/online-confidential-std-testing-clinic-earns-first-national-seal-of-approval$ http://getstdtested.com/news/online-confidential-std-testing-clinic-earns-first-national-seal-of-approval [L,NC,R=301]
+RewriteRule ^blog/std-articles/std-testing-alert-ashton-kutcher-cheats-on-demi-moore-reportedly$ http://getstdtested.com/std-articles/std-testing-alert-ashton-kutcher-cheats-on-demi-moore-reportedly [L,NC,R=301]
+RewriteRule ^blog/std-articles/magic-johnson-announce-hiv-diagnosis-20-years-later$ http://getstdtested.com/std-articles/magic-johnson-announce-hiv-diagnosis-20-years-later [L,NC,R=301]
+RewriteRule ^blog/std-articles/how-many-people-does-the-average-person-sleep-with$ http://getstdtested.com/std-articles/how-many-people-does-the-average-person-sleep-with [L,NC,R=301]
+RewriteRule ^blog/std-articles/hiv-testing-now-recommended-for-teens$ http://getstdtested.com/std-articles/hiv-testing-now-recommended-for-teens [L,NC,R=301]
+RewriteRule ^blog/std-articles/std-testing-required-on-bachelor-pad$ http://getstdtested.com/std-articles/std-testing-required-on-bachelor-pad [L,NC,R=301]
+RewriteRule ^blog/std-testing/woman-sues-man-for-allegedly-giving-her-genital-herpes$ http://getstdtested.com/std-testing/woman-sues-man-for-allegedly-giving-her-genital-herpes [L,NC,R=301]
+RewriteRule ^blog/std-articles/new-gel-may-protect-against-hiv-and-herpes$ http://getstdtested.com/std-articles/new-gel-may-protect-against-hiv-and-herpes [L,NC,R=301]
+RewriteRule ^blog/std-articles/top-10-most-sexually-healthy-colleges$ http://getstdtested.com/std-articles/top-10-most-sexually-healthy-colleges [L,NC,R=301]
+RewriteRule ^blog/hiv-testing/hiv-testing-still-a-national-priority$ http://getstdtested.com/hiv-testing/hiv-testing-still-a-national-priority [L,NC,R=301]
+RewriteRule ^blog/std-testing/hepatitis-c-testing-recommended-for-truck-drivers$ http://getstdtested.com/std-testing/hepatitis-c-testing-recommended-for-truck-drivers [L,NC,R=301]
+RewriteRule ^blog/std-articles/std-testing-and-occupy-wall-street$ http://getstdtested.com/std-articles/std-testing-and-occupy-wall-street [L,NC,R=301]
+RewriteRule ^blog/std-articles/stds-in-the-city-std-diagnoses-rise-among-women-in-greenwich-village$ http://getstdtested.com/std-articles/stds-in-the-city-std-diagnoses-rise-among-women-in-greenwich-village [L,NC,R=301]
+RewriteRule ^blog/std-articles/its-not-size-that-matters-its-technique-introducing-pronto-condoms$ http://getstdtested.com/std-articles/its-not-size-that-matters-its-technique-introducing-pronto-condoms [L,NC,R=301]
+
+RewriteRule ^std-information/gonorrhea$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^oral-herpes.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^memphis/hiv-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^testlocation/hiv$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/excelsior/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/greenpoint/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/malibu-groves/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/55402/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/54022/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/48035/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/chlamydia-test/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32878/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/new-york-city-std-statistics-infographic$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^select-testing-center$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^2102651909/test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^memphis$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas/hiv-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^dallas.php/herpes-2-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^testlocation/hepatitis-b$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/um/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/woodrow/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing-centers/washington-dc-std-testing-centers/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^chlamydia-testIn$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-testing/herpes-simplex$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^how-std-testing-works.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^testlocation/genital-herpes$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^hiv-pcr-dna-test.php$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/11/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/14/2011
+
+RewriteRule ^free-std-clinics.php/-/Rock-Point/-0$ http://getstdtested.com/free-std-clinics [L,NC,R=301]
+RewriteRule ^free-std-clinics.php/-/Dinnebito/-0$ http://getstdtested.com/free-std-clinics [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/stds-testing/mount-paran-northside/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/testing-for-stds/std-testing-centers/massachusetts-std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/dallas-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/st-louis-std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/noe-valley/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/cascade-heights/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/centennial-hill/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/steinway/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/little-five-pointsbetween-part-dekalb/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fairlie-poplar/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/mozley-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/union-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/hiawassee/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32822/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/piedmont-heightsbetween-ansley-park-and-morningside-lenox-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/mount-paran-parkway/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/old-gordon/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/english-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/east-atlanta/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/center-hill/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/pittsburg/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/brookhaven/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/herpes-2-genital-herpes/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/willco/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fl/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/south-market/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32815/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/78704/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/wicker-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/washington-dc-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^tag/health-department$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/genital-herpes-symptoms$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/sex$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-aids$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-test/page/3/$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-test/page/3$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hep-c-treatment$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-test/page/4$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^std-articles/faq-about-online-std-testing$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^chlamydia.php$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^chlamydia-test.php$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^trichomoniasisv-test$ http://getstdtested.com/trichomoniasis-test [L,NC,R=301]
+
+RewriteRule ^m/index/$ http://getstdtested.com/m/ [L,NC,R=301]
+
+RewriteRule ^test/ssi/test.html$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test/home-package$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test/perl/test.html$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test/php/test.html$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test/fcgi/test.html$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/iuds-reduce-cervical-cancer-risk$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^testlocation/oral-herpes$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^testlocation/hepatitis-c$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^manhuntcares/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^testlocation/complete-std-package$ http://getstdtested.com [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^a_aid=yourstdhelp
+RewriteCond %{REQUEST_URI} (.*)$
+RewriteRule ^std-testing-options(.*)$ http://getstdtested.com/free-std-testing [L,NC,QSA,R=301]
+
+# this rule creates inifinite loop
+#RewriteCond %{QUERY_STRING} ^a_aid=yourstdhelp
+#RewriteCond %{REQUEST_URI} !free-std-testing
+#RewriteRule ^(.*)$ http://getstdtested.com/free-std-testing [L]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/14/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/15/2011
+
+RewriteRule ^chlamydia$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^at-home-chlamydia-test-3$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+
+RewriteRule ^free-std-clinics/Maine-ME/Dilkon/-0$ http://getstdtested.com/free-std-clinics [L,NC,R=301]
+RewriteRule ^free-std-clinics/-/Dinnebito/-0$ http://getstdtested.com/free-std-clinics [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/stds-testing/oakland-city$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^seattle$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^memphis/hepatitis-b-test$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^index-4$ http://getstdtested.com [L,NC,R=301]
+
+RewriteRule ^tag/pelvic-inflammatory-disease$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-testing-options$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/asymptomatic$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/category/hiv$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/std-testing/3-million-reasons-to-think-about-hepatitis-c$ http://getstdtested.com/std-testing/3-million-reasons-to-think-about-hepatitis-c [L,NC,R=301]
+RewriteRule ^blog/std-test/the-link-between-hiv-and-other-stds$ http://getstdtested.com/std-test/the-link-between-hiv-and-other-stds [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/15/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/16/2011
+
+RewriteRule ^blog/hepatitis/the-hepatitis-alphabet-the-difference-between-hepatitis-a-to-hepatitis-e$ http://getstdtested.com/hepatitis/the-hepatitis-alphabet-the-difference-between-hepatitis-a-to-hepatitis-e [L,NC,R=301]
+RewriteRule ^blog/std-articles/stds-by-the-numbers$ http://getstdtested.com/std-articles/stds-by-the-numbers [L,NC,R=301]
+
+RewriteRule ^blog/category/syphilis/$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^uncategorized/even-without-genital-herpes-symptoms-the-virus-is-still-contagious$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=chlamydia [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/chlamydia-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=hiv [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/hiv-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=hepatitis-b [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/hepatitis-b-test? [L,NC,R=301]
+
+RewriteRule ^hepatitis-c-test.php$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/the-heights$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/the-heights/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bensonhurst$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bensonhurst/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-test/30-years-with-hivaids$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/about-us$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/16/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/17/2011
+
+RewriteRule ^std-tests.php$ http://getstdtested.com/std-test [L,NC,R=301]
+
+RewriteRule ^tag/herpes-virus$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/garadsil$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/relationship$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hsv-1$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^blog/category/hiv/$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/category/syphilis/$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=syphilis [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/syphilis-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=gonorrhea [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/gonorrhea-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=hepatitis-c [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/hepatitis-c-test? [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/stds-testing/five-points/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/bolton-hills/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/adair-park/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/st-louis-std-clinics$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/brooklyn-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/houston-std-testing-centers/$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/std-fast-facts$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/about-us$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^at-home-std-testing-package-information$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/30-years-with-hivaids$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-questions-and-std-answers$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^seattle$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/internet-self-diagnosis-of-stds$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/nix-the-snip-circumcision-in-the-21st-century$ http://getstdtested.com [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^a_aid=218267e2 [NC]
+RewriteRule ^partners/affiliates/signup.php$ https://partners.getstdtested.com/affiliates/signup.php? [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/17/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/18/2011
+
+RewriteRule ^std-testing-centers/chicago-std-clinics$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/queens-std-testing/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^san-francisco$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/43239/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/43229/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/annadale/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteRule ^tag/home-std-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/types-of-syphilis-tests$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^std-articles/trichomoniasis-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/hiv$ http://getstdtested.com [L,NC,R=301]
+
+RewriteRule ^jvpartners$ http://getstdtested.com/affiliate-program [L,NC,R=301]
+RewriteRule ^jvpartners/$ http://getstdtested.com/affiliate-program [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/18/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/21/2011
+
+RewriteRule ^hiv.php$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^news/hepatitis-c-test$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+RewriteRule ^hepatitis-b.php$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+RewriteRule ^test/complete-std-package$ http://getstdtested.com/complete-std-test-package-information [L,NC,R=301]
+RewriteRule ^at-home-std-testing-package-information$ http://getstdtested.com/at-home-std-tests [L,NC,R=301]
+RewriteRule ^test-recommendation-old$ http://getstdtested.com/test-recommendation [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=genital-herpes [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/genital-herpes-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^tests=oral-herpes [NC]
+RewriteRule ^testRedirect.php$ http://getstdtested.com/oral-herpes-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/canarsie/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/43239/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/iupui/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/canarsie$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/annadale/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/hardesty-heights/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/43229/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=mobile [NC]
+RewriteRule ^std-testing-centers/stds-testing/43283/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=mobile [NC]
+RewriteRule ^std-testing-centers/stds-testing/43291/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=mobile [NC]
+RewriteRule ^std-testing-centers/stds-testing/queensboro-hill/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=mobile [NC]
+RewriteRule ^std-testing-centers/stds-testing/43247/$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/stds-testing/43283/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43247/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/philadelphia-std-testing-centers$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/chicago-std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/chicago-std-clinics$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/queens-std-testing/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/queens-std-testing$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/houston-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43291/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/queensboro-hill/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/the-bronx-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/32889/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^tag/std-check-up/page/2/$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/std-check-up/page/2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/herpes-virus$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/relationship$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/trichomoniasis-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/home-std-test$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/types-of-syphilis-tests$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^pdfs/ASHASealRelease_042809.pdf$ http://getstdtested.com [L,NC,R=301]
+
+RewriteRule ^san-francisco$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/trichomoniasis-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/breaking-down-hiv-testing$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-test/nix-the-snip-circumcision-in-the-21st-century$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/std-fast-facts$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/hepatitis-b-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/trichomoniasis-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/hiv$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^manhuntcares/about-us.php$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^3064167967/test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-information/syphilis$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^memphis.php/syphilis-test$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/21/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/22/2011
+
+RewriteRule ^std-testing-centers/stds-testing/st-george/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43291/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43283/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43247/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/gonorrhea/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/philadelphia-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/orlando-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/hancock-county$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteRule ^od/gettingtested/f/mollusctestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/gontestfaq.htm$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/ngutestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/hivtestfaq.htm$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/hpvtestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/chlamydtestfaq.htm$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/hbvtestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/bvtestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^hepatitis-c.php$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+
+RewriteRule ^tag/std-check-up/page/2$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/syphilis-detection$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^home$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/22/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/23/2011
+
+RewriteRule ^tag/syphilis-tests$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/syphilis-detection$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/cures-for-herpes$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^blog/category/genital-herpes/$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/orlando-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/page/3/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^baltimore$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^testing-locations.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^testing-locationGST.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^testing-location.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^test-recommendation.php$ http://getstdtested.com [L,NC,R=301]
+
+RewriteRule ^symptoms-of-stds.php$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+
+RewriteRule ^memphis.php/hepatitis-c-test$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+
+RewriteRule ^testimonial$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/get-results-fast-with-the-oraquick-advance-rapid-hiv-12-antibody-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/easy-as-123-testing-with-the-multispot-hiv-1hiv-2-rapid-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/15-minute-testing-with-the-clearview-hiv-12-stat-pak-test$ http://getstdtested.com [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^phpMyAdmin=uXvwPjSRS5qtWI%2CJYq%2CSXPb7%2Ch2 [NC]
+RewriteRule ^pdfs/STDAwarenessMonth0410.pdf$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/23/2011
+############################################
+
+
+############################################
+## STATE REDIRECTIONS added by Piotr Bieszk on 11/23/2011
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Alaska-AK$ http://getstdtested.com/$1/alaska-ak [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Alabama-AL$ http://getstdtested.com/$1/alabama-al [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Arkansas-AR$ http://getstdtested.com/$1/arkansas-ar [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Arizona-AZ$ http://getstdtested.com/$1/arizona-az [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/California-CA$ http://getstdtested.com/$1/california-ca [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Colorado-CO$ http://getstdtested.com/$1/colorado-co [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Connecticut-CT$ http://getstdtested.com/$1/connecticut-ct [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/District-of-Columbia-DC$ http://getstdtested.com/$1/district-of-columbia-dc [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Delaware-DE$ http://getstdtested.com/$1/delaware-de [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Florida-FL$ http://getstdtested.com/$1/florida-fl [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Georgia-GA$ http://getstdtested.com/$1/georgia-ga [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Hawaii-HI$ http://getstdtested.com/$1/hawaii-hi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Iowa-IA$ http://getstdtested.com/$1/iowa-ia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Idaho-ID$ http://getstdtested.com/$1/idaho-id [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Illinois-IL$ http://getstdtested.com/$1/illinois-il [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Indiana-IN$ http://getstdtested.com/$1/indiana-in [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Kansas-KS$ http://getstdtested.com/$1/kansas-ks [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Kentucky-KY$ http://getstdtested.com/$1/kentucky-ky [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Louisiana-LA$ http://getstdtested.com/$1/louisiana-la [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Massachusetts-MA$ http://getstdtested.com/$1/massachusetts-ma [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Maryland-MD$ http://getstdtested.com/$1/maryland-md [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Maine-ME$ http://getstdtested.com/$1/maine-me [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Michigan-MI$ http://getstdtested.com/$1/michigan-mi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Minnesota-MN$ http://getstdtested.com/$1/minnesota-mn [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Missouri-MO$ http://getstdtested.com/$1/missouri-mo [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Mississippi-MS$ http://getstdtested.com/$1/mississippi-ms [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Montana-MT$ http://getstdtested.com/$1/montana-mt [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/North-Dakota-ND$ http://getstdtested.com/$1/north-dakota-nd [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Nebraska-NE$ http://getstdtested.com/$1/nebraska-ne [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/New-Hampshire-NH$ http://getstdtested.com/$1/new-hampshire-nh [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/New-Jersey-NJ$ http://getstdtested.com/$1/new-Jersey-nJ [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/New-Mexico-NM$ http://getstdtested.com/$1/new-mexico-nm [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Nevada-NV$ http://getstdtested.com/$1/nevada-nv [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/New-York-NY$ http://getstdtested.com/$1/new-york-ny [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Ohio-OH$ http://getstdtested.com/$1/ohio-oh [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Oklahoma-OK$ http://getstdtested.com/$1/oklahoma-ok [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Oregon-OR$ http://getstdtested.com/$1/oregon-or [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Pennsylvania-PA$ http://getstdtested.com/$1/pennsylvania-pa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Rhode-Island-RI$ http://getstdtested.com/$1/rhode-island-ri [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/South-Carolina-SC$ http://getstdtested.com/$1/south-carolina-sc [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/South-Dakota-SD$ http://getstdtested.com/$1/south-dakota-sd [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Tennessee-TN$ http://getstdtested.com/$1/tennessee-tn [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Texas-TX$ http://getstdtested.com/$1/texas-tx [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Utah-UT$ http://getstdtested.com/$1/utah-ut [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Virginia-VA$ http://getstdtested.com/$1/virginia-va [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Vermont-VT$ http://getstdtested.com/$1/vermont-vt [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Washington-WA$ http://getstdtested.com/$1/washington-wa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Wisconsin-WI$ http://getstdtested.com/$1/wisconsin-wi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/West-Virginia-WV$ http://getstdtested.com/$1/west-virginia-wv [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]$
+RewriteRule ^(.*)/Wyoming-WY$ http://getstdtested.com/$1/wyoming-wy [R=301,NC,L]
+
+## EOF STATE REDIRECTIONS added by Piotr Bieszk on 11/23/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/28/2011
+
+RewriteRule ^std-testing-centers/stds-testing/penrose/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/testing-for-stds/std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/orlando-std-testing-centers/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/testing-for-stds/std-testing-centers/california-std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/testing-for-stds/std-testing-centers/michigan-std-clinics/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/texas/$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^san-jose$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/33155$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=mobile [NC]
+RewriteRule ^std-testing-centers/stds-testing/siphilis$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteRule ^manhuntcares/chlamydia.php$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^test/hepatitis-b$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+RewriteRule ^std-information/hepatitis-b$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^phpMyAdmin=F4mx1WMqZ582avalIvhMu3bfS0b [NC]
+RewriteRule ^gtest/hepatitis-b$ http://getstdtested.com/hepatitis-b-test? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^a_aid=icyou [NC]
+RewriteRule ^gonorrhea-test.php$ http://getstdtested.com/gonorrhea-test? [L,NC,R=301]
+
+RewriteRule ^tag/texas-std-statistics$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^0994048841/test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^0853531173/test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^pdfs/HIVTestingDayPressRelease_MANHUNTandGetSTDTested_062309.pdf$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^test_now$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/28/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/29/2011
+
+RewriteRule ^od/gettingtested/f/elisafaq.htm$ http://getstdtested.com/faq [L,NC,R=301]
+
+RewriteRule ^san-antonio$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=desktop [NC]
+RewriteRule ^std-testing-centers/stds-testing/castleton-corners$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^a_aid=happy-with-herpes
+RewriteCond %{REQUEST_URI} (.*)$
+RewriteRule ^herpes-std-testing(.*)$ http://getstdtested.com/lp/happy-with-herpes [L,NC,QSA,R=301]
+
+RewriteCond %{QUERY_STRING} ^PPCPN=8669456026&a_aid=CJ
+RewriteRule ^$ http://getstdtested.com/lp/lab-draw-local-std-test-center [L,NC,QSA,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/29/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 11/30/2011
+
+RewriteRule ^los-angeles$ http://getstdtested.com/std-test-centers/california-ca/los-angeles [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^a_aid=youtube [NC]
+RewriteRule ^syphilis-test.php$ http://getstdtested.com/syphilis-test [L,NC,QSA,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 11/30/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/1/2011
+
+RewriteRule ^2495601138/test$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/1/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/2/2011
+
+RewriteRule ^meet-us$ http://getstdtested.com/meet-ppmd [L,NC,R=301]
+RewriteRule ^herpes-information$ http://getstdtested.com/herpes-test [L,NC,R=301]
+RewriteRule ^std-package-information/expert-package$ http://getstdtested.com/complete-std-test-package-information [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^utm_source=google&utm_campaign=home_chlamydia&utm_medium=cpc&utm_term=Home%20chlamydia%20test&Network=Search&utm_content=3846233022&SiteTarget= [NC]
+RewriteRule ^at-home-chlamydia-test.php$ http://getstdtested.com/at-home-chlamydia-test? [L,NC,R=301]
+
+RewriteRule ^std-testing-centers/stds-testing/swaynes$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/van-nest$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/sunset-park$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/std-center$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/st-charles$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/tampa$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/spuyten-duyvil$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/mt-auburn$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/riverdale$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/rochester-mi$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/presbyterian$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/pennsylvania-std-clinics$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/motown$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/scottsdale$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/landsdowne$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/germantown$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fresh-pond$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/fresh-meadows$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/dadeland$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/free-std-tests$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/allen-park$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/98134$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/charleston$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/coppell$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/carrollton$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/college-point$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/95110$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43229$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/42619$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/77089$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/43237$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/75075$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^philadelphia.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^san-francisco.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^denver.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^chicago.php$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^wpmp_switcher=mobile [NC]
+RewriteRule ^std-testing-centers/stds-testing/32831$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^publisher=localcom_rbl&placement=octane360 [NC]
+RewriteRule ^chicago.php$ http://getstdtested.com/std-test-centers? [L,NC,R=301]
+
+RewriteRule ^tag/herpes-zoster$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-test/texas-std-statistics-infograph$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-test/texas-std-statistics-i$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^std-articles/std-testing-101$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/std-testing-101-sex-on$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-resources/std-testing-centers$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/std-testing-centers$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^status-updates-blog$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^status-updates-blog/page/2$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/hepatitis-c-test$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/sexperatio$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/anonconfidtest.htm$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/regional-san-franci$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^std-articles/new-york-city-st$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^at-home-gonorrhea-information$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^2495601138/test$ http://getstdtested.com [L,NC,R=301]
+
+RewriteRule ^syphilis-test-information-2$ http://getstdtested.com/syphilis-test-information [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/hepatitis-c.html$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/8/category/4$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/syphilis.html$ http://getstdtested.com/syphilis-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/12/category/4$ http://getstdtested.com/syphilis-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/syphilis-1.html$ http://getstdtested.com/syphilis-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/22/category/4$ http://getstdtested.com/syphilis-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/hiv.html$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/11/category/4$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/hiv-1.html$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/27/category/4$ http://getstdtested.com/hiv-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/basic-package.html$ http://getstdtested.com/expert-std-testing-package-information [L,NC,R=301]
+RewriteRule ^review/product/list/id/15/category/4$ http://getstdtested.com/expert-std-testing-package-information [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/basic-package-1.html$ http://getstdtested.com/expert-std-testing-package-information [L,NC,R=301]
+RewriteRule ^review/product/list/id/37/category/4$ http://getstdtested.com/expert-std-testing-package-information [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/chlamydia.html$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/5/category/4$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/chlamydia-1.html$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/19/category/4$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^at-home-std-testing-products/chlamydia.html$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/1/category/3$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/genital-herpes.html$ http://getstdtested.com/genital-herpes-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/10/category/4$ http://getstdtested.com/genital-herpes-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/genital-herpes-1.html$ http://getstdtested.com/genital-herpes-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/26/category/4$ http://getstdtested.com/genital-herpes-test [L,NC,R=301]
+
+RewriteRule ^at-home-std-testing-products/trichomoniasis.html$ http://getstdtested.com/trichomoniasis-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/3/category/3$ http://getstdtested.com/trichomoniasis-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/oral-herpes.html$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/9/category/4$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/oral-herpes-1.html$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/25/category/4$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/herpes-confirmation.html$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/18/category/4$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+
+RewriteRule ^at-home-std-testing-products/gonorrhea.html$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/2/category/3$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/gonorrhea.html$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/6/category/4$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/gonorrhea-1.html$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/21/category/4$ http://getstdtested.com/gonorrhea-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/lab-testing.html$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^review/product/list/id/29/category/4$ http://getstdtested.com/std-tests [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/hepatitis-c-1.html$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/24/category/4$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/ultimate-8-pack-package.html$ http://getstdtested.com/complete-std-test-package-information [L,NC,R=301]
+RewriteRule ^review/product/list/id/14/category/4$ http://getstdtested.com/complete-std-test-package-information [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/ultimate-8-pack-package-1.html$ http://getstdtested.com/complete-std-test-package-information [L,NC,R=301]
+RewriteRule ^review/product/list/id/38/category/4$ http://getstdtested.com/complete-std-test-package-information [L,NC,R=301]
+
+RewriteRule ^lab-std-testing-products/hepatitis-b.html$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/7/category/4$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/hepatitis-b-1.html$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/23/category/4$ http://getstdtested.com/hepatitis-b-test [L,NC,R=301]
+
+RewriteRule ^at-home-std-testing-products/hiv.html$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/4/category/3$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^at-home-std-testing-products/hiv-1.html$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/28/category/3$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^lab-std-testing-products/hiv-early-detection.html$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^review/product/list/id/13/category/4$ http://getstdtested.com/hiv-test [L,NC,R=301]
+
+RewriteRule ^at-home-std-testing-products.html$ http://getstdtested.com/std-tests [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/2/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/5/2011
+
+RewriteRule ^std-testing-centers/stds-testing/free-std-tests$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/chippewa$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/flytown$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/juniata$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/riverview$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/33609$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/75231$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/75234$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/washington$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+RewriteRule ^manhuntcares/syphilis.php$ http://getstdtested.com/syphilis-test [L,NC,R=301]
+RewriteRule ^manhuntcares/sampleResults.html$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^manhuntcares/sampleRequisition.html$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^manhuntcares/oral-herpes.php$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^manhuntcares/hiv.php$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^manhuntcares/hepatitis-c.php$ http://getstdtested.com/hepatitis-c-test [L,NC,R=301]
+RewriteRule ^manhuntcares/genital-herpes.php$ http://getstdtested.com/genital-herpes-test [L,NC,R=301]
+RewriteRule ^manhuntcares/flash/hiv.swf$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^manhuntcares/flash/herpes.swf$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^manhuntcares/flash/chlamydia.swf$ http://getstdtested.com/chlamydia-test [L,NC,R=301]
+RewriteRule ^test/hiv$ http://getstdtested.com/hiv-test [L,NC,R=301]
+RewriteRule ^test/expert-package$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^test/apacheasp/test.html$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/syphtestfaq.htm$ http://getstdtested.com/syphilis-test [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/mycotestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/lvctestfaq.htm$ http://getstdtested.com/std-tests [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/herpestestfaq.htm$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+RewriteRule ^manhuntcares/contact-us.php$ http://getstdtested.com/contact-us [L,NC,R=301]
+
+RewriteCond %{QUERY_STRING} ^a_aid=youtube [NC]
+RewriteRule ^genital-herpes-test.php$ http://getstdtested.com/genital-herpes-test [L,NC,QSA,R=301]
+
+RewriteRule ^tag/hpv-testing$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^tag/hiv-tests$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/about-syphilis/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-test/30-years-with-hivaids/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/stds-by-the-numbers/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/can-you-eat-your-way-to-fewer-herpes-outbreaks/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/drug-that-treats-herpes-symptoms-also-slows-hiv-progression/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/faq-about-online-std-testing/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/new-drugs-promise-treatment-for-hepatitis-c/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/internet-self-diagnosis-of-stds/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-articles/new-recommendations-annual-hiv-testing-for-all-sexually-active-females/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^oral-herpes-informationThat$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^lil-bi-got-aids-lyrics-infographic$ http://getstdtested.com/blog [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/5/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/6/2011
+
+RewriteCond %{QUERY_STRING} ^zipcode=$ [NC]
+RewriteRule ^paynearme-locations$ http://getstdtested.com? [L,NC,R=301]
+
+RewriteRule ^std-testing/safer-sex-helps-prevent-stds/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-testing/fda-does-not-approve-gardasil-for-older-women/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-testing/e-notice-in-medical-records-boosts-hiv-testing-rates/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-test/new-york-city-std-statistics-infographic/feed$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^std-test/texas-std-statistics-infographic/feed$ http://getstdtested.com/std-test/texas-std-statistics-infographic [L,NC,R=301]
+RewriteRule ^std-testing/std-101-sex-on-campus-infographic$ http://getstdtested.com/std-articles/std-testing-101-sex-on-campus-infographic [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/6/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/7/2011
+
+RewriteRule ^std-testing/e-notice-in-medical-records-boosts-hiv-testing-rates/feed$ http://getstdtested.com/std-testing/e-notice-in-medical-records-boosts-hiv-testing-rates [L,NC,R=301]
+
+RewriteRule ^herpes-symptoms$ http://getstdtested.com/oral-herpes-test [L,NC,R=301]
+
+RewriteRule ^tag/hpv-virus$ http://getstdtested.com/blog [L,NC,R=301]
+
+RewriteRule ^std-test/iuds-reduce-cervical-cancer-risk/feed$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/harding-park$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/habana$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/maryland-heights$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/broomall$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+RewriteRule ^std-testing-centers/stds-testing/77098$ http://getstdtested.com/std-test-centers [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/7/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/13/2011
+
+RewriteRule ^i-got-aids-lilb$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^lil-b-i-got-aids-infographic$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/13/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/22/2011
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Anniston$ http://getstdtested.com/$1/alabama-al/anniston [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Ashland/2916-Holt-Street,-PO-Box-669-41105$ http://getstdtested.com/$1/alabama-al/ashland [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Athens$ http://getstdtested.com/$1/alabama-al/athens [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Bay-Minette$ http://getstdtested.com/$1/alabama-al/bay-minette [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Brewton$ http://getstdtested.com/$1/alabama-al/brewton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Camden/817-Federal-Street,-Suite-300-8103$ http://getstdtested.com/$1/alabama-al/camden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Florence/1301-Pinal-Street-85232$ http://getstdtested.com/$1/alabama-al/florence [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Foley$ http://getstdtested.com/$1/alabama-al/foley [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Gadsden$ http://getstdtested.com/$1/alabama-al/gadsden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Hamilton/Highway-No-78-35570$ http://getstdtested.com/$1/alabama-al/hamilton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Hamilton/One-Cross-Street,-PO-Box-248-64644$ http://getstdtested.com/$1/alabama-al/hamilton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Huntsville/304-Eustis-Avenue,-SE-36264$ http://getstdtested.com/$1/alabama-al/huntsville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Linden$ http://getstdtested.com/$1/alabama-al/linden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Marion/Williamson-County-Airport-62959$ http://getstdtested.com/$1/alabama-al/marion [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Montgomery/301-S-Ripley-36104$ http://getstdtested.com/$1/alabama-al/montgomery [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Montgomery/515-W-Jeff-Davis-36104$ http://getstdtested.com/$1/alabama-al/montgomery [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/OPELIKA/1930-Pepperell-Parkway-36801$ http://getstdtested.com/$1/alabama-al/opelika [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Ozark/111-W-Spring-Street-72949$ http://getstdtested.com/$1/alabama-al/ozark [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/PRATTVILLE$ http://getstdtested.com/$1/alabama-al/prattville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Roanoke$ http://getstdtested.com/$1/alabama-al/roanoke [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Tuscaloosa/1101-Jackson-Avenue-35401$ http://getstdtested.com/$1/alabama-al/tuscaloosa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Tuscaloosa/College-of-Community-Health,-700-University-Blvd,-E-35401$ http://getstdtested.com/$1/alabama-al/tuscaloosa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alabama-AL/Tuskegee$ http://getstdtested.com/$1/alabama-al/tuskegee [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Alaska-AK/Anchorage$ http://getstdtested.com/$1/alaska-ak/anchorage [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Arizona-AZ/KAYENTA$ http://getstdtested.com/$1/arizona-az/kayenta [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Arizona-AZ/Phoenix/650-E-Phoenix-Center-Dr-151st-and-4th-60426$ http://getstdtested.com/$1/arizona-az/phoenix [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Arizona-AZ/SECOND-MESA$ http://getstdtested.com/$1/arizona-az/second-mesa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Arizona-AZ/Tucson$ http://getstdtested.com/$1/arizona-az/tucson [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Alhambra$ http://getstdtested.com/$1/california-ca/alhambra [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Bellflower$ http://getstdtested.com/$1/california-ca/bellflower [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Long-Beach$ http://getstdtested.com/$1/california-ca/long-beach [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Los-Angeles$ http://getstdtested.com/$1/california-ca/los-angeles [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Oakland/700-Adeline-Street-94607$ http://getstdtested.com/$1/california-ca/oakland [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/San-Francisco$ http://getstdtested.com/$1/california-ca/san-francisco [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/San-Pedro$ http://getstdtested.com/$1/california-ca/san-pedro [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Santa-Rosa$ http://getstdtested.com/$1/california-ca/santa-rosa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Sonoma$ http://getstdtested.com/$1/california-ca/sonoma [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/California-CA/Union-City/33255-Ninth-Street-94587$ http://getstdtested.com/$1/california-ca/union-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Alamosa$ http://getstdtested.com/$1/colorado-co/alamosa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Aspen/0100-Lone-Pine-Road-81611$ http://getstdtested.com/$1/colorado-co/aspen [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Estes-Park$ http://getstdtested.com/$1/colorado-co/estes-park [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Greeley/100-North-11Th-Avenue-80631$ http://getstdtested.com/$1/colorado-co/greeley [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Limon$ http://getstdtested.com/$1/colorado-co/limon [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Norwood$ http://getstdtested.com/$1/colorado-co/norwood [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Towaoc$ http://getstdtested.com/$1/colorado-co/towaoc [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Trinidad/412-Benedicta-Avenue-81082$ http://getstdtested.com/$1/colorado-co/trinidad [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Colorado-CO/Walsenburg$ http://getstdtested.com/$1/colorado-co/walsenburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/BRIDGEPORT/221-Twin-Lakes-Road-93517$ http://getstdtested.com/$1/connecticut-ct/bridgeport [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/East-Hartford$ http://getstdtested.com/$1/connecticut-ct/east-hartford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/Hartford$ http://getstdtested.com/$1/connecticut-ct/hartford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/Manchester$ http://getstdtested.com/$1/connecticut-ct/manchester [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/Meriden$ http://getstdtested.com/$1/connecticut-ct/meriden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/NEW-BRITAIN$ http://getstdtested.com/$1/connecticut-ct/new-britain [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/New-Haven/One-State-Street-6511$ http://getstdtested.com/$1/connecticut-ct/new-haven [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/Norwalk$ http://getstdtested.com/$1/connecticut-ct/norwalk [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/Norwich$ http://getstdtested.com/$1/connecticut-ct/norwich [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Connecticut-CT/Torrington$ http://getstdtested.com/$1/connecticut-ct/torrington [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Delaware-DE/Dover$ http://getstdtested.com/$1/delaware-de/dover [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Delaware-DE/Middletown/2-North-Main-Street-45042$ http://getstdtested.com/$1/delaware-de/middletown [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Delaware-DE/Newark/200-Hygeia,-P-O-Box-6008-19714$ http://getstdtested.com/$1/delaware-de/newark [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Delaware-DE/Newark/741-Broadway-7104$ http://getstdtested.com/$1/delaware-de/newark [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Bartow/2020-E-Georgia-St-33830$ http://getstdtested.com/$1/florida-fl/bartow [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Crawfordville/48-Oak-St-0$ http://getstdtested.com/$1/florida-fl/crawfordville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/DE-LAND/336-New-York-Avenue-32720$ http://getstdtested.com/$1/florida-fl/de-land [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Jacksonville$ http://getstdtested.com/$1/florida-fl/jacksonville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Sanford/2400-State-Road-415-32771$ http://getstdtested.com/$1/florida-fl/sanford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Sebring$ http://getstdtested.com/$1/florida-fl/sebring [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Tampa$ http://getstdtested.com/$1/florida-fl/tampa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/TARPON-SPRINGS/301-S-Disston-Ave-34689$ http://getstdtested.com/$1/florida-fl/tarpon-springs [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Florida-FL/Venice/4000-S-Tamiami-Trail-34293$ http://getstdtested.com/$1/florida-fl/venice [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Georgia-GA/Blakely$ http://getstdtested.com/$1/georgia-ga/blakely [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Georgia-GA/Stone-Mountain$ http://getstdtested.com/$1/georgia-ga/stone-mountain [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Hawaii-HI/Honolulu$ http://getstdtested.com/$1/hawaii-hi/honolulu [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Hawaii-HI/Honolulu/915-North-King-Street-96817$ http://getstdtested.com/$1/hawaii-hi/honolulu [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Hawaii-HI/Kahuku$ http://getstdtested.com/$1/hawaii-hi/kahuku [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Dubois$ http://getstdtested.com/$1/idaho-id/dubois [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Emmett$ http://getstdtested.com/$1/idaho-id/emmett [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Fairfield$ http://getstdtested.com/$1/idaho-id/fairfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Hayden$ http://getstdtested.com/$1/idaho-id/hayden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Jerome$ http://getstdtested.com/$1/idaho-id/jerome [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Kellogg$ http://getstdtested.com/$1/idaho-id/kellogg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Malad$ http://getstdtested.com/$1/idaho-id/malad [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/McCall$ http://getstdtested.com/$1/idaho-id/mccall [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Moscow$ http://getstdtested.com/$1/idaho-id/moscow [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Orofino$ http://getstdtested.com/$1/idaho-id/orofino [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Pocatello$ http://getstdtested.com/$1/idaho-id/pocatello [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Preston$ http://getstdtested.com/$1/idaho-id/preston [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Rigby$ http://getstdtested.com/$1/idaho-id/rigby [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Rupert$ http://getstdtested.com/$1/idaho-id/rupert [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Salmon$ http://getstdtested.com/$1/idaho-id/salmon [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Idaho-ID/Sandpoint$ http://getstdtested.com/$1/idaho-id/sandpoint [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Benton$ http://getstdtested.com/$1/illinois-il/benton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Carbondale/101-South-Wall-Street-62901$ http://getstdtested.com/$1/illinois-il/carbondale [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Carmi$ http://getstdtested.com/$1/illinois-il/carmi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Carthage$ http://getstdtested.com/$1/illinois-il/carthage [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Chicago$ http://getstdtested.com/$1/illinois-il/chicago [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Chicago-Heights$ http://getstdtested.com/$1/illinois-il/chicago-heights [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Chicago/1015-West-Lawrence-Avenue-60640$ http://getstdtested.com/$1/illinois-il/chicago [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Chicago/2160-West-Ogden-60624$ http://getstdtested.com/$1/illinois-il/chicago [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Chicago/2847-N-Clark-60657$ http://getstdtested.com/$1/illinois-il/chicago [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/CHICAGO/2861-N-Clark-Street-60657$ http://getstdtested.com/$1/illinois-il/chicago [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Danville$ http://getstdtested.com/$1/illinois-il/danville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Flora$ http://getstdtested.com/$1/illinois-il/flora [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Freeport$ http://getstdtested.com/$1/illinois-il/freeport [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Golconda$ http://getstdtested.com/$1/illinois-il/golconda [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Granite-City$ http://getstdtested.com/$1/illinois-il/granite-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Havana$ http://getstdtested.com/$1/illinois-il/havana [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Hickory-Hills$ http://getstdtested.com/$1/illinois-il/hickory-hills [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Jerseyville$ http://getstdtested.com/$1/illinois-il/jerseyville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Joliet$ http://getstdtested.com/$1/illinois-il/joliet [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/La-Salle$ http://getstdtested.com/$1/illinois-il/la-salle [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Lincoln$ http://getstdtested.com/$1/illinois-il/lincoln [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Markham$ http://getstdtested.com/$1/illinois-il/markham [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Markham/Court-Bldg,-Lower-Level-165th-&-Kedzie-Parkway-60426$ http://getstdtested.com/$1/illinois-il/markham [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Metropolis$ http://getstdtested.com/$1/illinois-il/metropolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Morris$ http://getstdtested.com/$1/illinois-il/morris [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Morrison$ http://getstdtested.com/$1/illinois-il/morrison [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Mount-Sterling$ http://getstdtested.com/$1/illinois-il/mount-sterling [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Oak-Park$ http://getstdtested.com/$1/illinois-il/oak-park [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Ottawa$ http://getstdtested.com/$1/illinois-il/ottawa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/PALATINE$ http://getstdtested.com/$1/illinois-il/palatine [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Petersburg/RR-$ http://getstdtested.com/$1/illinois-il/petersburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Pontiac$ http://getstdtested.com/$1/illinois-il/pontiac [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Pontiac/1200-N-Telegraph-Road-48053$ http://getstdtested.com/$1/illinois-il/pontiac [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Ridgeway$ http://getstdtested.com/$1/illinois-il/ridgeway [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Robbins$ http://getstdtested.com/$1/illinois-il/robbins [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Rock-Island$ http://getstdtested.com/$1/illinois-il/rock-island [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Rockford$ http://getstdtested.com/$1/illinois-il/rockford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Round-Lake$ http://getstdtested.com/$1/illinois-il/round-lake [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Shelbyville/845-Union-Street-37160$ http://getstdtested.com/$1/illinois-il/shelbyville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Springfield/756-State-Street-1109$ http://getstdtested.com/$1/illinois-il/springfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Springfield/Riverstone-Clinic,-1640-G-Street-97477$ http://getstdtested.com/$1/illinois-il/springfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Ullin$ http://getstdtested.com/$1/illinois-il/ullin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Virginia$ http://getstdtested.com/$1/illinois-il/virginia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/WATERLOO/1407-Independence-Ave,-5th-Floor-50703$ http://getstdtested.com/$1/illinois-il/waterloo [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/WATERLOO/403-Sycamore,-Suite-1-50703$ http://getstdtested.com/$1/illinois-il/waterloo [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Woodstock$ http://getstdtested.com/$1/illinois-il/woodstock [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Illinois-IL/Woodstock/2200-N-SeminaryAve,-Annex-A-60098$ http://getstdtested.com/$1/illinois-il/woodstock [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Anderson$ http://getstdtested.com/$1/indiana-in/anderson [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Connersville$ http://getstdtested.com/$1/indiana-in/connersville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/English$ http://getstdtested.com/$1/indiana-in/english [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Evansville/Administration-Bldg,-Room-127,-Civic-Center-Complex-47708$ http://getstdtested.com/$1/indiana-in/evansville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Frankfort$ http://getstdtested.com/$1/indiana-in/frankfort [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Greensburg$ http://getstdtested.com/$1/indiana-in/greensburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Indianapolis/12689-West-Rockville-Rd-46234$ http://getstdtested.com/$1/indiana-in/indianapolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Indianapolis/3219-North-Meridian-Street-46208$ http://getstdtested.com/$1/indiana-in/indianapolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Indianapolis/3400-Lafayette-Boulevard-46208$ http://getstdtested.com/$1/indiana-in/indianapolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Indianapolis/401-East-34Th-Street-46205$ http://getstdtested.com/$1/indiana-in/indianapolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Knox$ http://getstdtested.com/$1/indiana-in/knox [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Kokomo/1940-S-Elizabeth-Street-46901$ http://getstdtested.com/$1/indiana-in/kokomo [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/LaPorte$ http://getstdtested.com/$1/indiana-in/laporte [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Martinsville$ http://getstdtested.com/$1/indiana-in/martinsville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Nashville$ http://getstdtested.com/$1/indiana-in/nashville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/New-Castle/540-S-Main-Street,-Suite-D,-P-O-Box-269-47362$ http://getstdtested.com/$1/indiana-in/new-castle [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Portage$ http://getstdtested.com/$1/indiana-in/portage [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Princeton$ http://getstdtested.com/$1/indiana-in/princeton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Rockport$ http://getstdtested.com/$1/indiana-in/rockport [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Scottsburg$ http://getstdtested.com/$1/indiana-in/scottsburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/South-Bend/121-S-St-LouisBoulevard-46617$ http://getstdtested.com/$1/indiana-in/south-bend [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Terre-Haute/201-Cherry-Street-47807$ http://getstdtested.com/$1/indiana-in/terre-haute [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Terre-Haute/567-North-5th-Street-47809$ http://getstdtested.com/$1/indiana-in/terre-haute [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Terre-Haute/637-Cherry-Street-PO-Box-1940-47807$ http://getstdtested.com/$1/indiana-in/terre-haute [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Trafalgar$ http://getstdtested.com/$1/indiana-in/trafalgar [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Warsaw$ http://getstdtested.com/$1/indiana-in/warsaw [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/West-Lafayette$ http://getstdtested.com/$1/indiana-in/west-lafayette [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Indiana-IN/Westfield$ http://getstdtested.com/$1/indiana-in/westfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Iowa-IA/Dubuque$ http://getstdtested.com/$1/iowa-ia/dubuque [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Iowa-IA/SIOUX-CITY$ http://getstdtested.com/$1/iowa-ia/sioux-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/Arkansas-City$ http://getstdtested.com/$1/kansas-ks/arkansas-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/Coffeyville$ http://getstdtested.com/$1/kansas-ks/coffeyville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/Columbus$ http://getstdtested.com/$1/kansas-ks/columbus [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/El-Dorado$ http://getstdtested.com/$1/kansas-ks/el-dorado [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/Emporia$ http://getstdtested.com/$1/kansas-ks/emporia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/Erie/1202-State-Street-16501$ http://getstdtested.com/$1/kansas-ks/erie [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kansas-KS/Salina$ http://getstdtested.com/$1/kansas-ks/salina [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kentucky-KY/Bowling-Green/1133-Adams-Street,-PO-Box-11-42101$ http://getstdtested.com/$1/kentucky-ky/bowling-green [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kentucky-KY/Franklin/841-Central-Street-3235$ http://getstdtested.com/$1/kentucky-ky/franklin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kentucky-KY/Lexington/310-South-Limestone-St-40508$ http://getstdtested.com/$1/kentucky-ky/lexington [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kentucky-KY/Louisville/850-Barrett-AveSuite-301-40204$ http://getstdtested.com/$1/kentucky-ky/louisville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kentucky-KY/Richmond$ http://getstdtested.com/$1/kentucky-ky/richmond [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Kentucky-KY/Stanford$ http://getstdtested.com/$1/kentucky-ky/stanford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Louisiana-LA/Lake-Charles$ http://getstdtested.com/$1/louisiana-la/lake-charles [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/1501-Division-Street-21217$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/1515-West-North-Avenue-21217$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/1811-Woodlawn-Drive-21207$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/3509-Eastern-Avenue-21213$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/600-N-Wolfe-Street-21205$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/620-N-Caroline-Street-21205$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/8812-Orchard-Tree-Lane-21204$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Baltimore/9000-Franklin-Square-Drive-21237$ http://getstdtested.com/$1/maryland-md/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Bel-Air$ http://getstdtested.com/$1/maryland-md/bel-air [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Ellicott-City$ http://getstdtested.com/$1/maryland-md/ellicott-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Federalsburg$ http://getstdtested.com/$1/maryland-md/federalsburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Fort-George-G-Meade$ http://getstdtested.com/$1/maryland-md/fort-george-g-meade [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Frostburg$ http://getstdtested.com/$1/maryland-md/frostburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Hancock$ http://getstdtested.com/$1/maryland-md/hancock [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Leonardtown$ http://getstdtested.com/$1/maryland-md/leonardtown [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Patuxent-River$ http://getstdtested.com/$1/maryland-md/patuxent-river [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Pocomoke-City/400-A-Walnut-Street-21851$ http://getstdtested.com/$1/maryland-md/pocomoke-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Rock-Point/-0$ http://getstdtested.com/$1/maryland-md/rock-point [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Snow-Hill$ http://getstdtested.com/$1/maryland-md/snow-hill [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Maryland-MD/Westminster/Thompson-Infirmary-21157$ http://getstdtested.com/$1/maryland-md/westminster [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Baltimore/1501-Division-Street-21217$ http://getstdtested.com/$1/massachusettes-ma/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Baltimore/4700-Mt-Hope-Drive-1215$ http://getstdtested.com/$1/massachusettes-ma/baltimore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Brockton$ http://getstdtested.com/$1/massachusettes-ma/brockton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Chelsea$ http://getstdtested.com/$1/massachusettes-ma/chelsea [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Dorchester$ http://getstdtested.com/$1/massachusettes-ma/dorchester [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Lawrence$ http://getstdtested.com/$1/massachusettes-ma/lawrence [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Lowell$ http://getstdtested.com/$1/massachusettes-ma/lowell [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Medford$ http://getstdtested.com/$1/massachusettes-ma/medford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/New-Bedford/1204-Purchase-St-2740$ http://getstdtested.com/$1/massachusettes-ma/new-bedford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Pittsfield$ http://getstdtested.com/$1/massachusettes-ma/pittsfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Quincy/333-N-6th-62301$ http://getstdtested.com/$1/massachusettes-ma/quincy [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Massachusettes-MA/Springfield/Riverstone-Clinic,-1640-G-Street-97477$ http://getstdtested.com/$1/massachusettes-ma/springfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Albion$ http://getstdtested.com/$1/michigan-mi/albion [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Algonac$ http://getstdtested.com/$1/michigan-mi/algonac [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Allegan$ http://getstdtested.com/$1/michigan-mi/allegan [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Ann-Arbor$ http://getstdtested.com/$1/michigan-mi/ann-arbor [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Baldwin$ http://getstdtested.com/$1/michigan-mi/baldwin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Battle-Creek$ http://getstdtested.com/$1/michigan-mi/battle-creek [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Bay-City$ http://getstdtested.com/$1/michigan-mi/bay-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Bellaire$ http://getstdtested.com/$1/michigan-mi/bellaire [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Beulah$ http://getstdtested.com/$1/michigan-mi/beulah [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Cheboygan$ http://getstdtested.com/$1/michigan-mi/cheboygan [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Flint/STD-Clinic-310-W-Oakley-48503$ http://getstdtested.com/$1/michigan-mi/flint [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Grand-Haven$ http://getstdtested.com/$1/michigan-mi/grand-haven [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Grand-Rapids/100-Michigan,-NE-49503$ http://getstdtested.com/$1/michigan-mi/grand-rapids [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Grand-Rapids/260-Jefferson,-SE-49502$ http://getstdtested.com/$1/michigan-mi/grand-rapids [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Grand-Rapids/310-Lafayette-SE,-Suite-410-49503$ http://getstdtested.com/$1/michigan-mi/grand-rapids [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Grand-Rapids/425-Cherry,-SE-49503$ http://getstdtested.com/$1/michigan-mi/grand-rapids [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Grand-Rapids/550-Cherry-Street-49503$ http://getstdtested.com/$1/michigan-mi/grand-rapids [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Hartford$ http://getstdtested.com/$1/michigan-mi/hartford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Hillsdale$ http://getstdtested.com/$1/michigan-mi/hillsdale [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Hudsonville$ http://getstdtested.com/$1/michigan-mi/hudsonville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Kalamazoo/111-W-Patterson-49007$ http://getstdtested.com/$1/michigan-mi/kalamazoo [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Kalkaska$ http://getstdtested.com/$1/michigan-mi/kalkaska [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Livonia/27459-Five-Mile-Road-48154$ http://getstdtested.com/$1/michigan-mi/livonia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Marquette$ http://getstdtested.com/$1/michigan-mi/marquette [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Menominee$ http://getstdtested.com/$1/michigan-mi/menominee [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Midland$ http://getstdtested.com/$1/michigan-mi/midland [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Mount-Pleasant$ http://getstdtested.com/$1/michigan-mi/mount-pleasant [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Muskegon$ http://getstdtested.com/$1/michigan-mi/muskegon [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Pontiac/1200-N-Telegraph-Road-48053$ http://getstdtested.com/$1/michigan-mi/pontiac [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Saginaw$ http://getstdtested.com/$1/michigan-mi/saginaw [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Sterling$ http://getstdtested.com/$1/michigan-mi/sterling [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Traverse-City$ http://getstdtested.com/$1/michigan-mi/traverse-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Michigan-MI/Wayne$ http://getstdtested.com/$1/michigan-mi/wayne [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Minnesota-MN/Minneapolis/1213-E-Franklin-Ave-55404$ http://getstdtested.com/$1/minnesota-mn/minneapolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Minnesota-MN/Minneapolis/324-East-35th-Street-55409$ http://getstdtested.com/$1/minnesota-mn/minneapolis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Minnesota-MN/Moorhead$ http://getstdtested.com/$1/minnesota-mn/moorhead [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Mississippi-MS/Biloxi$ http://getstdtested.com/$1/mississippi-ms/biloxi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Missouri-MO/Columbia$ http://getstdtested.com/$1/missouri-mo/columbia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Missouri-MO/Kansas-City/825-Euclid-Street-64124$ http://getstdtested.com/$1/missouri-mo/kansas-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Missouri-MO/Potosi$ http://getstdtested.com/$1/missouri-mo/potosi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Nebraska-NE/Columbus$ http://getstdtested.com/$1/nebraska-ne/columbus [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Nebraska-NE/Omaha$ http://getstdtested.com/$1/nebraska-ne/omaha [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Nevada-NV/Reno$ http://getstdtested.com/$1/nevada-nv/reno [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-Hampshire-NH/Berlin$ http://getstdtested.com/$1/new-hampshire-nh/berlin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-Hampshire-NH/Colebrook$ http://getstdtested.com/$1/new-hampshire-nh/colebrook [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-Jersey-NJ/Camden$ http://getstdtested.com/$1/new-jersey-nj/camden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-Jersey-NJ/New-Brunswick/277-George-Street-8901$ http://getstdtested.com/$1/new-jersey-nj/new-brunswick [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-Jersey-NJ/Trenton$ http://getstdtested.com/$1/new-jersey-nj/trenton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-Mexico-NM/Albuquerque/2001-North-Centro-Familiar-Boulevard,-Sw-87105$ http://getstdtested.com/$1/new-mexico-nm/albuquerque [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-York-NY/Brooklyn$ http://getstdtested.com/$1/new-york-ny/brooklyn [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/New-York-NY/Rochester$ http://getstdtested.com/$1/new-york-ny/rochester [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Akron$ http://getstdtested.com/$1/ohio-oh/akron [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Barnesville$ http://getstdtested.com/$1/ohio-oh/barnesville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Chillicothe$ http://getstdtested.com/$1/ohio-oh/chillicothe [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Columbus/1509-25th-Street-47201$ http://getstdtested.com/$1/ohio-oh/columbus [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Fremont$ http://getstdtested.com/$1/ohio-oh/fremont [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Greenville$ http://getstdtested.com/$1/ohio-oh/greenville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Ironton$ http://getstdtested.com/$1/ohio-oh/ironton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Lincoln-Heights$ http://getstdtested.com/$1/ohio-oh/lincoln-heights [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Lorain$ http://getstdtested.com/$1/ohio-oh/lorain [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Milford$ http://getstdtested.com/$1/ohio-oh/milford [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Ohio-OH/Youngstown$ http://getstdtested.com/$1/ohio-oh/youngstown [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Oklahoma-OK/Oklahoma-City$ http://getstdtested.com/$1/oklahoma-ok/oklahoma-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Oklahoma-OK/Tulsa$ http://getstdtested.com/$1/oklahoma-ok/tulsa [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Oregon-OR/Portland$ http://getstdtested.com/$1/oregon-or/portland [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Pennsylvania-PA/Carlisle$ http://getstdtested.com/$1/pennsylvania-pa/carlisle [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Pennsylvania-PA/Greensboro$ http://getstdtested.com/$1/pennsylvania-pa/greensboro [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Pennsylvania-PA/Philadelphia$ http://getstdtested.com/$1/pennsylvania-pa/philadelphia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Pennsylvania-PA/Scranton$ http://getstdtested.com/$1/pennsylvania-pa/scranton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Pennsylvania-PA/York$ http://getstdtested.com/$1/pennsylvania-pa/york [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/South-Carolina-SC/Columbia/4605-Monticello-Road-29203$ http://getstdtested.com/$1/south-carolina-sc/columbia [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/South-Carolina-SC/Fairfax$ http://getstdtested.com/$1/south-carolina-sc/fairfax [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Cookeville$ http://getstdtested.com/$1/tennessee-tn/cookeville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Dover$ http://getstdtested.com/$1/tennessee-tn/dover [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Dresden$ http://getstdtested.com/$1/tennessee-tn/dresden [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Dunlap$ http://getstdtested.com/$1/tennessee-tn/dunlap [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Erin$ http://getstdtested.com/$1/tennessee-tn/erin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Erwin$ http://getstdtested.com/$1/tennessee-tn/erwin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Fayetteville$ http://getstdtested.com/$1/tennessee-tn/fayetteville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Franklin$ http://getstdtested.com/$1/tennessee-tn/franklin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Gainesboro$ http://getstdtested.com/$1/tennessee-tn/gainesboro [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Greeneville$ http://getstdtested.com/$1/tennessee-tn/greeneville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Hohenwald$ http://getstdtested.com/$1/tennessee-tn/hohenwald [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Huntingdon$ http://getstdtested.com/$1/tennessee-tn/huntingdon [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Huntsville/101-Sivley-Road-35801$ http://getstdtested.com/$1/tennessee-tn/huntsville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Jackson$ http://getstdtested.com/$1/tennessee-tn/jackson [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Jamestown$ http://getstdtested.com/$1/tennessee-tn/jamestown [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Knoxville$ http://getstdtested.com/$1/tennessee-tn/knoxville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Lebanon$ http://getstdtested.com/$1/tennessee-tn/lebanon [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Lexington$ http://getstdtested.com/$1/tennessee-tn/lexington [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Livingston$ http://getstdtested.com/$1/tennessee-tn/livingston [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Manchester$ http://getstdtested.com/$1/tennessee-tn/manchester [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Memphis/2953-Broad-Ave-38112$ http://getstdtested.com/$1/tennessee-tn/memphis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Monterey$ http://getstdtested.com/$1/tennessee-tn/monterey [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Murfreesboro$ http://getstdtested.com/$1/tennessee-tn/murfreesboro [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Nashville/2507-12th-Avenue,-S-37204$ http://getstdtested.com/$1/tennessee-tn/nashville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Newport$ http://getstdtested.com/$1/tennessee-tn/newport [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Paris$ http://getstdtested.com/$1/tennessee-tn/paris [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Pikeville$ http://getstdtested.com/$1/tennessee-tn/pikeville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Pulaski$ http://getstdtested.com/$1/tennessee-tn/pulaski [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Rutledge$ http://getstdtested.com/$1/tennessee-tn/rutledge [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Savannah$ http://getstdtested.com/$1/tennessee-tn/savannah [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Selmer$ http://getstdtested.com/$1/tennessee-tn/selmer [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Smyrna-Airport$ http://getstdtested.com/$1/tennessee-tn/smyrna-airport [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Sneedville$ http://getstdtested.com/$1/tennessee-tn/sneedville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Sparta$ http://getstdtested.com/$1/tennessee-tn/sparta [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Tazwell$ http://getstdtested.com/$1/tennessee-tn/tazwell [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Tracy-City$ http://getstdtested.com/$1/tennessee-tn/tracy-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Trenton$ http://getstdtested.com/$1/tennessee-tn/trenton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Vonore$ http://getstdtested.com/$1/tennessee-tn/vonore [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Wartburg$ http://getstdtested.com/$1/tennessee-tn/wartburg [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Waynesboro$ http://getstdtested.com/$1/tennessee-tn/waynesboro [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Tennessee-TN/Winchester$ http://getstdtested.com/$1/tennessee-tn/winchester [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Alice$ http://getstdtested.com/$1/texas-tx/alice [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Anahuac$ http://getstdtested.com/$1/texas-tx/anahuac [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Andrews$ http://getstdtested.com/$1/texas-tx/andrews [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Austin/1820-East-8th-Street-78702$ http://getstdtested.com/$1/texas-tx/austin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Austin/408-W-23rd-Street-78705$ http://getstdtested.com/$1/texas-tx/austin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Austin/601-E-15th-78701$ http://getstdtested.com/$1/texas-tx/austin [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Bay-City$ http://getstdtested.com/$1/texas-tx/bay-city [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Beaumont/3440-Fanin-77701$ http://getstdtested.com/$1/texas-tx/beaumont [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Beeville$ http://getstdtested.com/$1/texas-tx/beeville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Belleville$ http://getstdtested.com/$1/texas-tx/belleville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Belleville/25-Bellevue-ParkPlaza-62223$ http://getstdtested.com/$1/texas-tx/belleville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Bracketville$ http://getstdtested.com/$1/texas-tx/bracketville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Brownfield$ http://getstdtested.com/$1/texas-tx/brownfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Brownsville$ http://getstdtested.com/$1/texas-tx/brownsville [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Bryan$ http://getstdtested.com/$1/texas-tx/bryan [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Carrizo-Springs$ http://getstdtested.com/$1/texas-tx/carrizo-springs [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Claude$ http://getstdtested.com/$1/texas-tx/claude [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Commerce$ http://getstdtested.com/$1/texas-tx/commerce [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Conroe$ http://getstdtested.com/$1/texas-tx/conroe [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Corpus-Christi/1702-Horne-Road-78408$ http://getstdtested.com/$1/texas-tx/corpus-christi [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Cotulla$ http://getstdtested.com/$1/texas-tx/cotulla [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Crosbyton$ http://getstdtested.com/$1/texas-tx/crosbyton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Cuero$ http://getstdtested.com/$1/texas-tx/cuero [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Del-Rio$ http://getstdtested.com/$1/texas-tx/del-rio [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Demmitt$ http://getstdtested.com/$1/texas-tx/demmitt [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Texas-TX/Denton/300-N-Carroll-76201$ http://getstdtested.com/$1/texas-tx/denton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Vermont-VT/Burlington$ http://getstdtested.com/$1/vermont-vt/burlington [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Vermont-VT/Plainfield$ http://getstdtested.com/$1/vermont-vt/plainfield [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Alexandria/3804-Executive-Avenue-D-1-22305$ http://getstdtested.com/$1/virginia-va/alexandria [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Arrington$ http://getstdtested.com/$1/virginia-va/arrington [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Boydton$ http://getstdtested.com/$1/virginia-va/boydton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Ivor$ http://getstdtested.com/$1/virginia-va/ivor [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Monterey$ http://getstdtested.com/$1/virginia-va/monterey [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Nassawadox$ http://getstdtested.com/$1/virginia-va/nassawadox [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/New-Canton$ http://getstdtested.com/$1/virginia-va/new-canton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Newport-News$ http://getstdtested.com/$1/virginia-va/newport-news [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Portsmouth/664-Lincoln-Street-23704$ http://getstdtested.com/$1/virginia-va/portsmouth [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Richmond$ http://getstdtested.com/$1/virginia-va/richmond [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Virginia-VA/Victoria/1508-K-V-Road-23974$ http://getstdtested.com/$1/virginia-va/victoria [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-DC-DC$ http://getstdtested.com/$1/washington-dc [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Chehalis$ http://getstdtested.com/$1/washington-wa/chehalis [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Othello$ http://getstdtested.com/$1/washington-wa/othello [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Pasco$ http://getstdtested.com/$1/washington-wa/pasco [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Renton$ http://getstdtested.com/$1/washington-wa/renton [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Seattle$ http://getstdtested.com/$1/washington-wa/seattle [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Tacoma$ http://getstdtested.com/$1/washington-wa/tacoma [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Toppenish$ http://getstdtested.com/$1/washington-wa/toppenish [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Washington-WA/Wenatchee/600-Orondo-$ http://getstdtested.com/$1/washington-wa/wenatchee [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Green-Bay$ http://getstdtested.com/$1/wisconsin-wi/green-bay [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Kenosha$ http://getstdtested.com/$1/wisconsin-wi/kenosha [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Lakewood$ http://getstdtested.com/$1/wisconsin-wi/lakewood [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Madison$ http://getstdtested.com/$1/wisconsin-wi/madison [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Menasha$ http://getstdtested.com/$1/wisconsin-wi/menasha [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Milwaukee/1337-South-16Th-Street-53204$ http://getstdtested.com/$1/wisconsin-wi/milwaukee [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Milwaukee/3522-West-Lisbon-Avenue-53208$ http://getstdtested.com/$1/wisconsin-wi/milwaukee [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wisconsin-WI/Wausau$ http://getstdtested.com/$1/wisconsin-wi/wausau [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wyoming-WY/EVANSTON/2100-Ridge-Avenue-60202$ http://getstdtested.com/$1/wyoming-wy/evanston [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wyoming-WY/Gillette$ http://getstdtested.com/$1/wyoming-wy/gillette [R=301,NC,L]
+
+RewriteCond %{REQUEST_URI} [A-Z]
+RewriteRule ^(.*)/Wyoming-WY/Laramie$ http://getstdtested.com/$1/wyoming-wy/laramie [R=301,NC,L]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/22/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 12/30/2011
+
+RewriteRule ^blog/tag$ http://getstdtested.com/blog [L,NC,R=301]
+RewriteRule ^herpes-confirmation-test$ http://getstdtested.com/herpes-test [L,NC,R=301]
+RewriteRule ^symptoms-of-stds/bumps-on-skin$ http://getstdtested.com/symptoms-of-stds [L,NC,R=301]
+
+RewriteRule ^free-std-clinics/Alabama-AL/Ashland/15921-Boundary-Drive-38603$ http://getstdtested.com/free-std-clinics/alabama-al/ashland [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Carrollton/PO-Box-98-41008$ http://getstdtested.com/free-std-clinics/alabama-al/carrollton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Clayton/N-Midway-Street-36016$ http://getstdtested.com/free-std-clinics/alabama-al/clayton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Decatur/PO-Box-2239-35601$ http://getstdtested.com/free-std-clinics/alabama-al/decatur [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Florence/PO-Box-818-35631$ http://getstdtested.com/free-std-clinics/alabama-al/florence [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Foley/Peachtree-Professional-Center-36535$ http://getstdtested.com/free-std-clinics/alabama-al/foley [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Greensboro/East-11th-Street-32330$ http://getstdtested.com/free-std-clinics/alabama-al/greensboro [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Hamilton/Highway-No-78-35570$ http://getstdtested.com/free-std-clinics/alabama-al/hamilton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Huntsville/Courthouse-Annex-Kentucky-St-37753$ http://getstdtested.com/free-std-clinics/alabama-al/huntsville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Irvington/12701-Padgett-Switch-Road-36509$ http://getstdtested.com/free-std-clinics/alabama-al/irvington [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Lafayette/P-O-Box-26-37083$ http://getstdtested.com/free-std-clinics/alabama-al/lafayette [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Marion/Williamson-County-Airport-62959$ http://getstdtested.com/free-std-clinics/alabama-al/marion [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Russellville/E-Limestone-Street-35653$ http://getstdtested.com/free-std-clinics/alabama-al/russellville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Tuscaloosa/Capstone-College-Of-Nursing-35580$ http://getstdtested.com/free-std-clinics/alabama-al/tuscaloosa [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alabama-AL/Wetumpka/Highway-231-N-36092$ http://getstdtested.com/free-std-clinics/alabama-al/wetumpka [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alaska-AK/Anchorage/Emergency-Room-99514$ http://getstdtested.com/free-std-clinics/alaska-ak/anchorage [L,NC,R=301]
+RewriteRule ^free-std-clinics/Alaska-AK/Anchorage/PO-Box-201849-99529$ http://getstdtested.com/free-std-clinics/alaska-ak/anchorage [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/Cibecue/P-O-Box-37-85911$ http://getstdtested.com/free-std-clinics/arizona-az/cibecue [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/Florence/PO-Box-818-35631$ http://getstdtested.com/free-std-clinics/arizona-az/florence [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/GLENDALE/Glendale-85309$ http://getstdtested.com/free-std-clinics/arizona-az/glendale [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/Ganado/Sage-Memorial-Hospital-86505$ http://getstdtested.com/free-std-clinics/arizona-az/ganado [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/Scottsdale/7700-E-Roosevelt-85257$ http://getstdtested.com/free-std-clinics/arizona-az/scottsdale [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/TEMPE/8625-S-56th-St-85283$ http://getstdtested.com/free-std-clinics/arizona-az/tempe [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/Tonalea/Indian-Health-Facility-86044$ http://getstdtested.com/free-std-clinics/arizona-az/tonalea [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arizona-AZ/Tucson/15921-W-Ajo-Way-85735$ http://getstdtested.com/free-std-clinics/arizona-az/tucson [L,NC,R=301]
+RewriteRule ^free-std-clinics/Arkansas-AR/Little-Rock/6324-Asher-Avenue-72204$ http://getstdtested.com/free-std-clinics/arkansas-ar/little-rock [L,NC,R=301]
+RewriteRule ^free-std-clinics/California-CA/Bell-Gardens/6501-South-Garfield-Ave-90201$ http://getstdtested.com/free-std-clinics/california-ca/bell-gardens [L,NC,R=301]
+RewriteRule ^free-std-clinics/California-CA/Beverly-Hills/9012-W-Olympic-Boulevard-90211$ http://getstdtested.com/free-std-clinics/california-ca/beverly-hills [L,NC,R=301]
+RewriteRule ^free-std-clinics/California-CA/Canoga-Park/7107-Remmet-Avenue-91303$ http://getstdtested.com/free-std-clinics/california-ca/canoga-park [L,NC,R=301]
+RewriteRule ^free-std-clinics/California-CA/Union-City/33255-Ninth-Street-94587$ http://getstdtested.com/free-std-clinics/california-ca/union-city [L,NC,R=301]
+RewriteRule ^free-std-clinics/Connecticut-CT/New-Haven/One-State-Street-6511$ http://getstdtested.com/free-std-clinics/connecticut-ct/new-haven [L,NC,R=301]
+RewriteRule ^free-std-clinics/Delaware-DE/Newark/Laurel-Hall-19716$ http://getstdtested.com/free-std-clinics/delaware-de/newark [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/BELLE-GLADE/38754-State-Road80-33430$ http://getstdtested.com/free-std-clinics/florida-fl/belle-glade [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/BRISTOL/12832-NW-Central-Ave-32321$ http://getstdtested.com/free-std-clinics/florida-fl/bristol [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Bonita-Springs/Bonita-Professional-Park-34134$ http://getstdtested.com/free-std-clinics/florida-fl/bonita-springs [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Dade-City/37944-Church-Ave-0$ http://getstdtested.com/free-std-clinics/florida-fl/dade-city [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Dade-City/37944-Church-Avenue-33525$ http://getstdtested.com/free-std-clinics/florida-fl/dade-city [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Fort-Lauderdale/6405-N-Federal-Hwy-Suite-205-33308$ http://getstdtested.com/free-std-clinics/florida-fl/fort-lauderdale [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Greensboro/East-11th-Street-32330$ http://getstdtested.com/free-std-clinics/florida-fl/greensboro [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Gretna/Highway-90-West-32332$ http://getstdtested.com/free-std-clinics/florida-fl/gretna [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Hilliard/37203-Pecan-St-32046$ http://getstdtested.com/free-std-clinics/florida-fl/hilliard [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Jasper/Highway-41-North-32052$ http://getstdtested.com/free-std-clinics/florida-fl/jasper [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/MOORE-HAVEN/Building-998$ http://getstdtested.com/free-std-clinics/florida-fl/moore-haven [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Melbourne/PO-Box-604-72556$ http://getstdtested.com/free-std-clinics/florida-fl/melbourne [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Miami/10300-Southwest-216Th-Street-33190$ http://getstdtested.com/free-std-clinics/florida-fl/miami [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Monticello/Route$ http://getstdtested.com/free-std-clinics/florida-fl/monticello [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Monticello/Route-$ http://getstdtested.com/free-std-clinics/florida-fl/monticello [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/New-Port-Richey/10841-Little-Road-34652$ http://getstdtested.com/free-std-clinics/florida-fl/new-port-richey [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Orlando/12050-E-Colonial-Drive-32826$ http://getstdtested.com/free-std-clinics/florida-fl/orlando [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Perrine/12330-Quail-Roost-Dr-33157$ http://getstdtested.com/free-std-clinics/florida-fl/perrine [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Port-Richey/11511-Denton-Avenue-34667$ http://getstdtested.com/free-std-clinics/florida-fl/port-richey [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Sebring/7205-S-George-Blvd-33870$ http://getstdtested.com/free-std-clinics/florida-fl/sebring [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Spring-Hill/7465-Forest-Oaks-Blvd-34606$ http://getstdtested.com/free-std-clinics/florida-fl/spring-hill [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Trenton/13570-North-Main-Street-30752$ http://getstdtested.com/free-std-clinics/florida-fl/trenton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Trenton/Kellwood-Drive-38382$ http://getstdtested.com/free-std-clinics/florida-fl/trenton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Yulee/State-Road-200-A-32097$ http://getstdtested.com/free-std-clinics/florida-fl/yulee [L,NC,R=301]
+RewriteRule ^free-std-clinics/Florida-FL/Zephyrhills/39048-Alston-Avenue-33539$ http://getstdtested.com/free-std-clinics/florida-fl/zephyrhills [L,NC,R=301]
+RewriteRule ^free-std-clinics/Idaho-ID/Caldwell/Farmway-Village-83605$ http://getstdtested.com/free-std-clinics/idaho-id/caldwell [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Belleville/Region-4-1304-South-Front-77418$ http://getstdtested.com/free-std-clinics/illinois-il/belleville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Chicago/9718-South-Halsted-Street-60628$ http://getstdtested.com/free-std-clinics/illinois-il/chicago [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Clinton/Hwy-65-South$ http://getstdtested.com/free-std-clinics/illinois-il/clinton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Dixon/PO-Box-98-42409$ http://getstdtested.com/free-std-clinics/illinois-il/dixon [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Galena/9483-Route-20-West-61036$ http://getstdtested.com/free-std-clinics/illinois-il/galena [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Hickory-Hills/8847-West-87th-Street-60457$ http://getstdtested.com/free-std-clinics/illinois-il/hickory-hills [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Petersburg/RR-$ http://getstdtested.com/free-std-clinics/illinois-il/petersburg [L,NC,R=301]
+RewriteRule ^free-std-clinics/Illinois-IL/Tremont/RR$ http://getstdtested.com/free-std-clinics/illinois-il/tremont [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Indianapolis/12689-West-Rockville-Rd-46234$ http://getstdtested.com/free-std-clinics/indiana-in/indianapolis [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Indianapolis/6042-East-21st-Street-46202$ http://getstdtested.com/free-std-clinics/indiana-in/indianapolis [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Indianapolis/8121-Center-Run-Drive-46224$ http://getstdtested.com/free-std-clinics/indiana-in/indianapolis [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Indianapolis/8502-East-Washington-Street-46219$ http://getstdtested.com/free-std-clinics/indiana-in/indianapolis [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Merrillville/8645-ConnecticutStreet-46410$ http://getstdtested.com/free-std-clinics/indiana-in/merrillville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Nashville/Salt-Creek-Plaza-47448$ http://getstdtested.com/free-std-clinics/indiana-in/nashville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Indiana-IN/Portland/PO-Box-100-233-North-Main-Street-71663$ http://getstdtested.com/free-std-clinics/indiana-in/portland [L,NC,R=301]
+RewriteRule ^free-std-clinics/Iowa-IA/IOWA-CITY/University-of-Iowa-52242$ http://getstdtested.com/free-std-clinics/iowa-ia/iowa-city [L,NC,R=301]
+RewriteRule ^free-std-clinics/Kansas-KS/Alma/Courthouse-66401$ http://getstdtested.com/free-std-clinics/kansas-ks/alma [L,NC,R=301]
+RewriteRule ^free-std-clinics/Kansas-KS/Columbus/PO-Box-107-66725$ http://getstdtested.com/free-std-clinics/kansas-ks/columbus [L,NC,R=301]
+RewriteRule ^free-std-clinics/Kentucky-KY/Covington/One-Medical-Village-Drive-41017$ http://getstdtested.com/free-std-clinics/kentucky-ky/covington [L,NC,R=301]
+RewriteRule ^free-std-clinics/Louisiana-LA/Bogalusa/Louisiana-Avenue-70427$ http://getstdtested.com/free-std-clinics/louisiana-la/bogalusa [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Baltimore/8812-Orchard-Tree-Lane-21204$ http://getstdtested.com/free-std-clinics/maryland-md/baltimore [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Chestertown/Gibson-Avenue$ http://getstdtested.com/free-std-clinics/maryland-md/chestertown [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Cheverly/Hospital-Road-20785$ http://getstdtested.com/free-std-clinics/maryland-md/cheverly [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/College-Park/Health-Center-20742$ http://getstdtested.com/free-std-clinics/maryland-md/college-park [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Cumberland/Willowbrook-Rd$ http://getstdtested.com/free-std-clinics/maryland-md/cumberland [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Dade-City/37944-Church-Ave-0$ http://getstdtested.com/free-std-clinics/maryland-md/dade-city [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Denton/Hospital-Student-Health-Center-76201$ http://getstdtested.com/free-std-clinics/maryland-md/denton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Frostburg/Health-Center-21532$ http://getstdtested.com/free-std-clinics/maryland-md/frostburg [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Patuxent-River/Preventive-Medicine-Service-20670$ http://getstdtested.com/free-std-clinics/maryland-md/patuxent-river [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Princess-Anne/12137-Elm-Street-21853$ http://getstdtested.com/free-std-clinics/maryland-md/princess-anne [L,NC,R=301]
+RewriteRule ^free-std-clinics/Maryland-MD/Westminster/Thompson-Infirmary-21157$ http://getstdtested.com/free-std-clinics/maryland-md/westminster [L,NC,R=301]
+RewriteRule ^free-std-clinics/Massachusettes-MA/Salem/PO-Box-550-72576$ http://getstdtested.com/free-std-clinics/massachusettes-ma/salem [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Bellaire/County-Building-49615$ http://getstdtested.com/free-std-clinics/michigan-mi/bellaire [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Detroit/8921-John-C-Lodge-48202$ http://getstdtested.com/free-std-clinics/michigan-mi/detroit [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/East-Lansing/Michigan-State-University-48823$ http://getstdtested.com/free-std-clinics/michigan-mi/east-lansing [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Flint/P-O-Box-438-48501$ http://getstdtested.com/free-std-clinics/michigan-mi/flint [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Flint/STD-Clinic-310-W-Oakley-48503$ http://getstdtested.com/free-std-clinics/michigan-mi/flint [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Holland/12251-South-James-49423$ http://getstdtested.com/free-std-clinics/michigan-mi/holland [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Livonia/27459-Five-Mile-Road-48154$ http://getstdtested.com/free-std-clinics/michigan-mi/livonia [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Marquette/Gries-Hall-49855$ http://getstdtested.com/free-std-clinics/michigan-mi/marquette [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Southfield/27725-Greenfield-48076$ http://getstdtested.com/free-std-clinics/michigan-mi/southfield [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Traverse-City/10767-Traverse-Highway-49684$ http://getstdtested.com/free-std-clinics/michigan-mi/traverse-city [L,NC,R=301]
+RewriteRule ^free-std-clinics/Michigan-MI/Wayne/33030-Van-Born-48184$ http://getstdtested.com/free-std-clinics/michigan-mi/wayne [L,NC,R=301]
+RewriteRule ^free-std-clinics/Missouri-MO/Hamilton/Highway-No-78-35570$ http://getstdtested.com/free-std-clinics/missouri-mo/hamilton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Nebraska-NE/Columbus/PO-Box-107-66725$ http://getstdtested.com/free-std-clinics/nebraska-ne/columbus [L,NC,R=301]
+RewriteRule ^free-std-clinics/North-Dakota-ND/Beulah/PO-Box-335-49617$ http://getstdtested.com/free-std-clinics/north-dakota-nd/beulah [L,NC,R=301]
+RewriteRule ^free-std-clinics/North-Dakota-ND/Turtle-Lake/PO-Box-535-58575$ http://getstdtested.com/free-std-clinics/north-dakota-nd/turtle-lake [L,NC,R=301]
+RewriteRule ^free-std-clinics/Ohio-OH/Cleveland/8300-Hough-Avenue-44103$ http://getstdtested.com/free-std-clinics/ohio-oh/cleveland [L,NC,R=301]
+RewriteRule ^free-std-clinics/Ohio-OH/Columbus/PO-Box-107-66725$ http://getstdtested.com/free-std-clinics/ohio-oh/columbus [L,NC,R=301]
+RewriteRule ^free-std-clinics/Ohio-OH/Fremont/39500-Liberty-Street-94538$ http://getstdtested.com/free-std-clinics/ohio-oh/fremont [L,NC,R=301]
+RewriteRule ^free-std-clinics/Ohio-OH/Lisbon/7880-Lincole-Place-44432$ http://getstdtested.com/free-std-clinics/ohio-oh/lisbon [L,NC,R=301]
+RewriteRule ^free-std-clinics/Pennsylvania-PA/Monessen/Eastgage-8-15062$ http://getstdtested.com/free-std-clinics/pennsylvania-pa/monessen [L,NC,R=301]
+RewriteRule ^free-std-clinics/Pennsylvania-PA/Philadelphia/PO-Box-9390-19139$ http://getstdtested.com/free-std-clinics/pennsylvania-pa/philadelphia [L,NC,R=301]
+RewriteRule ^free-std-clinics/Pennsylvania-PA/Pittsburgh/6023-Harvard-Street-15206$ http://getstdtested.com/free-std-clinics/pennsylvania-pa/pittsburgh [L,NC,R=301]
+RewriteRule ^free-std-clinics/Tennessee-TN/Dresden/PO-Box-135-38225$ http://getstdtested.com/free-std-clinics/tennessee-tn/dresden [L,NC,R=301]
+RewriteRule ^free-std-clinics/Tennessee-TN/Lynchburg/PO-Box-196-37352$ http://getstdtested.com/free-std-clinics/tennessee-tn/lynchburg [L,NC,R=301]
+RewriteRule ^free-std-clinics/Tennessee-TN/Newport/College-Street-37821$ http://getstdtested.com/free-std-clinics/tennessee-tn/newport [L,NC,R=301]
+RewriteRule ^free-std-clinics/Tennessee-TN/Smithville/63420-Highway-25-North-38870$ http://getstdtested.com/free-std-clinics/tennessee-tn/smithville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Texas-TX/Bellville/Field-Office-1304-S-Front-77418$ http://getstdtested.com/free-std-clinics/texas-tx/bellville [L,NC,R=301]
+RewriteRule ^free-std-clinics/Texas-TX/College-Station/P-O-Box-147-72053$ http://getstdtested.com/free-std-clinics/texas-tx/college-station [L,NC,R=301]
+RewriteRule ^free-std-clinics/Texas-TX/Columbus/PO-Box-107-66725$ http://getstdtested.com/free-std-clinics/texas-tx/columbus [L,NC,R=301]
+RewriteRule ^free-std-clinics/Texas-TX/Commerce/Hospital-75428$ http://getstdtested.com/free-std-clinics/texas-tx/commerce [L,NC,R=301]
+RewriteRule ^free-std-clinics/Texas-TX/Corpus-Christi/General-Medicine-Clinic-78418$ http://getstdtested.com/free-std-clinics/texas-tx/corpus-christi [L,NC,R=301]
+RewriteRule ^free-std-clinics/Texas-TX/Denton/Hospital-Student-Health-Center-76201$ http://getstdtested.com/free-std-clinics/texas-tx/denton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Virginia-VA/Ivor/PO-Box-210-23866$ http://getstdtested.com/free-std-clinics/virginia-va/ivor [L,NC,R=301]
+RewriteRule ^free-std-clinics/Virginia-VA/Lynchburg/PO-Box-196-37352$ http://getstdtested.com/free-std-clinics/virginia-va/lynchburg [L,NC,R=301]
+RewriteRule ^free-std-clinics/Virginia-VA/Stony-Creek/12454-Hartley-Street-23882$ http://getstdtested.com/free-std-clinics/virginia-va/stony-creek [L,NC,R=301]
+RewriteRule ^free-std-clinics/Washington-WA/Bremerton/PO-Box-960-98337$ http://getstdtested.com/free-std-clinics/washington-wa/bremerton [L,NC,R=301]
+RewriteRule ^free-std-clinics/Washington-WA/Chewelah/PO-Box-808-99109$ http://getstdtested.com/free-std-clinics/washington-wa/chewelah [L,NC,R=301]
+RewriteRule ^free-std-clinics/Washington-WA/Everett/PO-Box-13060-98206$ http://getstdtested.com/free-std-clinics/washington-wa/everett [L,NC,R=301]
+RewriteRule ^free-std-clinics/Washington-WA/Nespelem/PO-Box-290-99138$ http://getstdtested.com/free-std-clinics/washington-wa/nespelem [L,NC,R=301]
+RewriteRule ^free-std-clinics/Wisconsin-WI/Lakewood/15397-Hwy-32-54138$ http://getstdtested.com/free-std-clinics/wisconsin-wi/lakewood [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 12/30/2011
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 1/6/2012
+
+RewriteRule ^lil-b-i-got-aids-lyrics-infographic$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 1/6/2012
+############################################
+
+
+############################################
+## REDIRECTIONS added by Piotr Bieszk on 1/10/2012
+
+RewriteRule ^od/gettingtested/f/publicetestfaq.htm$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^od/gettingtested/f/scabtestfaq.htm$ http://getstdtested.com [L,NC,R=301]
+RewriteRule ^about-us.php$ http://getstdtested.com [L,NC,R=301]
+
+## EOF REDIRECTIONS added by Piotr Bieszk on 1/10/2012
+############################################
+
+
+############################################
+## REGEX REDIRECTIONS added by Piotr Bieszk updated on 12/12/2011
+
+# removes file:/ from all URLs
+RewriteCond %{HTTPS} !^on$
+RewriteCond %{REQUEST_URI} (.*)$
+RewriteCond %{REQUEST_URI} !admin
+RewriteRule ^(.*)file:/(.*)$ http://getstdtested.com/$1/$2 [R=301,NC,L]
+
+# removes index.php from all URLs
+RewriteCond %{HTTPS} !^on$
+RewriteCond %{REQUEST_URI} (.*)$
+RewriteCond %{REQUEST_URI} !admin
+RewriteRule ^(.*)/index.php$ http://getstdtested.com/$1 [R=301,NC,L]
+
+# removes trailing slash from all URLs
+# KEEP IT IN THE BOOTOM OF htaccess TO AVOID DOUBLE REDIRECTS
+RewriteCond %{HTTPS} !^on$
+RewriteCond %{REQUEST_URI} (.*)$
+RewriteCond %{REQUEST_URI} !admin
+RewriteRule ^(.*)/$ http://getstdtested.com/$1 [R=301,NC,L]
+
+# remove www from all URLs
+RewriteCond %{HTTP_HOST} ^www.getstdtested.com [NC]
+RewriteRule ^(.*)$ http://getstdtested.com/$1 [L,R=301]
+
+## EOF REGEX REDIRECTIONS added by Piotr Bieszk updated on 12/12/2011
+############################################
+
+
+############################################
+## workaround for HTTP authorization
+## in CGI environment
+
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME}\.php -f
+    RewriteRule ^(.*)$ $1.php
+
+############################################
+## always send 404 on missing files in these folders
+
+    RewriteCond %{REQUEST_URI} !^/(media|skin|js)/
+
+############################################
+## never rewrite for existing files, directories and links
+   # RewriteCond %{REQUEST_URI} !^/aff-widget
+   # RewriteCond %{REQUEST_URI} !^/aff-widget/
+    RewriteCond %{REQUEST_URI} !^/server-status
+
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-l
+
+############################################
+## rewrite everything else to index.php
+
+   RewriteRule .* index.php [L]
+
+</IfModule>
+
+
+############################################
+## Prevent character encoding issues from server overrides
+## If you still have problems, use the second line instead
+
+    AddDefaultCharset Off
+    #AddDefaultCharset UTF-8
+
+<IfModule mod_expires.c>
+
+############################################
+## Add default Expires header
+## http://developer.yahoo.com/performance/rules.html#expires
+
+    ExpiresDefault "access plus 1 year"
+
+</IfModule>
+
+############################################
+## By default allow all access
+
+#    Order allow,deny
+#    Allow from all
+
+###########################################
+## Deny access to release notes to prevent disclosure of the installed Magento version
+
+    <Files RELEASE_NOTES.txt>
+        order allow,deny
+        deny from all
+    </Files>
+
+############################################
+## If running in cluster environment, uncomment this
+## http://developer.yahoo.com/performance/rules.html#etags
+
+    #FileETag none
+
+SetEnvIf Host ^getstdtested\.com MAGE_RUN_CODE=gst
+SetEnvIf Host ^getstdtested\.com MAGE_RUN_TYPE=website
+
+SetEnvIf Host ^stdtesting\.com MAGE_RUN_CODE=stdt
+SetEnvIf Host ^stdtesting\.com MAGE_RUN_TYPE=website

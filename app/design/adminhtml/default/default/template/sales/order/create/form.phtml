@@ -1,0 +1,662 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+ 
+?>
+
+
+<?php 
+
+$ar = Mage::getSingleton('admin/session')->getAuthResponse();
+
+Mage::getSingleton('admin/session')->unsAuthResponse();
+
+//print_r($ar);
+
+$art = Mage::getSingleton('admin/session')->getAuthResponseText();
+
+Mage::getSingleton('admin/session')->unsAuthResponseText();
+
+//print_r($art);
+
+$s = Mage::getSingleton('admin/session')->getLastInfo();
+
+//print_r($s);
+
+Mage::getSingleton('admin/session')->setLastInfo(array());
+
+Mage::getSingleton('admin/session')->unsLastInfo();
+
+?>
+
+<?php Mage::getSingleton('core/session')->setIsNnr(0); ?>
+<script type="text/javascript">
+    var order = new AdminOrder(<?php echo $this->getOrderDataJson() ?>);
+    order.setLoadBaseUrl('<?php echo $this->getLoadBlockUrl() ?>');
+    var payment = {};
+    payment.switchMethod = order.switchPaymentMethod.bind(order);	
+	var total = 0;
+	
+	var curType = ''
+	
+	var cartArr = new Array();
+	
+	var nnrPrice = 0;
+	
+	var dobReal = new Array();
+	dobReal[0] = '00';
+	dobReal[1] = '00';
+	dobReal[2] = '0000';
+	
+	function updateTotal(id,priceOpt) {
+		
+		
+		
+		if (priceOpt < 1 || priceOpt == null) {
+			
+			priceOpt = 0;
+			
+		}
+									
+		if (document.getElementById(id).value < 0) {
+			
+		tid = "hid-"+id;
+				
+		document.getElementById(id).value = 1;
+			
+		itemId = document.getElementById(tid).value;
+		
+		cartArr["hid-"+id] = 0;
+				
+		order.removeQuoteItem(itemId);
+		
+		tprice = nnrPrice-priceOpt;
+		
+		nnrPrice = tprice;
+		
+		document.getElementById('payatlab').innerHTML = "$"+tprice+".00";
+		
+		} else {
+			
+		document.getElementById(id).value = -1;
+		
+		cartArr["hid-"+id] = 1; 
+	
+		order.addProduct(id);
+		
+		tprice = nnrPrice+priceOpt;
+		
+		nnrPrice = tprice;
+		
+		document.getElementById('payatlab').innerHTML = "$"+tprice+".00";
+				
+		}
+		
+	}
+	
+	function toggleNnr(y) {
+		
+		if (y == 1) {
+			
+			document.getElementById('nnr-lab-hide').style.display = 'block';
+			document.getElementById('nnr-home-hide').style.display = 'block';
+			document.getElementById('lab-hide').style.display = 'none';
+			document.getElementById('home-hide').style.display = 'none';
+			document.getElementById('is_nnr').value = 1;
+			
+		} else {
+			
+			document.getElementById('nnr-lab-hide').style.display = 'none';
+			document.getElementById('nnr-home-hide').style.display = 'none';
+			document.getElementById('lab-hide').style.display = 'block';
+			document.getElementById('home-hide').style.display = 'block';
+			document.getElementById('is_nnr').value = 0;
+			
+		}		
+	}
+	
+	function bdaymon(v){
+		
+		dobReal[0] = v;
+		//alert(dobReal[0]+"/"+dobReal[1]+"/"+dobReal[2]);
+		document.getElementById('dob').value = dobReal[0]+"/"+dobReal[1]+"/"+dobReal[2];
+		
+	}
+	
+	function bdayday(v){
+		
+		dobReal[1] = v;
+		document.getElementById('dob').value = dobReal[0]+"/"+dobReal[1]+"/"+dobReal[2];
+	}
+	
+	function bdayyer(v){
+		
+		dobReal[2] = v;
+		document.getElementById('dob').value = dobReal[0]+"/"+dobReal[1]+"/"+dobReal[2];
+	}
+	
+	
+		function handlerFunction(){
+		var request = new Ajax.Request(
+			'<?php echo $this->getUrl('*/*/getlabs'); ?>',
+			{
+				method: 'post',
+				onComplete: function(transport){ // Defining Complete Callback Function
+					
+					var jsonResponse=transport.responseText;
+					
+					if(jsonResponse.error){
+						
+						alert("Error Occured");
+						return false;
+					
+					}else{
+			
+						document.getElementById('location_submit_button').disabled = false;
+						document.getElementById('loading-mask').style.display='none';
+						document.getElementById("location-results").innerHTML = jsonResponse;
+					}
+				},
+				parameters: compileLabLookupPost() // Form.serialize($("labs-by-zip")) // Seriallizing the form input values
+			}
+		);
+		}
+
+    function compileLabLookupPost()
+    {
+        var labs_form_data = Form.serialize($("labs-by-zip"));
+        // Find all the products which have been selected for purchase
+        product_id_regexp = /[0-9]+/i;
+        ordered_products = $("order-products").select('input[value="-1"]');
+        product_ids_string = '';
+        for (var i = 0; i < ordered_products.length; i++) {
+            product_form_name = ordered_products[i].name;
+            product_id = product_form_name.match(product_id_regexp);
+            product_ids_string += product_id + ",";
+        }
+
+        return labs_form_data + "&product_ids=" + product_ids_string;
+    }
+
+		
+	function lostOrder() {
+
+      var request = new Ajax.Request(
+      '<?php echo $this->getUrl('*/*/lostorder',array('_secure'=>true)); ?>',
+      {
+        method: 'post',
+        onComplete: function(transport){ // Defining Complete Callback Function
+          var jsonResponse=transport.responseText;
+
+			
+
+            window.location = '<?php echo Mage::getUrl('admin_dashboard/sales_order'); ?>';
+        },
+
+        parameters: Form.serialize($("edit_form")) // Seriallizing the form input values
+
+      }
+
+    );
+    }
+		
+		function selectLab(labId,labType,labZip) {
+
+			document.getElementById('lab-type').value = labType;
+
+			document.getElementById('lab-id').value = labId;
+			
+			document.getElementById('lab-zip').value = labZip;
+			
+			document.getElementById('serilab').value = document.getElementById(labId+'-ser').innerHTML;
+	
+		}
+				 
+	
+</script>
+<form id="edit_form" action="<?php echo $this->getSaveUrl() ?>" method="post" enctype="multipart/form-data">
+	<input id="lab-id" type="hidden" name="lab-id" value="<?php echo ($s['lab-id']?$s['lab-id']:"");?>">
+	<input id="lab-type" type="hidden" name="lab-type" value="<?php echo ($s['lab-type']?$s['lab-type']:"");?>">
+	<input id="lab-zip" type="hidden" name="lab-zip" value="<?php echo ($s['lab-zip']?$s['lab-zip']:"");?>">
+	<input id="serilab" type="hidden" name="serilab" value="<?php echo ($s['serilab']?$s['serilab']:"");?>" />
+	<input id="is_nnr" name="is_nnr" type="hidden" value="<?php echo ($s['is_nnr']?1:0);?>" />
+	
+	<div style="display:none;">
+	<input type="radio" <?php if ($s['ppmd_order_type'] == 3) { ?>checked="checked"<?php } else { ?>checked="checked"<?php } ?> name="ppmd_order_type" id="scriptordertype" value="3" />
+	<input type="radio" <?php if ($s['ppmd_order_type'] == 1) { ?>checked="checked"<?php } ?>  name="ppmd_order_type" id="labordertype" value="1" />
+	<input type="radio" <?php if ($s['ppmd_order_type'] == 2) { ?>checked="checked"<?php } ?>  name="ppmd_order_type" id="homeordertype" value="2" />
+	</div>
+	
+    <?php echo $this->getBlockHtml('formkey')?>
+    <div id="order-message">
+        <?php echo $this->getChildHtml('message') ?>
+    </div>
+    <div id="order-customer-selector" >
+        <?php echo $this->getChildHtml('customer') ?>
+    </div>
+    <div id="order-store-selector">
+        <?php echo $this->getChildHtml('store') ?>
+    </div>
+  
+    
+    <div id="order-call-information">
+    	<div class="entry-edit">
+    	<div class="entry-edit-head">
+        	<h4 class="fieldset-legend ">Call Information</h4>
+   		</div>
+   		<div class="fieldset">
+   			
+   			<div id="select-newseletter-div" style="float: right;margin-right: 119px;">
+			<label for="followup" style="padding-right:10px;">Future Discounts:</label>
+			<input type="checkbox" id="nl" value="yes" name="newsletter">
+		</div>
+   			
+   		<?php $affilates = Mage::getModel('affiliates/affiliates')->getCollection();
+   		$affilates->addFieldToFilter('callcenter',array('eq'=>1));
+		$affilates->getSelect()->order(array('referral_id ASC'));
+   					
+		 ?>
+   		
+		<div id="select-affiliate-div">
+			<label for="affiliate" style="padding-right:26px;">Affiliate:</label>
+			<select name="affiliate" id="affiliate">
+				<option value=""></option>
+				
+				<?php
+   		
+   			foreach ($affilates as $affiliate) {
+   					
+   		?>		
+   			
+   			<option id="<?php echo $affiliate->getReferralId();?>" value="<?php echo $affiliate->getReferralId();?>"><?php echo $affiliate->getReferralId();?></option>
+   			
+   		<?php	
+   			}   		
+   		?>
+			</select>
+		</div>
+		
+		
+		
+		<div id="select-callreason-div">
+			<label for="call-reason">Call Reason:</label>
+			<select id="call-reason" name="callReasons">
+            	<option value=""></option>
+                <option id="cr_4" value="4">Serious Interest</option>
+                <option id="cr_6" value="6">Wrong Number</option>
+              	<option id="cr_7" value="7">Hang-up</option>
+              	<option id="cr_1" value="1">Customer Service/Counseling</option>
+              	<option id="cr_3" value="3">General Inquiry / STD Information</option>
+              	<option id="cr_2" value="2">Free Testing</option>
+              	<option id="cr_5" value="5">Tests Not Offered</option>
+            	<option id="cr_8" value="8">Solicitation</option>
+            </select>
+		</div>
+		
+		
+		
+		<div id="select-followup-div">
+			<label for="followup" style="padding-right:10px;">Results Notification:</label>
+			<select name="ppmd_notify_type" id="ppmd_notify_type">
+				<option value=""></option>
+				<option id="nt_11" value="11">Email</option>
+				<option id="nt_12" value="12">Phone</option>
+			</select>
+		</div>
+		
+		
+		
+		</div>
+		</div>
+    </div>
+    
+    <div class="clear"></div>
+    
+    <div id="nnr-selector">
+	<div class="entry-edit">
+	    <div class="entry-edit-head">
+	        <div style="float: right;"></div>
+	        <div style="float: right;"></div>
+	        <h4 class="fieldset-legend ">NY / NJ / RI ?</h4>
+	    </div>
+	    <div class="fieldset">
+	        <span style="margin-left:28px;" class="field-row">
+	            <input type="radio" onclick="toggleNnr(this.value);" name="isnnr" class="radio" value="1" id="nnr_yes">
+	            <label class="inline" for="nnr_yes">YES</label>
+	        </span>
+	        <span style="margin-left:28px;" class="field-row">
+	            <input type="radio" checked="checked" onclick="toggleNnr(this.value);" name="isnnr" value="0" class="radio" id="nnr_no">
+	            <label class="inline" for="nnr_no">NO</label>
+	        </span>
+	     </div>
+	</div>
+	</div>
+    
+    
+    <div id="order-products">
+    	
+    	
+    	<div style="display:block;" id="lab-hide">
+    	<div class="entry-edit">
+	    	<div class="entry-edit-head">
+	        	<h4 class="fieldset-legend ">Lab Testing Products</h4>
+	   		</div>
+	   		<div class="fieldset">
+				<div id="select-lab-products-div">
+		    		<?php $products = $this->getProductsByPostedStoreId();?>
+		    		<?php foreach ($products as $product) { ?>
+		    		<div class="product-checkbox">
+		    			<input onclick="updateTotal(this.id);document.getElementById('labordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		    		</div>
+		    		<? } ?>
+		    	</div>
+	    	</div>
+    	</div>
+    	</div>
+    	
+    	<div style="display:none;" id="nnr-lab-hide">
+    	<div class="entry-edit">
+	    	<div class="entry-edit-head">
+	        	<h4 class="fieldset-legend ">NNR Lab Testing Products</h4>
+	   		</div>
+	   		<div class="fieldset">
+				<div id="select-lab-products-div">
+		    		<?php $products = $this->getNnrLabProducts();?>
+		    		<?php foreach ($products as $product) { ?>
+		    		<div class="product-checkbox">
+		    			<input onclick="updateTotal(this.id<?php echo ($product->getPriceOptOne() > 0?",".$product->getPriceOptOne():"")?>);document.getElementById('labordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<label <?php echo ($product->getSku()=='nnr-lab-testing'?"style='color:#FF0000; font-weight:bold;'":"") ;?> for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		    		</div>
+		    		<? } ?>
+		    	</div>
+	    	</div>
+    	</div>
+    	</div>
+    	
+    	<div style="display:block;" id="home-hide">
+    	<div class="entry-edit">
+	    	<div class="entry-edit-head">
+	        	<h4 class="fieldset-legend ">Home Testing Products</h4>
+	   		</div>
+	   		<div class="fieldset">
+		    	<div id="select-home-products-div">
+		    		<?php $products = $this->getHomeProducts();?>
+		    		<?php foreach ($products as $product) { ?>
+		    		<div class="product-checkbox">
+		    			<input onclick="updateTotal(this.id);document.getElementById('homeordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		    		</div>
+		    		<? } ?>
+		    	</div>
+	    	</div>
+    	</div>
+    	</div>
+    	
+    	
+    	<div style="display:none;" id="nnr-home-hide">
+    	<div class="entry-edit">
+	    	<div class="entry-edit-head">
+	        	<h4 class="fieldset-legend ">NNR Home Testing Products</h4>
+	   		</div>
+	   		<div class="fieldset">
+				<div id="select-lab-products-div">
+		    		<?php $products = $this->getNnrHomeProducts();?>
+		    		<?php foreach ($products as $product) { ?>
+		    		<div class="product-checkbox">
+		    			<input onclick="updateTotal(this.id);document.getElementById('homeordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		    		</div>
+		    		<? } ?>
+		    	</div>
+	    	</div>
+    	</div>
+    	</div>
+    	
+    	<div id="script-div">
+    	<div class="entry-edit">
+	    	<div class="entry-edit-head">
+	        	<h4 class="fieldset-legend ">Prescription Products</h4>
+	   		</div>
+	   		<div class="fieldset" style="height: 380px;">
+				<div id="select-prescription-products-div">
+		    		<?php $products = $this->getPrescriptionProducts();?>
+		    		<?php foreach ($products as $product) { ?>
+		    		<div class="product-checkbox">
+		    			<input onclick="updateTotal(this.id);" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+		    		</div>
+		    		<? } ?>
+		    		
+
+		<table cellspacing="0" class="form-list" style="clear:both;">
+        <tbody>
+        
+       		 <tr>
+        		<td class="label"><label for="script-cust-num">Customer Name for Prescription</label></td>
+    			<td class="value">
+        			<input type="text" class="input-text" value="" name="script[prescription_name]" id="script-prescription-name">            
+        		</td>
+    		</tr>
+        
+        
+        	<tr>
+        		<td class="label"><label for="script-cust-num">Customer #</label></td>
+    			<td class="value">
+        			<input type="text" class="input-text" value="" name="script[cust_num]" id="script-cust-num">            
+        		</td>
+    		</tr>
+    		<tr>
+        		<td class="label"><label for="script-pharm-num">Pharmacy #</label></td>
+    			<td class="value">
+        			<input type="text" class="input-text" value="" name="script[pharm_num]" id="script-pharm-num">            
+        		</td>
+    		</tr>
+    		<tr>
+        		<td class="label"><label for="script-allergies">Allergies</label></td>
+    			<td class="value">
+        			<input type="text" class="input-text" value="" name="script[allergies]" id="script-allergies">            
+        		</td>
+    		</tr>
+    		<tr>
+        		<td class="label"><label for="script-cur-script-meds">Current Prescription Meds</label></td>
+    			<td class="value">
+        			<input type="text" class="input-text" value="" name="script[cur_script_meds]" id="script-cur-script-meds">            
+        		</td>
+    		</tr>
+    		<tr>
+        		<td class="label"><label for="script-cur-otc-meds">Current OTC Meds</label></td>
+    			<td class="value">
+        			<input type="text" class="input-text" value="" name="script[cur_otc_meds]" id="script-cur-otc-meds">            
+        		</td>
+    		</tr>
+    		<tr>
+        		<td class="label"><label for="script-med-history">Medical History</label></td>
+    			<td class="value">
+        			 
+        			<textarea class="input-text" style="height:100px;" name="script[med_history]" id="script-med-history"></textarea>          
+        		</td>
+    		</tr>
+    		
+    		<tr>
+        		<td colspan="2" class="label">
+
+					<div class="product-checkbox" style="width:100px;">
+		    			<input style="float:left;" type="checkbox" value="1" name="prescription[chlamydia]" id="script_chlamydia">
+		    			<label for="script_chlamydia">Chlamydia</label>
+		    		</div>
+					<div class="product-checkbox" style="width:100px;">
+		    			<input style="float:left;" type="checkbox" value="1" name="prescription[gonorrhea]" id="script_gonorrhea">
+		    			<label for="script_chlamydia">Gonorrhea</label>
+		    		</div>
+		    		<div class="product-checkbox" style="width:100px;">
+		    			<input style="float:left;" type="checkbox" value="1" name="prescription[Genital Herpes]" id="script_genital_herpes">
+		    			<label for="script_genital_herpes">Genital Herpes</label>
+		    		</div>
+		    		<div class="product-checkbox" style="width:100px;">
+		    			<input style="float:left;" type="checkbox" value="1" name="prescription[Oral Herpes]" id="script_oral_herpes">
+		    			<label for="script_oral_herpes">Oral Herpes</label>
+		    		</div>
+		    		<div class="product-checkbox" style="width:100px;">
+		    			<input style="float:left;" type="checkbox" value="1" name="prescription[trichomoniasis]" id="script_trichomoniasis">
+		    			<label for="script_trichomoniasis">Trichomoniasis</label>
+		    		</div>
+		    		<div class="product-checkbox" style="width:100px;">
+		    			<input style="float:left;" type="checkbox" value="1" name="prescription[Negative With Symptoms]" id="script_trichomoniasis">
+		    			<label for="script_trichomoniasis">NEG w/Symptoms</label>
+		    		</div>
+        			
+        			
+        		</td>
+    			
+    		</tr>
+    		    	
+            </tbody>
+        </table>
+	
+		    		
+		    	</div>
+	    	</div>
+    	</div>
+    	</div>
+    	
+    </div>
+    <div id="order-account">
+    	<?php echo $this->getChildHtml('form_account') ?>
+    </div>
+    <!-- div id="order-total-div">
+    	<div class="entry-edit">
+    		<div class="entry-edit-head">
+	        	<h4 class="fieldset-legend ">Order Total</h4>
+	   		</div>
+	   		<div class="fieldset">
+	   			<div id="select-promo-code-div">
+					<label for="promo-code">Promo code:</label>
+					<select name="promo-code" id="promo-code">
+						<option value=""></option>
+						<option value="">Promo Code ONE Women</option>
+					</select>
+				</div>
+	   			<label for="js-order-total" style="float:left; margin-right: 10px;">Total: </label>
+	   			<div id="js-order-total" style="color:#FF0000;font-weight: bold;"></div>
+	   		</div>
+    	</div>
+    </div -->
+    
+    <div id="order-data" >
+        <?php echo $this->getChildHtml('data') ?>
+    </div>
+</form>
+<div style="clear:both;">&nbsp;</div>	
+	<div id="location-form-div">
+		<label for="labs-by-zip">Zip Code Lookup: </label>
+		<form method="post" id="labs-by-zip">
+			<input name="form_key" type="hidden" value="<?php echo Mage::getSingleton('core/session')->getFormKey() ?>" />
+			<input id="lab-lookup-zip" type="text" value="" name="zip_code" class="text"> 
+			<input type="hidden" value="admin-order" name="ref_page"> 
+			<input type="button" value="Submit" onclick="handlerFunction(); this.disabled='true';return false;" class="submit btn_orange_32_reflection" id="location_submit_button">
+		</form>
+	</div>
+<div id="location-results"></div>
+
+<script type="text/javascript">
+	editForm = new varienForm('edit_form', '<?php echo $this->getValidationUrl() ?>');
+	
+	<?php
+	
+	if ($s['order']['billing_address']['firstname'])
+		echo "document.getElementById('order-billing_address_firstname').value = '".$s['order']['billing_address']['firstname']."';";
+		
+	if ($s['order']['billing_address']['firstname'])
+		echo "document.getElementById('order-billing_address_lastname').value = '".$s['order']['billing_address']['lastname']."';";
+	
+	if ($s['order']['account']['gender'] == 1)
+		echo "document.getElementById('is_male').selected = true;";
+		
+	if ($s['order']['account']['gender'] == 2)
+		echo "document.getElementById('is_female').selected = true;";
+	
+	if ($s['order']['account']['email'])
+		echo "document.getElementById('email').value = '".$s['order']['account']['email']."';";
+	
+	if ($s['order']['account']['dob'])
+		echo "document.getElementById('dob').value = '".$s['order']['account']['dob']."';";
+	
+	if ($s['m_select'])
+		echo "document.getElementById('m_".$s['m_select']."').selected = true;";
+	
+	if ($s['d_select'])
+		echo "document.getElementById('d_".$s['d_select']."').selected = true;";
+	
+	if ($s['y_select'])
+		echo "document.getElementById('y_".$s['y_select']."').selected = true;";
+	
+	if ($s['affiliate'])
+		echo "document.getElementById('".$s['affiliate']."').selected = true;";
+		
+	if ($s['callReasons'])
+		echo "document.getElementById('cr_".$s['callReasons']."').selected = true;";
+		
+	if ($s['ppmd_notify_type'])
+		echo "document.getElementById('nt_".$s['ppmd_notify_type']."').selected = true;";
+		
+	if ($s['newsletter'] == 'yes')
+		echo "document.getElementById('nl').checked = true;";
+	
+	if ($s['order']['billing_address']['street'][0])
+		echo "document.getElementById('order-billing_address_street0').value = '".$s['order']['billing_address']['street'][0]."';";
+	
+	if ($s['order']['billing_address']['street'][1])
+		echo "document.getElementById('order-billing_address_street1').value = '".$s['order']['billing_address']['street'][1]."';";
+	
+	if ($s['order']['billing_address']['city'])
+		echo "document.getElementById('order-billing_address_city').value = '".$s['order']['billing_address']['city']."';";
+	
+	if ($s['order']['billing_address']['region_id'])
+		echo "document.getElementById('st_".$s['order']['billing_address']['region_id']."').selected = true;";
+	
+	if ($s['order']['billing_address']['postcode'])
+		echo "document.getElementById('order-billing_address_postcode').value = '".$s['order']['billing_address']['postcode']."';";
+					
+	if ($s['order']['billing_address']['telephone'])
+		echo "document.getElementById('order-billing_address_telephone').value = '".$s['order']['billing_address']['telephone']."';";
+	
+	if ($s['lab-zip'])
+		echo "document.getElementById('lab-lookup-zip').value = '".$s['lab-zip']."';";
+	
+		
+	
+	?>
+	
+</script>
+<?php 
+
+Mage::getSingleton('admin/session')->setLastInfo(array());
+
+Mage::getSingleton('admin/session')->unsLastInfo();
+
+
+?>

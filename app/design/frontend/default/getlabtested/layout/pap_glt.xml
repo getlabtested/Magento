@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.0.1">
+    <default>
+        <reference name="footer">
+            <block type="affiliates/affiliates" name="affiliates_click_tracking_js" template="affiliates/click_tracking.phtml"/>
+        </reference>
+    </default>
+
+    <checkout_onepage_success translate="label">
+        <reference name="content">
+            <remove name="pap_saletracking" />
+            <block type="affiliates/affiliates" name="affiliates_sales_tracking_js" template="affiliates/sales_tracking.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+</layout>

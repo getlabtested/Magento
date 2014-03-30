@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <consultation_adminhtml_consultation_index>
+        <reference name="content">
+            <block type="consultation/adminhtml_consultation" name="consultation" />
+        </reference>
+    </consultation_adminhtml_consultation_index>
+  
+</layout>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <localepage_adminhtml_localepage_index>
+        <reference name="content">
+            <block type="localepage/adminhtml_localepage" name="localepage" />
+        </reference>
+    </localepage_adminhtml_localepage_index>
+</layout>

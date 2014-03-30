@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<PPMD_Testrecommender>
+			<active>true</active>
+			<codePool>local</codePool>
+		</PPMD_Testrecommender>
+	</modules>
+</config>

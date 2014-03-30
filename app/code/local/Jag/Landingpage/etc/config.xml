@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Landingpage>
+            <version>0.1.0</version>
+        </Jag_Landingpage>
+    </modules>
+    <frontend>
+        <routers>
+            <landingpage>
+                <use>standard</use>
+                <args>
+                    <module>Jag_Landingpage</module>
+                    <frontName>landingpage</frontName>
+                </args>
+            </landingpage>
+        </routers>
+        <layout>
+            <updates>
+                <landingpage>
+                    <file>landingpage.xml</file>
+                </landingpage>
+            </updates>
+        </layout>
+
+        <events>
+            <landing_page_session_init>
+                <observers>
+                    <landing_page_session_init>
+                        <type>singleton</type>
+                        <class>landingpage/observer</class>
+                        <method>initializeLandingPageSession</method>
+                    </landing_page_session_init>
+                </observers>
+            </landing_page_session_init>
+        </events>
+    </frontend>  
+    <global>
+        <models>
+            <landingpage>
+                <class>Jag_Landingpage_Model</class>
+                <!-- <resourceModel>landingpage_mysql4</resourceModel> -->
+            </landingpage>
+            <!--
+<landingpage_mysql4>
+                <class>Jag_Landingpage_Model_Mysql4</class>
+                <entities>
+                    <landingpage>
+                        <table>landingpage</table>
+                    </landingpage>
+                </entities>
+            </landingpage_mysql4>
+-->
+        </models>
+        <resources>
+            <!--
+<landingpage_setup>
+                <setup>
+                    <module>Jag_Landingpage</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </landingpage_setup>
+-->
+            <landingpage_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </landingpage_write>
+            <landingpage_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </landingpage_read>
+        </resources>
+        <blocks>
+            <landingpage>
+                <class>Jag_Landingpage_Block</class>
+            </landingpage>
+        </blocks>
+        <helpers>
+            <landingpage>
+                <class>Jag_Landingpage_Helper</class>
+            </landingpage>
+        </helpers>
+    </global>
+
+    <default>
+        <landing_pages>
+            <skus>
+                <glt-01>testosterone-test-home</glt-01>
+                <glt-02>mens-wellness-panel</glt-02>
+                <glt-03>psa-total</glt-03>
+                <glt-04>thyroid-test-panel</glt-04>
+                <glt-05>womens-health-panel</glt-05>
+                <glt-06>allergen-profile-minipanel</glt-06>
+            </skus>
+        </landing_pages>
+    </default>
+</config>

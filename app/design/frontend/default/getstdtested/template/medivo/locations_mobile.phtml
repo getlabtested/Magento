@@ -1,0 +1,79 @@
+<?php 
+
+$_locations = $this->getLabsByZip();
+
+$x = 0;
+
+if (!is_array($_locations) && !is_object($_locations)) {
+	
+		echo "<h3>We apologize - it appears your zip code is invalid or there are no testing locations within 100 miles.  
+		Call 866-749-6269 and we'll help determine the best private option for testing.  
+		Alternately, click 'ORDER NOW' to order at home STD testing.</h3>";
+	
+} else {
+
+	if (Mage::getSingleton('core/session')->getIsNnr()) { ?>
+					
+	<h3>Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, pricing may vary.</h3>
+							
+	<?php } 
+	
+	
+	foreach ($_locations as $location) {
+		
+		if (isset($location->{'id'})) $labId = $location->{'id'};
+	
+		if (isset($location->{'nnr_id'})) $labId = $location->{'nnr_id'};
+	
+	
+	if ($x < 6) {
+
+	?>
+				<div class="item">
+				<form name="lab" action="/m/0<?php if (isset($_SESSION['mobile_version'])) { echo $_SESSION['mobile_version']; } else { echo "4"; } ?>/std-tests" method="post">
+				<?php if ($location->{'lab-id'} == 129) { 
+					
+					$name = "Labcorp";
+					
+					?>
+				<h4><?php echo $location->address;?></h4>
+				<?php } else { 
+					
+					$name = "Quest Diagnostics";
+					
+					?>
+				<h4>Exact address displayed after test selection</h4>
+				<?php } ?>
+				
+				<div class="location">
+					<!-- <p><?php echo ucwords(strtolower($location->name));?></p> -->
+					<p><?php echo $name; ?></p>
+					<?php echo ucwords(strtolower($location->city));?>, <?php echo $location->state;?> <?php echo $location->zip;?><br /> 
+					<div class="blue" style="padding-top:1px;">866-749-6269</div>
+					</p>
+				</div>
+				<div class="hours">
+					<p class="header">Hours</p>
+					<p><?php echo str_ireplace("|Sa","<br>Sa",$location->hours);?></p>
+				</div>
+				<div id="loc-sub" style="float: left;">
+					<!-- button  type="submit" >Order & Test Here</button -->
+					<input type="button" value="" onclick="this.form.submit();" class="btn_orange_32_reflection-location submit "/>
+					
+				</div>
+				<input type="hidden" name="lab_id" value="<?php echo $labId;?>">
+				<input type="hidden" name="lab_type" value="<?php echo $location->{'lab-id'};?>">
+				
+				</form>
+				</div>
+	<?php 
+	
+	$x++;
+	
+	}
+	
+	}
+
+}
+
+?>

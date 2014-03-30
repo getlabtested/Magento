@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+       <Jag_Paylater>
+          <version>1.0.1</version>
+       </Jag_Paylater>
+    </modules>
+ 
+    <frontend>
+        <routers>
+            <checkout>
+                <use>standard</use>
+                <args>
+                    <modules>
+                        <Jag_Paylater before="Mage_Checkout">Jag_Paylater</Jag_Paylater>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+    </frontend>
+ 
+    <global>
+    	<blocks>
+			<paylater>
+				<class>Jag_Paylater_Block</class>
+			</paylater>
+		</blocks>
+		
+		<payment>
+			<groups>
+				<offline>Offline Payment Methods</offline>
+			</groups>
+		</payment>
+		
+     	<helpers>
+        	<paylater>
+            	<class>Jag_Paylater_Helper</class>
+        	</paylater> 
+    	</helpers>
+		
+        <models>
+            <paylater>
+                <class>Jag_Paylater_Model</class>
+            </paylater>
+        </models>
+		 
+		 <resources>
+            <paylater_setup>
+                <setup>
+                    <module>Jag_Paylater</module>
+                    <class>Jag_Paylater_Model_Mysql4_Setup</class>
+                </setup>
+				<connection>
+						<use>core_setup</use>
+				</connection>
+            </paylater_setup>
+        </resources>
+		
+		
+    </global>
+	
+    <default>
+        <payment>
+			<paylater>
+                <active>1</active>
+                <model>paylater/paymentmethod</model>
+			    <payment_action>authorize</payment_action>
+                <order_status>pending_payment</order_status>
+                <title>Pay Later</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </paylater>
+         </payment>
+    </default>
+    
+</config>

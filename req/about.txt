@@ -1,0 +1,1 @@
+This folder holds the customer requisition forms, and also contains logging information regarding the calls made to fetch the requisition forms,

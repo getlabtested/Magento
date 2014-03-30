@@ -1,0 +1,278 @@
+<?php
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+
+<!-- Hello Bar added by Piotr Bieszk on 12/20/2011 -->
+<script type="text/javascript" src="//www.hellobar.com/hellobar.js"></script>
+<script type="text/javascript">
+    new HelloBar(10349,45596);
+</script>
+<!-- EOF Hello Bar -->
+
+<?php
+/*
+echo "<!-- ";
+echo Mage::app()->getRequest()->getRequestString();
+echo " -->";
+*/
+
+?>
+
+<style type="text/css">
+
+	#user_nav_logout {
+		float: left;		
+	}
+
+</style>
+
+<?php // PAP Header Tracking
+
+
+
+if(isset($_GET['a_aid'])){ $_SESSION['a_aid'] = $_GET['a_aid']; } else { $_SESSION['a_aid'] = 0; }
+
+if($_SESSION['a_aid']) { //create div for tracking
+	//$model = Mage::getModel('affiliates/affiliates');
+	//$collection = $model->getCollection();
+	
+	echo "<!-- jagmedia -->";
+	
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+
+	$db = new PDO ('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	$affiliate_exists = false;
+	
+	Mage::getSingleton('core/session')->setAffiliateId($_SESSION['a_aid']);
+	Mage::getSingleton('core/session')->setPpmdAffiliate($_SESSION['a_aid']);
+	
+	$q = 'select phone from affiliates where referral_id = "'.$_SESSION['a_aid'].'";';
+	
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    	$sth->execute();  
+    		
+    	$res = $sth->fetchAll();
+    	
+    	$sth = "";
+    	
+    
+        	    	
+    $phone = $res[0]['phone'];
+    
+    //echo $phone; 
+
+	/*
+foreach($collection as $item){
+		if($item->getData('referral_id') == $_SESSION['a_aid']) {
+			$affiliate_exists = true;
+			$affiliate = $item;
+		}
+	}
+*/
+	if ($phone){
+	//if($affiliate_exists && $affiliate->getData('phone')) {
+	
+	
+			//$phone = $affiliate->getData('phone');		
+		
+			$phone = str_replace("-","",$phone);
+			$phone = str_replace(".","",$phone);
+			$phone = str_replace(" ","",$phone);
+			
+			$p1 = substr($phone,0,3);
+			$p2 = substr($phone,3,3);
+			$p3 = substr($phone,6,4);
+			
+			/*
+$j("#header_phone").innerHTML = phone;
+			$j("#question_side_widget .content p .orange").innerHTML = phone;
+			$j("#question_form_side_widget .content p.large .orange").innerHTML = phone;
+*/
+			$phone = $p1."-".$p2."-".$p3;
+				
+		?>
+		<div id="affiliate" style="display:none;">
+			<div class="promoNumber">
+				<?php echo $phone; ?>
+			</div>
+		</div>
+		
+		
+		
+		<?php
+		
+	} else {
+	
+	$phone = Mage::getStoreConfig('general/store_information/phone');
+	
+	}
+	
+	
+	
+}
+
+// END PAP Header Tracking
+
+
+
+
+?>
+
+<div id="header" class="all">
+            
+    <a id="logo" <?php if (!empty($_SERVER['HTTPS'])) { ?>style="background-image: url('/media/images/logo.png');"<?php } ?> href="http://getstdtested.com"></a>
+    
+    
+    <?php if (empty($_SERVER['HTTPS'])) { ?>
+    <div id="social">	
+        <div id="fb-root"></div><script src="http://connect.facebook.net/en_US/all.js#appId=106286916143413&amp;xfbml=1"></script><fb:like href="http://getstdtested.com" send="false" layout="button_count" width="auto" show_faces="false" action="recommend" font=""></fb:like>
+        <g:plusone size="small" href="http://getstdtested.com"></g:plusone>
+    </div> <!-- /social -->
+    <?php } ?>
+    
+    <div class="phone orange" id="header_phone">
+    	<div class="promoNumber" id="pnumber">
+    		<?php echo Mage::getStoreConfig('general/store_information/phone'); ?>
+    	</div>
+    </div>
+    
+    	<script type="text/javascript">
+    	
+    		p = '<?php echo $phone; ?>';
+    		
+    		if (p.length > 6) {
+		
+				document.getElementById('pnumber').innerHTML = '<?php echo $phone; ?>';
+				document.getElementById('#question_side_widget .content p .orange').innerHTML = '<?php echo $phone; ?>';
+				document.getElementById('#question_form_side_widget .content p.large .orange').innerHTML = '<?php echo $phone; ?>';
+			
+			}
+		
+		</script>
+    
+    <div id="user_nav">
+    	
+    	<?php if (Mage::getSingleton('customer/session')->getCustomer()->getId() && Mage::app()->getRequest()->getRequestString() != '/checkout/onepage/success/') { ?>
+    	<div id="user_nav_logout">
+    		<a class="header" href="/customer/account/logout">Log Out</a>
+    	</div>
+    	<?php } ?>
+    	
+        <div id="user_nav_search" class="user_nav_box">
+        	
+            <a class="header" href="" onclick="javascript: openTopSearch();">Search</a>
+            <div class="bottom_void">&nbsp;</div>
+            <div id="user_nav_search_box" class="user_nav_content_box">
+                <form action="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>custom-search" method="get">
+                	<input type="text" class="text" id="q" name="q" />
+                    <input type="submit" class="submit btn_blue_reflection" value="search" />
+                </form>
+                <div class="clear">&nbsp;</div>
+            </div>
+        </div> <!-- /search -->
+        <div id="user_nav_account" class="user_nav_box">
+            <!-- <a class="header" href="" onclick="javascript: openTopAccount();">My Results</a> -->
+            <a class="header" href="<?php echo rtrim(Mage::getUrl('sample-results',array('_secure'=>true)),"/"); ?>">My Results</a>
+            <div class="bottom_void">&nbsp;</div>
+            <!-- <div id="user_nav_account_box" class="user_nav_content_box">
+                <form action="/customer/account/loginPost/" method="post">
+                	<p>
+                    	<label>E-mail: </label><br />
+                        <input type="text" class="text" id="email" name="login[username]" />
+                    </p>
+                    <p>
+                    	<label>Password: </label><br />
+                        <input type="password" class="text" id="password" name="login[password]" />
+                    </p>
+                    <input style="margin-left:0px;" type="submit" class="submit btn_blue_reflection" value="login" />
+                </form>
+                <div style="float:right; margin-top:10px;"><a class="read_more" href="/customer/account/forgotpassword/">Forgot Password?</a></div>
+            </div> -->
+        </div> <!-- /account -->
+        <div id="user_nav_cart" class="user_nav_box">
+            <a class="header" href="<?php echo rtrim(Mage::getUrl('std-testing-options',array('_secure'=>false)),"/"); ?>">Cart</a>
+        </div> <!-- /cart -->
+    </div> <!-- /user_nav -->
+    
+    <div class="clear"></div>
+    
+    <div id="top_menu">
+        <div class="content">
+            <ul>
+                <li><a href="<?php echo rtrim(Mage::getUrl('std-tests',array('_secure'=>false)),"/"); ?>" title="STD Tests and Prices">STD Tests &amp; Prices</a></li>
+                <li><a href="<?php echo rtrim(Mage::getUrl('how-std-testing-works',array('_secure'=>false)),"/"); ?>" title="How It Works">How It Works</a></li>
+                <li><a href="<?php echo rtrim(Mage::getUrl('at-home-std-tests',array('_secure'=>false)),"/");?>" title="Home STD Testing">Home STD Testing</a></li>
+                <li>
+                	<a href="<?php echo rtrim(Mage::getUrl('locate-testing-center',array('_secure'=>false)),"/"); ?>" title="Test Locally">Test Locally</a>
+                	<div class="top_submenu">
+                    	<form action="/locate-testing-center" method="post">
+                        	<label>Enter Zip Code</label>
+                        	<input type="hidden" value="home" name="ref_page">
+                            <input type="text" class="text" name="zip_code" />
+                            <input type="submit" class="submit btn_orange_32_reflection" value="submit" />
+                        </form>
+                    </div>
+                </li>
+                <li><a href="<?php echo rtrim(Mage::getUrl('blog',array('_secure'=>false)),"/"); ?>" title="Blog">Blog</a></li>
+                <li class="last"><a href="<?php echo rtrim(Mage::getUrl('sample-results',array('_secure'=>true)),"/"); ?>" title="My Results">My Results</a></li>
+            </ul>
+        </div>
+    </div> <!-- /top_menu -->
+    
+    <a id="order_now" class="btn_orange" href="<?php echo rtrim(Mage::getUrl('std-testing-options',array('_secure'=>false)),"/"); ?>">order now</a>
+    
+ 
+</div> <!-- /header -->
+
+<div class="clear"></div>
+<div class="sep20"></div>
+<?php
+
+
+
+/*
+echo "\n-- core --\n";
+print_r(Mage::getSingleton('core/session')->getData());
+echo "\n-- checkout quote--\n";
+print_r(Mage::getSingleton('checkout/session')->getQuote()->getData());
+echo "\n-- customer --\n";
+print_r(Mage::getSingleton('customer/session')->getCustomer()->getData());
+echo "\n-- core messages --\n";
+print_r(Mage::getSingleton('core/session')->getMessages()->getErrors());
+echo "\n-- checkout messages --\n";
+print_r(Mage::getSingleton('checkout/session')->getMessages()->getErrors());
+echo "\n-- checkout data --\n";
+print_r(Mage::getSingleton('checkout/session')->getData());
+echo " -->"; 
+*/
+?>
+
+

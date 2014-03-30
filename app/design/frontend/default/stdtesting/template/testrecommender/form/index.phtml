@@ -1,0 +1,250 @@
+
+<script type="text/javascript">
+var $j = jQuery.noConflict();
+</script>
+
+
+<?php
+$gender = Mage::registry('gender');
+$age = Mage::registry('age');
+$zipcode = Mage::registry('zipcode');
+$sexualpartner = Mage::registry('sexualpartner');
+$laststdtest = Mage::registry('laststdtest');
+$oneormoresexualpartner = Mage::registry('oneormoresexualpartner');
+$concernedwithother = Mage::registry('concernedwithother');
+$vaccinatedforhepatitisb = Mage::registry('vaccinatedforhepatitisb');
+$relationshipwithivdrug = Mage::registry('relationshipwithivdrug');
+$interestedwithgenitalherpes = Mage::registry('interestedwithgenitalherpes');
+$chkIndi1 = Mage::registry('chkIndi1');
+?>
+
+<div id="content">
+
+<div id="wizardAll">
+
+	<div style="width:660px;">
+    	<h1 class="page-title">PERSONALIZED STD TEST RECOMMENDATION</h1>
+    	<h3>Developed by the nations leading STD experts</h3>
+    	<div>Just answer a few questions below and get a personalized STD testing recommendation, based on national health guidelines and other factors that may increase your risk for specific STDs. 100% confidential.</div>
+	</div>
+	<br />
+	<div style="float:left; width:40px; font-size:11px; font-weight:bold;">START</div>
+	<div style="width:560px; height:10px; border:1px solid #008C8A; margin-bottom:10px; float:left;">
+              <div class="progresso"></div>
+	</div>	
+	<div style="float:left; width:40px; font-size:11px; font-weight:bold; text-align:right;">FINISH</div>
+	
+	<div style="clear:both;"></div>
+	
+    <form id="frmRecommandation" name="frmRecommandation" method="post" action="<?php echo $this->getUrl('testrecommender/index/post');?>">
+    
+    <div id="wizard">
+        <div>
+            <div class="title" style="border-top-color:#EDEDED">
+                <div class="question_text"><b>START HERE:</b> Are you a male or female?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="Gender" id="Gender" style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Male" <?php if($gender == 'Male')echo'selected="selected"'; ?>>Male</option>
+                        <option value="Female" <?php if($gender == 'Female')echo'selected="selected"'; ?>>Female</option>
+                    </select>
+                </div>
+                <div id="navigator" class="next"></div>
+            </div>	
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">How old are you?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="Age" id="Age" style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="under18" <?php if($age == 'under18')echo'selected="selected"'; ?>>Under 18</option>
+                        <option value="18-24" <?php if($age == '18-24')echo'selected="selected"'; ?>>18-24</option>
+                        <option value="25-29" <?php if($age == '25-29')echo'selected="selected"'; ?>>25-29</option>
+                        <option value="30-39" <?php if($age == '30-39')echo'selected="selected"'; ?>>30-39</option>
+                        <option value="40-49" <?php if($age == '40-49')echo'selected="selected"'; ?>>40-49</option>
+                        <option value="50-59" <?php if($age == '50-59')echo'selected="selected"'; ?>>50-59</option>
+                        <option value="60-69" <?php if($age == '60-69')echo'selected="selected"'; ?>>60-69</option>
+                        <option value="70+" <?php if($age == '70+')echo'selected="selected"'; ?>>70+</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Where are you located?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    Enter Your Zip Code:
+                    <input name="Zipcode" id="Zipcode" onclick="($j(this).parent()).parent().children('.next').css('display','inline');" title="Zipcode" type="text" style="width:100px;" value="<?php echo $zipcode ?>"/>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next" onmouseover="javascript:if(document.frmRecommandation.Zipcode.value == '')
+    {alert('Zipcode cannot be left empty..');this.style.display = 'none';}"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Are your sex partners generally...</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="SexualPartner" id="SexualPartner" style="width: 100px;"onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Male" <?php if($sexualpartner == 'Male')echo'selected="selected"'; ?>>Male</option>
+                        <option value="Female" <?php if($sexualpartner == 'Female')echo'selected="selected"'; ?>>Female</option>
+                        <option value="Both" <?php if($sexualpartner == 'Both')echo'selected="selected"'; ?>>Both</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">When was your last STD test?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="LastSTDTest" id="LastSTDTest"  style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Never" <?php if($laststdtest == 'Never')echo'selected="selected"'; ?>>Never</option>
+                        <option value="+1yr" <?php if($laststdtest == '+1yr')echo'selected="selected"'; ?>>+1 Year</option>
+                        <option value="6months" <?php if($laststdtest == '6months')echo'selected="selected"'; ?>>6 Months</option>
+                        <option value="3months" <?php if($laststdtest == '3months')echo'selected="selected"'; ?>>3 Months</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Have you had one or more new sexual partners since your last STD test, or within the last 6 months?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="OneOrMoreSexualPartner" id="OneOrMoreSexualPartner" style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Yes" <?php if($oneormoresexualpartner == 'Yes')echo'selected="selected"'; ?>>Yes</option>
+                        <option value="No" <?php if($oneormoresexualpartner == 'No')echo'selected="selected"'; ?>>No</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Are you concerned about your partner's sexual activity with others?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="ConcernedWithOther" id="ConcernedWithOther" style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Yes" <?php if($concernedwithother == 'Yes')echo'selected="selected"'; ?>>Yes</option>
+                        <option value="No" <?php if($concernedwithother == 'No')echo'selected="selected"'; ?>>No</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Have you been vaccinated for Hepatitis B?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="VaccinatedForHepatitisB" id="VaccinatedForHepatitisB" style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Yes" <?php if($vaccinatedforhepatitisb == 'Yes')echo'selected="selected"'; ?>>Yes</option>
+                        <option value="No" <?php if($vaccinatedforhepatitisb == 'No')echo'selected="selected"'; ?>>No</option>
+                        <option value="DoNotKnow" <?php if($vaccinatedforhepatitisb == 'DoNotKnow')echo'selected="selected"'; ?>>Don't Know</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Have you ever used intravenous (IV) drugs or have had a relationship with an IV drug user?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="RelationshipWithIVdrug" id="RelationshipWithIVdrug" style="width: 100px;" onchange="($j(this).parent()).parent().children('.next').css('display','inline');">
+                        <option></option>
+                        <option value="Yes" <?php if($relationshipwithivdrug == 'Yes')echo'selected="selected"'; ?>>Yes</option>
+                        <option value="No" <?php if($relationshipwithivdrug == 'No')echo'selected="selected"'; ?>>No</option>
+                        <option value="DoNotKnow" <?php if($relationshipwithivdrug == 'DoNotKnow')echo'selected="selected"'; ?>>Don't Know</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Please check any of the following which you have tested positive for in the past:</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <input type="checkbox" class="customCheckbox" name="chkIndi1[2]" id="chkIndi1" value="hepatitis-b" /> Hepatitis B
+                    <input type="checkbox" class="customCheckbox" name="chkIndi1[4]" id="chkIndi1" value="oral-herpes" /> Herpes 1
+                    <input type="checkbox" class="customCheckbox" name="chkIndi1[7]" id="chkIndi1" value="syphilis" /> Syphilis
+                    <br />
+                    <input type="checkbox" class="customCheckbox" name="chkIndi1[3]" id="chkIndi1" value="hepatitis-c" /> Hepatitis C
+                    <input type="checkbox" class="customCheckbox" name="chkIndi1[5]" id="chkIndi1" value="genital-herpes" /> Herpes 2
+                    <input type="checkbox" class="customCheckbox" name="chkIndi1[6]" id="chkIndi1" value="hiv" /> HIV
+                </div>
+                <div id="navigator" class="previous"></div>
+                <div id="navigator" class="next" style="display: inline;"></div>
+            </div>
+        </div>
+        <div>
+            <div class="title">
+                <div class="question_text">Would you like to know whether or not you have genital herpes?</div>
+                <div class="uncheck"></div>
+            </div>
+            <div class="qa_form_back">
+                <div class="content_area">
+                    <select name="InterestedWithGenitalHerpes" id="InterestedWithGenitalHerpes" style="width: 100px;" onchange="document.frmRecommandation.formSubmitTestRec.disabled = false;">
+                        <option></option>
+                        <option value="Yes" <?php if($interestedwithgenitalherpes == 'Yes')echo'selected="selected"'; ?>>Yes</option>
+                        <option value="No" <?php if($interestedwithgenitalherpes == 'No')echo'selected="selected"'; ?>>No</option>
+                    </select>
+                </div>
+                <div id="navigator" class="previous"></div>
+            </div>
+        </div>
+    </div>
+    <div style="height:60px;">
+        <div style="padding-top:16px;">
+            <span style="font-size:15px; font-weight:bold; font-style:oblique;">CLICK HERE FOR YOUR TEST RECOMMENDATION:</span> 
+            <input name="formSubmitTestRec" type="submit" disabled="true" class="submit" value="Submit" onclick="jQuery('#frmRecommandation').submit();" />
+        </div>
+    </div>
+    <input type="hidden" name="MyRecommandation" id="MyRecommandation" value="MyRecommandation" />
+    </form>
+    
+</div>
+
+</div>

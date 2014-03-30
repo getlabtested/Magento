@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <affiliates_adminhtml_affiliates_index>
+        <reference name="content">
+            <block type="affiliates/adminhtml_affiliates" name="affiliates" />
+        </reference>
+    </affiliates_adminhtml_affiliates_index>
+</layout>

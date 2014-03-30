@@ -1,0 +1,22 @@
+
+<p>{{var customer.name}},</p>
+
+<p>Your order has been placed successfully. Here are the details needed to complete the private testing process:</p>
+<ol>
+    <li>Print the attached forms - lab requisition and instructions - and bring to the lab.  If you don't have a printer, no problem.  Call us and we'll happily fax them on your behalf.</li>
+    <li>
+        Visit the testing center at your convenience and avoid urination for one hour prior to testing:<br />
+        
+        
+        {{block type='core/template' area='frontend' template='sendmail/lab.phtml' order=$order}}        
+        
+    
+    </li>
+    <li>As soon as your test results are available, you'll receive notification via phone or e-mail based on the preference selected at checkout.  Typically, results are available within 3-5 business days after testing. To access results online, simply click MY RESULTS on our <a href="http://getstdtested.com">website</a>. Enter your e-mail address and private, temporary password listed below.  Feel free to change your password at anytime by simply logging in.</li>
+
+</ol>
+<p>Private password to access results: <b>{{var pass}}</b></p>
+<p><b>Questions?</b><br>
+We're at your service.  Call us at <b>866-749-6269</b> or e-mail <a href="mailto:support@getlabtested.net?subject=order-help">support@getlabtested.net</a>. Please do not respond directly to this e-mail.</p>
+<p>Best wishes,<br>
+The Pinpoint MD Team</p>

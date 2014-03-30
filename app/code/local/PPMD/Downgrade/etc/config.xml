@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Downgrade>
+            <version>0.0.1</version>
+        </PPMD_Downgrade>
+    </modules>
+
+    <global>
+        <resources>
+            <ppmd_downgrade_setup>
+                <setup>
+                    <module>PPMD_Downgrade</module>
+                </setup>
+            </ppmd_downgrade_setup>
+        </resources>
+    </global>
+</config>

@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <notes_adminhtml_notes_index>
+        <reference name="content">
+            <block type="notes/adminhtml_notes" name="notes" />
+        </reference>
+    </notes_adminhtml_notes_index>
+</layout>

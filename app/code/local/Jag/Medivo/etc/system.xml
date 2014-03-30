@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <medivo translate="label">
+            <label>Medivo</label>
+            <sort_order>401</sort_order>
+        </medivo>
+    </tabs>
+    <sections translate="label">
+        <medivo_settings>
+            <class>separator-top</class>
+            <label>Medivo Settings</label>
+            <tab>medivo</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>300</sort_order>
+            <show_in_default>1</show_in_default>
+            <groups>
+                <!--
+                <general translate="label">
+                    <label>General Configuration</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <active translate="label">
+                            <label>Test Mode</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </active>
+                        <live_url translate="label">
+                            <label>Live Medivo Url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>2</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </live_url>
+                        <stage_url translate="label">
+                            <label>Staging Medivo Url</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>3</sort_order>
+                            <show_in_default>1</show_in_default>
+                        </stage_url>
+                    </fields>
+                </general>
+                -->
+                <contact_information translate="label">
+                    <label>Contact Information</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>1</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <fields>
+                        <doc_consult_skus>
+                            <label>Doctor Consultation Product Skus</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>1</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </doc_consult_skus>
+                        <doc_consult_phone_number translate="label">
+                            <label>Doctor Consultation Phone Number</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </doc_consult_phone_number>
+                    </fields>
+                </contact_information>
+            </groups>
+        </medivo_settings>
+    </sections>
+</config>

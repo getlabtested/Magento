@@ -1,0 +1,41 @@
+RewriteEngine On
+
+### THIS IS THE ACTUAL REWRITE
+# Modified by vBulletin - Andrew Elkins - Version 1.1
+# Meant to fix  /forums/(forum directory) using mod_rewrite
+
+RewriteRule ^(forum/)?forum/([0-9]+)(?:/?$|(?:-[^/]+))(?:/?$|(?:/page([0-9]+)?))$ forum/forumdisplay.php?f=$2&page=$3&%{QUERY_STRING} 
+RewriteRule ^forum/threads/([0-9]+)(?:/?$|(?:-[^/]+))(?:/?$|(?:/page([0-9]+)?)) forum/showthread.php?t=$1&page=$2&%{QUERY_STRING}
+RewriteRule ^forum/members/([0-9]+) forum/member.php?u=$1&%{QUERY_STRING}
+RewriteRule ^forum/blogs/([0-9]+)(?:/?$|(?:-[^/]+))(?:/?$|(?:/page([0-9]+)?)) forum/blog.php?u=$1&page=$2&%{QUERY_STRING}
+RewriteRule ^forum/entries/([0-9]+)(?:/?$|(?:-[^/]+))(?:/?$|(?:/page([0-9]+)?)) forum/entry.php?b=$1&page=$2&%{QUERY_STRING}
+RewriteRule ^forum/list/([^/]*/)([0-9]+) forum/list.php?r=$1$2&%{QUERY_STRING}
+RewriteRule ^forum/content/(.*) forum/content.php?r=$1&%{QUERY_STRING}
+RewriteRule ^forum/widget/config/([0-9]+) forum/widget.php?r=config/$1&%{QUERY_STRING} 
+
+#RewriteCond %{HTTP_HOST} !^getstdtested\.com
+#RewriteRule (.*) http://getstdtested.com/forum/$1 [L,R=301]
+
+#RewriteRule ^((urllist|sitemap_).*\.(xml|txt)(\.gz)?)$ vbseo_sitemap/vbseo_getsitemap.php?sitemap=$1 [L]
+
+#RewriteCond %{REQUEST_URI} !(admincp/|modcp/|cron|vbseo_sitemap)
+#RewriteRule ^((archive/)?(.*\.php(/.*)?))$ vbseo.php [L,QSA]
+
+#RewriteCond %{REQUEST_FILENAME} !-f
+#RewriteCond %{REQUEST_FILENAME} !-d
+#RewriteCond %{REQUEST_FILENAME} !/(admincp|modcp|clientscript|cpstyles|images)/
+#RewriteRule ^(.+)$ vbseo.php [L,QSA]
+
+#RewriteCond %{HTTP_HOST} !^getstdtested\.com
+#RewriteRule (.*) http://getstdtested.com/forums/$1 [L,R=301]
+
+RewriteRule ^((urllist|sitemap_).*\.(xml|txt)(\.gz)?)$ vbseo_sitemap/vbseo_getsitemap.php?sitemap=$1 [L]
+
+RewriteCond %{REQUEST_URI} !(admincp/|modcp/|cron|vbseo_sitemap|api\.php)
+RewriteRule ^((archive/)?(.*\.php(/.*)?))$ vbseo.php [L,QSA]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !/(admincp|modcp|clientscript|cpstyles|images)/
+RewriteRule ^(.+)$ vbseo.php [L,QSA]
+

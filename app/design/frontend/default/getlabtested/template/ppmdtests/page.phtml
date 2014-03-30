@@ -1,0 +1,47 @@
+<?php
+    $test_collection = $this->getProductCollection();
+?>
+
+<div id="col-middle">
+    <h1 class="blue">Find a Test</h1>
+    <p>getLABtested offers a wide variety of laboratory testing with a simple, confidential and affordable process. We help you keep your health on track with access to discounted blood testing and fast results you can view online.</p>
+    <p>We offer over 10,000 tests within the categories listed to the left. <strong>Simply browse the list to find the lab or blood test you need or do a keyword search to the right above</strong>.</p>
+
+    <h2 class="green no-border">Popular Lab Tests</h2>
+
+        <?php $subcategory_css_class = $this->getSubcategoryUrlKey() ? $this->getSubcategoryUrlKey() : $this->getDefaultSubcategoryCssClass() ; ?>
+        <div class="subcategory-list subcategory-list-<?php echo $subcategory_css_class ?>" id="subcategory-list-<?php echo $subcategory_css_class ?>">
+
+        <?php foreach ($test_collection as $product) { ?>
+
+            <div class="test-item">
+                <div class="test-item-top">
+                    <div class="test-item-name"><a href="<?php echo $product->getProductUrl() ?>"><?php echo $product->getName() ?></a></div>
+                    <?php $finalPrice = $product->getSpecialPrice() ? $product->getSpecialPrice() : $product->getPrice() ?>
+                    <div class="test-item-price">$<?php echo number_format($finalPrice, 2, '.', '') ?></div>
+                </div>
+                <div class="test-item-icon"></div>
+                <div class="test-item-desc">
+                    <?php $description_text = ($product->getShortDescription()) ? $product->getShortDescription() : $product->getDescription(); ?>
+                    <p><?php echo $description_text ?></p>
+                    <p><a href="<?php echo $product->getProductUrl() ?>">Learn More</a></p>
+                </div>
+                <?php if ($product->getSpecialPrice()) { ?>
+                    <div class="test-item-valued">Valued at: <span>$<?php echo number_format($product->getPrice(), 2, '.', '') ?></span></div>
+                <?php } ?>
+                <div class="test-item-button"><a href="<?php echo Mage::helper('ppmd_tests')->getAddToCartUrl($product->getEntityId()) ?>" class="test-item-add-to-cart">Add to Cart</a></div>
+                <div class="cboth">&nbsp;</div>
+            </div>
+
+        <?php } ?>
+
+        </div>
+</div>
+
+<div id="col-right">
+    <?php echo $this->getChildHtml('ppmd_tests_right') ?>
+</div>
+
+<div id="col-wide">
+    <?php echo $this->getChildHtml('ppmd_tests_bottom') ?>
+</div>

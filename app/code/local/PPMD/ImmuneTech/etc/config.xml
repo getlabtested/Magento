@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_ImmuneTech>
+            <version>0.0.1</version>
+        </PPMD_ImmuneTech>
+    </modules>
+
+    <global>
+        <models>
+            <immunetech>
+                <class>PPMD_ImmuneTech_Model</class>
+            </immunetech>
+        </models>
+        
+        <helpers>
+            <immunetech>
+                <class>PPMD_ImmuneTech_Helper</class>
+            </immunetech>
+        </helpers>
+        
+        <template>
+            <email>
+                <immunetech_purchase_success module="Sendmail">
+                    <label>Immunetech Product Purchase Email</label>
+                    <file>ppmd-immunetech.html</file>
+                    <type>html</type>
+                </immunetech_purchase_success>
+            </email>
+        </template>
+    </global>
+
+    <default>
+        <immunetech>
+            <emails>
+                <templates>
+                    <order_success>
+                        <instructions_emails>
+                            <subject>GetLabTested Order Purchase</subject>
+                            <template_name>immunetech_purchase_success</template_name>
+                        </instructions_emails>
+                    </order_success>
+                </templates>
+            </emails>
+            <unallowed_states>
+                <list>
+                    <NJ />
+                    <NY />
+                    <RI />
+                    <MD />
+                </list>
+            </unallowed_states>
+        </immunetech>
+        <ppmd_tests>
+            <test_type_vendors>
+                <ImmuneTech>immunetech</ImmuneTech>
+            </test_type_vendors>
+        </ppmd_tests>
+    </default>
+</config>

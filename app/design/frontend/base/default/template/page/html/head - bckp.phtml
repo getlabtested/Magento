@@ -1,0 +1,90 @@
+<?php
+
+
+$c = rtrim($this->helper('core/url')->getCurrentUrl(),"/");
+
+if (strpos($c,"?") > 1) {
+
+	$c = strstr($c,"?",true);
+
+}
+
+$c = rtrim($c,"/");
+
+?>
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
+<title><?php echo $this->getTitle() ?></title>
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="google-site-verification" content="VcxCN5pd-2HSnLTEz6m0sruDv7en2MiKwRLnEFxXt1w" />
+<?php //echo '<meta name="robots" content="'.htmlspecialchars($this->getRobots()).'" />'; ?>
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="canonical" href="<?php echo $c; ?>"/>
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]-->
+
+<?php 
+	// run a check for mobile devices only on home page
+	if (Mage::getSingleton('cms/page')->getIdentifier() == 'home') : 
+?>
+<script type="text/javascript" src="/js/detect-mobile.js"></script>
+<script type="text/javascript">
+	try {
+		var mobile = getQuerystring('Mobile');
+		if (mobile == "") var mobile = getQuerystring('mobile', true);
+
+		if ((mobile != "False") && (mobile != "false")) {
+			detectMobile(navigator.userAgent || navigator.vendor || window.opera, 'http://getstdtested.com/m/03/');
+		}
+	} catch (err) { };
+</script>
+<?php 
+	endif;
+?>
+
+<!-- Google Website Optimizer Tracking Script -->
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['gwo._setAccount', 'UA-10462432-2']);
+  _gaq.push(['gwo._trackPageview', '/0853531173/test']);
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<!-- End of Google Website Optimizer Tracking Script -->
+
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+
+
+<?php if (empty($_SERVER['HTTPS'])) { ?>
+<script id="pap_x2s6df8d" src="http://partners.getstdtested.com/scripts/clickjs.php" type="text/javascript">
+</script>
+<? } else { ?>
+	<script id="pap_x2s6df8d" src="https://partners.getstdtested.com/scripts/clickjs.php" type="text/javascript">
+</script>
+	
+<? } ?>
+<script type="text/javascript">
+papTrack();
+</script>
+
+<script type="text/javascript" src="//js9.ringrevenue.com/9/integration.js"></script>
+<script type="text/javascript">
+  RingRevenue.advertiser_integration = {
+    id : '2057',
+    numberLeadingOne : false,
+    numberSelector : '.promoNumber'
+  };
+</script>

@@ -1,0 +1,26 @@
+body {
+background: #fff;
+background-attachment: fixed;
+font-family: Arial, Helvetica, Garuda, sans-serif;
+}
+img
+{
+border: none;
+}
+.info{ margin-top: 60px; font-size: 12px;color: #545454;position: relative;float: left; height: 14px;}
+.buttons {width:720px;position: relative;margin-top: 5px;height: 40px;}
+.btn{padding-bottom: 10px;float: right;}
+.uname{float: left; font-weight: bold; color: #3b5998;margin-top: 7px;}
+.container { top: 20px; width:720px; position: relative; margin-left: 0px;}
+.resdiv
+{
+padding: 5px;
+padding-top: 240px;
+background:#318d8a url('resdiv.png') no-repeat;
+color: #fff;
+height: 312px;
+font-size: 11px;
+}
+ a{color:#000;}
+ a:hover{color:#000;}
+

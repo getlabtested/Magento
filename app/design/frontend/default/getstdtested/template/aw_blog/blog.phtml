@@ -1,0 +1,57 @@
+
+
+<div id="content">
+    <div id="left_col">
+        <h1>STATUS UPDATES</h1>
+        <h2>A sexual health blog powered by getstdtested.com</h2>
+    
+        <?php $posts = $this->getPosts(); ?>
+        <?php foreach ($posts as $post): ?>
+        <?php
+        
+        $l = $post->getAddress();
+        
+        $s = (string)$l;
+                
+        $s = rtrim($s,"/");
+        
+         $s = rtrim($s,"/");
+         
+          $s = trim($s,"/");
+        
+        
+        ?>
+        <div class="postWrapper">
+             <div class="postTitle">
+                <h3><a href="<?php echo $s;  ?>" ><?php echo $post->getTitle();?></a></h3>
+                <p class="info"><?php echo Mage::helper('blog')->__('Posted');?> <?php echo $this->__("By");?> <?php echo $post->getUser(); ?> on <?php echo $post->getCreatedTime(); ?></p>
+            </div>
+            <div class="postContent"><?php echo $post->getPostContent(); ?></div>
+            <?php echo $this->getBookmarkHtml($post) ?>
+            
+            <?php
+			if (Mage::helper('sexybookmarks')->isBookmarksEnabled()) {
+				$page_title=$this->getLayout()->getBlock('head')->getTitle();
+				$page_url=Mage::helper('core/url')->getCurrentUrl();
+				?>				
+                <ul class="socials">
+                   <?php echo Mage::helper('sexybookmarks')->printBookmarks($page_title,$page_url); ?>
+                </ul>
+			<?php } ?>
+            
+        </div>
+        <?php endforeach; ?> 
+        <?php $this->getPages(); ?>
+    </div> <!-- /left_col -->
+    
+    <div id="right_col">
+		<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('questions-order-by-phone')->toHTML();?>
+		<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('trusted-accredited-banner')->toHTML();?>
+		<?php echo $this->getLayout()->createBlock('blog/tags')->toHTML();?>
+		<div style="margin-top: 30px; text-align: center;">
+			<script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script type="text/javascript">if (WIDGETBOX) WIDGETBOX.renderWidget('75f80afb-94c9-4d1b-9760-59c7c8a2d549');</script>
+			<noscript>Not seeing a widget? Visit <a href="http://www.empowher.com">EmpowHER.com</a> for women's health and wellness community, news and resources.</noscript>
+		</div>
+    </div> <!-- /right_col -->
+    
+</div> <!-- /content -->

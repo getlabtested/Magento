@@ -1,0 +1,180 @@
+<div class="onestepcheckout-payment-methods">
+	
+	<a id="pay_cc_head" class="pay_opt_head active" onclick="javascript: showPayOpt('pay_cc');save_shipping_method(shipping_method_url);document.getElementById('p_method_authorizenet').checked='checked';return false;" href="">Credit Card</a>
+	
+	<?php //if ((Mage::getSingleton('checkout/session')->getQuote()->getOrderType() == 1 || Mage::getSingleton('core/session')->getOrderType() == 1) && !Mage::getModel('core/session')->getScript() && !Mage::getModel('core/session')->getIsNnr()) { ?>
+	<?php /* <a id="pay_cash_head" class="pay_opt_head" onclick="javascript: showPayOpt('pay_cash');save_shipping_method(shipping_method_url);document.getElementById('p_method_paynearme').checked='checked';return false;" href="">Pay with Cash</a> */ ?>
+	<?php //} ?>
+	<dl class="sp-methods" id="checkout-payment-method-load">
+			
+		<div id="payments_content">
+	        <div id="pay_cc_content" class="bg_grey_round box pay_opt_content" style="display: block;">
+	            <div style="display: none;"><input type="radio" class="radio" checked="checked" title="Credit Card (Authorize.net)" name="payment[method]" value="authorizenet" id="p_method_authorizenet"></div>
+	        
+	        	
+	        	<div class="payment-method" id="container_payment_method_authorizenet">
+					<ul style="list-style-type:none;" id="payment_form_authorizenet" class="form-list">
+						<li style="float: left;margin-bottom: 15px;">
+							<div class="input-box">
+							<label class="required" for="authorizenet_cc_type" style="margin-right: 10px;">Credit Card Type: </label>
+							<select class="required-entry validate-cc-type-select" name="payment[cc_type]" id="authorizenet_cc_type">
+							<option value="">--Please Select--</option>
+								<option value="AE">American Express</option>
+								<option value="VI">Visa</option>
+								<option value="MC">MasterCard</option>
+								<option value="DI">Discover</option>
+							</select>
+							</div>
+						</li>
+						<li style="float: left;">
+							
+							<div class="input-box">
+								<label class="required" for="authorizenet_cc_number" style="margin-right: 10px;">Credit Card #: </label>
+								<input type="text" maxlength="16" value="" class="input-text validate-cc-number validate-cc-type" title="Credit Card Number" name="payment[cc_number]" id="authorizenet_cc_number">
+							</div>
+						</li>
+						<!-- https://getstdtested.com/images/credit-card-options.png -->
+						<li id="authorizenet_cc_type_exp_div" style="clear: both;">
+							<div class="input-box">
+								<label class="required" for="authorizenet_expiration" style="margin-right: 10px;">Expiration Date: </label>
+								<div class="v-fix" style="float: left;">
+									
+									<select class="month validate-cc-exp required-entry" name="payment[cc_exp_month]" id="authorizenet_expiration">
+										<option selected="selected" value="">Month</option>
+										<option value="1">01 - January</option>
+										<option value="2">02 - February</option>
+										<option value="3">03 - March</option>
+										<option value="4">04 - April</option>
+										<option value="5">05 - May</option>
+										<option value="6">06 - June</option>
+										<option value="7">07 - July</option>
+										<option value="8">08 - August</option>
+										<option value="9">09 - September</option>
+										<option value="10">10 - October</option>
+										<option value="11">11 - November</option>
+										<option value="12">12 - December</option>
+									</select>
+								</div>
+								<div class="v-fix" style="float:left;">
+									<select class="year required-entry" name="payment[cc_exp_year]" id="authorizenet_expiration_yr">
+										<option selected="selected" value="">Year</option>
+										<option value="2011">2011</option>
+										<option value="2012">2012</option>
+										<option value="2013">2013</option>
+										<option value="2014">2014</option>
+										<option value="2015">2015</option>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+										<option value="2018">2018</option>
+										<option value="2019">2019</option>
+										<option value="2020">2020</option>
+										<option value="2021">2021</option>
+									</select>
+								</div>
+								<div class="v-fix" style="width:125px; height:18px; float:left; margin-top:2px;">
+									<?php if (!empty($_SERVER['HTTPS'])) { ?>
+									<img src="/media/images/cc-logos-small-ckout-3.png" alt="visa mastercard american express discover">
+									<?php } else { ?>
+									<img src="/media/images/cc-logos-small-ckout-3.png" alt="visa mastercard american express discover">
+									<?php } ?>
+								</div>
+								<div class="v-fix" style="width:200px; height:20px; float:left; margin-top:1px; margin-left:5px;">
+									
+									<?php if (!empty($_SERVER['HTTPS'])) { ?>
+									<img src="/media/images/accred-logos-small-ckout.jpg" alt="bbb truste fda asha">
+									<?php } else { ?>
+									<img src="/media/images/accred-logos-small-ckout.jpg" alt="bbb truste fda asha">
+									<?php } ?>
+								</div>
+								<div style="clear:both;"></div>
+								<div style="margin-top:15px; color:#028AFB;"><b>To protect your privacy, payment billed as "AQZ Services"</b></div>
+							</div>
+						</li>
+					</ul>
+				</div>
+ 
+	        
+	        </div>
+	        
+	        
+	        
+	        <div id="pay_cash_content" class="bg_grey_round box pay_opt_content" style="display: none;">
+	        	<div style="display: none;"><input type="radio" class="radio" title="Pay Near Me" name="payment[method]" value="paynearme" id="p_method_paynearme"></div>
+	        
+	        	
+
+
+
+				
+				
+				<div style="display: block;padding-bottom: 24px;padding-left: 2px;padding-right: 2px;" id="cash-option" class="payment">
+						 <br>
+             <img width="45" style="float:right;margin-left: 4px;" src="/media/images/7-Eleven.jpg" alt="7 Eleven">
+             Looking for an anonymous payment option? We offer a completely paper trail free way to pay; pay with cash at a nearby 7-11 store. After selecting this option, you'll receive a confirmation email, which includes a payment slip. Simply bring the payment slip to any 7-11 store to pay with cash. The payment slip will not include any personal or testing information - no one will know what your're paying for. <!-- To view 7-11 locations in your area, <a onclick="window.open('https://getstdtested.com/paynearme-locations?zipcode=91367','pnm','location=0,status=0,scrollbars=1,width=850,height=800')" href="javascript: void(0)">Click here</a> -->
+              <br><br>
+              <label style="font-weight: bold;"><input id="cash" type="checkbox" style="margin-right: 10px;vertical-align: bottom;position: relative; width: 13px;" name="cash">Select Cash Payment Option. I will pay at a local 7-11 store.</label>
+            <br><br>
+            <span style="float: right;font-weight: bold;">Have Questions? Wish to order by phone? Call 866-749-6269</span>
+            
+          </div>
+
+		
+
+
+
+
+
+
+	        	
+	        </div>
+    	    	
+    	</div>
+			
+	
+	
+	</dl>
+</div>
+<div class="tool-tip" id="payment-tool-tip" style="display:none;">
+	<div class="btn-close"><a href="#" id="payment-tool-tip-close" title="<?php echo $this->__('Close') ?>"><?php echo $this->__('Close') ?></a></div>
+	<div class="tool-tip-content"><img src="<?php echo $this->getSkinUrl('images/cvv.gif') ?>" alt=" <?php echo $this->__('Card Verification Number Visual Reference') ?> " title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+$$('#checkout-payment-method-load dt input').invoke('observe', 'click', function(e) {
+    var element = e.element();
+    var name = 'payment_form_' + element.value;
+    
+    /* Hide all other forms */
+    $$('dd.payment-method').invoke('hide');
+    
+    if(element.checked) {
+        var form = $(name);
+        var container = $('container_payment_method_' + element.value);
+
+        if(element !== null && container !== null)    {
+            container.show();
+            $(name).show();
+        }
+    }    
+});
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+	function toggleToolTip(event){
+		if($('payment-tool-tip')){
+			$('payment-tool-tip').setStyle({
+				top: (Event.pointerY(event)-560)+'px'//,
+				//left: (Event.pointerX(event)+100)+'px'
+			})
+			$('payment-tool-tip').toggle();
+		}
+		Event.stop(event);
+	}
+	if($('payment-tool-tip-close')){
+		Event.observe($('payment-tool-tip-close'), 'click', toggleToolTip);
+	}
+	
+	initWhatIsCvvListeners();	
+//]]>
+</script>

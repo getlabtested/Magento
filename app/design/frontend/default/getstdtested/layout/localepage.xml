@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <localepage_index_index>
+        <reference name="content">
+            <block type="localepage/localepage" name="localepage" template="localepage/localepage.phtml" />
+        </reference>
+    </localepage_index_index>
+    <localepage_index_dynamic>
+        <reference name="content">
+            <block type="localepage/dynamic" name="dynamic" template="localepage/localepage.phtml" />
+        </reference>
+    </localepage_index_dynamic>
+    <localepage_index_dynamicfree>
+        <reference name="content">
+            <block type="localepage/dynamicfree" name="dynamicfree" template="localepage/localepage.phtml" />
+        </reference>
+    </localepage_index_dynamicfree>
+    <localepage_index_statelevel>
+        <reference name="content">
+            <block type="localepage/dynamic" name="statelevel" template="template/statelevel.phtml" />
+        </reference>
+    </localepage_index_statelevel>
+    <localepage_index_statelevelfree>
+        <reference name="content">
+            <block type="localepage/dynamicfree" name="statelevel" template="template/statelevelfree.phtml" />
+        </reference>
+    </localepage_index_statelevelfree>
+</layout> 

@@ -1,0 +1,16 @@
+<div id="coupon_box" class="box">
+    <label>Coupon Code</label><br>
+    <input type="text" name="coupon_code" id="coupon_code">
+    <div id="apply_button" style="margin-top:10px; float:left;">
+        <input style="font-size:12px; height:25px; margin-left:0px;" class="submit btn_blue_reflection" value="APPLY" type="button" onclick="checkout_coupon.addCoupon();" />
+    </div>
+    <div id="remove_button" style="display:none; margin-top:10px; float:left;">
+        <input style="font-size:12px; height:25px; margin-left:0px;" class="submit btn_blue_reflection" value="REMOVE" type="button" onclick="checkout_coupon.removeCoupon()" />
+    </div>
+    <img style="display:none;float:right; margin-top:5px;" id="ajax-loader-gif-cu" src="/media/images/ajax-loader.gif" />
+    <div style="clear:both;"></div>
+</div>
+
+<script type="text/javascript">
+    var checkout_coupon = new CheckoutCoupon('<?php echo $this->getAddCouponUrl(); ?>');
+</script>

@@ -1,0 +1,721 @@
+<?php
+
+$this->resetCart();
+
+$_products = $this->getProducts();
+
+$state = Mage::getSingleton('core/session')->getOrderState();
+
+$sZip = substr(Mage::getSingleton('core/session')->getZip(),0,5);
+
+if ($sZip) {
+
+    $sesZip = $sZip;
+
+} else {
+
+    $sesZip = 'Enter Zip Code';
+
+}
+
+Mage::log(__METHOD__.":".__LINE__);
+Mage::log("HERE");
+
+//echo "<pre>"; print_r(Mage::getSingleton('core/session')->getData()); echo "</pre>";
+
+?>
+<script type="text/javascript">
+
+function is_int(value){
+    for (i = 0 ; i < value.length ; i++) {
+        if ((value.charAt(i) < '0') || (value.charAt(i) > '9')) return false
+    }
+    return true;
+}
+
+function handlerFunction(){
+
+    document.getElementById('ajax-loader-gif').style.display = 'block';
+
+    if ($("zip_code").value.length != 5 ||is_int($("zip_code").value) === false) {
+
+        alert('Please enter a valid 5 digit zip code.');
+        document.getElementById('ajax-loader-gif').style.display = 'none';
+        return false;
+
+    }
+
+
+
+    var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/getlabsorder") ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){
+
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                    }
+                    else{
+                        document.getElementById('ajax-loader-gif').style.display = 'none';
+                        document.getElementById("location_results").innerHTML =jsonResponse;
+                    }
+                },
+                parameters: Form.serialize($("location_form"))
+            }
+    );
+}
+
+
+var basicPackage = 150;
+
+var ultimatePackage = 229;
+
+var indiSkuArr = new Array();
+indiSkuArr[0] = 'hiv-lab';
+indiSkuArr[1] = 'chlamydia-gonorrhea-lab';
+indiSkuArr[2] = 'oral-genital-herpes-lab';
+indiSkuArr[3] = 'syphilis-lab';
+indiSkuArr[4] = 'hepatitis-b-lab';
+indiSkuArr[5] = 'hepatitis-c-lab';
+indiSkuArr[6] = 'hiv-early-detection-lab';
+
+var indiTestOrig = new Array();
+indiTestOrig[0] = 79;
+indiTestOrig[1] = 149;
+indiTestOrig[2] = 149;
+indiTestOrig[3] = 89;
+indiTestOrig[4] = 89;
+indiTestOrig[5] = 89;
+indiTestOrig[6] = 179;
+
+var homeSkuArr = new Array();
+homeSkuArr[0] = 'hiv-home';
+homeSkuArr[1] = 'chlamydia-gonorrhea-home';
+homeSkuArr[2] = 'trichomoniasis-home';
+
+var homeTestOrig = new Array();
+homeTestOrig[0] = 105;
+homeTestOrig[1] = 165;
+homeTestOrig[2] = 205;
+
+
+
+
+var cartArr = new Array();
+
+
+function updateWidgetTotal(el,id) {
+
+    if (typeof total == 'undefined') {
+
+        total = 0;
+
+    }
+
+    var discount = 0;
+
+    if (document.getElementById(el).type == 'radio') {
+
+
+        if (document.getElementById('hiv-early-detection-lab').checked == false) {
+
+            total = 0;
+
+            price = 0;
+
+            cartArr = new Array();
+
+        } else {
+
+            total = 0;
+
+            price = indiTestOrig[6];
+
+        }
+
+    <?php if (!Mage::getSingleton('core/session')->getIsNnr()) { ?>
+
+        document.getElementById('package').value = id;
+
+        for (i = 0; i < indiSkuArr.length; i++) {
+
+            if (indiSkuArr[i] != 'hiv-early-detection-lab') {
+
+                document.getElementById(indiSkuArr[i]).checked = false;
+                document.getElementById(indiSkuArr[i]).value = indiTestOrig[i];
+
+            }
+
+        }
+
+        for (i = 0; i < homeSkuArr.length; i++) {
+            document.getElementById(homeSkuArr[i]).checked = false;
+            document.getElementById(homeSkuArr[i]).value = homeTestOrig[i];
+        }
+
+        if (document.getElementById(el).value == 0) {
+
+            document.getElementById('widget_total').innerHTML = "Select Tests";
+
+        } else {
+
+            price = parseInt(document.getElementById(el).value) + price;
+
+            price = parseInt(price);
+
+            document.getElementById('widget_total').innerHTML = "$"+price;
+
+            if (el == 'complete_package') {
+
+                document.getElementById('complete_package_hidden').value = price;
+                document.getElementById('expert_package_hidden').value = 0;
+
+            } else {
+
+                document.getElementById('expert_package_hidden').value = price;
+
+            }
+
+        }
+
+        <?php } else  { ?>
+
+        document.getElementById('package').value = id;
+
+        for (i = 0; i < indiSkuArr.length; i++) {
+
+            if (indiSkuArr[i] != 'hiv-early-detection-lab') {
+
+                document.getElementById(indiSkuArr[i]).checked = false;
+                document.getElementById(indiSkuArr[i]).value = indiTestOrig[i];
+
+            }
+
+        }
+
+        for (i = 0; i < homeSkuArr.length; i++) {
+            document.getElementById(homeSkuArr[i]).checked = false;
+            document.getElementById(homeSkuArr[i]).value = homeTestOrig[i];
+        }
+
+        total = 125;
+
+        for (var i = 0; i < cartArr.length; i++) {
+
+            if (cartArr[i] == 'hiv-home'){
+
+                total = 105;
+
+            }
+        }
+
+
+        document.getElementById('widget_total').innerHTML = '$'+total;
+
+        <?php } ?>
+
+
+
+    } else {
+
+        re = 0;
+
+        if (el != 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true && document.getElementById('hiv-early-detection-lab').checked == true) {
+
+            document.getElementById('expert_package_hidden').value = 0;
+
+            document.getElementById('expert_package').checked = false;
+
+            document.getElementById('hiv-early-detection-lab').checked = false;
+
+            document.getElementById('hiv-early-detection-lab').value = indiTestOrig[6];
+
+            document.getElementById('package').value = "";
+
+            total = 0;
+
+        }
+
+        if (el != 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true) {
+
+            document.getElementById('expert_package_hidden').value = 0;
+
+            document.getElementById('expert_package').checked = false;
+
+            document.getElementById('package').value = "";
+
+        }
+
+        /*
+if (el == 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true) {
+
+            if (document.getElementById('hiv-early-detection-lab').value < 0) {
+
+                total = 418;
+
+            } else {
+
+                total = 229;
+
+            }
+
+        }
+*/
+
+
+
+
+
+        price = document.getElementById(el).value;
+
+        price = parseInt(price);
+
+        if(el.indexOf('home')> 0) {
+
+            for (i = 0; i < cartArr.length; i++) {
+
+                if (cartArr[i].indexOf('lab')>0) {
+
+                    //document.getElementById(cartArr[i]+"-cart").style.display = "none";
+
+                    re = 1;
+
+                }
+
+            }
+
+        }
+
+        if(el.indexOf('lab')> 0) {
+
+            for (i = 0; i < cartArr.length; i++) {
+
+                if (cartArr[i].indexOf('home')>0) {
+
+                    //document.getElementById(cartArr[i]+"-cart").style.display = "none";
+
+                    re = 1;
+
+                }
+
+            }
+
+        }
+
+        if (re == 1) {
+
+            cartArr = new Array();
+
+        }
+
+        if (indiSkuArr.indexOf(el) >= 0) {
+
+            for (i = 0; i < homeSkuArr.length; i++) {
+
+                if (document.getElementById(homeSkuArr[i]).checked == true) {
+                    document.getElementById(homeSkuArr[i]).checked = false;
+                    document.getElementById(homeSkuArr[i]).value = homeTestOrig[i];
+                    total = 0;
+                }
+            }
+
+        } else {
+
+            document.getElementById('expert_package_hidden').value = 0;
+
+            document.getElementById('expert_package').checked = false;
+
+            document.getElementById('package').value = "";
+
+            for (i = 0; i < indiSkuArr.length; i++) {
+                if (document.getElementById(indiSkuArr[i]).checked == true) {
+                    document.getElementById(indiSkuArr[i]).checked = false;
+                    document.getElementById(indiSkuArr[i]).value = indiTestOrig[i];
+                    total = 0;
+                }
+            }
+
+        }
+
+        if (price < 0) {
+
+            document.getElementById(el).value = price + (price*-2);
+
+            for (key in cartArr) {
+                if (cartArr[key] == el) {
+                    cartArr.splice(key, 1);
+                }
+            }
+
+
+        } else {
+
+            document.getElementById(el).value = price - (price*2);
+
+            cartArr.push(el);
+
+        }
+
+
+        if (el == 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true) {
+
+            if (document.getElementById('hiv-early-detection-lab').checked == false) {
+
+                total = 418;
+
+            } else {
+
+                total = 229;
+
+            }
+
+            total = total + price;
+
+        } else {
+
+            total = total + price;
+
+        }
+
+
+
+
+
+        document.getElementById('widget_total').innerHTML = '$'+(total);
+
+    }
+
+}
+
+function checkEmpty() {
+
+    if (cartArr.length == 0 && !document.getElementById('expert_package').checked) {
+
+        alert('Please select STD tests before checkout.');
+
+        return false;
+
+    }
+
+
+
+    document.getElementById('orderWidget').submit();
+    return true;
+
+}
+
+function turnOff (el){
+
+
+
+}
+
+function toggleCartElement(el) {
+
+    if (el == 'expert_package') {
+
+        document.getElementById('expert_package-cart').style.display = 'block';
+
+        for (i = 0; i < indiSkuArr.length; i++) {
+            //document.getElementById(indiSkuArr[i]+'-cart').style.display = "none";
+        }
+
+        for (i = 0; i < homeSkuArr.length; i++) {
+            //document.getElementById(homeSkuArr[i]+'-cart').style.display = "none";
+        }
+
+    } else {
+
+
+        //document.getElementById('expert_package-cart').style.display = 'none';
+
+        elId = el+'-cart';
+
+        /*
+    if (document.getElementById(elId).style.display == 'none') {
+
+        var cartList = document.getElementById('ow_list');
+
+        document.getElementById(elId).style.display = 'block';
+
+        } else {
+
+        document.getElementById(elId).style.display = 'none';
+
+        }
+    */
+
+    }
+
+}
+
+function submitenter(e)
+{
+    var keycode;
+    if (window.event) keycode = window.event.keyCode;
+    else if (e) keycode = e.which;
+    else return true;
+
+    if (keycode == 13)
+    {
+        document.getElementById('location_submit_button').click();
+        return false;
+    }
+    else
+        return true;
+}
+
+</script>
+<div class="clear"></div>
+
+            <div id="content">
+            	
+                <div id="order">
+
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:700' rel='stylesheet' type='text/css'>
+<link media="all" href="http://getstdtested.com/skin/frontend/default/getstdtested/css/orderwidget-lab-only-2013.css" type="text/css" rel="stylesheet">
+
+                    <div id="order_module3">
+					
+                    	<form name="orderWidget" id="orderWidget" method="post" action="http://getstdtested.com/customroute/index/checkout">
+
+                            <input type="checkbox" value="105.0000" id="hiv-home" name="homeTest[hiv-home]" style="display: none;" />
+                            <input type="checkbox" value="165.0000" id="chlamydia-gonorrhea-home" name="homeTest[chlamydia-gonorrhea-home]" style="display: none;" />
+                            <input type="checkbox" value="205.0000" id="trichomoniasis-home" name="homeTest[trichomoniasis-home]" style="display: none;" />
+
+                            <div id="lab_package">
+                                <div class="header">Complete Lab Testing Package</div>
+                                <div class="content">
+                                    <ul>                                    	
+                                        <li>HIV Standard</li>
+                                        <li>Chlamydia</li>
+                                        <li>Gonorrhea</li>
+                                        <li>Oral Herpes</li>
+                                        <li>Genital Herpes</li>
+                                        <li>Syphilis</li>
+                                        <li>Hepatitis B</li>
+                                        <li>Hepatitis C</li>
+                                    </ul>
+                                    <p>The Complete Test Panel screens for 8 of the most common STDs. Each test was evaluated for accuracy and approved by the getSTDtested Medical Advisory Board.</p>
+									<div style="clear: both;"></div>
+                                </div>
+								<div id="lab_packapge_footer">
+									<input type="radio" id="expert_package" value="229" onClick="updateWidgetTotal(this.id,14);toggleCartElement(this.id);document.getElementById('orderWidget').submit();" name="testPackage" />
+									<label for="expert_package">ADD TO CART</label>
+									<input id="expert_package_hidden" type="hidden" name="pack_14" value="229">
+									<div style="clear: both;"></div>
+								</div>
+                            </div>
+
+                            <div id="lab_tests1">
+                                <div class="header"><strong>Individual</strong> Tests Available</div>
+                                <div class="content">
+                                	<div id="lab_tests1-col1">
+										Concerned about a specific infection? Retesting after treatment? Individual test options allow you to customize your STD test panel.
+                                	</div>
+                                    <ul id="lab_tests1-col2">
+                                        <li><input type="checkbox" value="79.0000" id="hiv-lab" onClick="updateWidgetTotal(this.id,11);toggleCartElement(this.id);" name="indiTest[hiv-lab]" /><label id="hiv-lab-lbl" for="hiv-lab">HIV Standard</label></li>
+                                        <li><input type="checkbox" value="149.0000" id="chlamydia-gonorrhea-lab" onClick="updateWidgetTotal(this.id,40);toggleCartElement(this.id);" name="indiTest[chlamydia-gonorrhea-lab]" /><label id="chlamydia-gonorrhea-lab-lbl" for="chlamydia-gonorrhea-lab">Chlamydia &amp; Gonorrhea</label></li>
+                                        <li><input type="checkbox" value="149.0000" id="oral-genital-herpes-lab" onClick="updateWidgetTotal(this.id,42);toggleCartElement(this.id);" name="indiTest[oral-genital-herpes-lab]" /><label id="oral-genital-herpes-lab-lbl" for="oral-genital-herpes-lab">Oral &amp; Genital Herpes</label></li>
+                                    </ul>
+                                    <ul id="lab_tests1-col3">
+                                        <li><input type="checkbox" value="89.0000" id="hepatitis-c-lab" onClick="updateWidgetTotal(this.id,8);toggleCartElement(this.id);" name="indiTest[hepatitis-c-lab]" /><label id="hepatitis-c-lab-lbl" for="hepatitis-c-lab">Hepatitis C</label></li>
+                                        <li><input type="checkbox" value="89.0000" id="hepatitis-b-lab" onClick="updateWidgetTotal(this.id,7);toggleCartElement(this.id);" name="indiTest[hepatitis-b-lab]" /><label id="hepatitis-b-lab-lbl" for="hepatitis-b-lab">Hepatitis B</label></li>
+                                        <li><input type="checkbox" value="89.0000" id="syphilis-lab" onClick="updateWidgetTotal(this.id,12);toggleCartElement(this.id);" name="indiTest[syphilis-lab]" /><label id="syphilis-lab-lbl" for="syphilis-lab">Syphilis</label></li>
+                                    </ul>
+                                    <ul id="lab_tests1-col4">
+                                    	<li><label>&nbsp;</label></li>
+                                    	<li><label>&nbsp;</label></li>
+                                        <li><input type="checkbox" value="179.0000" id="hiv-early-detection-lab" onClick="updateWidgetTotal(this.id,13);toggleCartElement(this.id);" name="indiTest[hiv-early-detection-lab]" /><label id="hiv-early-detection-lab-lbl" for="hiv-early-detection-lab">HIV Early Detection *</label></li>
+                                    </ul>
+
+									<div id="your_order">                                    
+		                                <div class="total">
+		                                    <span id="total_price"><div id="widget_total">$0</div></span>
+		                                </div>
+		                                <input type="button" onclick="checkEmpty();" class="submit btn_orange_32_reflection" value="continue" />
+		                            </div>
+                                </div>
+                            </div>
+							
+							<input type="hidden" id="package" name="package" value="">  							
+							
+						</form>
+						<div id="expert_package-cart" style="display:none;"></div>
+					</div>
+                    
+					<div class="cboth"><br /><br /><br /></div>
+                    <p class="acenter"><img src="/skin/frontend/default/getstdtested/images/order-trustbuilders.jpg" width="960" height="85" alt="" /></p>
+					<div class="cboth"><br /><br /><br /></div>
+                    
+                    <div id="order-benefits">
+                    
+                    	<h3>Benefits of Private STD Testing</h3>
+                    	<p>Personalized, Private STD Testing Experience</p>
+                    	
+                    	<div id="order-benefits-icon1">
+                    		<h4>Complete Privacy</h4>
+                    		<p>Personal information and results are always confidential.<br />No undressing, no embarrassment.</p>
+                    	</div>
+                    	<div id="order-benefits-icon2">
+                    		<h4>Test Today</h4>
+                    		<p>Same-day STD testing available at nearly 4,000 private local laboratories. Many labs open on Saturdays.</p>
+                    	</div>
+                    	<div class="cboth"></div>
+                    	<div id="order-benefits-icon3">
+                    		<h4>Accurate Testing</h4>
+                    		<p>Most accurate testing available. Same STD tests trusted by doctors and hospitals nationwide.</p>
+                    	</div>
+                    	<div id="order-benefits-icon4">
+                    		<h4>Quick Results</h4>
+                    		<p>Get answers in 5 days or less. Results available privately via email or phone.</p>
+                    	</div>
+                    	<div class="cboth"></div>                    	
+                    	<div id="order-benefits-icon5">
+                    		<h4>Convenient Test Options</h4>
+                    		<p>No appointments necessary. Testing takes 15-20 minutes<br />at the lab.</p>
+                    	</div>
+                    	<div id="order-benefits-icon6">
+                    		<h4>Get treated</h4>
+                    		<p>Staff doctors can prescribe treatment for the most common STDs.</p>
+                    	</div>
+      
+                    </div>
+                    
+                    <div class="clear">&nbsp;</div>
+                    <div class="sep20">&nbsp;</div>
+                    <div class="sep20">&nbsp;</div>
+
+                </div> <!-- /order -->
+                
+            </div> <!-- /content -->
+
+
+
+			</div>
+</div>
+
+<div id="order-testing-locations-wrap">
+	<div id="order-testing-locations">
+	
+		<h2>You could be in-and-out of one of these locations today.</h2>
+		<p>With thousands of locations across the United States, getting same-day testing is as simple as a couple mouse clicks.</p>
+		<a href="/locate-testing-center" id="b-order-testing-locations">View more locations</a>
+							
+	</div>
+</div>
+
+<script type="text/javascript" src="http://getstdtested.com/skin/frontend/default/getstdtested/js/jquery.qtip-1.0.0-rc3.min.js"></script>
+<script type="text/javascript">
+jQuery(document).ready(function() {
+	jQuery('#hiv-lab-lbl').qtip({
+		content: '<strong>HIV Standard</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>HIV test with Confirmation by Western Blot</li><li>99.9% accurate testing 3 to 6 months after exposure</li><li>Confirmation test is automatically performed when viral activity is detected</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+	jQuery('#chlamydia-gonorrhea-lab-lbl').qtip({
+		content: '<strong>Chlamydia &amp; Gonorrhea</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>Dual, urine-based gonorrhea and chlamydia test</li><li>Nucleic acid amplification technology for highly sensitive testing</li><li>99.9% accurate 7 to 10 days after exposure</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+	jQuery('#oral-genital-herpes-lab-lbl').qtip({
+		content: '<strong>Oral &amp; Genital Herpes</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>HerpeSelect IgG HSV 1/2 Antibody Test</li><li>Screens for both oral herpes and genital herpes</li><li>Blood-based STD test</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+	jQuery('#hepatitis-c-lab-lbl').qtip({
+		content: '<strong>Hepatitis C</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>Hepatitis C Antibody Test with Reflex to HCV RIBA</li><li>Small blood sample detects acute and chronic infections</li><li>Confirmation testing is automatically performed when viral activity is present</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+	jQuery('#hepatitis-b-lab-lbl').qtip({
+		content: '<strong>Hepatitis B</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>Hepatitis B Surface Antigen Test</li><li>Small blood sample detects acute and chronic infections.</li><li>Confirmation testing is automatically performed when viral activity is present</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+	jQuery('#syphilis-lab-lbl').qtip({
+		content: '<strong>Syphilis</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>Rapid Plasma Reagin Test with Reflex</li><li>Uses A small blood sample to detect syphilis antibodies</li><li>If positive, a confirmation test is automatically performed</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+	jQuery('#hiv-early-detection-lab-lbl').qtip({
+		content: '<strong>HIV Early Detection</strong><br /><ul style="margin:0;padding:4px 0 0 15px;"><li>HIV DNA PCR Test with HIV Antibodies</li><li>95% accurate 10 to 14 days after a possible exposure</li><li>Screens for DNA material in the HIV virus</li></ul>',
+		position: {
+			corner: { tooltip: 'bottomLeft', target: 'topLeft' }
+		},
+		style: {
+			width: 350,
+			border: { width: 2, radius: 8, color: '#c2c2c2' },
+			background: '#fff',
+			color: '#474747',
+			padding: 14, 
+			textAlign: 'left',
+			tip: true
+		}
+	});
+});
+</script>

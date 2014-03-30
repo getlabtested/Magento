@@ -1,0 +1,21 @@
+<div class="box_col b-5">
+	<div class="box_head">
+		<h2>Coupon Code</h2>
+	</div>
+	<form>
+		<div class="code">
+			<input type="text" name="coupon_code" id="coupon_code" value="" />
+			<div id="apply_button" class="fright">
+				<input type="button" name="coupon_code" id="coupon_code" class="btn_apply" value="APPLY" onclick="checkout_coupon.addCoupon();" />
+			</div>
+			<div id="remove_button" class="fright" style="display:none;">
+				<input style="font-size: 12px; height: 25px; margin-left: 0;" class="submit btn_blue_reflection" value="REMOVE" type="button" onclick="checkout_coupon.removeCoupon()" />
+			</div>
+		</div>
+		<img style="display:none; float:right; margin-top:5px;" id="ajax-loader-gif-cu" src="/media/images/ajax-loader.gif" />
+	</form>
+</div>
+
+<script type="text/javascript">
+    var checkout_coupon = new CheckoutCoupon('<?php echo $this->getAddCouponUrl(); ?>');
+</script>

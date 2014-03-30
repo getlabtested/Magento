@@ -1,0 +1,52 @@
+<?php $labsArr = $this->getLabsByZip();
+
+
+$sesslab = Mage::getSingleton('core/session')->getLabId();
+
+if (strlen($sesslab) < 1) $sesslab = 'xxx';
+
+?>
+<?php 
+
+if (!is_array($labsArr) && !is_object($labsArr)) {
+	
+		echo "<h3>We apologize - it appears your zip code is invalid or there are no testing locations within 100 miles.  
+		Call 866-749-6269 and we'll help determine the best private option for testing.  
+		Alternately, click <a href='/std-testing-options'>HERE</a> to order at home STD testing.</h3>";
+	
+} else {
+	
+?>
+	
+	<?php 
+	
+		$x = 0;
+	
+		foreach ($labsArr as $lab) { 
+			
+			if (isset($lab->{'id'})) $labId = $lab->{'id'};
+	
+			if (isset($lab->{'nnr_id'})) $labId = $lab->{'nnr_id'};
+		
+		?>
+		<?php if ($x < 4) { ?>
+			<div class="item">
+				<div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab->{'lab-id'};?>);document.getElementById('lab-selected').value=1;" <?php if ($lx == 0) { echo " checked='checked' ";}?> type="radio" value="<?php echo $labId; ?>" name="lab_id"></div>
+				<div class="content">
+					<p><?php echo trim($lab->address,","); ?> <br><?php echo $lab->city; ?>, <?php echo $lab->state; ?> <?php echo $lab->zip; ?></p>
+					<p class="hours">
+						<span class="blue">Hours: </span>
+						<?php echo str_ireplace("|Sa","<br>Sa",$lab->hours); ?>
+					</p>
+				</div>
+			</div>
+		<?php $x++; ?> 
+		<?php } ?> 
+	<?php } ?>
+	
+	
+	
+	
+	
+<?php } ?>
+<div class="clear">&nbsp;</div>

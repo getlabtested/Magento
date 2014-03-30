@@ -1,0 +1,503 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+
+ini_set('display_errors', 0);
+
+?>
+
+<?php if (is_array($this->getChild('diagrams')->getTabsIds())) : ?>
+<script type="text/javascript">
+//<![CDATA[
+function changeDiagramsPeriod(periodObj) {
+    periodParam = periodObj.value ? 'period/' + periodObj.value + '/' : '';
+<?php foreach ($this->getChild('diagrams')->getTabsIds() as $tabId): ?>
+    ajaxBlockParam = 'block/tab_<?php echo $tabId ?>/';
+    ajaxBlockUrl = '<?php echo $this->getUrl('*/*/ajaxBlock', array('_current' => true, 'block' => '', 'period' => '')) ?>' + ajaxBlockParam + periodParam;
+    new Ajax.Request(ajaxBlockUrl, {
+        parameters: {isAjax: 'true', form_key: FORM_KEY},
+        onSuccess: function(transport) {
+            tabContentElementId = '<?php echo $this->getChild('diagrams')->getId() ?>_<?php echo $tabId ?>_content';
+            try {
+                if (transport.responseText.isJSON()) {
+                    var response = transport.responseText.evalJSON()
+                    if (response.error) {
+                        alert(response.message);
+                    }
+                    if(response.ajaxExpired && response.ajaxRedirect) {
+                        setLocation(response.ajaxRedirect);
+                    }
+                } else {
+                    $(tabContentElementId).update(transport.responseText);
+                }
+            }
+            catch (e) {
+                $(tabContentElementId).update(transport.responseText);
+            }
+        }
+    });
+<?php endforeach; ?>
+    ajaxBlockUrl = '<?php echo $this->getUrl('*/*/ajaxBlock', array('_current' => true, 'block' => 'totals', 'period' => '')) ?>' + periodParam;
+    new Ajax.Request(ajaxBlockUrl, {
+        parameters: {isAjax: 'true', form_key: FORM_KEY},
+        onSuccess: function(transport) {
+            tabContentElementId = 'dashboard_diagram_totals';
+            try {
+                if (transport.responseText.isJSON()) {
+                    var response = transport.responseText.evalJSON()
+                    if (response.error) {
+                        alert(response.message);
+                    }
+                    if(response.ajaxExpired && response.ajaxRedirect) {
+                        setLocation(response.ajaxRedirect);
+                    }
+                } else {
+                    $(tabContentElementId).replace(transport.responseText);
+                }
+            }
+            catch (e) {
+                $(tabContentElementId).replace(transport.responseText);
+            }
+        }
+    });
+}
+
+function toggleCal(id) {
+    $('dashboard_'+id+'_cal_div').toggle();
+    $('dashboard_'+id+'_range_div').toggle();
+}
+//]]>
+</script>
+<?php endif; ?>
+<div class="content-header">
+    <table cellspacing="0">
+        <tr>
+            <td><h3 class="head-dashboard"><?php echo $this->__('Dashboard') ?></h3></td>
+        </tr>
+    </table>
+</div>
+<div class="dashboard-container">
+    <?php echo $this->getChildHtml('store_switcher') ?>
+    <table cellspacing="25" width="100%">
+        <tr>
+            <td><?php echo $this->getChildHtml('sales') ?>
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Last 5 Orders') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('lastOrders'); ?></fieldset>
+                </div>
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Last 5 Search Terms') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('lastSearches'); ?></fieldset>
+                </div>
+                <div class="entry-edit">
+                    <div class="entry-edit-head"><h4><?php echo $this->__('Top 5 Search Terms') ?></h4></div>
+                    <fieldset class="np"><?php echo $this->getChildHtml('topSearches'); ?></fieldset>
+                </div>
+            </td>
+            <td>
+                <div class="entry-edit" style="border:1px solid #ccc;">
+                    <?php echo $this->getChildHtml('diagrams') ?>
+                    <?php if (is_array($this->getChild('diagrams')->getTabsIds())) : ?>
+                        <div id="diagram_tab_content"></div>
+                    <?php endif; ?>
+                    <div style="margin:20px;">
+                        <?php echo $this->getChildHtml('totals') ?>
+                    </div>
+                    <div style="margin:20px;">
+                        <?php echo $this->getChildHtml('grids') ?>
+                        <div id="grid_tab_content"></div>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+<?php
+
+function week_start_date($wk_num, $yr, $first = 1, $format = 'Y-m-d')
+{
+    $wk_ts  = strtotime('+' . $wk_num . ' weeks', strtotime($yr . '0101'));
+    $mon_ts = strtotime('-' . date('w', $wk_ts) + $first . ' days', $wk_ts);
+    return date($format, $mon_ts);
+}
+
+$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+
+$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+$path = Mage::getBaseDir();
+
+function getCalls($start = null,$end = null) {
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+	
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+		
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+		
+	$q = 'select count(*) as calls FROM  sales_flat_quote WHERE ppmd_rep != 99 and created_at > "'.$start.'" and created_at < "'.$end.'";';
+	
+	//echo $q;  
+	
+	//echo $q;
+		
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetch());
+		
+	return $obj;
+
+}
+
+
+function getRefunds($start = null,$end = null) {
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+		
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+	
+	$q = "select IFNULL(SUM(base_grand_total),0) as refund from sales_flat_creditmemo where created_at > '".$start."' and created_at < '".$end."';";
+	
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+    $r = $sth->fetchAll();
+	
+	return $r[0]['refund'];
+
+}
+
+
+function makeReport($start = null,$end = null) {
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	if (!$start) {
+	
+		$start = date('Y-m-d')." 00:00:00";
+	
+		$start = strtotime("-6 hours");
+		
+		$start = date('Y-m-d',$start)." 06:00:00";
+				
+	}
+		
+	if (!$end) {
+	
+		$end = date("Y-m-d",strtotime("+1 day",strtotime($start)))." 06:00:00";
+		
+	}
+	
+	echo $start; echo " - "; echo $end;
+	
+	$methods[] = 'authorizenet';
+	$methods[] = 'paylater';
+	$methods[] = 'paynearme';
+		
+	for ($i = 0; $i <= 2; $i++) {
+
+	$meth = 'online';
+
+		$q = "select count(*) as sales,IFNULL(b.method,'".$methods[$i]."') as method,IFNULL(SUM(a.grand_total),0) as gross,IFNULL(SUM(a.total_paid),0) as paid from sales_flat_order as a join sales_flat_order_payment as b on b.parent_id = a.entity_id where a.created_at > '".$start."' and a.created_at < '".$end."' and a.ppmd_rep = 99 and b.method = '".$methods[$i]."';";
+		
+		//echo $q; echo "<br>";echo "<br>";
+						
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetch());
+		
+	$bigObj[$meth][$methods[$i]] = $obj;
+	
+	}
+	
+	for ($i = 0; $i <= 2; $i++) {
+
+	$meth = 'phone';
+
+	$q = "select count(*) as sales,IFNULL(b.method,'".$methods[$i]."') as method,IFNULL(SUM(a.grand_total),0) as gross,IFNULL(SUM(a.total_paid),0) as paid from sales_flat_order as a join sales_flat_order_payment as b on b.parent_id = a.entity_id where a.created_at > '".$start."' and a.created_at < '".$end."' and a.ppmd_rep != 99 and b.method = '".$methods[$i]."';";
+	
+	echo $q; echo "<br>";echo "<br>";
+			
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetch());
+	
+	$bigObj[$meth][$methods[$i]] = $obj;
+	
+	}
+	
+	for ($i = 0; $i <= 2; $i++) {
+		
+	$meth = 'online_totals';	
+	
+		//$q = "select DATE(a.updated_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.updated_at > '".$start."' and a.updated_at < '".$end."' and b.ppmd_rep = 99 and c.method = '".$methods[$i]."';";// group by DATE(a.updated_at);";
+		
+		$q = "select DATE(a.created_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.created_at > '".$start."' and a.created_at < '".$end."' and b.ppmd_rep = 99 and c.method = '".$methods[$i]."';";
+			
+	//echo $q;echo "<br>";echo "<br>";
+														
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetch());
+	
+	$bigObj[$meth][$methods[$i]] = $obj;
+	
+	}
+	
+	for ($i = 0; $i <= 2; $i++) {
+			
+	$meth = 'phone_totals';
+	
+	//$q = "select DATE(a.updated_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.updated_at > '".$start."' and a.updated_at < '".$end."' and b.ppmd_rep != 99 and c.method = '".$methods[$i]."';";// group by DATE(a.updated_at);";
+	
+	$q = "select DATE(a.created_at) as dte,count(*) as sales,IFNULL(SUM(a.grand_total),0) as revenue,IFNULL(SUM(a.base_total_refunded),0) as refunded, IFNULL(SUM(a.grand_total),0) as total from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id join sales_flat_order_payment as c on c.parent_id = a.order_id where a.created_at > '".$start."' and a.created_at < '".$end."' and b.ppmd_rep != 99 and c.method = '".$methods[$i]."';";
+	
+	//echo $q;echo "<br>";echo "<br>";
+							
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	$obj = new Varien_Object();
+	$obj->setData($sth->fetch());
+	
+	$bigObj[$meth][$methods[$i]] = $obj;
+	
+	}
+	
+	
+
+	return $bigObj;
+	
+	
+
+}
+
+$date = date('Y-m-d')." 00:00:00";
+	
+$date = strtotime("-6 hours");
+		
+$date = date('Y-m-d',$date)." 06:00:00";
+
+$dateTime = strtotime($date);
+
+$dateGa = date('Y-m-d',$dateTime);
+
+$yesterday = date('Y-m-d H:i:s',strtotime("-1 day",$dateTime));
+
+$yesterdayGa = date('Y-m-d',strtotime("-1 day",$dateTime));
+
+$lastSunday = date('Y-m-d H:i:s',strtotime("last sunday, 6:00AM"));
+
+$lastSundayTs = strtotime("last sunday, 6:00AM");
+
+$lastSundayGa = date('Y-m-d',$lastSundayTs);
+
+if (date('D',time()-21600) == 'Sun') {
+
+	$lastSunday = date('Y-m-d H:i:s',strtotime("last sunday, 6:00AM")-604800);
+
+	$lastSundayTs = strtotime("last sunday, 6:00AM")-604800;
+
+	$lastSundayGa = date('Y-m-d',$lastSundayTs);
+	
+
+}
+
+$thisWeek = date('Y-m-d H:i:s',strtotime("+7 days",$lastSundayTs));
+
+$thisWeekGa = date('Y-m-d',strtotime("+7 days",$lastSundayTs));
+
+$nextWeek = date('Y-m-d H:i:s',strtotime("+14 days",$lastSundayTs));
+
+$nextWeekGa = date('Y-m-d',strtotime("+14 days",$lastSundayTs));
+
+$twoSundaysAgo = date('Y-m-d H:i:s',strtotime("-7 days",$lastSundayTs));
+
+$twoSundaysAgoGa = date('Y-m-d',strtotime($twoSundaysAgo));
+
+$curMonth = date('Y-m',$dateTime)."-01 06:00:00";
+
+$curMonthTs = strtotime($curMonth);
+
+$curMonthGa = date('Y-m',$curMonthTs)."-01";
+
+$currentMonth = date('Y-m',strtotime("+1 month",$curMonthTs))."-01 06:00:00";
+
+$curMonthTs = strtotime(date('Y-m',$dateTime));
+
+$lastMonth = date('Y-m-d H:i:s',strtotime("-1 month +6 hours",$curMonthTs));
+
+require_once($path.'/rd/analytics_api.php');
+  
+$login = 'getstdtested';
+$password = 'Pinpoint4US';
+$idg = 'ga:21076454';
+ 
+$api = new analytics_api();
+$api->login($login, $password);
+
+  
+/*
+$loginGHT = 'dtcmdinc';
+$passwordGHT = 'dtcmd4gst';
+$idGHT = 'ga:25576591';
+ 
+$apiGHT = new analytics_api();
+if(!$apiGHT->login($loginGHT, $passwordGHT)) die("cant login to google GHT analytics");
+ 
+$googleDataGHT = $apiGHT->data($idGHT, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, $date, $date, 10, 1, $filters);
+$visitorCountTodayGHT = $googleDataGHT['ga:visitors'];
+ 
+ 
+$loginSTD = 'stdtesting.com';
+$passwordSTD = 'dtcmd4gst';
+$idSTD = 'ga:34493893';
+ 
+$apiSTD = new analytics_api();
+if(!$apiSTD->login($loginSTD, $passwordSTD)) die("cant login to google GHT analytics");
+ 
+$googleDataSTD = $apiSTD->data($idSTD, '', 'ga:visits,ga:pageviews,ga:newVisits,ga:visitors', false, $date, $date, 10, 1, $filters);
+$visitorCountTodaySTD = $googleDataSTD['ga:visitors'];
+*/
+
+//echo $visitorCountTodaySTD;
+
+$db = new PDO ('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+?>
+<div class="grid" style="margin-left:20px;margin-right:20px;">
+	
+
+	<div class="entry-edit">
+		<div class="entry-edit-head">
+			<h4>Today</h4>
+		</div>
+		<fieldset class="np">
+	<?php
+	include "$path/rd/today.php";
+	?>
+		</fieldset>
+	</div>
+	
+	<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4>Yesterday</h4>
+	</div>
+	<fieldset class="np">
+	<?php
+	include "$path/rd/yesterday.php";
+	?>
+		</fieldset>
+	</div>
+
+	
+	<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4>This Week</h4>
+	</div>
+	<fieldset class="np">
+	<?php
+	include "$path/rd/thisweek.php";
+	?>
+		</fieldset>
+	</div>
+	
+	<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4>Last Week</h4>
+	</div>
+	<fieldset class="np">
+	<?php
+	include "$path/rd/lastweek.php";
+	?>
+		</fieldset>
+	</div>
+	
+	<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4>This Month</h4>
+	</div>
+	<fieldset class="np">
+	<?php
+	include "$path/rd/currentmonth.php";
+	?>
+		</fieldset>
+	</div>
+	
+	<div class="entry-edit">
+	<div class="entry-edit-head">
+		<h4>Last Month</h4>
+	</div>
+	<fieldset class="np">
+	<?php
+	include "$path/rd/lastmonth.php";
+	?>
+		</fieldset>
+	</div>
+
+
+</div>
+
+   
+</div>

@@ -1,0 +1,82 @@
+<?php
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     base_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+ 
+// echo $this->helper('core/url')->getCurrentUrl();
+$c = rtrim($this->helper('core/url')->getCurrentUrl(),"/");
+if (strpos($c,"?") > 1) {
+	$c = strstr($c,"?",true);
+}
+$c = rtrim($c,"/");
+$c = strtolower($c);
+$c = str_replace(' ', '-', $c);
+$c = str_replace('%20', '-', $c);
+
+?>
+
+<meta http-equiv="Content-Type" content="<?php echo $this->getContentType() ?>" />
+<title><?php echo $this->getTitle(); ?></title>
+<meta name="description" content="<?php echo htmlspecialchars($this->getDescription()) ?>" />
+<meta name="keywords" content="<?php echo htmlspecialchars($this->getKeywords()) ?>" />
+<meta name="google-site-verification" content="VcxCN5pd-2HSnLTEz6m0sruDv7en2MiKwRLnEFxXt1w" />
+<?php //echo '<meta name="robots" content="'.htmlspecialchars($this->getRobots()).'" />'; ?>
+<?php if ($_SERVER['HTTPS']) { ?>
+<meta name="robots" content="noindex, nofollow" />
+<?php } ?>
+<link rel="icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="shortcut icon" href="<?php echo $this->getFaviconFile(); ?>" type="image/x-icon" />
+<link rel="canonical" href="<?php echo $c; ?>"/>
+<!--[if lt IE 7]>
+<script type="text/javascript">
+//<![CDATA[
+    var BLANK_URL = '<?php echo $this->helper('core/js')->getJsUrl('blank.html') ?>';
+    var BLANK_IMG = '<?php echo $this->helper('core/js')->getJsUrl('spacer.gif') ?>';
+//]]>
+</script>
+<![endif]-->
+
+<?php echo $this->getCssJsHtml() ?>
+<?php echo $this->getChildHtml() ?>
+<?php echo $this->helper('core/js')->getTranslatorScript() ?>
+<?php echo $this->getIncludes() ?>
+
+<?php if (empty($_SERVER['HTTPS'])) { ?>
+	<script id="pap_x2s6df8d" src="http://partners.getlabtested.com/scripts/clickjs.php" type="text/javascript"></script>
+<? } else { ?>
+	<script id="pap_x2s6df8d" src="https://partners.getlabtested.com/scripts/clickjs.php" type="text/javascript"></script>
+<? } ?>
+
+<script type="text/javascript">
+papTrack();
+</script>
+
+<script type="text/javascript" src="//js9.ringrevenue.com/9/integration.js"></script>
+<script type="text/javascript">
+  RingRevenue.advertiser_integration = {
+    id : '2057',
+    numberLeadingOne : false,
+    numberSelector : '.promoNumber'
+  };
+</script>

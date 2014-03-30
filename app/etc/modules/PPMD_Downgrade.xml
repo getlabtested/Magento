@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Downgrade>
+            <active>true</active>
+            <codePool>local</codePool>
+        </PPMD_Downgrade>
+    </modules>
+</config>

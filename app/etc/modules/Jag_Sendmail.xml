@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Jag_Sendmail extension
+ */
+
+/**
+ * @category   Jag
+ * @package    Jag_Sendmail
+ */
+-->
+<config>
+    <modules>
+        <Jag_Sendmail>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Jag_Sendmail>
+    </modules>
+</config>

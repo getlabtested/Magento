@@ -1,0 +1,30 @@
+<?php
+$enable_paywith_card = Mage::getStoreConfig('payment/paynearme/site_enable_paywithcard');
+?>
+<ul class="form-list checkmo-list" id="payment_form_<?php echo $this->getMethodCode() ?>" style="display:none;">
+        <li>
+            <label>Pay With Slip</label><input type="radio" name="pay_with" value="slip" <?php echo $enable_paywith_card?"onclick=\"$('pnmc').hide()\"" :"checked='checked'";?>/>
+        </li>
+       <?php if($enable_paywith_card):?> 
+        <li>
+            <label>Pay With Card</label> <input type="radio" name="pay_with" value="card" onclick="$('pnmc').show()" />
+        </li> 
+        <li id="pnmc" style="display:none">
+            <label>PayNearMe Card (PNMC) Number</label><input type="text" name="customer_pnmc" value=""   onblur="return validatePNMC(this)"/> 
+        </li>
+  <?php endif;?>
+</ul>
+ <?php if($enable_paywith_card):?> 
+<script>
+function validatePNMC(pnmc_el){
+	if((pnmc_el.value.length == 9) || (pnmc_el.value.length == 13) || (pnmc_el.value.length == 19) ){
+	} else {
+		alert('Invalid PNMC Number');
+		return false;
+	}
+	
+return true;
+}
+
+</script>  
+<?php endif;?>

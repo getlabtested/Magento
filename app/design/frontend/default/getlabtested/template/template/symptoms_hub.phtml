@@ -1,0 +1,239 @@
+<?php
+
+	$localepage = Mage::registry('localepage');
+
+	$values = unserialize($localepage->getValues());
+
+	$baseDir = Mage::getBaseDir();
+
+?>
+
+<link rel="stylesheet" type="text/css" href="/media/css/styles-symptoms-hub.css" media="all" />
+
+<script type="text/javascript">
+
+	function runFlash(width, height, src, align) {
+		document.write('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" width="' +width+ '" height="' +height+ '" align="' +align+ '">\n');
+		document.write('<param name="movie" value="' +src+ '" />\n');
+		document.write('<param name="wmode" value="transparent" />\n');
+		document.write('<param name="quality" value="high" />\n');
+		document.write('<embed src="' +src+ '" quality="high" wmode="transparent" align="' +align+ '" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" type="application/x-shockwave-flash" width="' +width+ '" height="' +height+ '">\n');
+		document.write('</embed>\n');
+		document.write('</object>\n');
+	}
+
+</script>
+
+
+	<div style="float: left; width: 320px;">
+		<script type="text/javascript">runFlash('300', '240', '/media/flash/peopleshort.swf');</script>
+	</div>
+
+	<div style="float: right; width: 630px; padding: 30px 0 0 0;">
+		<h1><?php echo $values['main-cta']; ?></h1>
+		<div class="content" style="text-align: center;">
+			<div class="clear">&nbsp;</div>
+			<div class="sep20">&nbsp;</div>
+			<?php echo $values['main-cta-button-url']; ?>
+		</div>
+	</div>
+
+	<br style="clear: both;" /><br />
+
+	<div id="trustbuilders">
+		<strong>Trusted by the sexual health community: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.5/5 star customer reviews</strong>
+	</div>
+
+	<div style="float: left; width: 328px;">
+
+		<div class="bg_white" style="">
+			<div class="box_blue_header" style="width: 301px; border: 0;">
+				<div class="header">
+					<h3><?php echo $values['widget-1-title']; ?></h3>
+				</div>
+				<div class="content" style="font-size: 12px; background: #f1f1f1;">
+					<p><?php echo $values['widget-1-content']; ?></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div style="float: left; width: 328px;">
+
+		<div class="bg_white" style="">
+			<div class="box_blue_header" style="width: 301px; border: 0;">
+				<div class="header">
+					<h3><?php echo $values['widget-2-title']; ?></h3>
+				</div>
+				<div class="content" style="font-size: 12px; background: #f1f1f1;">
+					<p><?php echo $values['widget-2-content']; ?></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div style="float: right; width: 303px;">
+
+		<div class="bg_white" style="">
+			<div class="box_blue_header" style="width: 301px; border: 0;">
+				<div class="header">
+					<h3><?php echo $values['widget-3-title']; ?></h3>
+				</div>
+				<div class="content" style="font-size: 12px; background: #f1f1f1;">
+					<p><?php echo $values['widget-3-content']; ?></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+	
+	<div class="clear"></div>
+
+	<div style="float: left; width: 328px;">
+
+		<div class="bg_white" style="">
+			<div class="box_blue_header" style="width: 301px; border: 0;">
+				<div class="header">
+					<h3><?php echo $values['widget-4-title']; ?></h3>
+				</div>
+				<div class="content" style="font-size: 12px; background: #f1f1f1;">
+					<p><img src="<?php echo $values['widget-4-image']; ?>" width="281" height="160" alt="" border="0" /></p>
+					<p><a href="<?php echo $values['widget-4-button-url']; ?>" class="btn_orange">LEARN MORE &raquo;</a></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div style="float: left; width: 328px;">
+
+		<div class="bg_white" style="">
+			<div class="box_blue_header" style="width: 301px; border: 0;">
+				<div class="header">
+					<h3><?php echo $values['widget-5-title']; ?></h3>
+				</div>
+				<div class="content" style="font-size: 12px; background: #f1f1f1;">
+					<p><img src="<?php echo $values['widget-5-image']; ?>" width="281" height="160" alt="" border="0" /></p>
+					<p><a href="<?php echo $values['widget-5-button-url']; ?>" class="btn_orange">LEARN MORE &raquo;</a></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div style="float: right; width: 303px;">
+
+		<div class="bg_white" style="">
+			<div class="box_blue_header" style="width: 301px; border: 0;">
+				<div class="header">
+					<h3><?php echo $values['widget-6-title']; ?></h3>
+				</div>
+				<div id="widget6" class="content" style="font-size: 12px; background: #f1f1f1;">
+					<p><?php echo $values['widget-6-button-1']; ?></p>
+					<p><?php echo $values['widget-6-button-2']; ?></p>
+					<p><?php echo $values['widget-6-button-3']; ?></p>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<br style="clear: both;" /><br /><br />
+
+	<div style="float: left; width: 615px;">
+	
+		<div class="page-title">
+			<h1><?php echo $values['article-h1']; ?></h1>
+		</div>
+		<?php if ($values['article-h2'] != "") echo "<h2>".$values['article-h2']."</h2>"; ?>
+		<?php echo $values['article-body_content']; ?>
+
+	</div>
+
+	<div style="float: right; width: 300px;">
+
+		<h2 style="margin: 0; padding: 18px 0 12px 0;"><?php echo $values['image-gallery-title']; ?></h2>
+		
+		<?php if ($values['image-gallery-1'] != "") echo "<a href=\"#\" class=\"image-gallery-hover\"><img src=\"".$values['image-gallery-1']."\" width=\"80\" height=\"80\" alt=\"\" border=\"0\" /></a>"; ?>
+		<?php if ($values['image-gallery-2'] != "") echo "<a href=\"#\" class=\"image-gallery-hover\"><img src=\"".$values['image-gallery-2']."\" width=\"80\" height=\"80\" alt=\"\" border=\"0\" /></a>"; ?>
+		<?php if ($values['image-gallery-3'] != "") echo "<a href=\"#\" class=\"image-gallery-hover\"><img src=\"".$values['image-gallery-3']."\" width=\"80\" height=\"80\" alt=\"\" border=\"0\" /></a>"; ?>
+		
+		<br style="clear: both;" /><br />
+		
+		<?php if ($values['image-gallery-4'] != "") echo "<a href=\"#\" class=\"image-gallery-hover\"><img src=\"".$values['image-gallery-4']."\" width=\"80\" height=\"80\" alt=\"\" border=\"0\" /></a>"; ?>
+		<?php if ($values['image-gallery-5'] != "") echo "<a href=\"#\" class=\"image-gallery-hover\"><img src=\"".$values['image-gallery-5']."\" width=\"80\" height=\"80\" alt=\"\" border=\"0\" /></a>"; ?>
+		<?php if ($values['image-gallery-6'] != "") echo "<a href=\"#\" class=\"image-gallery-hover\"><img src=\"".$values['image-gallery-6']."\" width=\"80\" height=\"80\" alt=\"\" border=\"0\" /></a>"; ?>
+		
+		<br style="clear: both;" />
+
+		<div id="patientQuote">
+			<div class="quote"><img style="margin-right:5px;" src="http://getstdtested.com/media/images/quote_begin.png" /><?php echo $values['quote']; ?><img style="margin-left:5px;" src="http://getstdtested.com/media/images/quote_end.png" /></div>
+		</div>
+
+	</div>
+
+	<br style="clear: both;" /><br /><br />
+
+</div>
+</div>
+</div>
+
+<div id="content-secondary-wrap">
+	<div id="content-secondary">
+
+		<div id="left_col">
+
+			<h3><?php echo $values['blogs-1-title']; ?></h3>
+			<p><small><?php echo $values['blogs-1-posted-by']; ?></small></p>
+			<p><?php echo $values['blogs-1-body']; ?></p>
+			<p><a class="read_more" href="<?php echo $values['blogs-1-read-more-url']; ?>">Read More &rarr;</a></p>
+
+			<br style="clear: both;" />
+
+			<h3><?php echo $values['blogs-2-title']; ?></h3>
+			<p><small><?php echo $values['blogs-2-posted-by']; ?></small></p>
+			<p><?php echo $values['blogs-2-body']; ?></p>
+			<p><a class="read_more" href="<?php echo $values['blogs-2-read-more-url']; ?>">Read More &rarr;</a></p>
+
+			<br style="clear: both;" />
+
+			<h3><?php echo $values['blogs-3-title']; ?></h3>
+			<p><small><?php echo $values['blogs-3-posted-by']; ?></small></p>
+			<p><?php echo $values['blogs-3-body']; ?></p>
+			<p><a class="read_more" href="<?php echo $values['blogs-3-read-more-url']; ?>">Read More &rarr;</a></p>
+
+		</div>
+
+		<div id="right_col">
+
+			<div id="news-tweets">
+				<div style="padding:10px;">
+					<div>
+						<?php 
+							$url = 'http://news.search.yahoo.com/rss?ei=UTF-8&va_vt=any&vo=std+hiv+herpes+syphilis+chlamydia+gonorrhea+hepatitis&vo_vt=any&ve_vt=any&vp_vt=any&fl=1&vl=lang_en&smonth=11&emonth=12&sday=8&eday=8&location='.str_replace(" ", "+", $city).'&catfilt=1&cat=health';
+							$url2 = 'http://news.search.yahoo.com/rss?ei=UTF-8&va_vt=any&vo=std+hiv+herpes+syphilis+chlamydia+gonorrhea+hepatitis&vo_vt=any&ve_vt=any&vp_vt=any&fl=1&vl=lang_en&smonth=11&emonth=12&sday=8&eday=8&catfilt=1&cat=health';
+							include_once $baseDir.'/rss/rss-news.php';
+						?>
+					</div>
+				</div>
+			</div>
+
+			<div id="news-tweets">
+				<div style="padding:10px;">
+					<div>
+						<?php 
+							$url = 'http://api.twitter.com/1/getSTDtested/lists/sex-and-sexual-health/statuses.atom';
+							include_once $baseDir.'/rss/rss-twitter.php';
+						?>
+					</div>
+				</div>
+			</div>
+		
+		</div>
+		
+		<div class="clear"></div>
+
+	</div>
+</div>

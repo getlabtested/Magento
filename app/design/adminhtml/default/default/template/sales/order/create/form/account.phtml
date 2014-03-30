@@ -1,0 +1,277 @@
+<?php
+/**
+ * Magento Enterprise Edition
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Magento Enterprise Edition License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://www.magentocommerce.com/license/enterprise-edition
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     default_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://www.magentocommerce.com/license/enterprise-edition
+ */
+ ?>
+<div class="entry-edit">
+    <div class="entry-edit-head">
+        <h4 class="icon-head fieldset-legend <?php echo $this->getHeaderCssClass() ?>"><?php echo $this->getHeaderText() ?></h4>
+    </div>
+   
+    
+    
+ <?php
+ 
+ $address = Mage::getModel('customer/address')->load($this->getCustomer()->getDefaultBilling());
+ 
+ //print_r($address->getData());
+ 
+ 
+ ?>
+     
+	<div class="box" id="customer_account_fieds">
+	<div id="main" class="fieldset ">
+    <div class="hor-scroll">
+		<table cellspacing="0" class="form-list">
+            <tbody>
+                <tr>
+        			<td class="label"><label for="email">Email</label></td>
+    				<td class="value">
+        				<input type="text" class="validate-email input-text" value="<?php echo $this->getCustomer()->getEmail();?>" name="order[account][email]" id="email">
+        			</td>
+    			</tr>
+				<tr>
+			        <td class="label"><label for="dob">Date Of Birth</label></td>
+				    <td class="value">
+				    	<div style="display: none;">
+				        <input type="text" style="width:110px !important;" class=" input-text" value="<?php echo ($s['order']['account']['dob']?$s['order']['account']['dob']:"00/00/0000");?>" id="dob" name="order[account][dob]">
+				        </div>
+				        
+				        
+				        <select onchange="bdaymon(this.value)" style="width: 70px;" name="m_select" id="m_select">
+							<option value=""></option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "01") || $s['m_select'] == "01") { ?>selected="selected"<?php } ?> id="m_01" value="01">Jan</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "02") || $s['m_select'] == "02") { ?>selected="selected"<?php } ?> id="m_02" value="02">Feb</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "03") || $s['m_select'] == "03") { ?>selected="selected"<?php } ?> id="m_03" value="03">Mar</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "04") || $s['m_select'] == "04") { ?>selected="selected"<?php } ?> id="m_04" value="04">Apr</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "05") || $s['m_select'] == "05") { ?>selected="selected"<?php } ?> id="m_05" value="05">May</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "06") || $s['m_select'] == "06") { ?>selected="selected"<?php } ?> id="m_06" value="06">Jun</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "07") || $s['m_select'] == "07") { ?>selected="selected"<?php } ?> id="m_07" value="07">Jul</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "08") || $s['m_select'] == "08") { ?>selected="selected"<?php } ?> id="m_08" value="08">Aug</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "09") || $s['m_select'] == "09") { ?>selected="selected"<?php } ?> id="m_09" value="09">Sep</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "10") || $s['m_select'] == "10") { ?>selected="selected"<?php } ?> id="m_10" value="10">Oct</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "11") || $s['m_select'] == "11") { ?>selected="selected"<?php } ?> id="m_11" value="11">Nov</option>
+							<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "12") || $s['m_select'] == "12") { ?>selected="selected"<?php } ?> id="m_12" value="12">Dec</option>
+						</select>
+						
+						<select onchange="bdayday(this.value)" style="width: 50px;"  name="d_select" id="d_select">
+							<option value=""></option>
+							<?php for ($i = 1; $i <= 9; $i++) { ?>
+							<option <?php if ((isset($dobTmpB[2]) && $dobTmpB[2] == "0$i") || $s['d_select'] == "0$i") { ?>selected="selected"<?php } ?> id="d_0<?php echo $i;?>"  value="0<?php echo $i;?>">0<?php echo $i;?></option>
+							<? } ?>
+							<?php for ($i = 10; $i <= 31; $i++) { ?>
+							<option <?php if ((isset($dobTmpB[2]) && $dobTmpB[2] == $i) || $s['d_select'] == $i) { ?>selected="selected"<?php } ?> id="d_<?php echo $i;?>" value="<?php echo $i;?>"><?php echo $i;?></option>
+							<? } ?>
+						</select>
+						
+						<select onchange="bdayyer(this.value)" style="width: 70px;" name="y_select" id="y_select">
+							<option value=""></option>
+							<?php for ($i = 1995; $i >= 1935; $i--) { ?>
+							<option <?php if ((isset($dobTmpB[0]) && $dobTmpB[0] == $i)  || $s['y_select'] == $i) { ?>selected="selected"<?php } ?> id="y_<?php echo $i;?>" value="<?php echo $i;?>"><?php echo $i;?></option>
+							<? } ?>
+						</select>
+				        
+				        
+				        
+				                   
+					</td>
+			    </tr>
+				<tr>
+			        <td class="label"><label for="gender">Gender</label></td>
+			    	<td class="value">
+				        <select class=" select" name="order[account][gender]" id="gender">
+							<option selected="selected" value=""></option>
+							<option id="is_male" <?php if ($s['order']['account']['gender'] == 1) { ?>selected="selected"<?php } ?> value="1">Male</option>
+							<option id="is_female" <?php if ($s['order']['account']['gender'] == 2) { ?>selected="selected"<?php } ?> value="2">Female</option>
+						</select>
+					</td>
+				</tr>
+            </tbody>
+        </table>
+    </div>
+    </div>
+    
+    
+    
+    <div id="customer_account_extra_fields">
+	    <script type="text/javascript">
+	    order.billingAddressContainer = 'order-billing_address_fields';
+	    </script>
+    <div class="entry-edit">
+	    <div class="entry-edit-head">
+	        <h4 class="icon-head fieldset-legend head-billing-address">Billing Address</h4>
+	     </div>
+	    <fieldset class="np">
+	    <div class="order-choose-address" id="order-billing_address_choice">
+	        Select from existing customer addresses:<br>
+	        <select onchange="order.selectAddress(this, 'order-billing_address_fields')" style="width:97.5%;" name="order[billing_address][customer_address_id]" id="order-billing_address_customer_address_id">
+	            <option value="">Add New Address</option>
+	        </select>
+	        <br>
+	    </div>
+
+	    <div id="order-billing_address_fields" class="order-address">
+	        <div class="content">
+	        <div class="hor-scroll">
+            	<table cellspacing="0" class="form-list">
+	            <tbody>
+	                <tr>
+				        <td class="label"><label for="order-billing_address_firstname">First Name</label></td>
+				    <td class="value">
+				   
+				    
+				        <input type="text" class=" input-text" value="<?php echo ($this->getCustomer()->getFirstname()?$this->getCustomer()->getFirstname():$s['order']['billing_address']['firstname']);?>" name="order[billing_address][firstname]" id="order-billing_address_firstname">            </td>
+				    
+				   
+				    </tr>
+					<tr>
+					        <td class="label"><label for="order-billing_address_lastname">Last Name</label></td>
+					    <td class="value">
+					        <input type="text" class=" input-text" value="<?php echo ($this->getCustomer()->getLastname()?$this->getCustomer()->getLastname():$s['order']['billing_address']['lastname']);?>" name="order[billing_address][lastname]" id="order-billing_address_lastname">            </td>
+					</tr>
+					<tr>
+					        <td class="label"><label for="order-billing_address_street0">Street Address</label></td>
+					    <td class="value">
+					        <div class="multi-input"><input type="text" class="input-text" value="<?php echo $s['order']['billing_address']['street'][0];?>" name="order[billing_address][street][0]" id="order-billing_address_street0">
+							</div>
+							<div style="display:none;" class="multi-input">
+								<input type="text" class="input-text" value="<?php echo $s['order']['billing_address']['street'][1];?>" name="order[billing_address][street][1]" id="order-billing_address_street1">
+							</div>            
+						</td>
+					</tr>
+					<tr>
+					    <td class="label"><label for="order-billing_address_city">City</label></td>
+					    <td class="value">
+					        <input type="text" class=" input-text" value="<?php echo $s['order']['billing_address']['city'];?>" name="order[billing_address][city]" id="order-billing_address_city">            </td>
+					</tr>
+					<tr style="display:none;">
+					    <td class="label"><label for="order-billing_address_country_id">Country</label></td>
+					    <td class="value">
+					        <select class=" select" name="order[billing_address][country_id]" id="order-billing_address_country_id">
+								<option selected="selected" value="US">United States</option>
+							</select>
+					    </td>
+					</tr>
+					<tr id="">
+						<td class="label"><label for="order-billing_address_region">State/Province</label></td>
+						<td class="value">
+							<input type="text" class="input-text" value="" name="order[billing_address][region]" id="order-billing_address_region" style="display: none;">
+							<select style="" class="select required-entry" name="order[billing_address][region_id]" id="order-billing_address_region_id">
+								<option value="">Please select</option>
+<option <?php if ($address->getRegionId() == 1 || $s['order']['billing_address']['region_id'] == 1) { ?>selected="selected"<?php } ?>  id="st_1" value="1">Alabama</option>
+<option <?php if ($address->getRegionId() == 2 || $s['order']['billing_address']['region_id'] == 2) { ?>selected="selected"<?php } ?>  id="st_2"  value="2">Alaska</option>
+<option <?php if ($address->getRegionId() == 3 || $s['order']['billing_address']['region_id'] == 3) { ?>selected="selected"<?php } ?>  id="st_3"  value="3">American Samoa</option>
+<option <?php if ($address->getRegionId() == 4 || $s['order']['billing_address']['region_id'] == 4) { ?>selected="selected"<?php } ?>  id="st_4"  value="4">Arizona</option>
+<option <?php if ($address->getRegionId() == 5 || $s['order']['billing_address']['region_id'] == 5) { ?>selected="selected"<?php } ?>  id="st_5"  value="5">Arkansas</option>
+<option <?php if ($address->getRegionId() == 12 || $s['order']['billing_address']['region_id'] == 12) { ?>selected="selected"<?php } ?>  id="st_12" value="12">California</option>
+<option <?php if ($address->getRegionId() == 13 || $s['order']['billing_address']['region_id'] == 13) { ?>selected="selected"<?php } ?>  id="st_13" value="13">Colorado</option>
+<option <?php if ($address->getRegionId() == 14 || $s['order']['billing_address']['region_id'] == 14) { ?>selected="selected"<?php } ?>  id="st_14" value="14">Connecticut</option>
+<option <?php if ($address->getRegionId() == 15 || $s['order']['billing_address']['region_id'] == 15) { ?>selected="selected"<?php } ?>  id="st_15" value="15">Delaware</option>
+<option <?php if ($address->getRegionId() == 16 || $s['order']['billing_address']['region_id'] == 16) { ?>selected="selected"<?php } ?>  id="st_16" value="16">District of Columbia</option>
+<option <?php if ($address->getRegionId() == 18 || $s['order']['billing_address']['region_id'] == 18) { ?>selected="selected"<?php } ?>  id="st_18" value="18">Florida</option>
+<option <?php if ($address->getRegionId() == 19 || $s['order']['billing_address']['region_id'] == 19) { ?>selected="selected"<?php } ?>  id="st_19" value="19">Georgia</option>
+<option <?php if ($address->getRegionId() == 20 || $s['order']['billing_address']['region_id'] == 20) { ?>selected="selected"<?php } ?>  id="st_20" value="20">Guam</option>
+<option <?php if ($address->getRegionId() == 21 || $s['order']['billing_address']['region_id'] == 21) { ?>selected="selected"<?php } ?>  id="st_21" value="21">Hawaii</option>
+<option <?php if ($address->getRegionId() == 22 || $s['order']['billing_address']['region_id'] == 22) { ?>selected="selected"<?php } ?>  id="st_22" value="22">Idaho</option>
+<option <?php if ($address->getRegionId() == 23 || $s['order']['billing_address']['region_id'] == 23) { ?>selected="selected"<?php } ?>  id="st_23" value="23">Illinois</option>
+<option <?php if ($address->getRegionId() == 24 || $s['order']['billing_address']['region_id'] == 24) { ?>selected="selected"<?php } ?>  id="st_24" value="24">Indiana</option>
+<option <?php if ($address->getRegionId() == 25 || $s['order']['billing_address']['region_id'] == 25) { ?>selected="selected"<?php } ?>  id="st_25" value="25">Iowa</option>
+<option <?php if ($address->getRegionId() == 26 || $s['order']['billing_address']['region_id'] == 26) { ?>selected="selected"<?php } ?>  id="st_26" value="26">Kansas</option>
+<option <?php if ($address->getRegionId() == 27 || $s['order']['billing_address']['region_id'] == 27) { ?>selected="selected"<?php } ?>  id="st_27" value="27">Kentucky</option>
+<option <?php if ($address->getRegionId() == 28 || $s['order']['billing_address']['region_id'] == 28) { ?>selected="selected"<?php } ?>  id="st_28" value="28">Louisiana</option>
+<option <?php if ($address->getRegionId() == 29 || $s['order']['billing_address']['region_id'] == 29) { ?>selected="selected"<?php } ?>  id="st_29" value="29">Maine</option>
+<option <?php if ($address->getRegionId() == 31 || $s['order']['billing_address']['region_id'] == 31) { ?>selected="selected"<?php } ?>  id="st_31" value="31">Maryland</option>
+<option <?php if ($address->getRegionId() == 32 || $s['order']['billing_address']['region_id'] == 32) { ?>selected="selected"<?php } ?>  id="st_32" value="32">Massachusetts</option>
+<option <?php if ($address->getRegionId() == 33 || $s['order']['billing_address']['region_id'] == 33) { ?>selected="selected"<?php } ?>  id="st_33" value="33">Michigan</option>
+<option <?php if ($address->getRegionId() == 34 || $s['order']['billing_address']['region_id'] == 34) { ?>selected="selected"<?php } ?>  id="st_34" value="34">Minnesota</option>
+<option <?php if ($address->getRegionId() == 35 || $s['order']['billing_address']['region_id'] == 35) { ?>selected="selected"<?php } ?>  id="st_35" value="35">Mississippi</option>
+<option <?php if ($address->getRegionId() == 36 || $s['order']['billing_address']['region_id'] == 36) { ?>selected="selected"<?php } ?>  id="st_36" value="36">Missouri</option>
+<option <?php if ($address->getRegionId() == 37 || $s['order']['billing_address']['region_id'] == 37) { ?>selected="selected"<?php } ?>  id="st_37" value="37">Montana</option>
+<option <?php if ($address->getRegionId() == 38 || $s['order']['billing_address']['region_id'] == 38) { ?>selected="selected"<?php } ?>  id="st_38" value="38">Nebraska</option>
+<option <?php if ($address->getRegionId() == 39 || $s['order']['billing_address']['region_id'] == 39) { ?>selected="selected"<?php } ?>  id="st_39" value="39">Nevada</option>
+<option <?php if ($address->getRegionId() == 40 || $s['order']['billing_address']['region_id'] == 40) { ?>selected="selected"<?php } ?>  id="st_40" value="40">New Hampshire</option>
+<option <?php if ($address->getRegionId() == 41 || $s['order']['billing_address']['region_id'] == 41) { ?>selected="selected"<?php } ?>  id="st_41" value="41">New Jersey</option>
+<option <?php if ($address->getRegionId() == 42 || $s['order']['billing_address']['region_id'] == 42) { ?>selected="selected"<?php } ?>  id="st_42" value="42">New Mexico</option>
+<option <?php if ($address->getRegionId() == 43 || $s['order']['billing_address']['region_id'] == 43) { ?>selected="selected"<?php } ?>  id="st_43" value="43">New York</option>
+<option <?php if ($address->getRegionId() == 44 || $s['order']['billing_address']['region_id'] == 44) { ?>selected="selected"<?php } ?>  id="st_44" value="44">North Carolina</option>
+<option <?php if ($address->getRegionId() == 45 || $s['order']['billing_address']['region_id'] == 45) { ?>selected="selected"<?php } ?>  id="st_45" value="45">North Dakota</option>
+<option <?php if ($address->getRegionId() == 47 || $s['order']['billing_address']['region_id'] == 47) { ?>selected="selected"<?php } ?>  id="st_47" value="47">Ohio</option>
+<option <?php if ($address->getRegionId() == 48 || $s['order']['billing_address']['region_id'] == 48) { ?>selected="selected"<?php } ?>  id="st_48" value="48">Oklahoma</option>
+<option <?php if ($address->getRegionId() == 49 || $s['order']['billing_address']['region_id'] == 49) { ?>selected="selected"<?php } ?>  id="st_49" value="49">Oregon</option>
+<option <?php if ($address->getRegionId() == 51 || $s['order']['billing_address']['region_id'] == 51) { ?>selected="selected"<?php } ?>  id="st_51" value="51">Pennsylvania</option>
+<option <?php if ($address->getRegionId() == 53 || $s['order']['billing_address']['region_id'] == 53) { ?>selected="selected"<?php } ?>  id="st_53" value="53">Rhode Island</option>
+<option <?php if ($address->getRegionId() == 54 || $s['order']['billing_address']['region_id'] == 54) { ?>selected="selected"<?php } ?>  id="st_54" value="54">South Carolina</option>
+<option <?php if ($address->getRegionId() == 55 || $s['order']['billing_address']['region_id'] == 55) { ?>selected="selected"<?php } ?>  id="st_55" value="55">South Dakota</option>
+<option <?php if ($address->getRegionId() == 56 || $s['order']['billing_address']['region_id'] == 56) { ?>selected="selected"<?php } ?>  id="st_56" value="56">Tennessee</option>
+<option <?php if ($address->getRegionId() == 57 || $s['order']['billing_address']['region_id'] == 57) { ?>selected="selected"<?php } ?>  id="st_57" value="57">Texas</option>
+<option <?php if ($address->getRegionId() == 58 || $s['order']['billing_address']['region_id'] == 58) { ?>selected="selected"<?php } ?>  id="st_58" value="58">Utah</option>
+<option <?php if ($address->getRegionId() == 59 || $s['order']['billing_address']['region_id'] == 59) { ?>selected="selected"<?php } ?>  id="st_59" value="59">Vermont</option>
+<option <?php if ($address->getRegionId() == 60 || $s['order']['billing_address']['region_id'] == 60) { ?>selected="selected"<?php } ?>  id="st_60" value="60">Virgin Islands</option>
+<option <?php if ($address->getRegionId() == 61 || $s['order']['billing_address']['region_id'] == 61) { ?>selected="selected"<?php } ?>  id="st_61" value="61">Virginia</option>
+<option <?php if ($address->getRegionId() == 62 || $s['order']['billing_address']['region_id'] == 62) { ?>selected="selected"<?php } ?>  id="st_62" value="62">Washington</option>
+<option <?php if ($address->getRegionId() == 63 || $s['order']['billing_address']['region_id'] == 63) { ?>selected="selected"<?php } ?>  id="st_63" value="63">West Virginia</option>
+<option <?php if ($address->getRegionId() == 64 || $s['order']['billing_address']['region_id'] == 64) { ?>selected="selected"<?php } ?>  id="st_64" value="64">Wisconsin</option>
+<option <?php if ($address->getRegionId() == 65 || $s['order']['billing_address']['region_id'] == 65) { ?>selected="selected"<?php } ?>  id="st_65" value="65">Wyoming</option>
+							</select>
+							<script type="text/javascript">
+							new regionUpdater("order-billing_address_country_id", "order-billing_address_region", "order-billing_address_region_id", {"US":{"1":{"code":"AL","name":"Alabama"},"2":{"code":"AK","name":"Alaska"},"3":{"code":"AS","name":"American Samoa"},"4":{"code":"AZ","name":"Arizona"},"5":{"code":"AR","name":"Arkansas"},"12":{"code":"CA","name":"California"},"13":{"code":"CO","name":"Colorado"},"14":{"code":"CT","name":"Connecticut"},"15":{"code":"DE","name":"Delaware"},"16":{"code":"DC","name":"District of Columbia"},"17":{"code":"FM","name":"Federated States Of Micronesia"},"18":{"code":"FL","name":"Florida"},"19":{"code":"GA","name":"Georgia"},"20":{"code":"GU","name":"Guam"},"21":{"code":"HI","name":"Hawaii"},"22":{"code":"ID","name":"Idaho"},"23":{"code":"IL","name":"Illinois"},"24":{"code":"IN","name":"Indiana"},"25":{"code":"IA","name":"Iowa"},"26":{"code":"KS","name":"Kansas"},"27":{"code":"KY","name":"Kentucky"},"28":{"code":"LA","name":"Louisiana"},"29":{"code":"ME","name":"Maine"},"30":{"code":"MH","name":"Marshall Islands"},"31":{"code":"MD","name":"Maryland"},"32":{"code":"MA","name":"Massachusetts"},"33":{"code":"MI","name":"Michigan"},"34":{"code":"MN","name":"Minnesota"},"35":{"code":"MS","name":"Mississippi"},"36":{"code":"MO","name":"Missouri"},"37":{"code":"MT","name":"Montana"},"38":{"code":"NE","name":"Nebraska"},"39":{"code":"NV","name":"Nevada"},"40":{"code":"NH","name":"New Hampshire"},"41":{"code":"NJ","name":"New Jersey"},"42":{"code":"NM","name":"New Mexico"},"43":{"code":"NY","name":"New York"},"44":{"code":"NC","name":"North Carolina"},"45":{"code":"ND","name":"North Dakota"},"47":{"code":"OH","name":"Ohio"},"48":{"code":"OK","name":"Oklahoma"},"49":{"code":"OR","name":"Oregon"},"50":{"code":"PW","name":"Palau"},"51":{"code":"PA","name":"Pennsylvania"},"52":{"code":"PR","name":"Puerto Rico"},"53":{"code":"RI","name":"Rhode Island"},"54":{"code":"SC","name":"South Carolina"},"55":{"code":"SD","name":"South Dakota"},"56":{"code":"TN","name":"Tennessee"},"57":{"code":"TX","name":"Texas"},"58":{"code":"UT","name":"Utah"},"59":{"code":"VT","name":"Vermont"},"60":{"code":"VI","name":"Virgin Islands"},"61":{"code":"VA","name":"Virginia"},"62":{"code":"WA","name":"Washington"},"63":{"code":"WV","name":"West Virginia"},"64":{"code":"WI","name":"Wisconsin"},"65":{"code":"WY","name":"Wyoming"}}});
+							</script>
+						</td>
+					</tr>
+					<tr>
+				        <td class="label"><label for="order-billing_address_postcode">Zip/Postal Code</label></td>
+				    	<td class="value">
+        					<input type="text" class=" input-text" value="<?php echo ($address->getPostcode()?$address->getPostcode():$s['order']['billing_address']['postcode']);?>" name="order[billing_address][postcode]" id="order-billing_address_postcode">
+						</td>
+    				</tr>
+					<tr>
+					    <td class="label"><label for="order-billing_address_telephone">Telephone</label></td>
+					    <td class="value">
+					        <input type="text" class=" input-text" value="<?php echo $s['order']['billing_address']['telephone'];?>" name="order[billing_address][telephone]" id="order-billing_address_telephone">            
+					    </td>
+					</tr>
+            	</tbody>
+        		</table>
+            </div>
+            </div>
+	        <div class="order-save-in-address-book">
+	            <input type="checkbox" value="1" id="order-billing_address_save_in_address_book" name="order[billing_address][save_in_address_book]">
+	            <label for="order-billing_address_save_in_address_book">Save in address book</label>
+	        </div>
+    	</div>
+        <div class="overlay" id="address-billing-overlay" style="display:none;"><span>Shipping address selection is not applicable</span></div>
+	    <script type="text/javascript">
+	        //order.bindAddressFields('order-billing_address_fields');
+	        order.bindAddressFields('order-billing_address_choice');
+	    </script>
+    	</fieldset>
+	</div>
+	</div>
+    </div>
+    
+    
+    <script type="text/javascript">
+    //order.accountFieldsBind($('customer_account_fieds'))
+    </script>
+</div>

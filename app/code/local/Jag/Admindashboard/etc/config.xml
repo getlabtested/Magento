@@ -1,0 +1,114 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Jag_Admindashboard>
+			<version>0.1.5</version>
+		</Jag_Admindashboard>
+	</modules>
+	<admin>
+        <routers>
+			<admindashboard>
+				<use>admin</use>
+				<args>
+					<module>Jag_Admindashboard</module>
+					<frontName>admindashboard</frontName>
+				</args>
+			</admindashboard>
+        </routers>
+    </admin>
+    <adminhtml>
+		<!-- <menu>
+			<admindashboard module="admindashboard">
+				<title>Consult</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="admindashboard">
+						<title>Manage Items</title>
+						<sort_order>0</sort_order>
+						<action>admindashboard/adminhtml_admindashboard</action>
+					</items>
+				</children>
+			</admindashboard>
+		</menu> -->
+		<!-- <acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Jag_Consult>
+							<title>Consult Module</title>
+							<sort_order>10</sort_order>
+						</Jag_Consult>
+					</children>
+				</admin>
+			</resources>
+		</acl> -->
+		<layout>
+			<updates>
+				<admindashboard>
+					<file>admindashboard.xml</file>
+				</admindashboard>
+			</updates>
+		</layout>
+    </adminhtml>  
+	<global>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_grid>Jag_Admindashboard_Block_Grid</sales_order_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+        
+        
+        <helpers>
+            <admindashboard>
+                <class>Jag_Admindashboard_Helper</class>
+            </admindashboard>
+        </helpers>
+        
+        <fieldsets>
+            <sales_convert_quote>
+                <ppmd_lab><to_order>*</to_order></ppmd_lab>
+            </sales_convert_quote>
+        </fieldsets>
+
+        <events>
+
+            <sales_order_resource_init_virtual_grid_columns>
+                <observers>
+                    <jag_admindashboard_modify_grid>
+                    	<type>singleton</type>
+            			<class>Jag_Admindashboard_Model_Observer</class>
+                        <method>addColumnToResource</method>
+                    </jag_admindashboard_modify_grid>
+                </observers>
+            </sales_order_resource_init_virtual_grid_columns>
+
+
+        </events>
+        
+      <resources>
+            <admindashboard_setup>
+                <setup>
+                    <module>Jag_Admindashboard</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </admindashboard_setup>
+            <admindashboard_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </admindashboard_write>
+            <admindashboard_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </admindashboard_read>
+        </resources>
+    </global>
+</config>

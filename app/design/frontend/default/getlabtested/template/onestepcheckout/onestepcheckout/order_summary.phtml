@@ -1,0 +1,42 @@
+<div id="checkout_order_summary">
+    <p>
+        <?php
+        $quote = Mage::getSingleton('checkout/session')->getQuote();
+
+        if (!isset($total)) $total = 0;
+        if (!isset($itemSubTotal)) $itemSubTotal = 0;
+        foreach ($quote->getItemsCollection() as $item)
+        {
+            $id = $item->getProductId();
+
+            if ($id && (($id == 13) || ($id == 31))) {
+                $ed = 1;
+                echo "<!-- early detection check 1 - ".$ed." -->";
+            }
+            if ($id && ($id != 29))
+            {
+                $product = Mage::getModel('catalog/product')->load($id);
+                ?>
+                <?php echo $product->getName();?><br />
+                <?php $total = $total + $product->getPrice();
+                $itemSubTotal = $itemSubTotal + $product->getPriceOptOne();
+            }
+        }
+        ?>
+    </p>
+
+    <div class="box_footer">
+    <?php if (Mage::getSingleton('core/session')->getIsNnr() && Mage::getSingleton('core/session')->getOrderType() == 1) {?>
+        Total Paid Now: <span>$125</span><br>
+        Total Paid At Lab: <span>$<?php echo ($itemSubTotal+10) //money_format("%!n",$itemSubTotal+10);?></span>
+    <?php } else { ?>
+        Total: <span>$<?php echo Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(); // money_format("%!n",Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal());?></span>
+    <?php } ?>
+    </div>
+
+    <?php if (Mage::getSingleton('core/session')->getIsNnr() && Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+    <p>
+        Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, pricing and payment options vary by state. Pay  $125 today and the remaining fee directly at the lab.  Please note that lab fees may be as low as $0 if covered by your insurance provider.
+    </p>
+    <?php } ?>
+</div>

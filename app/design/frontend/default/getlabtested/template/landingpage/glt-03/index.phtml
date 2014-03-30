@@ -1,0 +1,322 @@
+<?php
+
+	//echo "<pre>";  print_r(Mage::getModel('core/session')->getData()); echo "</pre>";
+
+	//$this = new Jag_Orderwidget_Block_Orderwidget;
+
+	// echo get_class($this);
+
+	$this->resetCart();
+
+	Mage::getSingleton('core/session')->setCartArr(array());
+
+	$_products = $this->getProducts();
+
+	$state = Mage::getSingleton('core/session')->getOrderState();
+
+	$sZip = Mage::getSingleton('core/session')->getZip();
+
+	if ($sZip) {
+		$sesZip = $sZip;
+	} else {
+		$sesZip = 'Zip Code';
+	}
+
+?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>Get LAB Tested</title>
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,600italic,700,700italic,800italic' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="/lp/glt-03/css/styles.css" type="text/css" media="all" />
+	<link rel="shortcut icon" href="/lp/glt-03/images/favicon.ico" />
+
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="Content-Language" content="en-us" />
+
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>		
+	<script type="text/javascript">
+		$(document).ready(function() {
+		
+			// resize hero Image
+			function heroImage() {
+		
+				$bodyWidth = $("body").width();
+		
+				if ($bodyWidth > 1200) {
+					$("#hero-image").css('display', 'block');
+				} else {
+					$("#hero-image").css('display', 'none');
+				}
+		
+			}
+
+			$(document).ready(heroImage);
+		
+			var resizeTimer;
+			$(window).resize(function() {
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(heroImage, 25);
+			});
+		
+			// medical advisory board photo rollovers
+			$('#medical-advisors-photo1').hover(function() {
+				$('#medical-advisors-photos div').each(function() {
+					$(this).removeClass('active');
+				});
+				$('#medical-advisors-info div').each(function() {
+					$(this).hide();
+				});
+				$(this).addClass('active');
+				$('#medical-advisors-info1').show();
+			});	
+			$('#medical-advisors-photo2').hover(function() {
+				$('#medical-advisors-photos div').each(function() {
+					$(this).removeClass('active');
+				});
+				$('#medical-advisors-info div').each(function() {
+					$(this).hide();
+				});
+				$(this).addClass('active');
+				$('#medical-advisors-info2').show();
+			});	
+			$('#medical-advisors-photo3').hover(function() {
+				$('#medical-advisors-photos div').each(function() {
+					$(this).removeClass('active');
+				});
+				$('#medical-advisors-info div').each(function() {
+					$(this).hide();
+				});
+				$(this).addClass('active');
+				$('#medical-advisors-info3').show();
+			});	
+			$('#medical-advisors-photo4').hover(function() {
+				$('#medical-advisors-photos div').each(function() {
+					$(this).removeClass('active');
+				});
+				$('#medical-advisors-info div').each(function() {
+					$(this).hide();
+				});
+				$(this).addClass('active');
+				$('#medical-advisors-info4').show();
+			});	
+			$('#medical-advisors-photo5').hover(function() {
+				$('#medical-advisors-photos div').each(function() {
+					$(this).removeClass('active');
+				});
+				$('#medical-advisors-info div').each(function() {
+					$(this).hide();
+				});
+				$(this).addClass('active');
+				$('#medical-advisors-info5').show();
+			});	
+		});
+	</script>
+	
+</head>
+
+<body>
+
+<script type="text/javascript">
+
+    var _gaq = _gaq || [];
+    _gaq.push(['_setAccount', 'UA-39090338-1']);
+    _gaq.push(['_setDomainName', 'getlabtested.com']);
+    _gaq.push(['_trackPageview']);
+
+    (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'stats.g.doubleclick.net/dc.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+    })();
+
+</script>
+
+<div id="header">
+	<div id="logo"><a href="#" title="Home | Get LAB Tested">Get LAB Tested</a></div>
+	<div id="top-links">
+        <a href="http://getlabtested.com/checkout/cart/add/product/<?php echo Mage::helper('landingpage')->getProductIdByLpPath('glt-03') ?>" class="b-get-tested">Click to Order This Test Now</a>
+	</div>
+</div>
+
+<div id="banner-wrap">
+	<div id="banner">
+		<a href="http://getlabtested.com/checkout/cart/add/product/<?php echo Mage::helper('landingpage')->getProductIdByLpPath('glt-03') ?>" class="b-get-tested">Get Tested Today!</a>
+	</div>
+	<div id="hero-image-wrap"><img src="/lp/glt-03/images/hero-photo-bg.jpg" id="hero-image" border="0" alt="" /></div>
+</div>
+
+<div id="how-it-works-wrap">	
+	<ul id="how-it-works">
+		<li id="how-it-works-1">
+			<h2>Call or<br /><strong>Order</strong> Online</h2>
+			<p>Quick, secure and&nbsp;confidential.<br /><br /></p>
+		</li>
+		<li id="how-it-works-2">
+			<h2>Visit a Local Lab for&nbsp;<strong>Testing</strong></h2>
+			<p>Test as early as today at a&nbsp;lab of your choice.</p>
+		</li>
+		<li id="how-it-works-3">
+			<h2>Accurate <strong>Results</strong>, Fast Turnaround</h2>
+			<p>Results available online<br />in 1-5 days.</p>
+		</li>
+	</ul>
+	<div class="cboth"></div>
+</div>
+
+
+<div class="wrap">
+
+	<div id="why">
+		<h2>Who Should Have a<br />PSA Test Performed?</h2>
+		<p>Establishing a baseline PSA level allows men to track any changes, allowing for early prostate cancer detection.</p>
+		<a href="http://getlabtested.com/checkout/cart/add/product/<?php echo Mage::helper('landingpage')->getProductIdByLpPath('glt-03') ?>php echo Mage::helper('landingpage')->getProductIdByLpPath('glt-03') ?>" class="b-get-tested">Get Tested Today!</a>
+		<p id="why-icon-1">Those with high-risk factors—men with a family history of prostate cancer and African Americans—should consider regular PSA testing at&nbsp;age 40. <sup><small>1</small></sup></p>
+		<p id="why-icon-2">All men should consider an annual PSA test by age 50, regardless of race or ethnicity. <sup><small>2</small></sup></p>
+		<p id="why-icon-3">Men experiencing possible symptoms of prostate cancer should also have a PSA test. Symptoms may include: blood in the urine; frequent urination, especially at night; weak or interrupted flow; pain or burning during urination; inability to urinate; or constant pain in the lower back, pelvis or upper thighs. <sup><small>3</small></sup></p>
+		<p id="why-icon-4">Prostate cancer is most common in men over 65. Between 2005 and 2009, the median age for prostate cancer diagnoses was 67 years old. <sup><small>4</small></sup></p>
+	</div>
+
+	<div id="benefits">
+		<a href="http://getlabtested.com/checkout/cart/add/product/<?php echo Mage::helper('landingpage')->getProductIdByLpPath('glt-03') ?>" class="b-get-tested">Get Tested Today!</a>
+		<h2>PSA Test Details</h2>
+		<p>The American Urological Association recommends monitoring PSA levels through a routine PSA test to help detect prostate cancer at its earliest stages.</p>
+		<p class="benefits-checkmark">getLABtested uses the total PSA test, as recommended by our Medical Advisory Board.</p>
+		<p class="benefits-checkmark">The prostate-specific antigen (PSA) test screens for levels of PSA, a protein produced by the prostate gland, in the blood.</p>
+		<p class="benefits-checkmark">This test requires a small blood sample.</p>
+		<p class="benefits-checkmark">Recent ejaculation can elevate PSA levels. Avoid ejaculating within 24 hours of testing.</p>
+		<p class="benefits-checkmark">No fasting or preparation is required before testing.</p>
+	</div>
+
+	<div id="details">
+		<a href="http://getlabtested.com/checkout/cart/add/product/<?php echo Mage::helper('landingpage')->getProductIdByLpPath('glt-03') ?>" class="b-get-tested">Get Tested Today!</a>
+		<h2>Personalized, All-Inclusive<br />Testing Experience</h2>
+		<p>Your privacy is our priority. getLABtested is committed to providing fast, confidential PSA testing to fit your lifestyle.</p>
+		<p id="details-icon-1">Visit a local FDA-approved or CLIA-certified diagnostic laboratory. Nearly 2,000 locations nationwide.</p>
+		<p id="details-icon-2">Test the same day as ordering. No appointments required.</p>
+		<p id="details-icon-3">Receive the most accurate testing on the market. Same test used by doctors and hospitals nationwide.</p>
+		<p id="details-icon-4">Check your results privately online. From testing to treatment, your privacy is protected by strict, government-mandated HIPPA guidelines.</p>
+		<p id="details-icon-5">Discuss results with a staff physician via phone. Or, discuss results with your current physician.</p>
+	</div>
+
+	<div id="treatment">
+		<h2>Your Diagnosis and Treatment Options</h2>
+		<p>An elevated PSA test result does not necessarily indicate prostate cancer If your results show irregular PSA levels, we will help guide you toward treatment.</p>
+		<p id="treatment-icon-1">Talk to our doctors by phone regarding abnormal results, follow-up testing and treatment. Additional fees apply for consultations.</p>
+		<p id="treatment-icon-2">Email your test results directly to your current doctor.</p>
+	</div>
+
+	<div id="medical-advisors">
+		<h2>Our Medical Advisors</h2>
+		<div id="medical-advisors-photos">
+			<div id="medical-advisors-photo1" class="active"></div>
+			<div id="medical-advisors-photo2"></div>
+			<div id="medical-advisors-photo3"></div>
+			<div id="medical-advisors-photo4"></div>
+			<div id="medical-advisors-photo5"></div>
+		</div>
+		<div id="medical-advisors-info">
+			<div id="medical-advisors-info1">
+				<h3>Michael Davidson, MD</h3>
+				<h4>Director of Preventative Cardiology at University of Chicago Medical Center</h4>
+				<p>Renowned Cardiologist, research investigator, author, lecturer, and business entrepreneur; applies skills in developing new approaches in the advancement of healthcare.  Davidson founded Chicago Center for Clinical Research and sold this business to Radiant Research in 2000; he continues to serve as their Chief Medical Officer. Michael is also the Director of Preventative Cardiology at University of Chicago Medical Center; President of National Lipid Association; and, Founder of Omthera Pharmaceuticals.  He has conducted over 1,000 clinical trials and authored over 250 medical journal publications. In addition to his prolific career, the American Diabetes Association named Michael “Father of the Year” in 2010.</p>
+			</div>
+			<div id="medical-advisors-info2" style="display:none;">
+				<h3>Barry Berger, MD</h3>
+				<h4>Medical Director</h4>
+				<p>Internist with over 30 years experience; in addition to his own practice, Dr. Berger has entrepreneurial interests and involvement in emerging healthcare businesses. Over 15 years ago, Dr. Berger joined an early stage Corporate Wellness Company as its staff medical director and assisted that company’s growth to an industry leadership position in revenue, profitability, and employee enrollment.</p>
+			</div>
+			<div id="medical-advisors-info3" style="display:none;">
+				<h3>Neil Skolnik, MD</h3>
+				<p>Professor of Family and Community Medicine at Temple University School of Medicine in Philadelphia, and practicing physician, Dr. Skolnik is a prolific author including publication of CDC's PDA version of the 2002 and the 2006 CDC Sexually Transmitted Disease Guidelines. He is also the handheld series editor for all of the guidelines published by the Infectious Disease Society of America. Dr. Skolnick recently edited and published the definitive guide to implementing EMRs.  The new book is titled "Electronic Medical Records:  A Practical Guide for Primary Care."</p>
+			</div>
+			<div id="medical-advisors-info4" style="display:none;">
+				<h3>Barbara Jean Van Der Pol, PhD, MPH*</h3>
+				<p>International renowned researcher for infectious disease, Dr. Van Der Pol is Director of Indiana University of Medicine Infectious Disease Laboratory and Director of Marion County Department of Health. Dr. Van Der Pol is also a leading expert for CDC and serves as a committee member for the National Chlamydia Coalition.</p>
+			</div>
+			<div id="medical-advisors-info5" style="display:none;">
+				<h3>H. Hunter Handsfield, MD</h3>
+				<p>Industry honored professor of medicine at University of Washington and senior research leader at the Battelle Centers for Public Health Research. Dr. Handsfield received the 2010  Thomas Parran Award, named for Dr. Thomas Parran, U.S. Surgeon General from 1936 to 1948 and the chief developer of modern STD prevention. Dr. Handsfield was bestowed this award in recognition of “long and distinguished” contributions to STD research and prevention.</p>
+			</div>
+		</div>
+	</div>
+
+	<div id="customer-reviews">
+		<h2><strong>Real</strong> Customer Reviews</h2>
+	</div>
+
+	<div id="quality-testing">
+		<h2>Highest <strong>Quality</strong> Lab Testing</h2>
+		<p><strong>getLABtested.com</strong> and its partnering laboratories are backed by several nationally-recognized medical groups and government agencies to ensure the highest quality of pathology and laboratory medicine.</p>
+	</div>
+	
+	<div id="security-certs"></div>
+	
+	<div id="citations">
+	
+		<div class="citations-col">
+			<p>1. Duke University Health System. Ask the Expert: Prostate Cancer. <a href="http://www.dukehealth.org/health_library/health_articles/asktheexpertprostatecancer" target="_blank">http://www.dukehealth.org/health_library/health_articles/asktheexpertprostatecancer</a>. DukeHealth. Accessed February 8, 2013.</p>
+			<p>2. Duke University Health System. Ask the Expert: Prostate Cancer. <a href="http://www.dukehealth.org/health_library/health_articles/asktheexpertprostatecancer" target="_blank">http://www.dukehealth.org/health_library/health_articles/asktheexpertprostatecancer</a>. DukeHealth. Accessed February 8, 2013.</p>
+			<p>3. Centers for Disease Control and Prevention. Prostate Cancer: A Screening Guide. <a href="http://www.cdc.gov/cancer/prostate/pdf/prosguide.pdf" target="_blank">http://www.cdc.gov/cancer/prostate/pdf/prosguide.pdf</a>. Centers for Disease Control and Prevention. Accessed February 8, 2013.</p>
+		</div>
+	
+		<div class="citations-col">
+			<p>4. National Cancer Institute. SEER Stat Fact Sheet: Prostate. <a href="http://seer.cancer.gov/statfacts/html/prost.html" target="_blank">http://seer.cancer.gov/statfacts/html/prost.html</a>. Surveillance and Epidemiology and End Results. Accessed February 8, 2013.</p>
+			<p>5. National Cancer Institute. SEER Stat Fact Sheet: Prostate. <a href="http://seer.cancer.gov/statfacts/html/prost.html" target="_blank">http://seer.cancer.gov/statfacts/html/prost.html</a>. Surveillance and Epidemiology and End Results. Accessed February 8, 2013.</p>
+			<p>6. American Cancer Society. Early Diagnosis, Diagnosis and Staging Topics. <a href="http://www.cancer.org/cancer/prostatecancer/detailedguide/prostate-cancer-survival-rates" target="_blank">http://www.cancer.org/cancer/prostatecancer/detailedguide/prostate-cancer-survival-rates</a>. American Cancer Society. Accessed February 8, 2013.</p>		
+		</div>
+	
+		<div class="cboth"><br /></div>
+	
+	</div>
+	
+</div>
+
+<div id="footer-wrap">
+	<div id="footer">
+		<p>
+			Per the Annotated Code of Maryland, Health-General Article, §17-215, getLABtested.com is unable to provide our service within the state of Maryland.<br />
+			If you are a Maryland resident, please call us (701) 552-9742 and we can help you find an alternative testing facility.
+		</p>
+	</div>
+</div>
+
+
+<!-- Tracking codes will go here -->
+<script type="text/javascript"><!--
+document.write(unescape("%3Cscript id='pap_x2s6df8d' src='" + (("https:" == document.location.protocol) ? "https://" : "http://") +
+        "partners.getlabtested.com/scripts/trackjs.js' type='text/javascript'%3E%3C/script%3E"));//-->
+</script>
+<script type="text/javascript"><!--
+PostAffTracker.setAccountId('default1');
+try {
+    PostAffTracker.track();
+} catch (err) { }
+//-->
+</script>
+
+<!-- Google Code for Remarketing tag -->
+<!-- Remarketing tags may not be associated with personally identifiable information or placed on pages related to sensitive categories. For instructions on adding this tag and more information on the above requirements, read the setup guide: google.com/ads/remarketingsetup -->
+<script type="text/javascript">
+    /* <![CDATA[ */
+    var google_conversion_id = 985899498;
+    var google_conversion_label = "6melCNbq5AQQ6sOO1gM";
+    var google_custom_params = window.google_tag_params;
+    var google_remarketing_only = true;
+    /* ]]> */
+</script>
+<script type="text/javascript" src="//www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+    <div style="display:inline;">
+        <img height="1" width="1" style="border-style:none;" alt="" src="//googleads.g.doubleclick.net/pagead/viewthroughconversion/985899498/?value=0&amp;label=6melCNbq5AQQ6sOO1gM&amp;guid=ON&amp;script=0"/>
+    </div>
+</noscript>
+
+</body>
+</html>

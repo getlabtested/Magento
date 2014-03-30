@@ -1,0 +1,711 @@
+<?php 
+
+$_customer = $this->getCustomer();
+
+$_order = $this->getLastOrder();
+
+$_tests = $this->getTests();
+
+$_notes = $this->getNotes();
+
+if ($_order->getStatus() == 'complete') {
+
+	$paid = 1;
+	
+} else {
+
+	$paid = 0;
+
+}
+
+
+//$_orders = $this->getAllOrders();
+
+//echo $_order->getOrderType(); exit();
+
+
+$m = Mage::getModel('sales/order')->getCollection()
+			->addFieldToFilter('customer_id',array('eq'=>$_customer->getId()))
+			->addFieldToFilter('product_line',array('neq'=>2));
+			
+//echo "SINGLE"; print_r($m->getData()); echo "END SINGLE";
+			
+foreach ($m->getItems() as $item) {
+
+	$orderArr[] = $item->getData();
+	//print_r($item->getData());
+
+}
+
+
+
+?>
+<script type="text/javascript">
+
+function getReg(oId,cId,tId,iId) {
+	
+	var request = new Ajax.Request(
+            '<?php echo Mage::getUrl("userdashboard/index/reg",array('_secure'=>true)) ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                        
+                    }
+                    
+                    else{
+                    	
+                    	window.location = transport.responseText;
+                    	
+                    }
+                },
+                parameters: {cust_id: cId, inc_id: iId,order_id: oId,type_id: tId},        
+           }
+        );
+	
+}
+
+
+
+				    //var sendmailForm = new VarienForm('sendmailForm', true);
+				    function getMedivo(custId,incId,orderId,typeId){ 
+				
+						var url = 'https://getlabtested.com/medivo/index/pullmedivo';
+				        //var url = '<?php echo Mage::getUrl('medivo/index/pullmedivo',array('_secure'=>false)); ?>';
+				        new Ajax.Request(
+				        url,
+				        { 
+				            method: 'get', 
+				            parameters: {cust_id: custId, inc_id: incId, order_id: orderId, type: typeId},
+				            onComplete: function(transport){
+				                
+				              if (transport.responseText == 'no pdf') {  
+				              
+				                alert(transport.responseText);
+				                
+				              } else {
+				              
+				               window.location = transport.responseText;
+				               
+				              }
+				                //$('messages_product_view').innerHTML = transport.responseText;
+				            }}
+				    );
+				    }
+
+
+
+
+function updatesFunction(){
+	
+		document.getElementById('ajax-loader-gif-2').style.display = 'block';
+		 
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("userdashboard/index/updates",array('_secure'=>true)) ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                        
+                    }
+                    
+                    else{
+                    	
+                    	document.getElementById('ajax-loader-gif-2').style.display = 'none';
+                        document.getElementById("confirm-message-2").style.display = 'block';
+                    }
+                },
+                parameters: Form.serialize($("updates-form"))            
+           }
+        );
+}
+
+function passwdFunction(){
+	
+		document.getElementById('ajax-loader-gif-3').style.display = 'block';
+		
+		if (document.getElementById('passwd').value == '') {
+			
+			
+			document.getElementById('ajax-loader-gif-3').style.display = 'none';
+			return false;
+			
+		}
+ 
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("userdashboard/index/passwd",array('_secure'=>true)) ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                        
+                    }
+                    
+                    else{
+                    	
+                    	document.getElementById('ajax-loader-gif-3').style.display = 'none';
+                        document.getElementById("confirm-message-3").style.display = 'block';
+                    }
+                },
+                parameters: Form.serialize($("passwd-form"))            
+           }
+        );
+}
+
+
+
+function handlerFunction(){
+	
+		document.getElementById('ajax-loader-gif').style.display = 'block';
+		document.getElementById('consultButton').disabled = true;
+		
+		
+		if($("consultation_question").value == '') {
+			
+			document.getElementById('consultButton').disabled = false;
+			alert('Please enter a question or concern to discuss with our experts.');
+			document.getElementById('ajax-loader-gif').style.display = 'none';
+			return false;
+			
+		}
+ 
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("userdashboard/index/consult",array('_secure'=>true)) ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                        
+                    }
+                    
+                    else{
+                    	
+                    	document.getElementById('p1').value = '';
+                    	document.getElementById('p2').value = '';
+                    	document.getElementById('p3').value = '';
+                    	document.getElementById('consultation_question').value = '';
+                    	document.getElementById('consultation_question').innerHTML = '';
+                    	document.getElementById('ajax-loader-gif').style.display = 'none';
+                        document.getElementById("confirm-message").style.display = 'block';
+                        document.getElementById('consultButton').disabled = false;
+                    }
+                },
+                parameters: Form.serialize($("consult_form"))            
+           }
+        );
+}
+
+
+function scriptForm() {
+	
+	
+	if (!document.getElementById('Chlamydia').checked && 
+			!document.getElementById('Gonorrhea').checked && 
+			!document.getElementById('Gonorrhea').checked && 
+			!document.getElementById('Oral-Herpes').checked && 
+			!document.getElementById('Genital-Herpes').checked
+		) {
+			
+			
+			document.getElementById('ajax-loader-gif-2').style.display = 'none';
+			alert('To order a prescription you must test positive for at least one STD.');
+			
+			return false;			
+			
+		} else {
+			
+			document.getElementById('dash_script').submit();			
+		}
+		
+	
+	
+	
+	
+}
+
+</script>
+    <script type="text/javascript">countryRegions = <?php echo $this->helper('directory')->getRegionJson() ?></script>
+	<div id="left_col">
+                	<div id="user_dashboard">
+                    	
+                        <div id="user_dash_content">
+                        
+                        	<div class="item_ud" id="health_ud" style="display: block;">
+                            	<div class="system_note">
+                            		<?php
+                            		
+                            		$x= 1;
+									
+									if (count($_notes) > 0) {
+                            		
+                            		foreach ($_notes as $note) {
+                            			
+										if ($x == 1) {
+										
+										if ($note->getContent() && strlen($note->getContent()) > 0) {
+											
+										echo '<p style="padding-top: 8px;">';
+										echo $note->getContent(); 
+										echo '</p>';
+										
+										} else {
+											
+											echo '<p style="padding-top: 8px;">No new messages</p>';
+											
+										}
+										
+										
+                            		}
+									
+									$x++;
+										
+									}
+									
+									} else {
+										
+										echo '<p style="padding-top: 8px;">No new messages</p>';
+										
+									}
+                            		
+                            		?>
+                            		
+                            		
+                                	
+                                </div>
+                                
+                               
+                                
+                                <form id="updates-form">
+                                	<input type="hidden" name="customer_id" value="<?php echo $_customer->getId();?>" />
+                                	<p id="confirm-message-2" style="color: red;display: none;">Your preferences have been updated.</p>
+                                	<p style="padding: 18px 0 2px 0;"><strong>Would you like a friendly reminder to test again and receive future discounts?</strong></p>
+                                    <ul>
+                                    	<li><input <?php if ($_customer->getPpmdUpdates()) echo " checked='checked' ";?> type="radio" value="14" name="ppmd_updates" style="width: 35px;" /> <label>Yes</label></li>
+                                        <li><input type="radio" value="13" name="ppmd_updates" style="width: 35px;" /> <label>No</label></li>
+                                 
+                                    </ul>
+                                    <!-- <p><span class="orange">Would you like to receive discounts and updates?</span></p>
+                                    <ul>
+                                    	<li><input type="radio" value="yes" name="updates"> <label>Yes</label></li>
+                                        <li><input type="radio" value="no" name="updates"> <label>No</label></li>
+                                    </ul> -->
+                                    
+                                    <div id="questions_white_widget">
+                                    	<h4>Questions?</h4>
+                                        <p class="blue">Or to order by phone</p>
+                                        <p class="large">
+                                        	<span class="blue">Call us at:</span> <br>
+                                            <span class="orange">(877) 317-3178</span>
+                                        </p>
+                                    </div> <!-- /questions_white_widget -->
+                                    
+                                    <!-- <p><span class="orange">E-mail Address</span></p>
+                                    <input type="text" name="e-mail" class="text"> -->
+									<input type="submit" onclick="updatesFunction();return false;" value="Update" class="submit btn_orange_32_reflection">
+                                    <img style="display:none;float:left;margin-left: 20px; margin-top:25px;" id="ajax-loader-gif-2" src="/media/images/ajax-loader.gif" />
+                                </form>
+                                
+                                <form id="passwd-form">
+                                	<input type="hidden" name="customer_id" value="<?php echo $_customer->getId();?>" />
+                                	<p id="confirm-message-3" style="color: red;display: none;">Your password has been updated.</p>
+                                	<p><strong>If you would like to reset your password, please enter the new password below and click 'UPDATE'.</strong></p>
+                                    <ul>
+                                    	<li><input id="passwd" type="password" name="passwd"></li>
+                                 
+                                    </ul>
+                                    <input type="submit" onclick="passwdFunction();return false;" value="Update" class="submit btn_orange_32_reflection">
+                                    <img style="display:none;float:left;margin-left: 20px; margin-top:25px;" id="ajax-loader-gif-3" src="/media/images/ajax-loader.gif" />
+                                </form>
+                                
+                            </div> <!-- /health_ud -->
+                            
+                            <div class="item_ud" id="results_ud" style="display: none;">
+                            	<div class="download">
+								<?php if ($_order->getOrderType() == 1) { ?>
+									<li>
+										<!-- <a href="/req/<?php echo $_order->getIncrementId();?>.pdf">Download Requisition File</a> -->
+										<a href="#" onClick="getMedivo(<?php echo $_customer->getId();?>,<?php echo $_order->getIncrementId();?>,<?php echo $_order->getId();?>,1);return false;">Download Requisition File</a>
+									</li>
+								<?php } 
+								
+								/* onClick="getReg(<?php echo $_order->getId();?>,<?php echo $_customer->getId();?>, 1,<?php echo $_order->getIncrementId();?>);" */
+								
+								?>
+								
+								<?php if ($_order->getPpmdStatus() >= 3 && $_order->getStatus() == 'complete') { ?>
+									<li>
+										<a href="#" onClick="getMedivo(<?php echo $_customer->getId();?>,<?php echo $_order->getIncrementId();?>,<?php echo $_order->getId();?>,2);return false;">Download Result File</a>
+									</li>
+								<? } ?> 
+								</div>
+                                
+                                <h2 class="no-border2">My Results</h2>
+                                
+                                <table class="order_info">
+                                	<tbody><tr>
+                                    	<th>Order Status:</th>
+                                    	<?php if ($_order->getPpmdStatus() == 0) { ?>
+                                        <th><span class="orange">Pending</span></th>
+                                        <?php } else if ($_order->getPpmdStatus() == 3) { ?>
+                                        <th><span class="orange">Available</span></th>
+                                        <?php } else if ($_order->getPpmdStatus() >= 2 && $_order->getStatus() != 'complete') { ?>
+                                        <th><span class="orange">Call For Results</span></th>
+                                        <?php } ?>
+                		             </tr>
+                                    <tr>
+                                    	<td>Order Code:</td>
+                                        <td><span class="blue"><?php echo $_order->getPpmdCustConf();?></span></td>
+                                    </tr>
+                                    <tr>
+                                    	<td>Order Date</td>
+                                        <td><span class="blue"><?php echo $_order->getCreatedAt();?></span></td>
+                                    </tr>
+                                    <tr>
+                                    	<td>Results Date</td>
+                                    	<?php if ($_order->getPpmdStatus() == 3 || $_order->getPpmdStatus() == 4) { ?>
+                                        <td><span class="blue"><?php echo $_order->getUpdatedAt();?></span></td>
+                                        <?php } else { ?>
+                                        <td><span class="blue">Pending</span></td>	
+                                        <?php } ?>
+                                    </tr>
+                                    <?php 
+                                    
+                                    if ($_order->getOrderType() == 1) { 
+
+										$labArr = unserialize($_order->getPpmdLab());
+										
+										//print_r($labArr);
+										                                    
+                                    ?>
+                                    <tr>
+                                    	<td><nobr>Testing Location</nobr></td>
+                                        <td><span class="blue"><?php echo $labArr['address'];?>, <?php echo $labArr['city'];?>, <?php echo $labArr['state'];?> <?php echo $labArr['zip'];?></span></td>
+                                    </tr>
+                                    <?php } ?>
+                                </tbody></table>
+                                
+                                <div class="box_navy_header" style="margin-bottom:30px;">
+                                	<div class="header">
+                                    	<table class="results">
+                                        	<tbody><tr>	
+                                            	<th>Test Name</th>
+                                                <th>Result</th>
+                                            </tr>
+                                        </tbody></table>
+                                    </div>
+                                    <div class="content">
+                                        <table class="results">
+                                            <tbody>
+                                            <?php 
+                                             $cfr = 0;
+                                            
+                                            foreach ($_tests as $test) {	
+                                            
+                                                
+                                                	if ($test->getTestName() == "HIV" && $test->getResult() == 1) {
+                                                	
+                                                	$cfr = 1;
+                                                	
+                                                	}
+                                            
+                                            
+                                            }
+                                            
+                                           
+                                            
+                                            foreach ($_tests as $test) {
+                                            
+                                            ?>
+                                            <tr>
+                                                <td><span class="blue"><?php echo $test->getTestName();?></span></td>
+                                                
+                                                <?php 
+                                                
+                                                	
+                                                
+                                                	if ((stripos($test->getTestName(),"HIV") > 0 || $test->getTestName() == "HIV") && $test->getResult() == 1) {
+                                                	
+                                                	                                                	
+                                                	$cfr = 1;
+                                                	
+                                                	?>
+                                                	
+                                                	<td><span style="color:#028AFB;" class="negative blue">Call for Result</span></td>
+                                                	
+                                                <?php } else { ?>
+                                                	
+	                                                <?php if ($cfr == 1) { ?>	                                                	
+														
+	                                                	<td><span style="color:#028AFB;" class="negative blue">Call for Result</span></td>	                                                
+	                                                
+	                                                <?php } elseif (in_array($test->getTestName(), array("Lipid", "Diabetes", "Liver", "Thyroid", "Complete Checkup Panel"))) { ?>	                                                	
+
+	                                                	<td style="text-align: right;"><span class="negative">Complete</span>
+														
+															<?php if ($_order->getPpmdStatus() >= 3 && $_order->getStatus() == 'complete') { ?>
+																<a href="#" onClick="getMedivo(<?php echo $_customer->getId();?>,<?php echo $_order->getIncrementId();?>,<?php echo $_order->getId();?>,2);return false;" style="color: #646262; font-size: 12px; line-height: 28px; text-decoration: underline;">Download Results</a>
+															<?php } ?>
+														
+														</td>	                                                
+	                                                
+	                                                <?php } else { ?>	                                                
+	                                                
+		                                                <?php if ($test->getResult() == 0) { ?>
+		                                                <td><span style="color:#028AFB;font-weight: bold;">Pending</span></td>
+		                                                <?php } else if ($test->getResult() == 1 && $_order->getStatus() == 'complete') { ?>
+		                                                <td><span class="positive">Positive</span></td>
+		                                                <?php } else if ($test->getResult() == 2 && $_order->getStatus() == 'complete') { ?>
+		                                                <td><span class="negative">negative</span></td>
+		                                                <?php } else if ($_order->getStatus() != 'complete') { ?>
+		                                                <td><span style="color:#028AFB;" class="negative">Call for Result</span></td>
+		                                                <?php } ?>
+	                                                
+	                                                <?php } ?>
+                                                
+                                                <?php } ?>
+                                            </tr>
+                                            <?php 
+                                            
+											}
+                                            
+                                            ?>
+                                        </tbody></table>
+                                        
+                                        <div id="questions_white_widget">
+                                            <h4>Questions?</h4>
+                                            <p class="blue">Or to order by phone</p>
+                                            <p class="large">
+                                                <span class="blue">Call us at:</span><br>
+                                                <span class="orange">(877) 317-3178</span>
+                                            </p>
+                                        </div> <!-- /questions_white_widget -->
+                                        <div class="clear">&nbsp;</div>
+                                    </div>
+                                </div> <!-- /box_navy_header -->
+                                                                
+                                <p class="doctor">Need to speak with a Doctor?</p>
+                                <p>Schedule a phone consultation with one of our doctors for only $65.</p>
+                                <p><a style="height:20px; font-size:11px;" class="btn_blue_reflection" href="#">schedule now</a></p>
+
+                            </div> <!-- /health_ud -->
+                            
+                            <div class="item_ud" id="prescription_ud" style="display: none;">
+                            	<div class="form_info"><span class="orange">*</span>denotes required fields</div>
+                                <h2 style="padding-bottom: 5px;">ORDER A PRESCRIPTION</h2>
+                                <h5 style="font-weight: normal;margin-top: 0;">
+                                	If positive for certain STDs, our on-staff doctor network is available to write a prescription to your local pharmacy.
+									To order a prescription, select the STDs that you tested positive for, provide appropriate medical data, and click "checkout" to pay.
+									There is a flat $60 fee to write the prescription(s) and call it into your local pharmacy.
+									Please note chlamydia, gonorrhea, and trichomoniasis are <b>curable</b> with treatment.   Oral and genital herpes are not curable, but are <b>treatable</b> to better manage herpes outbreaks.  
+									If positive for an STD not listed here, please request a free doctor consult for additional guidance.
+                                	</h5>
+                                
+                                 <form id="dash_script" name="dash_script" method="post" action="/customroute/index/checkoutscript">
+                                	<table class="form_table">
+                                    	<tbody><tr>
+                                            
+                                            <td width="50%">
+                                                <p><span class="orange">*What would you like a prescription for?</span></p>
+                                                <ul>
+                                                		
+                                                	<?php foreach ($_tests as $test) { 
+                                                	
+													$pArr[$test->getTestName()] = $test->getResult();	
+                                                	
+                                                	?>
+                                                                                                       
+                                                   <?php } ?>
+                                                		
+                                                    <li><input type="checkbox" <?php echo (isset($pArr['Chlamydia']) && $pArr['Chlamydia'] == 1 && $paid == 1?"":"disabled='disabled'");?> value="Chlamydia" id="Chlamydia" name="prescriptions[]" > <label>Positive Chlamydia Test</label></li>
+                                                    <li><input type="checkbox" <?php echo (isset($pArr['Gonorrhea']) && $pArr['Gonorrhea'] == 1 && $paid == 1?"":"disabled='disabled'");?> value="Gonorrhea" id="Gonorrhea" name="prescriptions[]"> <label>Positive Gonorrhea  Test</label></li>                                             		
+                                             		<li><input type="checkbox" <?php echo (isset($pArr['Trichomoniasis']) && $pArr['Trichomoniasis'] == 1 && $paid == 1?"d":"disabled='disabled'");?> value="Trichomoniasis" id="Trichomoniasis" name="prescriptions[]"> <label>Positive Trichomoniasis  Test</label></li>
+                                                    <li><input type="checkbox" <?php echo (isset($pArr['Oral Herpes']) && $pArr['Oral Herpes'] == 1 && $paid == 1?"":"disabled='disabled'");?> value="Oral Herpes" id="Oral-Herpes" name="prescriptions[]"> <label>Positive Oral Herpes Test</label></li>
+                                                    <li><input type="checkbox" <?php echo (isset($pArr['Genital Herpes']) && $pArr['Genital Herpes'] == 1 && $paid == 1?"":"disabled='disabled'");?> value="Genital Herpes" id="Genital-Herpes" name="prescriptions[]"> <label>Positive Genital Herpes Test</label></li>
+                                                    
+                                                </ul>
+                                                
+                                                
+                                                
+                                                <p><span class="orange">*Your Full Name:</span></p>
+                                                <input style="width: 300px;" type="text" name="prescription_name" class="text">
+                                                
+                                                <p><span class="orange">*Patient Phone:</span></p>
+                                                <input type="text" name="phone_1" class="text size3"> - <input type="text" name="phone_2" class="text size3"> -  <input type="text" name="phone_3" class="text size4"> 
+                                                
+                                                <p><span class="orange">*Pharmacy Phone:</span></p>
+                                                <input type="text" name="phone_pharmacy_1" class="text size3"> - <input type="text" name="phone_pharmacy_2" class="text size3"> -  <input type="text" name="phone_pharmacy_3" class="text size4"> 
+                                                
+                                                
+                                                <p><span class="orange">List any allergies:</span></p>
+                                                <input style="width: 300px;" type="text" name="allergies" class="text">
+                                                
+                                                <p><span class="orange">List current prescription medications:</span></p>
+                                                <input style="width: 300px;" type="text" name="prescriptions_medications" class="text">
+                                                
+                                                <p><span class="orange">List current over-the-counter medications:</span></p>
+                                                <input style="width: 300px;" type="text" name="counter_medications" class="text">
+                                                
+                                                <input type="hidden" name="script" value="1" />
+                                               
+                                                <p><span class="orange">Please tell us about your medical history </span><br>(List any chronic or severe medical conditions)</p>
+                                                <textarea name="medical_history" id="medical_history" class="text" style="width: 300px;"></textarea>
+                                                
+                                            </td>
+                                        </tr>
+                                    </tbody></table>
+                                                                        
+                                    <!-- <table class="cc">
+                                    	<tbody><tr>
+                                        	<th>Credit Card</th>
+                                            <th>Expiration Date</th>
+                                        </tr>
+                                        <tr>
+                                        	<td>
+                                            	<input type="text" name="cc_no" class="text">
+                                                <img src="images/cc_labels.png">
+                                            </td>
+                                            <td>
+                                            	<select name="cc_exp_month">
+                                                	<option>01 - Jan</option>
+                                                    <option>02 - Feb</option>
+                                                    <option>03 - Mar</option>
+                                                </select>
+                                                <select name="cc_exp_year">
+                                                	<option>2011</option>
+                                                    <option>2012</option>
+                                                    <option>2013</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </tbody></table> -->
+                                    
+                                    
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="sep20">&nbsp;</div>
+                                    
+                                    <input type="hidden" name="customer_id" id="customer_id" value="<?php echo $_customer->getId();?>" />
+                                    <input style="float: left;" type="button" value="submit" onclick="scriptForm()" class="submit btn_orange_32_reflection">
+                                     <img style="display:none;float:left;margin-left: 20px; margin-top:25px;" id="ajax-loader-gif" src="/media/images/ajax-loader.gif" />
+                                    
+                                </form>
+                            </div> <!-- /health_ud -->
+                            
+                            <div class="item_ud" id="consult_ud" style="display: none;">
+                            	<h2 style="margin-bottom: 6px;padding-bottom: 6px;">REQUEST A DOCTOR CONSULTATION</h2>
+                            	
+                            	<p id="confirm-message" style="color: red;display: none;">We have received your inquiry and will be in touch within 24 hours.  If you need immediate assistance, please call (877) 317-3178.</p>
+
+                            	
+                                <p>To get answers to your most pressing questions, talk one-on-one with our on-staff doctors free of charge. Simply tell us what you'd like to discuss and we’ll follow up within 24 hours.  </p>
+                                
+                                
+                                <table class="order_info">
+                                	<tbody>
+                                	<!-- <tr>
+                                    	<td>Customer #:</td>
+                                        <td><span class="blue"><?php echo $_customer->getId();?></span></td>
+                                    </tr> -->
+                                    <tr>
+                                    	<td>Name:</td>
+                                        <td><span class="blue"><?php echo $_customer->getFirstname();?> <?php echo $_customer->getLastname();?></span></td>
+                                    </tr>
+                                </tbody></table>
+                                
+                                <p>
+                                	<span class="orange">What would you like to discuss?</span> <br>
+                                	The detail provided will help us match you with the appropriate expert.
+                                </p>
+                                <form id="consult_form">
+                                    <textarea id="consultation_question" name="consultation_question" class="discuss"></textarea>
+                                    
+                                    <p><span class="orange">Phone Number:</span> <input maxlength="3" id="p1" type="text" name="phone_1" class="text size3"> - <input maxlength="3" id="p2" type="text" name="phone_2" class="text size3"> -  <input maxlength="4" id="p3" type="text" name="phone_3" class="text size4"> </p>
+                                    
+                                    <!-- <p><span class="orange">E-mail: </span> <input type="text" name="email" class="text"></p> -->
+                                    <input type="hidden" name="customer_id" id="customer_id" value="<?php echo $_customer->getId();?>" />
+                                    <input style="float: left;" id="consultButton" type="button" value="submit" onclick="handlerFunction(); return false;" class="submit btn_orange_32_reflection">
+                                    <img style="display:none;float:left;margin-left: 20px; margin-top:25px;" id="ajax-loader-gif" src="/media/images/ajax-loader.gif" />
+
+								</form>                                
+                            </div> <!-- /health_ud -->
+                            
+                            <div class="item_ud" id="update_ud" style="display: none;">
+                            	 <?php echo $this->getChildHtml('customertab'); ?>
+  
+                            </div> <!-- /health_ud -->
+                        </div> <!-- /user_dash_content -->
+                        
+                        <div class="sep20">&nbsp;</div>
+                        <div class="sep20">&nbsp;</div>
+                        
+                        
+                        
+                        <a onclick="javascript: showUserDash('health');" href="javascript: void(0);" id="health_head" class="user_dash_menu active">Health Dashboard</a>
+                        <a onclick="javascript: showUserDash('results');" href="javascript: void(0);" id="results_head" class="user_dash_menu">Get My Results</a>
+                        <!-- <a onclick="javascript: showUserDash('prescription');" href="javascript: void(0);" id="prescription_head" class="user_dash_menu">Order Prescription</a> -->
+                        <!-- <a onclick="javascript: showUserDash('consult');" href="javascript: void(0);" id="consult_head" class="user_dash_menu">Request Dr. Consult</a> -->
+                        <!-- <a onclick="javascript: showUserDash('update');" href="javascript: void(0);" id="update_head" class="user_dash_menu">Update Information</a> -->
+                        
+                        <script type="text/javascript">
+							showUserDash('health');
+						</script>
+                        
+                    </div> <!-- /user_dashboard -->
+</div>
+<div id="right_col">
+                    <div class="box_blue_header" id="history_side_widget" style="margin-top: 20px;">
+                    	<div class="header">
+                        	<h3>My history</h3>
+                        </div>
+                        <div class="content">
+                        	<table>
+                            	<thead>
+                                	<tr>
+                                    	<th>Order</th>
+                                        <th>Date</th>
+                                        <th>&nbsp;</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php foreach ($orderArr as $order) { ?>
+                                <tr class="row1">
+                                	<td><?php echo $order['increment_id'];?></td>
+                                    <td><?php echo date('m/d/Y',strtotime($order['created_at']));?></td>
+                                    <td><a href="/my-results/?oid=<?php echo $order['increment_id'];?>&cid=<?php echo $_customer->getId();?>" class="info"><img src="/media/images/icon_play_blue.png"></a></td>
+                                </tr>
+                               <?php } ?>
+                               <!--
+ <tr class="row2">
+                                	<td>Complete Testing</td>
+                                    <td>12-20-12</td>
+                                    <td><a href="#" class="info"><img src="/media/images/icon_play_blue.png"></a></td>
+                                </tr>
+                                <tr class="row1">
+                                	<td>Complete Testing</td>
+                                    <td>12-20-12</td>
+                                    <td><a href="#" class="info"><img src="/media/images/icon_play_blue.png"></a></td>
+                                </tr>
+-->
+                            </tbody></table>
+                        </div>
+                    </div>
+                </div>

@@ -1,0 +1,180 @@
+<?php
+
+	$detail = $this->getLocaleDetail();
+	
+	$locales = $this->getLocaleList();
+	
+	$state =  $this->getCurState();
+	
+	$stateFull = $this->getCurStateFull();
+	
+	$city = $this->getCurCity();
+	
+			
+?>  
+
+            
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+             <a href="frontpage.html">Home</a>
+                <span class="separator"> > </span>
+                <a href="std_testing_state.html">STD Testing by State</a>
+                <span class="separator"> > </span>
+                <a href="std_testing_city"><?php echo $stateFull; ?> STD Testing</a>
+                <span class="separator"> > </span>
+                <a href="#" class="current"><?php echo $city; ?> STD Testing</a>
+            </div> <!-- /breadcrumbs -->
+            
+            <div id="content">
+
+                <div id="std_testing_location_module">
+                    <h1 class="page-title"><?php echo $detail->getName(); ?></h1>
+                    <p>
+                    	Location Number <?php echo $detail->getId(); ?><br>
+                    	<?php echo $detail->getCity(); ?>, <?php echo $detail->getState(); ?> <?php echo $detail->getZip(); ?>
+                    </p>
+                    
+                    
+                    <div class="content_left">
+                    	
+                    	<?php echo $detail->getName(); ?>: Test for STDs today in the privacy of your own home or at a local lab within the <?php echo $detail->getZip(); ?> zip code. 
+                    	No wait, complete privacy, results within 1-5 days, treatment for many curable STDs, and no insurance reporting.
+                    	
+                        <p>
+                            <img src="/media/images/btn_orange_test_prices.png" style="float: left; margin-right: 20px;"/>
+                            <b>STD tests include:</b> chlamydia test, gonorrhea test, hiv test, trichomoniasis test, hepatitis b test, hepatitis c test, syphilis test, oral herpes test, and genital herpes test. <span class="blue_light">Prices start at $30.</span>
+                        </p>
+                    </div> <!-- /.content_left -->
+                    
+                    <!-- div class="content_right">
+                     <b>STD Testing: <span class="blue_light">Chicago, IL</span></b>
+                        <img src="/media/images/sample_location_map.jpg" />
+                    </div --> <!-- /.content_right -->
+                    
+                </div> <!-- /std_testing_location_module -->
+                
+                <div class="clear"></div>
+                <div class="sep15"></div>
+                
+<style type="text/css">
+#testingCentersSteps { background-image:url(http://c1470.r70.cf1.rackcdn.com/steps-std-testing-backg.jpg); width:988px; height:230px; font-family:Tahoma, Geneva, sans-serif; }
+#stepHeads { font-size:17px; font-weight:bold; color:#FFF; margin-top:22px; float:left; }
+#stepContent { margin-top:15px; float:left; font-size:12px; }
+#testingCentersSteps {
+    background-image: url("http://c1470.r70.cf1.rackcdn.com/steps-std-testing-backg.jpg");
+    height: 230px;
+    width: 988px;
+}
+#testingCentersSteps h2 {
+	
+	padding-bottom: 0px;
+}
+</style>
+
+
+<div id="testingCentersSteps">
+                        <h2>Get STD Testing in <?php echo $detail->getCity(); ?> <?php echo $detail->getState(); ?> in 4 Easy Steps:</h2>
+                        <div style="width:195px; margin-left:10px; margin-top:13px;" id="stepHeads">STEP 1: Order</div>
+                        <div style="width:375px; margin-top:13px;" id="stepHeads">STEP 2: Test</div>
+                        <div style="width:218px; margin-top:13px;" id="stepHeads">STEP 3: Results</div>
+                        <div style="margin-top:13px;" id="stepHeads">STEP 4: Treatment</div>
+                        
+                        <div style="width:195px; margin-left:10px;" id="stepContent">
+                            <div>Order STD test(s)</div>
+                            <div style="margin-top:5px; margin-bottom:5px;">Select testing location:<br>LOCAL LAB or IN-HOME</div>
+                            <div>Pay with credit card, e-check, or anonymously with cash</div>
+                        </div>
+                        <div style="width:155px; margin-right:10px;" id="stepContent">
+                            <b>LOCAL LAB</b><br>
+                            <div>1-3 days to results</div>
+                            <div style="margin-top:5px; margin-bottom:5px;">Print requisition form or have it faxed directly to lab</div>
+                            <div>Visit lab for testing; 15-20 minutes</div>
+                        </div>
+                        <div style="width:210px;" id="stepContent">
+                            <b>IN-HOME</b><br>
+                            <div>7-10 days to results</div>
+                            <div style="margin-top:5px;">Receive home testing kit via USPS*</div>
+                            <div style="font-size:10px;">Follow detailed testing instructions and mail completed test to our lab network</div>
+                        </div>
+                        <div style="width:180px; margin-right:40px;" id="stepContent">
+                            View test results via private, online portal or phone
+                        </div>
+                        <div style="width:170px;" id="stepContent">
+                            <div>Discuss results with our in-house physicians</div>
+                            <div style="margin-top:5px;">Receive prescription for treatment of chlamydia, gonorrhea, herpes, and trichomoniasis</div>
+                        </div>
+                    </div>
+
+<div class="clear"></div>
+<div class="sep15"></div>
+<div id="locations">
+	
+<h3><?php echo $city; ?> STD Testing Centers</h3>
+<br><a href="/std-test-centers/<?php echo $stateFull;?>-<?php echo $state;?>/<?php echo $city;?>">[See All <?php echo $city; ?> STD Testing Centers]</a><br>
+* More Details Available During Ordering<br><br>
+<div id="item-container">
+<?php
+                        
+	foreach ($locales as $local) {
+		
+		//print_r($local); exit();
+						
+	?>
+					                        
+		<div class="pin"><img src="images/pin_sample.png" /></div>
+		<div class="location">
+			<h4><a title="<?php echo $local->getName(); ?>" href="/std-test-centers/<?php echo $stateFull;?>-<?php echo $state;?>/<?php echo $city;?>/<?php echo $local->getDynamicId();?>-<?php echo $local->getZip();?>"><?php echo $local->getName(); ?></a></h4>
+			<?php echo $local->getCity(); ?>, <?php echo $local->getState()." ".$local->getZip(); ?><br />
+			<?php //if (strlen($local->getPhone()) > 1) { ?>
+			<span class="blue">888-749-6269</span><br>
+			<?php //} ?>
+			<div style="color:red; margin-bottom:10px;">Order Online</div>
+		</div>                            
+	<?php 
+                         
+	}
+                         
+	?> 
+</div>
+
+</div>
+               
+<div id="col1" class="location-level-col-1">
+<h3>About Us</h3>
+STD Testing <?php echo $city; ?>, <?php echo $state; ?>is available as soon as today. We understand time is of the essence and offer two painless STD testing options: test at a local, private lab within the zip code or test for STDs at home.
+<br><br>
+Backed by nationwide medical experts, thousands of people - from their twenties to their eighties - trust getstdtested.com for their routine std testing needs.
+<br><br>
+Our testing is fast, offers complete privacy, and is analyzed by the same labs used by doctors and hospitals nationwide. Results are available within 1 - 5 days and include a free consult with our on-staff physician network to answer questions, get treatment, and help interpreting test results. STD test results will not appear on insurance records.
+<br><br>
+Get tested. Get treated. Get on with your life.
+<br><br>
+STD Counselors Standing By:<br>
+866-749-6269
+
+</div> 
+
+<div id="col2" class="location-level-col-2">
+<b>Tweets About STDs</b>
+<br><br>
+
+    RT @NishWantsItAll: Sex solves EVERYTHING!!!< not stds or aids in fact it might cause it! #maltliquershrug<br>
+    U.S. Gov. Secretly Infected Thousands of Guatemalans with STDs http://t.co/p034UvB<br>
+    Teen pregnancy and STDs<<<<. #justsayin RT @th3_Goodfellas: Fuckin w/o condoms >>>> fuckin wit condoms #justsayin<br>
+    @Brunsky36 @Chris_Jammer Lol. appauling performance lads, lool oi bruno! imagine his ting werent on her reds!! she has STDs tho! LOOL<br>
+    #ThingsHoodratsLove STDs
+
+<br><br>
+<b>Sexual Health in the News</b>
+<br><br>
+    The Female Health Company Appoints Dr. Lucie van Mens Director of Program ... - PR Newswire (press release)<br>
+    AIDS: Dr. Kevin De Cock on new developments - Windy City Times<br>
+    Knowledge is the key to a healthy pregnancy - Milwaukee Journal Sentinel<br>
+    The Female Health Company Appoints Dr. Lucie van Mens Director of Program ... - NEWS.GNOM.ES (press release)<br>
+
+
+</div>                               
+            </div> <!-- /content -->
+            

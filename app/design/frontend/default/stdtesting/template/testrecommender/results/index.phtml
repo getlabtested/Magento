@@ -1,0 +1,165 @@
+<?php
+
+	$gender = Mage::registry('gender');
+	$age = Mage::registry('age');
+	$zipcode = Mage::registry('zipcode');
+	$sexualpartner = Mage::registry('sexualpartner');
+	$laststdtest = Mage::registry('laststdtest');
+	$oneormoresexualpartner = Mage::registry('oneormoresexualpartner');
+	$concernedwithother = Mage::registry('concernedwithother');
+	$vaccinatedforhepatitisb = Mage::registry('vaccinatedforhepatitisb');
+	$relationshipwithivdrug = Mage::registry('relationshipwithivdrug');
+	$interestedwithgenitalherpes = Mage::registry('interestedwithgenitalherpes');
+	$chkIndi1 = Mage::registry('chkIndi1');
+
+/*
+	echo $gender;
+	echo "<br />";
+	echo $age;
+	echo "<br />";
+	echo $zipcode;
+	echo "<br />";
+	echo $sexualpartner;
+	echo "<br />";
+	echo $laststdtest;
+	echo "<br />";
+	echo $oneormoresexualpartner;
+	echo "<br />";
+	echo $concernedwithother;
+	echo "<br />";
+	echo $vaccinatedforhepatitisb;
+	echo "<br />";
+	echo $relationshipwithivdrug;
+	echo "<br />";
+	echo $interestedwithgenitalherpes;
+	echo "<br />";
+	echo $chkIndi1;
+	echo "<br />";
+	echo "<br />";
+*/	
+	
+	$AddToCDC = array();
+  	$AddToCDC1 = array();
+	
+	if($gender == 'Female' && ($age == 'under18' || $age == '18-24'))
+  	{      
+  		$AddToCDC['Chlamydia'] = "chlamydia";
+  	}
+  	if($gender == 'Male' && $sexualpartner != 'Female')
+  	{
+  		$AddToCDC['Chlamydia'] = "chlamydia";
+  		$AddToCDC['Gonorrhea'] = "gonorrhea";
+  		$AddToCDC['HIV'] = "hiv";
+  		$AddToCDC['Syphilis'] = "syphilis";
+  	}
+  	if($oneormoresexualpartner == 'Yes' || $concernedwithother == 'Yes')
+  	{
+  		$AddToCDC['Chlamydia'] = "chlamydia";
+  		$AddToCDC['Gonorrhea'] = "gonorrhea";
+  		$AddToCDC['HIV'] = "hiv";
+  	}
+  	if($vaccinatedforhepatitisb == 'No' || $vaccinatedforhepatitisb == 'DoNotKnow')
+  		$AddToCDC['Hepatitis B'] = "hepatitis-b";
+  	if($relationshipwithivdrug == 'Yes' || $relationshipwithivdrug == 'DoNotKnow')
+  		$AddToCDC['Hepatitis C'] = "hepatitis-c";
+  	if($interestedwithgenitalherpes == 'Yes')
+  		$AddToCDC['Herpes 2'] = "genital-herpes";
+  	
+  	if(count($chkIndi1) > 0)
+  	{
+  		foreach($AddToCDC as $key=>$val)
+  		{
+  			if(in_array($val,$chkIndi1))
+  			{
+  				unset($AddToCDC[$key]);
+  			}
+  		}
+  		
+  		foreach($AddToCDC1 as $key=>$val)
+  		{
+  			if(in_array($val,$chkIndi1))
+  			{
+  				unset($AddToCDC1[$key]);
+  			}
+  		}	
+  	}
+  	
+  	/*
+  	
+	foreach($AddToCDC as $key=>$val)
+  		{
+  			echo "here".$key."-".$val."<br />";
+  		}
+  		
+  	*/	
+
+?>
+
+<div id="content">
+
+	<div id="wizardAll" style="margin-top: 10px;">
+
+	<div style="width:650px;">
+    	<h1 class="page-title">YOUR STD TEST RECOMMENDATION:</h1>
+    	<h3>Your recommended tests are selected below</h3>
+    	<div style="margin-bottom:10px;">Select more tests for additional savings</div>
+	</div>
+
+	<div style="border:solid 1px #c3c3c3; height:115px; width:650px; margin-bottom:25px;">
+		<div style="padding:20px;">
+			<form name="testOptionsL">
+				<input type="hidden" name="indiTestString">
+			
+				<div style="float:left;">
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="chlamydia"<?php if (in_array("chlamydia", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Chlamydia</li>
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="gonorrhea" <?php if (in_array("gonorrhea", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Gonorrhea</li>
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="oral-herpes" <?php if (in_array("oral-herpes", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Herpes I</li>
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="genital-herpes" <?php if (in_array("genital-herpes", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Herpes II</li>
+				</div>
+			
+				<div style="float:left; padding-left:20px;">
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="hiv" <?php if (in_array("hiv", $AddToCDC)) echo "checked";?> onclick="createTestString()"> HIV</li>
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="syphilis" <?php if (in_array("syphilis", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Syphilis</li>
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="hepatitis-b" <?php if (in_array("hepatitis-b", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Hepatitis B</li>
+					<li style="list-style:none;"><input type="checkbox" name="indiTests" value="hepatitis-c" <?php if (in_array("hepatitis-c", $AddToCDC)) echo "checked";?> onclick="createTestString()"> Hepatitis C</li>
+				</div>
+        
+				<div style="float:right;">
+					<img style="float:right; margin-right:10px; margin-top:20px;" src="http://c1470.r70.cf1.rackcdn.com/gst-tr-btn-order-top.png" border="0" onclick="orderIndiTests()" onMouseOver="this.style.cursor='pointer'">
+					<div style="float:right; color:#DE5227; font-size:16pt; font-weight:normal; width:200px; margin-top:25px;" align="center" id="indiPriceText">$100</div>
+				</div>
+			</form>
+		</div>
+	</div>
+        
+	<h3>Have total peace of mind</h3>
+
+	<div style="width:650px; margin-bottom:10px;">Order our Total Testing Package (8 tests)</div>
+	<div style="border:solid 3px #003a4c; background-color:#F5F9FD; height:130px; width:650px;">
+		<div style="padding:20px;">
+            <ul style="list-style-type: none; padding: 0; margin: 0; font-size:14px;">
+            	<div style="float:left;">
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Chlamydia</li>
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Gonorrhea</li>
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Herpes I</li>
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Herpes II</li>
+                </div>
+            	<div style="float:left; padding-left:20px;">
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">HIV</li>
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Syphilis</li>
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Hepatitis B</li>
+					<li style="background-image: url(http://c1470.r70.cf1.rackcdn.com/gst-tr-bullet.png); background-repeat: no-repeat; background-position: 0; padding:2px 0 0 25px; margin-bottom:5px;">Hepatitis C</li>
+                </div>
+            </ul>
+			<div style="float:right;">
+				<a href="select-testing-center?item=complete-std-package"><img style="float:right; margin-right:10px; margin-top:25px;" src="http://c1470.r70.cf1.rackcdn.com/gst-tr-btn-order-bottom.png" border="0" onMouseOver="this.style.cursor='pointer'"></a>
+				<div style="float:right; color:#DE5227; font-size:16pt; font-weight:normal; width:200px; margin-top:30px;" align="center"><span style="color:#646262;">ONLY</span> $245</div>
+			</div>   
+		</div>
+	</div>
+        
+
+
+</div>
+
+</div>

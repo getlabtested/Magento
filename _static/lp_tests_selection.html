@@ -1,0 +1,325 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Dokument bez tytułu</title>
+    <link rel="stylesheet" href="css/template.css" type="text/css" />
+    <script type="text/javascript" language="javascript" src="js/jquery-1.6.2.min.js"></script>
+    <script type="text/javascript" language="javascript" src="js/main.js"></script>
+</head>
+
+<body>
+	<div class="bg_white">
+        <div class="all">
+        
+            <div id="header">
+            
+                <a id="logo" href="frontpage.html"></a>
+                
+                <div id="social">
+                	<img src="images/social_sample.png" />
+                    <a href="#" class="fb"></a>
+                    <a href="#" class="google"></a>
+                </div> <!-- /social -->
+                
+                <div class="phone orange">866-749-6269</div>
+                
+                <div id="user_nav">
+                    <div id="user_nav_search" class="user_nav_box">
+                        <a class="header" href="javascript: void(0);" onclick="javascript: openTopSearch();">Search</a>
+                        <div id="user_nav_search_box" class="user_nav_content_box">
+                            Search module here
+                        </div>
+                    </div> <!-- /search -->
+                    <div id="user_nav_account" class="user_nav_box">
+                        <a class="header" href="javascript: void(0);" onclick="javascript: openTopAccount();">My Account</a>
+                        <div id="user_nav_account_box" class="user_nav_content_box">
+                            If not logged in - login form here
+                        </div>
+                    </div> <!-- /account -->
+                    <div id="user_nav_cart" class="user_nav_box">
+                        <a class="header" href="#">Cart</a>
+                    </div> <!-- /cart -->
+                </div> <!-- /user_nav -->
+                
+                <div class="clear"></div>
+                
+                <div id="top_menu">
+                    <div class="content">
+                        <ul>
+                            <li><a href="std_test_prices.html">STD Test & Prices</a></li>
+                            <li class="current active"><a href="how_it_works.html">How It Works</a></li>
+                            <li><a href="#">Home STD Testing</a></li>
+                            <li><a href="test_locally.html">Test Locally</a></li>
+                            <li><a href="blog_entry.html">Blog</a></li>
+                            <li class="last"><a href="#">Your Results</a></li>
+                        </ul>
+                    </div>
+                </div> <!-- /top_menu -->
+                
+                <a id="order_now" class="btn_orange" href="#">order now</a>
+                
+            </div> <!-- /header -->
+            
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+            	<a href="frontpage.html">Home</a>
+                <span class="separator"> > </span>
+                <a href="#" class="current">Yet another landing page</a>
+            </div> <!-- /breadcrumbs -->
+            	
+            <div id="content">
+            	
+                <div id="lp_tests_selection">
+                	<h1 class="page-title">Get Tested Privately For Gonorrhea - Only $99</h1>
+                    <h3>Over 4,000 Locations - Results In 3 days - Free Post-Test Consultation</h3>
+                    
+                    <table>
+                    	<tr>
+                        	<td>
+                            	<img src="images/badge_guarantee.png" />
+                            </td>
+                            <td>
+                            	<p>Get peace of mind by getting tested for Gonorrhea and other STDs at our convenient, private testing facilities. Take your test anonymously at one of <span class="blue"><b>over 4,000 locations</b></span> and receive your results in 3 days. If your results are positive, <span class="blue"><b>get a prescription that cures Gonorrhea infection in 7-10 days.</b></span></p>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <h3>Select STD Test:</h3>
+                    
+                    <div id="select_tests_lp_module">
+                    	<h4 class="one_col">At-Home Testing</h4>
+                        <h4 class="two_cols">Local, Private Lab Testing</h4>
+                        
+                        <div class="clear">&nbsp;</div>
+                        
+                        <form>
+                        
+                            <div class="item" id="at_home_tests">
+                            	<div class="content">
+                                    <h5><span class="blue">Free</span> priority shipping</h5>
+                                    <table>
+                                        <tr>
+                                            <td><input type="checkbox" name="at_home" value="chlamydia" /> Chlamydia</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="at_home" value="gonorrhea" /> Gonorrhea</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="at_home" value="trichomoniasis" /> Trichomoniasis</td>
+                                            <td><span class="orange">$199</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="at_home" value="hiv" /> HIV Express <br /><span class="small">(next day results)</span></td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                    </table>
+                                </div> <!-- /.content -->
+                                <p class="small">discounts for multiple tests</p>
+                            </div> <!-- /at_home_tests -->
+                            
+                            <div class="item" id="individual_tests">
+                            	<div class="content">
+                                	<h5>Individual Tests</h5>
+                                    <table>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="chlamydia" /> Chlamydia</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="gonorrhea" /> Gonorrhea</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="hepatitis_b" /> Hepatitis B</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="hepatitis_c" /> Hepatitis C</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="oral_herpes" /> Oral Herpes</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="genital_herpes" /> Genital Herpes</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="hiv" /> HIV</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><input type="checkbox" name="individual" value="syphilis" /> Syphilis</td>
+                                            <td><span class="orange">$99</span></td>
+                                        </tr>
+                                    </table>
+                                </div> <!-- /.content -->
+                                <p class="small">discounts for multiple tests</p>
+                            </div> <!-- /individual_tests -->
+                            
+                            <div class="item" id="ultimate_package">
+                            	<h5>Ultimate package</h5>
+                                <div class="content">
+                                	<ul>
+                                    	<li>Chlamydia</li>
+                                        <li>Gonorrhea</li>
+                                        <li>Hepatitis B</li>
+                                        <li>Hepatitis C</li>
+                                        <li>Oral Herpes</li>
+                                        <li>Genital Herpes</li>
+                                        <li>HIV</li>
+                                        <li>Syphylis</li>
+                                    </ul>
+                                </div> <!-- /.content -->
+                                <div class="price">$229</div>
+                                <div class="add_to_cart"><input type="checkbox" name="ultimate_package" value="1" /> Add to cart</div>
+                            </div> <!-- /ultimate_package -->
+                            
+                            <div id="your_order" class="item">
+                            	<div class="header">Your Order</div>
+                                <div class="content">
+                                    <ul>
+                                        <li id="order_chlamydia"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('chlamydia');"><img src="images/icon_remove_grey.png" /></a> Chlamydia</li>
+                                        <li id="order_gonorrhea"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('gonorrhea');"><img src="images/icon_remove_grey.png" /></a> Gonorrhea</li>
+                                        <li id="order_hepatitis_b"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('hepatitis_b');"><img src="images/icon_remove_grey.png" /></a> Hepatitis B</li>
+                                        <li id="order_hepatitis_c"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('hepatitis_c');"><img src="images/icon_remove_grey.png" /></a> Hepatitis C</li>
+                                        <li id="order_herpes_1"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('herpes_1');"><img src="images/icon_remove_grey.png" /></a> Herpes I</li>
+                                        <li id="order_herpes_2"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('herpes_2');"><img src="images/icon_remove_grey.png" /></a> Herpes II</li>
+                                        <li id="order_hiv"><a class="remove" href="javascript: void(0);" onclick="removeFromCart('hiv');"><img src="images/icon_remove_grey.png" /></a> HIV</li>
+                                    </ul>
+                                </div>
+                                    
+                                <div class="total">
+                                	Total
+                                    <span id="total_price">$245</span>
+                                </div>
+                                <input type="submit" class="submit btn_orange_32_reflection" value="checkout" />
+                            </div> <!-- /your_order -->
+                            
+                        </form>
+                        
+                    </div> <!-- /select_tests_lp_module -->
+                    
+                    <div class="clear">&nbsp;</div>
+                    
+                    <div class="widgets">
+                    	<div id="story_side_widget" class="box_blue_header box_quote_left">
+                            <div class="header">
+                                <h3>Personal story</h3>
+                            </div>
+                            <div class="content">
+                                <p><img src="images/quote_begin.png" /> Recently, I had a scare and was worried I contracted herpes. I went to <b>getSTDtested</b>, as I wanted to test privately, quickly and get answers to my most pressing questions. <img src="images/quote_end.png" /></p>
+                            </div>
+                        </div> <!-- /story_side_widget -->
+                        
+                        <div id="customers_side_widget" class="box_blue_header">
+                            <div class="header">
+                                <h3>Trusted by our <br />customers and the <br />sexual health community</h3>
+                            </div>
+                            <div class="content">
+                                <p><img src="images/trusted_logos_side.png" /></p>
+                                <hr />
+                
+                                <p><b><span class="orange">4.5/5</span>star customer reviews</b></p>
+                                <p><img src="images/reviews_stars_single.png" /></p>
+                            </div>
+                        </div> <!-- /customers_side_widget -->
+                    </div>
+                    
+                    <div class="sep20">&nbsp;</div>
+                    <div class="sep15">&nbsp;</div>
+                    
+                    <h3>Have questions? We're here to talk: 866-749-6269</h3>
+                    
+                    <h4>How does Gonorrhea testing work?</h4>
+					<p>Gonorrhea is one of the most common STD tests we conduct. Its a simple urine test, and uses a process called Nucleic acid amplification to look for the genetic material or DNA of Gonorrhea bacteria. It is the most accurate type of Gonorrhea test available.</p>
+
+					<h4>What should I expect when I go to take my test?</h4>
+					<p>Your lab experience should be a painless and pleasant one. No one will know you're being tested for Gonorrhea because the lab conducts hundreds of different types of tests. You shouldn't have to wait more than a few minutes, and the test itself simply involves peeing in a cup. You wont have to get undressed, there won't be any examination, and you should be out the door in 15 minutes.</p>
+
+					<h4>What do I need to do to prepare for my Gonorrhea test?</h4>
+					<p>Just remember to avoid urinating for 2 hours before taking your test. Its also important to remember that other sexually transmitted diseases may be present at the same time as Gonorrhea, so people often will get tested for all STDs at the same time. Taking them at once will save considerable money and give you added peace of mind.</p>
+
+                </div> <!-- /lp_tests_selection -->
+                
+            </div> <!-- /content -->
+            
+        </div> <!-- /.all -->
+    </div> <!-- /.bg_white -->
+    
+    <div id="footer" class="all">
+    	<div id="menu_tests" class="border-right column">
+        	<h4>STD Tests</h4>
+        	<table>
+            	<tr>
+                	<td>
+                    	<ul>
+                        	<li><a href="#">Chlamydia Test </a></li>
+                            <li><a href="#">Gonorrhea Test </a></li>
+                            <li><a href="#">HIV Test</a></li>
+                            <li><a href="#">Syphllis Test</a></li>
+                            <li><a href="#">Hepatitis B Test </a></li>
+                        </ul>
+                    </td>
+                    <td>
+                    	<ul>
+                        	<li><a href="#">Hepatitits C Test </a></li>
+                            <li><a href="#">Home Tests </a></li>
+                            <li><a href="#">Oral Herpes Test </a></li>
+                            <li><a href="#">Genital Herpes Test </a></li>
+                            <li><a href="#">Trichomoniasis Test </a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div> <!-- /menu_test -->
+        <div id="menu_popular" class="border-right column">
+        	<h4>Popular Content</h4>
+            <ul>
+                <li><a href="#">STD Tests & Prices</a></li>
+                <li><a href="#">How STD Testing Works</a></li>
+                <li><a href="#">Find STD Test Location</a></li>
+                <li><a href="#">View STD Test results</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </div> <!-- /menu_popular -->
+        <div id="menu_pinpoint" class="border-right column">
+        	<h4>Meet PinpointMD</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Medical Advisory Board</a></li>
+                <li><a href="#">STD Counselors  </a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Site Map</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div> <!-- /menu_popular -->
+        <div id="menu_contact" class="column">
+        	<div class="box_dark">
+            	<h4>Test for STDs in Complete Privacy</h4>
+                <p>Fast, easy, and as accurate as hospital testing.</p>
+                <a class="btn_orange" href="#">order now</a>
+                <div class="clear"></div>
+            </div>
+            <h4 class="social">
+            	Stay in Touch: 
+                <a href="#" target="_blank" class="fb"><img src="images/icon_fb.png" /></a>
+                <a href="#" target="_blank" class="twitter"><img src="images/icon_tweeter.png" /></a>
+            </h4>
+            <div class="address">
+            	<div class="left">25 E. Washington St., Ste. 400 </div>
+               	<div class="right">Chicago, IL 60610</div>
+            </div>
+        </div> <!-- /menu_contact -->
+        <div class="clear"></div>
+    </div> <!-- /footer -->
+    
+</body>
+</html>

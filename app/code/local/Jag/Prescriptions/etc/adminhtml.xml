@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<prescriptions module="prescriptions">
+			<title>Prescriptions</title>
+			<sort_order>71</sort_order>               
+			<children>
+				<prescriptions module="prescriptions">
+					<title>Manage Prescriptions</title>
+					<sort_order>0</sort_order>
+					<action>prescriptions/adminhtml_prescriptions</action>
+				</prescriptions>
+			</children>
+		</prescriptions>
+	</menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <prescriptions translate="title" module="prescriptions">
+          		<title>Prescriptions</title>
+                <sort_order>40</sort_order>
+	            <children>
+		              <prescriptions translate="title">
+		                <title>Manage Prescriptions</title>
+		                <sort_order>100</sort_order>
+		              </prescriptions>
+	            </children>
+          </prescriptions>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>

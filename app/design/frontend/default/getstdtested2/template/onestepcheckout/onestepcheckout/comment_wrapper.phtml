@@ -1,0 +1,29 @@
+<div id="commentWrapper">
+    <div id="comment">
+	
+        <div id="order_review_js" class="box">
+            <div id="order_review_js_header">Order Summary</div>
+            <?php echo $this->getChildHtml('onstepcheckout_order_summary') ?>
+        </div>
+		
+		<?php if (Mage::getSingleton('core/session')->getData('JUST_VISITED_UPSELL_PAGE') != 1) { ?>
+
+			<?php if (Mage::getSingleton('checkout/session')->getQuote()->getProductLine() != 2) { ?>
+				<?php if (!Mage::getSingleton('core/session')->getIsNnr() && !Mage::getModel('core/session')->getScript()) { ?>
+					<?php echo $this->getChildHtml('onstepcheckout_coupon') ?>
+				<?php } ?>
+			<?php } ?>
+
+			<?php if (!$this->isCustomerLoggedIn()) { ?>
+			<div style="float: left; padding: 15px 0 0 15px; font-size: 14px; font-weight: bold; line-height: 21px;">
+				Existing customer?<br />
+				<a onclick="showloginbox('<?php echo $this->getLoginUrl() ?>');return false;" id="show-login" href="#" style="color:#028AFB; font-weight:bold;">Log in to Save 5%</a>
+			</div>
+			<?php } ?>
+		
+		<?php } ?>
+
+        <?php echo $this->getChildHtml('paypal.sidebar'); ?>
+
+    </div>
+</div>

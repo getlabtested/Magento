@@ -1,0 +1,20 @@
+
+<p>{{var customer.name}},</p>
+
+<p>Your order has been placed successfully. Here are the details needed complete the private testing process:</p>
+<ol>
+    <li> Print the attached forms—lab requisition and instructions—and bring to the lab. If you don't have a printer, we can fax them to the lab on your behalf.</li>
+    <li>
+        Visit the testing center at your convenience. This is the address of your location, but you can visit any Labcorp:<br />
+        
+        
+        {{block type='core/template' area='frontend' template='sendmail/lab.phtml' order=$order}}        
+        
+    
+    </li>
+    <li>As soon as your test results are available, you'll receive notification via phone or email based on the preference selected at checkout. Typically, results are available within 1 to 5 business days after testing. To access results online, simply click MY RESULTS on our <a href="http://getlabtested.com">website</a>. Enter your email address and private, temporary password listed below. Feel free to change your password at any time by simply logging in.</li>
+
+</ol>
+<p>Private password to access results: <b>{{var pass}}</b></p>
+<p><b>Questions?</b><br>
+We're at your service.Call us at <b>(877) 317-3178</b> or e-mail <a href="mailto:help@getlabtested.com">help@getlabtested.com</a>. Please do not respond directly to this email.</p>

@@ -1,0 +1,144 @@
+<?php
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+
+<div id="header">
+        
+    <div id="top_nav">
+        <ul>
+            <li class="arrow">
+                <a href="#">Physician Login</a>
+               <!--
+ <div id="physician_login" class="top_nav_box">
+                    <form>
+                        <label for="medical_id">Medical ID</label>
+                        <input type="text" class="text" name="medical_id" />
+                        <br />
+                        <label for="password">Password</label>
+                        <input type="text" class="text" name="password" />
+                        <br />
+                        <input type="submit" class="submit btn_navy" value="login" />
+                    </form>
+                </div>
+-->
+            </li>
+            <li class="arrow">
+                <a href="/customer/account/login">Customer Login</a>
+                <!--
+<div id="customer_login" class="top_nav_box">
+                    <form>
+                        <label for="email">Email</label>
+                        <input type="text" class="text" name="email" />
+                        <br />
+                        <label for="password">Password</label>
+                        <input type="text" class="text" name="password" />
+                        <br />
+                        <input type="submit" class="submit btn_navy" value="login" />
+                    </form>
+                </div>
+-->
+            </li>
+            <li class="arrow">
+                <a class="search" href="javascript: void(0);">Search</a>
+                <div id="search_box" class="top_nav_box">
+                    <form action="search" method="get">
+                        <input type="text" class="text" name="q" />
+                        <input type="submit" class="submit btn_navy" value="search" />
+                    </form>
+                </div>
+            </li>
+            <li><a class="cart" href="#">Cart</a></li>
+        </ul>
+    </div> <!-- /top_nav -->
+    
+    <div class="clear">&nbsp;</div>
+    <div class="sep10">&nbsp;</div>
+    
+    <a id="logo" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>">&nbsp;</a>
+    <div id="top_phone_no">866.236.8491</div>
+    
+    <div class="clear">&nbsp;</div>
+    <div class="sep20">&nbsp;</div>
+    
+    <div id="top_menu">
+        <a id="btn_home" href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>"><img src="<?php echo $this->getSkinUrl('images/icon_home.png'); ?>" alt="Home" /></a>
+        <ul id="top_menu_list">
+            <li class="corner">
+                <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>std-testing-process">std testing <span class="large">process</span></a>
+                <div id="menu_process" class="top_menu_box">
+                    <ul>
+                        <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>how-it-works">How It Works</a></li>
+                        <li class="last">
+                            <div class="top_menu_box_inner">
+                                <ul>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>comprehensive-package-information">Comprehensive Package</a></li>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>chlamydia-test-information">Chlamydia</a></li>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>hiv-test-information">HIV</a></li>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>genital-herpes-test-information">Genital Herpes</a></li>
+                                    <li class="last"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>oral-herpes-test-information">Oral Herpes</a></li>
+                                </ul>
+                                <ul>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>gonorrhea-test-information">Gonorrhea</a></li>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>hepatitis-b-test-information">Hepatitis B</a></li>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>hepatitis-c-test-information">Hepatitis C</a></li>
+                                    <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>syphilis-test-information">Syphilis</a></li>
+                                    <li class="last"><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>trichomoniasis-test-information">Trichomoniasis</a></li>
+                                </ul>
+                            </div>
+                            <span>Test Details</span>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>std-testing-prices">std testing <span class="large">prices</span></a></li>
+            <li class="corner">
+                <a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>locate-testing-center">std testing <span class="large">locations</span></a>
+                <div id="menu_search_location" class="top_menu_box">
+
+                    <form method="post" action="/locate-testing-center">
+                    	<input type="text" name="zip_code" class="text">
+                    	<input type="hidden" value="home" name="ref_page"> 
+                    	<input type="submit" value="submit" class="submit"> 
+                    </form>
+                    
+                    
+                </div>
+            </li>
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>std-testing-education">std testing <span class="large">education</span></a></li>
+            <li><a href="<?php echo Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_WEB); ?>std-testing-experts">std testing <span class="large">experts</span></a></li>
+        </ul> <!-- /top_menu_list -->
+    </div> <!-- /top_menu -->
+    
+    <a id="btn_top_order" class="btn_orange" href="order"><img src="<?php echo $this->getSkinUrl('images/icon_arrow_white.png'); ?>" align="absmiddle" /> order</a>
+    
+</div> <!-- /header -->
+
+<div class="clear">&nbsp;</div>  
+<div class="sep20">&nbsp;</div>
+

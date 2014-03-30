@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<config>
+	<modules>
+		<Jag_Adminhtml>
+			<version>0.1.7</version>
+		</Jag_Adminhtml>
+	</modules>
+	<global>
+        <blocks>
+            <adminhtml>
+                <rewrite>
+                    <sales_order_grid>Jag_Adminhtml_Block_Grid</sales_order_grid>
+                </rewrite>
+            </adminhtml>
+        </blocks>
+
+        <events>
+
+            <sales_order_resource_init_virtual_grid_columns>
+                <observers>
+                    <jag_adminhtml>
+                        <model>jag_adminhtml/observer</model>
+                        <method>addColumnToResource</method>
+                    </jag_adminhtml>
+                </observers>
+            </sales_order_resource_init_virtual_grid_columns>
+
+        </events>
+        
+      <resources>
+            <adminhtml_setup>
+                <setup>
+                    <module>Jag_Adminhtml</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </adminhtml_setup>
+            <adminhtml_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </adminhtml_write>
+            <adminhtml_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </adminhtml_read>
+        </resources>
+    </global>
+</config>

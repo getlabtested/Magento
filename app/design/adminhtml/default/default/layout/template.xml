@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <template_adminhtml_template_index>
+        <reference name="content">
+            <block type="template/adminhtml_template" name="template" />
+        </reference>
+    </template_adminhtml_template_index>
+</layout>

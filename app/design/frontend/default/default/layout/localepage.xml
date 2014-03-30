@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <localepage_index_index>
+        <reference name="content">
+            <block type="localepage/localepage" name="localepage" template="localepage/localepage.phtml" />
+        </reference>
+    </localepage_index_index>
+    <localepage_index_dynamic>
+        <reference name="content">
+            <block type="localepage/dynamic" name="dynamic" template="localepage/localepage.phtml" />
+        </reference>
+    </localepage_index_dynamic>
+</layout> 

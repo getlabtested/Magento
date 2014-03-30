@@ -1,0 +1,195 @@
+<div class="onestepcheckout-payment-methods address-information">
+
+
+	        <div id="pay_cc_content" class="bg_grey_round box pay_opt_content" style="display: block;">
+	            <div style="display: none;"><input type="radio" class="radio" checked="checked" title="Credit Card (Authorize.net)" name="payment[method]" value="authorizenet" id="p_method_authorizenet"></div>
+	        
+	        	
+	        	<div class="payment-method" id="container_payment_method_authorizenet">
+					<ul style="list-style-type:none;" id="payment_form_authorizenet" class="form-list">
+                        <li style="float: left;margin-bottom: 15px;">
+                            <div class="input-box">
+                                <label for="billing:region">State:&nbsp;</label><br />
+                                <select class="validate-select required-entry" title="State/Province" name="billing[region_id]" id="billing:region_id" defaultvalue="">
+                                    <option value=""></option>
+                                    <option <?php echo ($regId == 1?"selected='selected'":"");?> value="1">Alabama</option>
+                                    <option <?php echo ($regId == 2?"selected='selected'":"");?> value="2">Alaska</option>
+                                    <option <?php echo ($regId == 4?"selected='selected'":"");?> value="4">Arizona</option>
+                                    <option <?php echo ($regId == 5?"selected='selected'":"");?> value="5">Arkansas</option>
+                                    <option <?php echo ($regId == 12?"selected='selected'":"");?>  value="12">California</option>
+                                    <option <?php echo ($regId == 13?"selected='selected'":"");?>  value="13">Colorado</option>
+                                    <option <?php echo ($regId == 14?"selected='selected'":"");?>  value="14">Connecticut</option>
+                                    <option <?php echo ($regId == 17?"selected='selected'":"");?>  value="15">Delaware</option>
+                                    <option <?php echo ($regId == 16?"selected='selected'":"");?>  value="16">District of Columbia</option>
+                                    <option <?php echo ($regId == 18?"selected='selected'":"");?>  value="18">Florida</option>
+                                    <option <?php echo ($regId == 19?"selected='selected'":"");?>  value="19">Georgia</option>
+                                    <option <?php echo ($regId == 21?"selected='selected'":"");?>  value="21">Hawaii</option>
+                                    <option <?php echo ($regId == 22?"selected='selected'":"");?>  value="22">Idaho</option>
+                                    <option <?php echo ($regId == 23?"selected='selected'":"");?>  value="23">Illinois</option>
+                                    <option <?php echo ($regId == 24?"selected='selected'":"");?>  value="24">Indiana</option>
+                                    <option <?php echo ($regId == 25?"selected='selected'":"");?>  value="25">Iowa</option>
+                                    <option <?php echo ($regId == 26?"selected='selected'":"");?>  value="26">Kansas</option>
+                                    <option <?php echo ($regId == 27?"selected='selected'":"");?>  value="27">Kentucky</option>
+                                    <option <?php echo ($regId == 28?"selected='selected'":"");?>  value="28">Louisiana</option>
+                                    <option <?php echo ($regId == 29?"selected='selected'":"");?>  value="29">Maine</option>
+                                    <option <?php echo ($regId == 31?"selected='selected'":"");?>  value="31">Maryland</option>
+                                    <option <?php echo ($regId == 32?"selected='selected'":"");?>  value="32">Massachusetts</option>
+                                    <option <?php echo ($regId == 33?"selected='selected'":"");?>  value="33">Michigan</option>
+                                    <option <?php echo ($regId == 34?"selected='selected'":"");?>  value="34">Minnesota</option>
+                                    <option <?php echo ($regId == 35?"selected='selected'":"");?>  value="35">Mississippi</option>
+                                    <option <?php echo ($regId == 36?"selected='selected'":"");?>  value="36">Missouri</option>
+                                    <option <?php echo ($regId == 37?"selected='selected'":"");?>  value="37">Montana</option>
+                                    <option <?php echo ($regId == 38?"selected='selected'":"");?>  value="38">Nebraska</option>
+                                    <option <?php echo ($regId == 39?"selected='selected'":"");?>  value="39">Nevada</option>
+                                    <option <?php echo ($regId == 40?"selected='selected'":"");?>  value="40">New Hampshire</option>
+                                    <option <?php echo ($regId == 41?"selected='selected'":"");?>  value="41">New Jersey</option>
+                                    <option <?php echo ($regId == 42?"selected='selected'":"");?>  value="42">New Mexico</option>
+                                    <option <?php echo ($regId == 43?"selected='selected'":"");?>  value="43">New York</option>
+                                    <option <?php echo ($regId == 44?"selected='selected'":"");?>  value="44">North Carolina</option>
+                                    <option <?php echo ($regId == 45?"selected='selected'":"");?>  value="45">North Dakota</option>
+                                    <option <?php echo ($regId == 47?"selected='selected'":"");?>  value="47">Ohio</option>
+                                    <option <?php echo ($regId == 48?"selected='selected'":"");?>  value="48">Oklahoma</option>
+                                    <option <?php echo ($regId == 49?"selected='selected'":"");?>  value="49">Oregon</option>
+                                    <option <?php echo ($regId == 51?"selected='selected'":"");?>  value="51">Pennsylvania</option>
+                                    <option <?php echo ($regId == 53?"selected='selected'":"");?>  value="53">Rhode Island</option>
+                                    <option <?php echo ($regId == 54?"selected='selected'":"");?>  value="54">South Carolina</option>
+                                    <option <?php echo ($regId == 55?"selected='selected'":"");?>  value="55">South Dakota</option>
+                                    <option <?php echo ($regId == 56?"selected='selected'":"");?>  value="56">Tennessee</option>
+                                    <option <?php echo ($regId == 57?"selected='selected'":"");?>  value="57">Texas</option>
+                                    <option <?php echo ($regId == 58?"selected='selected'":"");?>  value="58">Utah</option>
+                                    <option <?php echo ($regId == 59?"selected='selected'":"");?>  value="59">Vermont</option>
+                                    <option <?php echo ($regId == 61?"selected='selected'":"");?>  value="61">Virginia</option>
+                                    <option <?php echo ($regId == 62?"selected='selected'":"");?>  value="62">Washington</option>
+                                    <option <?php echo ($regId == 63?"selected='selected'":"");?>  value="63">West Virginia</option>
+                                    <option <?php echo ($regId == 64?"selected='selected'":"");?>  value="64">Wisconsin</option>
+                                    <option <?php echo ($regId == 65?"selected='selected'":"");?>  value="65">Wyoming</option>
+                                </select>
+                                <script type="text/javascript">
+                                    $('billing:region_id').setAttribute('defaultValue',  "");
+                                </script>
+                                <input type="text" style="display:none" class="input-text" title="State/Province" value="" name="billing[region]" id="billing:region">
+                            </div>
+                        </li>
+
+						<li style="float: left;margin-bottom: 15px;">
+							<div class="input-box">
+							<label class="required" for="authorizenet_cc_type" style="margin-right: 10px;">Credit Card Type:</label><br />
+							<select class="required-entry validate-cc-type-select" name="payment[cc_type]" id="authorizenet_cc_type">
+							<option value="">--Please Select--</option>
+								<option value="AE">American Express</option>
+								<option value="VI">Visa</option>
+								<option value="MC">MasterCard</option>
+								<option value="DI">Discover</option>
+							</select>
+							</div>
+						</li>
+						<li style="float: left;">
+							
+							<div class="input-box">
+								<label class="required" for="authorizenet_cc_number" style="margin-right: 10px;">Credit Card #:</label><br />
+								<input type="text" maxlength="16" value="" class="input-text validate-cc-number validate-cc-type" title="Credit Card Number" name="payment[cc_number]" id="authorizenet_cc_number">
+							</div>
+                            <div class="input-box" style="width:200px;">
+                                <label class="required" for="authorizenet_cc_cid" style="margin-right: 10px;">Card Verification Number: </label><br />
+                                <input type="text" maxlength="4" value="" class="input-text input-cc-cid-field required-entry" title="Card Verification Number" name="payment[cc_cid]" id="authorizenet_cc_cid">
+                            </div>
+						</li>
+						<!-- https://getstdtested.com/images/credit-card-options.png -->
+						<li id="authorizenet_cc_type_exp_div" style="clear: both;">
+							<div class="input-box">
+								<label class="required" for="authorizenet_expiration" style="margin-right: 10px;">Expiration Date:</label><br />
+								<div class="v-fix" style="clear: both;">
+									<select class="month validate-cc-exp required-entry" name="payment[cc_exp_month]" id="authorizenet_expiration" style="float:left;">
+										<option selected="selected" value="">Month</option>
+										<option value="1">01 - January</option>
+										<option value="2">02 - February</option>
+										<option value="3">03 - March</option>
+										<option value="4">04 - April</option>
+										<option value="5">05 - May</option>
+										<option value="6">06 - June</option>
+										<option value="7">07 - July</option>
+										<option value="8">08 - August</option>
+										<option value="9">09 - September</option>
+										<option value="10">10 - October</option>
+										<option value="11">11 - November</option>
+										<option value="12">12 - December</option>
+									</select>
+									<select class="year required-entry" name="payment[cc_exp_year]" id="authorizenet_expiration_yr" style="float:left;">
+										<option selected="selected" value="">Year</option>
+										<option value="2011">2011</option>
+										<option value="2012">2012</option>
+										<option value="2013">2013</option>
+										<option value="2014">2014</option>
+										<option value="2015">2015</option>
+										<option value="2016">2016</option>
+										<option value="2017">2017</option>
+										<option value="2018">2018</option>
+										<option value="2019">2019</option>
+										<option value="2020">2020</option>
+										<option value="2021">2021</option>
+									</select>
+								</div>
+								<div style="clear:both;"></div>
+								<div class="v-fix" style="width:125px; height:18px; margin-top:12px;">
+									<?php if (!empty($_SERVER['HTTPS'])) { ?>
+									<img src="/media/images/cc-logos-small-ckout-3.png" alt="visa mastercard american express discover">
+									<?php } else { ?>
+									<img src="/media/images/cc-logos-small-ckout-3.png" alt="visa mastercard american express discover">
+									<?php } ?>
+								</div>
+								<div style="clear:both;"></div>
+								<div style="margin-top:15px; color:#028AFB;"><b>To protect your privacy, payment billed as "AQZ Services"</b></div>
+							</div>
+						</li>
+					</ul>
+				</div> 
+	        
+	        </div>
+    	    	
+	<div style="clear: both;"></div>
+	
+</div>
+<div class="tool-tip" id="payment-tool-tip" style="display:none;">
+	<div class="btn-close"><a href="#" id="payment-tool-tip-close" title="<?php echo $this->__('Close') ?>"><?php echo $this->__('Close') ?></a></div>
+	<div class="tool-tip-content"><img src="<?php echo $this->getSkinUrl('images/cvv.gif') ?>" alt=" <?php echo $this->__('Card Verification Number Visual Reference') ?> " title="<?php echo $this->__('Card Verification Number Visual Reference') ?>" /></div>
+</div>
+<script type="text/javascript">
+//<![CDATA[
+$$('#checkout-payment-method-load dt input').invoke('observe', 'click', function(e) {
+    var element = e.element();
+    var name = 'payment_form_' + element.value;
+    
+    /* Hide all other forms */
+    $$('dd.payment-method').invoke('hide');
+    
+    if(element.checked) {
+        var form = $(name);
+        var container = $('container_payment_method_' + element.value);
+
+        if(element !== null && container !== null)    {
+            container.show();
+            $(name).show();
+        }
+    }    
+});
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+	function toggleToolTip(event){
+		if($('payment-tool-tip')){
+			$('payment-tool-tip').setStyle({
+				top: (Event.pointerY(event)-560)+'px'//,
+				//left: (Event.pointerX(event)+100)+'px'
+			})
+			$('payment-tool-tip').toggle();
+		}
+		Event.stop(event);
+	}
+	if($('payment-tool-tip-close')){
+		Event.observe($('payment-tool-tip-close'), 'click', toggleToolTip);
+	}
+	
+	initWhatIsCvvListeners();	
+//]]>
+</script>

@@ -1,0 +1,562 @@
+<?php
+$localepage = Mage::registry('localepage');
+	
+	$values = unserialize($localepage->getValues());
+	
+?>        
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            	
+            <div id="content">
+				<div id="lp_symptoms">
+                	<div class="box_navy_bg" id="lp_symptoms_header">
+                    	<h1><?php echo $values['h1'];?></h1>
+                        <h2><?php echo $values['h2'];?></h2>
+                        <div class="question">
+                        	<p><?php echo $values['subheading'];?></b></p>
+                        </div>
+                        <div class="link">
+                        	<a href="/std-testing-options" class="btn_orange_shadow">Get Tested Today</a>
+                        </div>
+                        <div class="clear"></div>
+                    </div> <!-- /lp_symptoms_header -->
+                    
+                    <div id="lp_symptoms_content">
+                    	<div class="col_left">
+                        	<h3><?php echo $values['h3'];?></h3>
+                            <p><?php echo $values['body_content'];?></p>
+                        </div> <!-- /.col_left -->
+                        
+                        <div class="col_right">
+                        
+                        	<div id="benefits_widget">
+                            	<h3><b>Benefits of</b> <br />Private STD Testing</h3>
+                                <ul>
+                                	<li><span class="orange">Test Today:</span> No wait. Order and test for STDs today. Get results within 3 days through confidential online patient portal.</li>
+                                    <li><span class="orange">Highest Accuracy Available:</span> Same trusted labs used by doctors and hospitals nationwide. </li>
+                                    <li><span class="orange">Free Physician Consult:</span> Get the facts about STDs through a complimentary consultation with an in-house physician. </li>
+                                    <li><span class="orange">Convenient:</span> STD testing available at-home and at 4,000+ nationwide testing centers.</li>
+                                    <li><span class="orange">Confidential:</span> No insurance records. STD test results are private.</li>
+                                </ul>
+                            </div> <!-- /benefits_widget -->
+                            
+                            <div id="trusted_widget" class="box_grey_border">
+                            	<h4><span class="orange">trusted</span> by our customers and <br />the sexual health community</h4>
+                                <img src="/media/images/trusted_logos_side_2.png" />
+                                <h4><span class="orange">4.5/5</span> star customer reviews</h4>
+                                <img src="/media/images/reviews_stars_transp.png" />    
+                            </div> <!-- /trusted_widget -->
+                        </div> <!-- /.col_right -->
+                        
+                        <div class="clear"></div>
+                        
+                    </div> <!-- /lp_symptoms_content -->
+                    
+                </div> <!-- /lp_symptoms -->
+				
+				
+<script type="text/javascript">
+
+function is_int(value){
+   for (i = 0 ; i < value.length ; i++) {
+      if ((value.charAt(i) < '0') || (value.charAt(i) > '9')) return false 
+    }
+   return true;
+}
+
+function handlerFunction(){
+	
+	document.getElementById('ajax-loader-gif').style.display = 'block'; 
+	
+	if (document.getElementById('zip_code').value.length != 5 ||is_int(document.getElementById('zip_code').value) === false) {			
+	//if ($("zip_code").value.length != 5 ||is_int($("zip_code").value) === false) {
+		
+		alert('Please enter a valid 5 digit zip code.');
+		document.getElementById('ajax-loader-gif').style.display = 'none'; 
+		return false;
+		
+	}
+		
+	
+ 
+        var request = new Ajax.Request(
+            'http://getstdtested.com/adminmedivo/local/getlabsorder/',
+            {
+                method: 'post',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                    }
+                    else{
+                    	document.getElementById('ajax-loader-gif').style.display = 'none';
+                        document.getElementById("location_results").innerHTML =jsonResponse;
+                    }
+                },
+                parameters: Form.serialize($("location_form"))            
+           }
+        );
+}
+
+
+var basicPackage = 150;
+
+var ultimatePackage = 229;
+
+var indiSkuArr = new Array();
+	indiSkuArr[0] = 'hiv-lab';
+	indiSkuArr[1] = 'chlamydia-gonorrhea-lab';
+	indiSkuArr[2] = 'oral-genital-herpes-lab';
+	indiSkuArr[3] = 'syphilis-lab';
+	indiSkuArr[4] = 'hepatitis-b-lab';
+	indiSkuArr[5] = 'hepatitis-c-lab';
+	indiSkuArr[6] = 'hiv-early-detection-lab';
+
+var indiTestOrig = new Array();
+	indiTestOrig[0] = 79;
+	indiTestOrig[1] = 149;
+	indiTestOrig[2] = 149;
+	indiTestOrig[3] = 89;
+	indiTestOrig[4] = 89;
+	indiTestOrig[5] = 89;
+	indiTestOrig[6] = 179;
+	
+	var homeSkuArr = new Array();
+	homeSkuArr[0] = 'hiv-home';
+	homeSkuArr[1] = 'chlamydia-gonorrhea-home';
+	homeSkuArr[2] = 'trichomoniasis-home';
+	
+var homeTestOrig = new Array();
+	homeTestOrig[0] = 99;
+	homeTestOrig[1] = 149;
+	homeTestOrig[2] = 199;
+	
+	
+	
+	
+var cartArr = new Array();
+	
+
+function updateWidgetTotal(el,id) {
+		
+	if (typeof total == 'undefined') {
+		
+		total = 0;
+	
+	}
+	
+	var discount = 0;
+	
+	if (document.getElementById(el).type == 'radio') {
+	
+	
+		if (document.getElementById('hiv-early-detection-lab').checked == false) {
+	
+			total = 0;
+			
+			price = 0;
+			
+			cartArr = new Array();
+		
+		} else {
+		
+			total = 0;
+		
+			price = indiTestOrig[6];
+				
+		}
+		
+				
+		document.getElementById('package').value = id;
+	
+		for (i = 0; i < indiSkuArr.length; i++) {
+		
+			if (indiSkuArr[i] != 'hiv-early-detection-lab') {
+		
+			document.getElementById(indiSkuArr[i]).checked = false;
+			document.getElementById(indiSkuArr[i]).value = indiTestOrig[i];
+			
+			}
+			
+		}
+			
+		for (i = 0; i < homeSkuArr.length; i++) {
+			document.getElementById(homeSkuArr[i]).checked = false;
+			document.getElementById(homeSkuArr[i]).value = homeTestOrig[i];
+		}
+	
+		if (document.getElementById(el).value == 0) {
+	
+			document.getElementById('widget_total').innerHTML = "Select Tests";
+			
+		} else {
+		
+			price = parseInt(document.getElementById(el).value) + price;
+	
+			price = parseInt(price);
+		
+			document.getElementById('widget_total').innerHTML = "$"+price;	
+			
+			if (el == 'complete_package') {
+			
+				document.getElementById('complete_package_hidden').value = price;
+				document.getElementById('expert_package_hidden').value = 0;
+			
+			} else {
+			
+				document.getElementById('expert_package_hidden').value = price;
+			
+			}
+		
+		}
+		
+	} else {
+		
+		re = 0;
+	
+		if (el != 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true && document.getElementById('hiv-early-detection-lab').checked == true) {
+	
+			document.getElementById('expert_package_hidden').value = 0;
+		
+			document.getElementById('expert_package').checked = false;
+			
+			document.getElementById('hiv-early-detection-lab').checked = false;
+			
+			document.getElementById('hiv-early-detection-lab').value = indiTestOrig[6];
+			
+			document.getElementById('package').value = "";
+			
+			total = 0;
+		
+		}
+		
+		if (el != 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true) {
+		
+			document.getElementById('expert_package_hidden').value = 0;
+		
+			document.getElementById('expert_package').checked = false;
+			
+			document.getElementById('package').value = "";
+			
+		}
+		
+		/*
+if (el == 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true) {
+		
+			if (document.getElementById('hiv-early-detection-lab').value < 0) {	
+					
+				total = 418;
+				
+			} else {
+			
+				total = 229;
+			
+			}
+		
+		}
+*/
+	
+		price = document.getElementById(el).value;
+	
+		price = parseInt(price);
+
+		if(el.indexOf('home')> 0) {
+		
+			for (i = 0; i < cartArr.length; i++) { 
+			
+				if (cartArr[i].indexOf('lab')>0) {
+								
+				 	//document.getElementById(cartArr[i]+"-cart").style.display = "none";
+				
+					re = 1;
+				
+				}
+			
+			}
+		
+		}
+		
+		if(el.indexOf('lab')> 0) {
+		
+			for (i = 0; i < cartArr.length; i++) { 
+			
+				if (cartArr[i].indexOf('home')>0) {
+				
+					//document.getElementById(cartArr[i]+"-cart").style.display = "none";
+				
+					re = 1;
+				
+				}
+			
+			}
+		
+		}
+		
+		if (re == 1) {
+		
+			cartArr = new Array();
+		
+		}
+				
+		if (indiSkuArr.indexOf(el) >= 0) {
+					
+			for (i = 0; i < homeSkuArr.length; i++) {
+			
+				if (document.getElementById(homeSkuArr[i]).checked == true) {
+					document.getElementById(homeSkuArr[i]).checked = false;
+					document.getElementById(homeSkuArr[i]).value = homeTestOrig[i];
+					total = 0;
+				}
+			}
+		
+		} else {
+		
+			document.getElementById('expert_package_hidden').value = 0;
+		
+			document.getElementById('expert_package').checked = false;
+			
+			document.getElementById('package').value = "";
+					
+			for (i = 0; i < indiSkuArr.length; i++) {
+				if (document.getElementById(indiSkuArr[i]).checked == true) {
+					document.getElementById(indiSkuArr[i]).checked = false;
+					document.getElementById(indiSkuArr[i]).value = indiTestOrig[i];
+					total = 0;
+				}
+			}
+		
+		}
+	
+		if (price < 0) {
+		
+			document.getElementById(el).value = price + (price*-2);
+			
+			for (key in cartArr) {
+    			if (cartArr[key] == el) {
+        			cartArr.splice(key, 1);
+    			}
+			}
+			
+				
+		} else {
+		
+			document.getElementById(el).value = price - (price*2);
+			
+			cartArr.push(el);
+	
+		}
+		
+		
+		if (el == 'hiv-early-detection-lab' && document.getElementById('expert_package').checked == true) {
+		
+			if (document.getElementById('hiv-early-detection-lab').checked == false) {	
+					
+				total = 418;
+				
+			} else {
+			
+				total = 229;
+			
+			}
+			
+			total = total + price;
+		
+		} else {
+		
+		total = total + price;
+		
+		}
+		
+	   document.getElementById('widget_total').innerHTML = '$'+(total);
+	
+	}
+	
+}
+
+function checkEmpty() {
+	
+	if (cartArr.length == 0 && !document.getElementById('expert_package').checked) {
+		
+		alert('Please select STD tests before checkout.');
+		
+		return false;
+		
+	}
+	
+	document.getElementById('orderWidget').submit();
+	return true;
+	
+}
+
+function turnOff (el){
+
+	
+
+}
+
+function toggleCartElement(el) {
+
+	if (el == 'expert_package') {
+		
+		//document.getElementById('expert_package-cart').style.display = 'block';
+		
+		for (i = 0; i < indiSkuArr.length; i++) {
+			//document.getElementById(indiSkuArr[i]+'-cart').style.display = "none";
+		}
+		
+		for (i = 0; i < homeSkuArr.length; i++) {
+			//document.getElementById(homeSkuArr[i]+'-cart').style.display = "none";
+		}
+			
+	} else {
+	
+	
+	//document.getElementById('expert_package-cart').style.display = 'none';
+
+	elId = el+'-cart';
+
+	/*
+if (document.getElementById(elId).style.display == 'none') {
+	
+	var cartList = document.getElementById('ow_list');
+		
+	document.getElementById(elId).style.display = 'block';
+	
+	} else {
+	
+	document.getElementById(elId).style.display = 'none';
+	
+	}
+*/
+	
+	}
+	
+}
+
+function submitenter(e)
+{
+var keycode;
+if (window.event) keycode = window.event.keyCode;
+else if (e) keycode = e.which;
+else return true;
+
+if (keycode == 13)
+   {
+   document.getElementById('location_submit_button').click();
+   return false;
+   }
+else
+   return true;
+}
+
+</script>
+
+
+<link media="all" href="http://getstdtested.com/lp/08/css/styles.css" type="text/css" rel="stylesheet">
+
+<div class="wrap"><br /><br />
+
+		<a name="get-tested"></a>
+		<h2 id="h-get-tested-today" style="background-position: 22px 32px; width: 300px;">Get Tested Today</h2>
+
+		<div id="order">
+				<div style="clear:both;"></div>
+		
+                    <div id="order_module2">
+					
+                    	<form name="orderWidget" id="orderWidget" method="post" action="http://getstdtested.com/customroute/index/checkout">
+
+                            <div id="at_home">
+                                <div class="header">At-Home Testing</div>
+                                <div class="content">
+                                    <ul>
+                                        <li><input type="checkbox" value="105.0000" id="hiv-home" onClick="updateWidgetTotal(this.id,4);toggleCartElement(this.id);" name="homeTest[hiv-home]" /><label for="hiv-home">HIV Standard</label></li>
+										<li class="price">$105</li>
+                                    	<li><input  type="checkbox" value="165.0000" id="chlamydia-gonorrhea-home" onClick="updateWidgetTotal(this.id,44);toggleCartElement(this.id);" name="homeTest[chlamydia-gonorrhea-home]" /><label for="chlamydia-gonorrhea-home">Chlamydia &amp; Gonorrhea</label></li>
+										<li class="price">$165</li>
+                                        <li><input  type="checkbox" value="205.0000" id="trichomoniasis-home" onClick="updateWidgetTotal(this.id,3);toggleCartElement(this.id);" name="homeTest[trichomoniasis-home]" /><label for="trichomoniasis-home">Trichomoniasis</label></li>
+										<li class="price">$205</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div id="lab_package">
+                                <div class="header">Complete Lab Testing Package</div>
+                                <div class="content">
+                                    <ul>                                    	
+                                        <li>HIV Standard</li>
+                                        <li>Chlamydia</li>
+                                        <li>Gonorrhea</li>
+                                        <li>Oral Herpes</li>
+                                        <li>Genital Herpes</li>
+                                        <li>Syphilis</li>
+                                        <li>Hepatitis B</li>
+                                        <li>Hepatitis C</li>
+                                    </ul>
+									<div style="clear: both;"></div>
+                                </div>
+								<div id="lab_packapge_footer">
+									<span class="price">$229</span>
+									<input type="radio" id="expert_package" value="229" onClick="updateWidgetTotal(this.id,14);toggleCartElement(this.id);" name="testPackage" />
+									<label for="expert_package">ADD TO CART</label>
+									<input id="expert_package_hidden" type="hidden" name="pack_14" value="229">
+									<div style="clear: both;"></div>
+								</div>
+                            </div>
+
+                            <div id="lab_tests1">
+                                <div class="header">Lab Testing</div>
+                                <div class="content">
+                                    <ul>                                    	
+                                        <li><input type="checkbox" value="79.0000" id="hiv-lab" onClick="updateWidgetTotal(this.id,11);toggleCartElement(this.id);" name="indiTest[hiv-lab]" /><label for="hiv-lab">HIV Standard</label></li>
+										<li class="price">$79</li>
+                                        <li><input type="checkbox" value="149.0000" id="chlamydia-gonorrhea-lab" onClick="updateWidgetTotal(this.id,40);toggleCartElement(this.id);" name="indiTest[chlamydia-gonorrhea-lab]" /><label for="chlamydia-gonorrhea-lab">Chlamydia &amp; Gonorrhea</label></li>
+										<li class="price">$149</li>
+                                        <li><input type="checkbox" value="149.0000" id="oral-genital-herpes-lab" onClick="updateWidgetTotal(this.id,42);toggleCartElement(this.id);" name="indiTest[oral-genital-herpes-lab]" /><label for="oral-genital-herpes-lab">Oral &amp; Genital Herpes</label></li>
+										<li class="price">$149</li>
+                                        <li><input type="checkbox" value="89.0000" id="syphilis-lab" onClick="updateWidgetTotal(this.id,12);toggleCartElement(this.id);" name="indiTest[syphilis-lab]" /><label for="syphilis-lab">Syphilis</label></li>
+										<li class="price">$89</li>
+                                        <li><input type="checkbox" value="89.0000" id="hepatitis-b-lab" onClick="updateWidgetTotal(this.id,7);toggleCartElement(this.id);" name="indiTest[hepatitis-b-lab]" /><label for="hepatitis-b-lab">Hepatitis B</label></li>
+										<li class="price">$89</li>
+                                        <li><input type="checkbox" value="89.0000" id="hepatitis-c-lab" onClick="updateWidgetTotal(this.id,8);toggleCartElement(this.id);" name="indiTest[hepatitis-c-lab]" /><label for="hepatitis-c-lab">Hepatitis C</label></li>
+										<li class="price">$89</li>
+                                        <li><input type="checkbox"  value="179.0000" id="hiv-early-detection-lab" onClick="updateWidgetTotal(this.id,13);toggleCartElement(this.id);" name="indiTest[hiv-early-detection-lab]" /><label for="hiv-early-detection-lab">HIV Early Detection *</label></li>
+										<li class="price">$179</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+							<div id="your_order">                                    
+                                <div class="total">
+                                	ORDER TOTAL<br />
+                                    <span id="total_price"><div id="widget_total">$0</div></span>
+                                </div>
+                                <input type="button" onclick="checkEmpty();" class="submit btn_orange_32_reflection" value="continue" style="width: 125px;" />
+                            </div>
+							
+							<input type="hidden" id="package" name="package" value="">  							
+							
+						</form>
+						<div id="expert_package-cart" style="display:none;"></div>
+					</div>
+		
+			<div id="trustbuilders2">
+				<p>Trusted by customers, the FDA and the sexual community</p>
+				<p>Average Customer Review &ndash; <strong>4.5 out of 5 Stars</strong></p>
+			</div>
+				
+		</div>
+		<div class="cboth"></div>
+	
+	</div>
+
+</div>
+				
+				
+				
+				
+            </div> <!-- /content -->
+

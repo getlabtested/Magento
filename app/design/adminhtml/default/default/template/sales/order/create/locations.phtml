@@ -1,0 +1,62 @@
+<?php 
+
+$_locations = $this->getLabsByZip();
+
+$x = 0;
+
+foreach ($_locations as $location) {
+	
+	$labId = (int)$location['id'];
+	
+	$arrLoc = (array)$location;
+	
+	$serArr['name'] = (string)$location['name'];
+	 $serArr['address'] = (string)$location['address'];
+	 $serArr['city'] = (string)$location['city'];
+	 $serArr['state'] = (string)$location['state'];
+	 $serArr['zip'] = (string)$location['zip'];
+	 $serArr['telephone'] = (string)$location['hours'];
+	 $serArr['hours'] = (string)$location['telephone'];
+	 
+	 //var_dump($serArr);
+	
+	$seriarray = serialize((array)$serArr);
+	
+	$sessArr[$labId] = $seriarray;
+	
+	//print_r(unserialize($seriarray)); exit();
+	
+
+if ($x < 6) {
+
+?>
+			
+			<div class="item">
+			<h4>
+<input onclick="selectLab(<?php echo $labId;?>,<?php echo $location['lab-id'];?>,<?php echo $location['zip'];?>);" type="radio" name="lab" value="<?php echo $labId;?>">&nbsp;
+				<?php echo $location['address'];?>
+			</h4>			
+			<div class="location">
+				<p><?php echo ucwords(strtolower($location['name']));?></p>
+				<?php echo ucwords(strtolower($location['city']));?>,<?php echo $location['state'];?> <?php echo $location['zip'];?><br /> <span class="blue"><?php echo $location['telephone'];?></span></p>
+			</div>
+			<div class="hours">
+				<label>Hours</label>
+				<p><?php echo $location['hours'];?></p>
+			</div>
+			
+			<div id="<?php echo $labId;?>-ser" style="display:none;"><?php echo trim($seriarray); ?></div>
+			
+			
+			</div>
+<?php 
+
+$x++;
+
+}
+
+}
+
+Mage::getModel('core/session')->setSerialArr($sessArr);
+
+?>

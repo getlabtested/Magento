@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <prescriptions_adminhtml_prescriptions_index>
+        <reference name="content">
+            <block type="prescriptions/adminhtml_prescriptions" name="prescriptions" />
+        </reference>
+    </prescriptions_adminhtml_prescriptions_index>
+</layout>

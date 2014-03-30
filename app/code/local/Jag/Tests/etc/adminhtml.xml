@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<tests module="tests">
+			<title>Tests</title>
+			<sort_order>71</sort_order>               
+			<children>
+				<tests module="tests">
+					<title>Positives Report</title>
+					<sort_order>0</sort_order>
+					<action>tests/adminhtml_tests</action>
+				</tests>
+			</children>
+		</tests>
+	</menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <tests translate="title" module="tests">
+          		<title>Tests</title>
+                <sort_order>40</sort_order>
+	            <children>
+		              <tests translate="title">
+		                <title>Positives Report</title>
+		                <sort_order>100</sort_order>
+		              </tests>
+	            </children>
+          </tests>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>

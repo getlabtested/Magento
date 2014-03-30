@@ -1,0 +1,7 @@
+<?php
+
+define("ROOT_WWW","http://gst.pmdstaging.com/m/03/");
+
+include_once("function.php");
+
+?>

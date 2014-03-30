@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Tests>
+            <version>0.0.1</version>
+        </PPMD_Tests>
+    </modules>
+
+    <frontend>
+        <!-- Removed to make {base_url}/ppmdtests a CMS page
+        <routers>
+            <ppmdtests>
+                <use>standard</use>
+                <args>
+                    <module>PPMD_Tests</module>
+                    <frontName>ppmdtests</frontName>
+                </args>
+            </ppmdtests>
+        </routers>
+        -->
+
+        <layout>
+            <updates>
+                <ppmdtests>
+                    <file>ppmdtests.xml</file>
+                </ppmdtests>
+            </updates>
+        </layout>
+
+    </frontend>
+
+    <global>
+        <blocks>
+            <ppmd_tests>
+                <class>PPMD_Tests_Block</class>
+            </ppmd_tests>
+        </blocks>
+        
+        <models>
+            <ppmd_tests>
+                <class>PPMD_Tests_Model</class>
+            </ppmd_tests>
+        </models>
+
+        <helpers>
+            <ppmd_tests>
+                <class>PPMD_Tests_Helper</class>
+            </ppmd_tests>
+        </helpers>
+
+        <events>
+            <checkout_onepage_controller_success_action>
+                <observers>
+                    <jag_medivo_observer>
+                        <type>singleton</type>
+                        <class>ppmd_tests/observer</class>
+                        <method>orderSubmit</method>
+                    </jag_medivo_observer>
+                </observers>
+            </checkout_onepage_controller_success_action>
+        </events>
+    </global>
+
+    <!-- Disable the applying of price rules to products after they are saved -->
+    <adminhtml>
+        <events>
+            <catalog_product_save_after>
+                <observers>
+                    <catalogrule>
+                        <type>disabled</type>
+                    </catalogrule>
+                </observers>
+            </catalog_product_save_after>
+        </events>
+    </adminhtml>
+
+    <default>
+        <ppmd_tests>
+            <root_test_category>
+                <url_key>lab-testing-products</url_key>
+            </root_test_category>
+            <test_page_path>lab-testing-options</test_page_path>
+            <unallowed_state_message>The products you have ordered are not available in the following states: %s</unallowed_state_message>
+        </ppmd_tests>
+    </default>
+</config>

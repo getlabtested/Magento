@@ -1,0 +1,37 @@
+<div id="cart_items_opc">
+    <ul>
+        <?php
+        if (!isset($total)) $total = 0;
+        if (!isset($itemSubTotal)) $itemSubTotal = 0;
+        foreach (Mage::getSingleton('core/session')->getCartArr() as $id)
+        {
+            if ($id && (($id == 13) || ($id == 31))) {
+                $ed = 1;
+                echo "<!-- early detection check 1 - ".$ed." -->";
+            }
+            if ($id && ($id != 29))
+            {
+                $product = Mage::getModel('catalog/product')->load($id);
+                ?>
+                <li><?php echo $product->getName();?></li>
+                <?php       $total = $total + $product->getPrice();
+                $itemSubTotal = $itemSubTotal + $product->getPriceOptOne();
+            }
+        }
+        ?>
+    </ul>
+    <hr style="width:200px;"/>
+    <?php if (Mage::getSingleton('core/session')->getIsNnr() && Mage::getSingleton('core/session')->getOrderType() == 1) {?>
+    <span style="color:#0C6E8E; font-weight:bold;" class="total-span">Total Paid Now:</span> <label>$125</label><br>
+    <span style="color:#0C6E8E; font-weight:bold;" class="total-span">Total Paid At Lab:</span> <label>$<?php echo ($itemSubTotal+10) //money_format("%!n",$itemSubTotal+10);?></label>
+    <?php }
+else
+{ ?>
+    <span style="color:#0C6E8E; font-weight:bold;" class="total-span">Total:</span><label>$<div id="order_total_dyn" style="display: inline-block;"><?php echo round(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(), 2); // money_format("%!n",Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal());?></div></label><br>
+    <?php } ?>
+    <?php if (Mage::getSingleton('core/session')->getIsNnr() && Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+    <p>
+        Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, pricing and payment options vary by state. Pay  $125 today and the remaining fee directly at the lab.  Please note that lab fees may be as low as $0 if covered by your insurance provider.
+    </p>
+    <?php } ?>
+</div>

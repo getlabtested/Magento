@@ -1,0 +1,11 @@
+<?php
+
+$request = Mage::app()->getRequest()->getParam('id');
+
+$m = Mage::getModel('consultation/consultation')->load($request)->getCustomerId();
+
+$c = Mage::getModel('customer/customer')->load($m);
+
+?>
+
+<h1>CUSTOMER: <a href="<?php echo Mage::helper('adminhtml')->getUrl('adminhtml/customer/edit',array('id'=>$c->getId()));?>"><?php echo $c->getFirstname();?></a></h1>

@@ -1,0 +1,126 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>   
+    
+    <landingpage_two_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/02/index.phtml" />
+        </reference>
+
+    </landingpage_two_index>
+    
+    <landingpage_twoa_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/02a/index.phtml" />
+        </reference>
+
+    </landingpage_twoa_index>
+     
+    <landingpage_three_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/03/index.phtml" />
+        </reference>
+
+    </landingpage_three_index>
+     
+    <landingpage_four_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/04/index.phtml" />
+        </reference>
+
+    </landingpage_four_index>
+     
+    <landingpage_five_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/05/index.phtml" />
+        </reference>
+
+    </landingpage_five_index>
+     
+    <landingpage_fivea_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/05a/index.phtml" />
+        </reference>
+
+    </landingpage_fivea_index>
+     
+    <landingpage_six_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/06/index.phtml" />
+        </reference>
+
+    </landingpage_six_index>
+     
+    <landingpage_sixa_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/06a/index.phtml" />
+        </reference>
+
+    </landingpage_sixa_index>
+     
+    <landingpage_seven_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/07/index.phtml" />
+        </reference>
+
+    </landingpage_seven_index>
+     
+    <landingpage_sevena_index> 
+    
+        <reference name="root">
+            <action method="setTemplate"><template>page/lp.phtml</template></action>
+        </reference>
+        
+        <reference name="content">
+            <block type="landingpage/landingpage" name="landingpage" template="landingpage/07a/index.phtml" />
+        </reference>
+
+    </landingpage_sevena_index>
+    
+</layout> 

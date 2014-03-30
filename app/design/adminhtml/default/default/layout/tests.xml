@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <tests_adminhtml_tests_index>
+        <reference name="content">
+            <block type="tests/adminhtml_tests" name="tests" />
+        </reference>
+    </tests_adminhtml_tests_index>
+    <!-- <tests_adminhtml_editbulk_index>
+    	<reference name="header">
+    		<remove name="top_links" />
+    	</reference>
+        <reference name="content">
+            <block type="tests/adminhtml_editbulk" name="edit" template="tests/editbulk.phtml"/>
+        </reference>
+    </tests_adminhtml_editbulk_index> -->
+    <tests_adminhtml_editbulk_index>
+            <block type="tests/adminhtml_editbulk" name="root" template="tests/editbulk.phtml" output="toHtml"/>
+    </tests_adminhtml_editbulk_index>
+    <tests_adminhtml_req_index>
+            <block type="tests/adminhtml_req" name="root" template="tests/req.phtml" output="toHtml"/>
+    </tests_adminhtml_req_index>
+</layout>

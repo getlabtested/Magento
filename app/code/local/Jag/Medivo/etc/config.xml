@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Medivo>
+            <version>0.2.6</version>
+        </Jag_Medivo>
+    </modules>
+    <frontend>
+        <routers>
+            <medivo>
+                <use>standard</use>
+                <args>
+                    <module>Jag_Medivo</module>
+                    <frontName>medivo</frontName>
+                </args>
+            </medivo>
+        </routers>
+        <layout>
+            <updates>
+                <medivo>
+                    <file>medivo.xml</file>
+                </medivo>
+            </updates>
+        </layout>
+        <events>
+            <checkout_cart_add_product_complete>
+                <observers>
+                    <convert_products_to_nnr_if_needed>
+                        <type>singleton</type>
+                        <class>medivo/observer</class>
+                        <method>convertProductsToNnrIfNeeded</method>
+                    </convert_products_to_nnr_if_needed>
+                </observers>
+            </checkout_cart_add_product_complete>
+        </events>
+    </frontend>
+    <admin>
+        <routers>
+			<medivo>
+				<use>admin</use>
+				<args>
+					<module>Jag_Medivo</module>
+					<frontName>adminmedivo</frontName>
+				</args>
+			</medivo>
+        </routers>
+    </admin>
+    <adminhtml>
+		<menu>
+			<medivo module="medivo">
+				<title>Medivo</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="medivo">
+						<title>Manage Items</title>
+						<sort_order>0</sort_order>
+						<action>medivo/adminhtml_medivo</action>
+					</items>
+				</children>
+			</medivo>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Jag_Medivo>
+							<title>Medivo Module</title>
+							<sort_order>10</sort_order>
+						</Jag_Medivo>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<medivo>
+					<file>medivo.xml</file>
+				</medivo>
+			</updates>
+		</layout>
+    </adminhtml>   
+    <global>
+    	<fieldsets>
+            <sales_convert_quote>
+            	<product_line><to_order>*</to_order></product_line>
+                <lab_id><to_order>*</to_order></lab_id>
+                <lab_type><to_order>*</to_order></lab_type>
+                <lab_code><to_order>*</to_order></lab_code>
+                <affiliate_id><to_order>*</to_order></affiliate_id>
+                <lost_order><to_order>*</to_order></lost_order>
+                <lab_zip><to_order>*</to_order></lab_zip>
+                <lab_revenue><to_order>*</to_order></lab_revenue>
+                <order_state><to_order>*</to_order></order_state>
+                <order_type><to_order>*</to_order></order_type>
+                <ext_provider><to_order>*</to_order></ext_provider>
+                <ext_order_id><to_order>*</to_order></ext_order_id>
+                <ext_cust_id><to_order>*</to_order></ext_cust_id>
+                <ext_cust_acct><to_order>*</to_order></ext_cust_acct>
+                <ext_cust_conf><to_order>*</to_order></ext_cust_conf>
+                <ext_status><to_order>*</to_order></ext_status>
+            </sales_convert_quote>
+        </fieldsets>
+        <models>
+            <medivo>
+                <class>Jag_Medivo_Model</class>
+            </medivo>
+        </models>
+        <events>
+      		<ppmd_order_activate>
+        		<observers>
+          		<jag_medivo_ppmd_activate_observer>
+            		<type>singleton</type>
+            		<class>Jag_Medivo_Model_Observer</class>
+            		<method>submitOrder</method>
+          		</jag_medivo_ppmd_activate_observer>
+        		</observers>
+      		</ppmd_order_activate>
+            <exclude_appropriate_labs>
+                <observers>
+                    <exclude_appropriate_labs_observer>
+                        <type>singleton</type>
+                        <class>Jag_Medivo_Model_Observer</class>
+                        <method>excludeAppropriateLabs</method>
+                    </exclude_appropriate_labs_observer>
+                </observers>
+            </exclude_appropriate_labs>
+    	</events>
+        <resources>
+            <medivo_setup>
+                <setup>
+                    <module>Jag_Medivo</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </medivo_setup>
+            <medivo_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </medivo_write>
+            <medivo_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </medivo_read>
+        </resources>
+        <blocks>
+            <medivo>
+                <class>Jag_Medivo_Block</class>
+            </medivo>
+        </blocks>
+        <helpers>
+            <medivo>
+                <class>Jag_Medivo_Helper</class>
+            </medivo>
+        </helpers>
+    </global>
+    <default>
+        <medivo>
+            <settings>
+                <user>getstdtest</user>
+                <pass>pwn</pass>
+                <url>https://api16.medivo.com</url>
+            </settings>
+            <nnr_states>
+                <list>
+                </list>
+                <unallowed_skus>
+                    <chlamydia-gonorrhea-home />
+                    <trichomoniasis-home />
+                    <hpv-home />
+                    <at-home-STD-testing-for-men />
+                    <at-home-STD-testing-for-women />
+                </unallowed_skus>
+                <pricing_message>Due to state regulations in {__STATES__}, pricing varies. Click "OK" to reselect your tests to see real-time local pricing.</pricing_message>
+            </nnr_states>
+            <unallowed_states>
+                <list>
+                    <NY />
+                    <NJ />
+                    <RI />
+                    <MD />
+                    <MA />
+                </list>
+                <pricing_message>Due to state regulations in {__STATES__}, tests are not available for purchase.</pricing_message>
+            </unallowed_states>
+
+            <lab_lookups>
+                <unallowed_states>
+                    <MD />
+                    <MA />
+                </unallowed_states>
+                <lab_specific>
+                    <unallowed_states>
+                        <quest>
+                            <NY />
+                            <NJ />
+                            <RI />
+                        </quest>
+                        <labcorp>
+                            <NY />
+                            <NJ />
+                            <RI />
+                            <!-- <MA /> currently block off from all Medivo lab partners -->
+                        </labcorp>
+                    </unallowed_states>
+                    <lab_ids>
+                        <quest>119</quest>
+                        <labcorp>129</labcorp>
+                    </lab_ids>
+                </lab_specific>
+            </lab_lookups>
+
+            <labcorp_only>
+                <skus_list>
+                    <nnr-hiv-early-detection-lab />
+                    <hiv-early-detection-lab />
+                </skus_list>
+                <website_list>
+                    <glt/>
+                </website_list>
+            </labcorp_only>
+            <contact>
+                <phone_number>877-317-3178</phone_number>
+            </contact>
+        </medivo>
+        <medivo_settings>
+            <contact_information>
+                <doc_consult_phone_number>111-222-3333</doc_consult_phone_number>
+            </contact_information>
+        </medivo_settings>
+        <ppmd_tests>
+            <test_type_vendors>
+                <Lab>medivo</Lab>
+                <Home>medivo</Home>
+            </test_type_vendors>
+            <vendors_requiring_lab_selection>
+                <medivo />
+            </vendors_requiring_lab_selection>
+        </ppmd_tests>
+    </default>
+</config>

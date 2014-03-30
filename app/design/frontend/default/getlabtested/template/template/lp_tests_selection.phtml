@@ -1,0 +1,139 @@
+<?php
+$localepage = Mage::registry('localepage');
+	
+	$values = unserialize($localepage->getValues());
+	
+?>
+<div id="lp_tests_selection">
+<h1 class="page-title"><?php echo $values['h1'];?></h1>
+<h2><?php echo $values['h2_2'];?></h2>
+<table>
+<tbody>
+<tr>
+<td><img src="/media/images/badge_guarantee.png" alt="" /></td>
+<td>
+<p<?php echo $values['intro_content'];?></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h2>Select STD Test:</h2>
+<div id="order_module"><form>
+<div id="at_home">
+<div class="header">At-Home Testing</div>
+<div class="content">
+<h4><span class="light_blue">Free</span> priority shipping</h4>
+<ul>
+<li><input name="at_home_test" type="checkbox" value="chamydia" /> Chlamydia</li>
+<li><input name="at_home_test" type="checkbox" value="gonorrhea" /> Gonorrhea</li>
+<li><input name="at_home_test" type="checkbox" value="trichomoniasis" /> Trichomoniasis</li>
+<li><input name="at_home_test" type="checkbox" value="hiv" /> HIV Express <span class="small">(next day results)</span></li>
+</ul>
+</div>
+<div class="footer"><span class="price">$105 each</span> <span class="info">discounts for multiple tests</span></div>
+</div>
+<!-- /at_home -->
+<div class="sep">OR</div>
+<div id="lab_tests">
+<div class="header">Local, Private Lab Testing</div>
+<div id="individual_tests" class="item">
+<div class="content">
+<h4>Individual Tests</h4>
+<ul>
+<li><input name="individual_test" type="checkbox" value="chlamydia" /> Chlamydia</li>
+<li><input name="individual_test" type="checkbox" value="Gonorrhea" /> Gonorrhea</li>
+<li><input name="individual_test" type="checkbox" value="Hepatitis B" /> Hepatitis B</li>
+<li><input name="individual_test" type="checkbox" value="Hepatitis C" /> Hepatitis C</li>
+<li><input name="individual_test" type="checkbox" value="Oral Herpes" /> Oral Herpes</li>
+<li><input name="individual_test" type="checkbox" value="Genital Herpes" /> Genital Herpes</li>
+<li><input name="individual_test" type="checkbox" value="HIV" /> HIV</li>
+<li><input name="individual_test" type="checkbox" value="Syphilis" /> Syphilis</li>
+</ul>
+</div>
+<div class="footer"><span class="price">$90 each</span> <span class="info">discounts for multiple tests</span></div>
+</div>
+<!-- /individual_tests -->
+<div id="basic_package" class="item">
+<div class="content">
+<h4>Basic Package</h4>
+<ul>
+<li>Chlamydia</li>
+<li>Gonorrhea</li>
+<li>Genital Herpes</li>
+<li>HIV</li>
+</ul>
+</div>
+<div class="footer">
+<div class="price">$195</div>
+<div class="add_to_cart"><input name="basic_package" type="checkbox" value="1" /> Add to cart</div>
+</div>
+</div>
+<!-- /basic_package -->
+<div id="ultimate_package" class="item">
+<div class="content">
+<h4>Ultimate Package</h4>
+<ul>
+<li>Chlamydia</li>
+<li>Gonorrhea</li>
+<li>Hepatitis B</li>
+<li>Hepatitis C</li>
+<li>Oral Herpes</li>
+<li>Genital Herpes</li>
+<li>HIV</li>
+<li>Syphilis</li>
+</ul>
+</div>
+<div class="footer">
+<div class="price">$245</div>
+<div class="add_to_cart"><input name="ultimate_package" type="checkbox" value="1" /> Add to cart</div>
+</div>
+</div>
+<!-- /ultimate_package --></div>
+<!-- /lab_tests -->
+<div class="sep sep_arrow">&nbsp;</div>
+<div id="your_order">
+<div class="header">Your Order</div>
+<div class="content">
+<ul>
+<li id="order_chlamydia"><a class="remove" onclick="removeFromCart('chlamydia');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> Chlamydia</li>
+<li id="order_gonorrhea"><a class="remove" onclick="removeFromCart('gonorrhea');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> Gonorrhea</li>
+<li id="order_hepatitis_b"><a class="remove" onclick="removeFromCart('hepatitis_b');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> Hepatitis B</li>
+<li id="order_hepatitis_c"><a class="remove" onclick="removeFromCart('hepatitis_c');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> Hepatitis C</li>
+<li id="order_herpes_1"><a class="remove" onclick="removeFromCart('herpes_1');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> Herpes I</li>
+<li id="order_herpes_2"><a class="remove" onclick="removeFromCart('herpes_2');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> Herpes II</li>
+<li id="order_hiv"><a class="remove" onclick="removeFromCart('hiv');" href="javascript: void(0);"><img src="/media/images/icon_remove_grey.png" alt="" /></a> HIV</li>
+</ul>
+</div>
+<div class="total">Total                                     <span id="total_price">$245</span></div>
+<input class="submit btn_orange_32_reflection" type="submit" value="checkout" /></div>
+<!-- /your_order --> </form></div>
+<!-- /order_module -->
+<div class="clear">&nbsp;</div>
+<div class="widgets">
+<div id="story_side_widget" class="box_blue_header box_quote_left">
+<div class="header">
+<h3>Personal story</h3>
+</div>
+<div class="content">
+<p><img src="/media/images/quote_begin.png" alt="" /> Recently, I had a scare and was worried I contracted herpes. I went to <strong>getSTDtested</strong>, as I wanted to test privately, quickly and get answers to my most pressing questions. <img src="/media/images/quote_end.png" alt="" /></p>
+</div>
+</div>
+<!-- /story_side_widget -->
+<div id="customers_side_widget" class="box_blue_header">
+<div class="header">
+<h3>Trusted by our <br />customers and the <br />sexual health community</h3>
+</div>
+<div class="content">
+<p><img src="/media/images/trusted_logos_side.png" alt="" /></p>
+<hr />
+<p><strong><span class="orange">4.5/5</span>star customer reviews</strong></p>
+<p><img src="/media/images/reviews_stars_single.png" alt="" /></p>
+</div>
+</div>
+<!-- /customers_side_widget --></div>
+<div class="sep20">&nbsp;</div>
+<div class="sep15">&nbsp;</div>
+<h3>Have questions? We're here to talk: 866-749-6269</h3>
+<?php echo $values['body_content'];?>
+</div>
+<!-- /lp_tests_selection -->

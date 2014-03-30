@@ -1,0 +1,181 @@
+<div id="address-info" class="address-information <?php if ($this->configData['page_layout'] == '3columns'):?>address-info-3-columns<?php endif;?>">
+    <?php //echo $this->getChildHtml('onestepcheckout.billing');?>
+    <?php //echo $this->getChildHtml('onestepcheckout.shipping');?>
+    <?php
+    $customer_session_data = $this->getCustomerSessionData();
+    $ba = $customer_session_data['default_billing'];
+    $cad = Mage::getModel('customer/address')->load($ba);
+
+    $customer_birthday = $this->getCustomerBirthday();
+    $temporary_post = $this->getTemporaryPost();
+    $is_temporary_post = $this->getIsTemporaryPost();
+
+    $virtual = $this->isVirtualCheckout();
+
+    if ($virtual) { ?>
+    <div class="onestepcheckout-header">
+        <div class="onestepcheckout-header-digit">2</div>
+        <h2>Contact Information</h2>
+    </div>
+        <? } else { ?>
+    <div class="onestepcheckout-header">
+        <div class="onestepcheckout-header-digit">1</div>
+        <h2>Contact &amp; Shipping Information</h2>
+    </div>
+        <?php } ?>
+    <fieldset id="billing-new-address-form" class="group-select">
+    <input type="hidden" id="billing:address_id" value="25" name="billing[address_id]">
+        <ul>
+            <li>
+                <div class="input-box">
+                    <label for="billing:firstname">First Name:&nbsp;</label><br />
+                    <input type="text" value="<?php echo ($is_temporary_post ? $temporary_post['billing']['firstname']:$customer_session_data['firstname']);?>" class="input-text required-entry" title="First Name" name="billing[firstname]" id="billing:firstname">
+                </div>
+                <div class="input-box">
+                    <label for="billing:lastname">Last Name:&nbsp;</label><br />
+                    <input type="text" value="<?php echo ($is_temporary_post ? $temporary_post['billing']['lastname']:Mage::getSingleton('customer/session')->getCustomer()->getLastname());?>" class="input-text required-entry" title="Last Name" name="billing[lastname]" id="billing:lastname">
+                </div>
+            </li>
+            <li>
+                <div class="input-box">
+                    <label for="billing:gender">Gender: &nbsp;</label><br />
+                    <select autocomplete="off" id="billing:gender" class="required-entry" name="billing[gender]" title="Gender">
+                        <option <?php if (!isset($customer_session_data['gender']) || !$customer_session_data['gender']) { ?>selected="selected"<?php } ?> value="" ></option>
+                        <option <?php if ((isset($customer_session_data['gender']) && $customer_session_data['gender'] == 1) || ($is_temporary_post == 1 && $temporary_post['billing']['gender'] == 1)) { ?>selected="selected"<?php } ?>  value="1">Male</option>
+                        <option <?php if ((isset($customer_session_data['gender']) && $customer_session_data['gender'] == 2) || ($is_temporary_post == 1 && $temporary_post['billing']['gender'] == 2)) { ?>selected="selected"<?php } ?> value="2">Female</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label for="billing:dob">Date of Birth: &nbsp;</label><br />
+                    <select id="m_select" class="required-entry" name="m_select">
+                        <option value=""></option>
+                        <?php foreach($this->getMonthData() as $month_abbreviation => $month_id) { ?>
+                            <option <?php if ($this->isBirthdayMonth($customer_birthday[1])) { ?>selected="selected"<?php } ?> value="<?php echo $month_id ?>"><?php echo $month_abbreviation ?></option>
+                        <?php } ?>
+                    </select>
+
+                    <select id="d_select" class="required-entry" name="d_select">
+                        <option value=""></option>
+                        <?php for ($i = 1; $i <= 9; $i++) { ?>
+                        <option <?php if ((isset($customer_birthday[2]) && $customer_birthday[2] == "0$i") || ($is_temporary_post && $temporary_post['d_select'] == "0$i")) { ?>selected="selected"<?php } ?> value="0<?php echo $i;?>">0<?php echo $i;?></option>
+                        <? } ?>
+                        <?php for ($i = 10; $i <= 31; $i++) { ?>
+                        <option <?php if ((isset($customer_birthday[2]) && $customer_birthday[2] == $i) || ($is_temporary_post && $temporary_post['d_select'] == $i)) { ?>selected="selected"<?php } ?> value="<?php echo $i;?>"><?php echo $i;?></option>
+                        <? } ?>
+                    </select>
+
+                    <select id="y_select" class="required-entry" name="y_select">
+                        <option value=""></option>
+                        <?php for ($i = 1995; $i >= 1935; $i--) { ?>
+                        <option <?php if ((isset($customer_birthday[0]) && $customer_birthday[0] == $i) || ($is_temporary_post && $temporary_post['y_select'] == $i)) { ?>selected="selected"<?php } ?> value="<?php echo $i;?>"><?php echo $i;?></option>
+                        <? } ?>
+                    </select>
+                </div>
+                <input type="hidden" value="" autocomplete="off" id="full" name="dob">
+            </li>
+            <li style="clear:both;" class="input-box">
+                <div class="input-box">
+                    <label for="billing:email">E-mail:&nbsp;</label><br />
+                    <input type="text" value="<?php echo ($is_temporary_post ?$temporary_post['billing']['email']:Mage::getSingleton('customer/session')->getCustomer()->getEmail()) ;?>" class="required-entry input-text" title="Email Address" id="billing:email" name="billing[email]">
+                    <span style="display:none;" id="valid_email_address_image"><img width="18" alt="Valid Email Address" title="Valid Email Address" src="https://getstdtested.com/skin/frontend/default/getstdtested/images/onestepcheckout/valid.gif"></span>
+                </div>
+                <div class="input-box">
+                    <label for="billing:email-confirm">Confirm E-mail:&nbsp;</label><br />
+                    <input value="<?php echo ($is_temporary_post ?$temporary_post['billing']['email-confirm']:Mage::getSingleton('customer/session')->getCustomer()->getEmail()) ;?>" style="margin-top:5px;" type="text" class="validate-email required-entry input-text" title="Confirm Email" id="billing:email-confirm" name="billing[email-confirm]">
+                </div>
+
+                <div id="phone-box" class="input-box">
+                    <label for="billing:telephone">Phone Number:&nbsp;</label>
+                    <input style="margin-top:5px;" type="text" class="input-text required-entry" title="Phone Number" value="" id="billing:telephone" name="billing[telephone]">
+                </div>
+                <div style="clear:both;"></div>
+            </li>
+            <?php
+
+            if (!isset($cad) || !$cad) {
+                $cad = Mage::getModel('customer/address');
+            }
+            $street1 = '';
+            $street2 = '';
+            if (is_array($cad->getStreet())) {
+                $street = $cad->getStreet();
+                $street1 = $street[0];
+                $street2 = $street[1];
+            }
+            ?>
+
+            <!-- begin simple order -->
+            <?php if (!$virtual) { ?>
+            <li class="wide">
+                <div class="input-box">
+                    <label for="billing:street1">Address:&nbsp;</label><br />
+                    <input type="text" class="input-text required-entry" value="<?php echo $street1 ?>" id="billing:street1" name="billing[street][]" title="Street Address">
+                </div>
+                <div class="input-box">
+                    <label for="billing:street2">Apt/Ste:&nbsp;</label><br />
+                    <input type="text" class="input-text required-entry" value="<?php echo ($virtual?"":$street2);?>" id="billing:street2" name="billing[street][]" title="Street Address 2" style="width: 63px;">
+                </div>
+            </li>
+            <li style="margin-top:2px;" id="">
+                <div class="input-box">
+                    <label for="billing:city">City:&nbsp;</label><br />
+                    <input style="margin-top:5px; margin-bottom:5px;" type="text" id="billing:city" class="required-entry input-text" value="<?php echo ($virtual?"":$cad->getCity());?>" name="billing[city]" title="City" style="width:180px;">
+                </div>
+                <div class="input-box" style="display: none;">
+                    <label for="billing:country_id">Country </label><br />
+                    <select style="width:135px" title="Country" class="validate-select required-entry" id="billing:country_id" name="billing[country_id]">
+                        <option selected="selected" value="US">United States</option>
+                    </select>
+                </div>
+                <div class="input-box">
+                    <label for="billing:region">State:</label><br />
+                    <select class="validate-select required-entry" title="State/Province" name="billing[region_id]" id="billing:region_id">
+                        <option value=""></option>
+                        <?php foreach($this->getStateSelectOptions() as $region_id => $state_data) { ?>
+                            <option <?php echo (($region_id == $customer_region_id) ? "selected='selected'":"");?> value="<?php echo $region_id ?>"><?php echo $state_data ?></option>
+                        <?php } ?>
+                    </select>
+                    <script type="text/javascript">
+                        $('billing:region_id').setAttribute('defaultValue',  "");
+                    </script>
+                    <input type="text" style="display:none" class="input-text" title="State/Province" value="" name="billing[region]" id="billing:region">
+                </div>
+                <div class="input-box" style="width: 100px;">
+                    <label for="billing:postcode">Zip Code:&nbsp;</label><br />
+                    <input type="text" class="validate-zip-international required-entry input-text" value="<?php echo ($virtual?Mage::getSingleton('core/session')->getLabZip():$cad->getPostcode());?>" id="billing:postcode" name="billing[postcode]" title="Zip/Postal Code" maxlength="5" style="width: 61px;">
+                </div>
+            </li>
+            <li>
+                <input type="hidden" value="1" id="billing:use_for_shipping" name="billing[use_for_shipping]">
+            </li>
+                <?php } ?>
+            <!-- end simple order -->
+
+            <li style="clear:both;" class="input-box">
+                <div class="cboth" style="padding-top: 5px;">
+                    <label for="ppmd_notify">How would you like to be notified when results become available?:&nbsp;</label>
+                    <input checked="checked" type="radio" title="Email" value="11" id="ppmd_notify" name="ppmd_notify">Email
+                    <input type="radio" title="Phone" value="12" id="ppmd_notify" name="ppmd_notify">Phone
+                </div>
+                <div style="clear:both;"></div>
+            </li>
+
+            <?php if (!$this->isCustomerLoggedIn()) { ?>
+                <!-- password -->
+                <div class="opc-none">
+                    <li style="display:block" id="password_section_id">
+                        <div class="input-box">
+                            <label for="billing:customer_password">Password </label><br>
+                            <input type="password" value="1234asdf" class="input-text required-entry validate-password" title="Password" id="billing:customer_password" name="billing[customer_password]" autocomplete="off">
+                        </div>
+                        <div class="input-box">
+                            <label for="billing:confirm_password">Confirm Password </label><br>
+                            <input type="password" value="1234asdf" class="input-text required-entry validate-cpassword" id="billing:confirm_password" title="Confirm Password" name="billing[confirm_password]" autocomplete="off">
+                        </div>
+                    </li>
+                </div>
+                <!-- end password -->
+            <?php } ?>
+        </ul>
+    </fieldset>
+</div>

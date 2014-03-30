@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <ppmdtests_index_index>
+        <reference name="content">
+            <block type="ppmd_tests/page" name="ppmd_tests_page" template="ppmdtests/page.phtml">
+                <block type="ppmd_tests/right" name="ppmd_tests_right" template="ppmdtests/right.phtml" />
+                <block type="ppmd_tests/bottom" name="ppmd_tests_bottom" template="ppmdtests/bottom.phtml" />
+            </block>
+        </reference>
+    </ppmdtests_index_index>
+
+    <catalog_product_view>
+        <reference name="content">
+            <block type="ppmd_tests/page" name="ppmd_tests_left" template="ppmdtests/left.phtml" before="product.info" />
+        </reference>
+        <reference name="product.info.upsell">
+            <remove name="product.info.upsell"/>
+        </reference>
+    </catalog_product_view>
+</layout>

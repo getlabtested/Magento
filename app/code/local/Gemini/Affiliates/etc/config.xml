@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Gemini_Affiliates>
+            <version>0.1.0</version>
+        </Gemini_Affiliates>
+    </modules>
+    
+    <global>
+        <models>
+            <affiliates>
+                <class>Gemini_Affiliates_Model</class>
+                <resourceModel>affiliates_mysql4</resourceModel>
+            </affiliates>
+            <affiliates_mysql4>
+                <class>Gemini_Affiliates_Model_Mysql4</class>
+				<entities>
+                    <affiliates>
+                        <table>affiliates</table>
+                    </affiliates>
+                </entities>
+            </affiliates_mysql4>
+        </models>
+        <blocks>
+            <affiliates>
+                <class>Gemini_Affiliates_Block</class>
+            </affiliates>
+        </blocks>
+        <helpers>
+            <affiliates>
+                <class>Gemini_Affiliates_Helper</class>
+            </affiliates>  
+        </helpers>
+    </global>
+    
+    <admin>
+        <routers>
+            <affiliates>
+                <use>admin</use>
+                <args>
+                    <module>Gemini_Affiliates</module>
+                    <frontName>affiliates</frontName>
+                </args>
+            </affiliates>
+        </routers>
+    </admin>
+    
+    <adminhtml>
+        <translate>
+            <modules>
+                <mage_adminhtml>
+                    <files>
+                        <affiliates>Gemini_Affiliates.csv</affiliates>
+                    </files>
+                </mage_adminhtml>
+            </modules>
+        </translate>
+        
+        <menu>
+            <sales>
+                <children>
+                    <sintax_adminform translate="title" module="affiliates">
+                        <title>Manage PAP Affiliates</title>
+                        <action>affiliates/adminhtml_affiliates</action>
+                    </sintax_adminform>
+                </children>
+            </sales>
+        </menu>
+        
+        <acl>
+            <resources>
+                <admin>
+                    <children>
+                        <catalog>
+                            <children>
+                                <sintax_adminform>
+                                    <title>My Form</title>
+                                </sintax_adminform>
+                            </children>
+                        </catalog>
+                    </children>
+                </admin>
+            </resources>
+        </acl>
+        
+        <layout>
+            <updates>
+                <affiliates>
+                    <file>affiliates.xml</file>
+                </affiliates>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <frontend>
+        <layout>
+            <updates>
+                <pap_glt>
+                    <file>pap_glt.xml</file>
+                </pap_glt>
+            </updates>
+        </layout>
+    </frontend>
+
+	<crontab>
+        <jobs>
+            <gemini_affiliates>
+                <schedule>
+					<cron_expr>*/5 * * * *</cron_expr>
+				</schedule>
+                <run>
+					<model>affiliates/observer::syncPapAffiliates</model>
+				</run>
+            </gemini_affiliates> 
+        </jobs>
+    </crontab>
+</config>

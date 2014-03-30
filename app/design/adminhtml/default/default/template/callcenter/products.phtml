@@ -1,0 +1,19 @@
+
+<div style="display:block;" id="lab-hide">
+    <div class="entry-edit">
+        <div class="entry-edit-head">
+            <h4 class="fieldset-legend ">Lab Testing Products</h4>
+        </div>
+        <div class="fieldset">
+            <div id="select-lab-products-div">
+                <?php $products = $this->getProductsByPostedStoreId();?>
+                <?php foreach ($products as $product) { ?>
+                <div class="product-checkbox">
+                    <input onclick="updateTotal(this.id);document.getElementById('labordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+                    <label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
+                </div>
+                <? } ?>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Productwidget>
+            <version>0.1.0</version>
+        </Jag_Productwidget>
+    </modules>
+    <frontend>
+        <layout>
+            <updates>
+                <productwidget>
+                    <file>productwidget.xml</file>
+                </productwidget>
+            </updates>
+        </layout>
+    </frontend>   
+    <global>
+        <blocks>
+            <productwidget>
+                <class>Jag_Productwidget_Block</class>
+            </productwidget>
+        </blocks>
+        <helpers>
+            <productwidget>
+                <class>Jag_Productwidget_Helper</class>
+            </productwidget>
+        </helpers>
+        <page>
+            <layouts>
+                  <one_column_product module="page" translate="label">
+                        <label>One Column Product Layout</label>
+                        <template>page/1column-product.phtml</template>
+                        <layout_handle>page_one_column_product</layout_handle>
+                  </one_column_product>
+            </layouts>
+      </page>
+    </global>
+</config>

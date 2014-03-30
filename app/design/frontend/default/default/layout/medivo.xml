@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    </default>
+    <medivo_index_index>
+        <reference name="content">
+            <block type="medivo/medivo" name="medivo" template="medivo/medivo.phtml" />
+        </reference>
+    </medivo_index_index>
+    <medivo_index_labsbyzip>
+		<block type="medivo/medivo"  name="root" output="toHtml"  template="medivo/labsbyzip.phtml"/>
+	</medivo_index_labsbyzip>
+</layout> 

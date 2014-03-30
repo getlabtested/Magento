@@ -1,0 +1,50 @@
+<style>
+	/* hide Coupon Code and Existing Customer pods */
+	.b-5, .b-6 { display: none; }
+</style>
+
+<?php $upsell_products = $this->getUpsellProductsByCart(); ?>
+
+<h1 class="no-border">Optional test upgrades are available now.</h1>
+<h2 class="no-border2">Check the boxes below to include additional testing.</h2>
+
+<form id="onestepcheckout-upsell-form" method="post" action="<?php echo $this->getUpsellPostActionUrl() ?>">
+
+<div id="checkout_location" class="box">
+    <div class="onestepcheckout-header">
+        <h2 id="onestepcheckout-wellness-tests">Select Testing Options</h2>
+    </div>
+    <div id="wellness-tests">
+        <?php $i = 0; ?>
+        <?php foreach ($upsell_products as $product) { ?>
+            <?php $product_sku = $product->getSku(); ?>
+            <div class="<?php if ($i % 2 == 0) { echo "cboth "; } ?>wellness-tests-col">
+                <input type="checkbox" name="indiTest[<?php echo $product_sku ?>]" id="<?php echo $product_sku ?>" onclick="toggleUpsellCartElement('<?php echo $product_sku ?>');" value="<?php echo $product->getPrice() ?>" />
+                <h3><label for="<?php echo $product_sku ?>"><?php echo $product->getName() ?></label></h3>
+                <?php $finalPrice = $product->getSpecialPrice() ? $product->getSpecialPrice() : $product->getPrice() ?>
+                <span class="price-pack">$<?php echo intval($finalPrice) ?></span>
+                <span class="price-pack-old">$<?php echo intval($product->getPrice()) ?></span>
+                <p><?php echo $product->getShortDescription() ?></p>
+            </div>
+            <?php $i++; ?>
+        <?php } ?>
+        <div class="cboth"></div>
+    </div>
+</div>
+
+    <ul class="one-step-checkout">
+        <li class="address-order">
+            <div id="left-info">
+                <div id="order-button-div">
+                    <div class="content button-set clearfix" style="width: 700px;">
+                        <p>
+                            <input id="onestepcheckout-button-place-order" type="button" class="b-upgrade-order" style="margin: 0 auto 30px auto; border:none;" onclick="this.disabled=true;document.getElementById('ajax-loader-gif').style.display = 'block';document.getElementById('onestepcheckout-upsell-form').submit()" value="Upgrade Order" />
+                            <img style="display:none; float:left; margin-left:20px; margin-top:1%;" id="ajax-loader-gif" src="http://getstdtested.com/media/images/ajax-loader.gif" />
+                        </p>
+                        <p class="cboth"><a href="<?php echo $this->getNoThanksAction() ?>" style="color: #0F5489; font-size: 14px; font-weight: bold; text-decoration: underline;">No, thanks. Continue to checkout.</a></p>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</form>

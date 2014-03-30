@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Followup>
+            <version>0.1.0</version>
+        </PPMD_Followup>
+    </modules>
+
+    <global>
+        <models>
+            <ppmd_followup>
+                <class>PPMD_Followup_Model</class>
+                <resourceModel>ppmd_followup_mysql4</resourceModel>
+            </ppmd_followup>
+            <ppmd_followup_mysql4>
+                <class>PPMD_Followup_Model_Mysql4</class>
+                <entities>
+                    <ppmd_followup>
+                        <table>ppmd_followup</table>
+                    </ppmd_followup>
+                </entities>
+            </ppmd_followup_mysql4>
+        </models>
+
+        <helpers>
+            <ppmd_followup>
+                <class>PPMD_Followup_Helper</class>
+            </ppmd_followup>
+        </helpers>
+
+        <events>
+            <ppmd_onestepcheckout_success>
+                <observers>
+                    <schedule_recurring_emails>
+                        <type>singleton</type>
+                        <class>ppmd_followup/observer</class>
+                        <method>scheduleFollowupEmails</method>
+                    </schedule_recurring_emails>
+                </observers>
+            </ppmd_onestepcheckout_success>
+        </events>
+
+        <resources>
+            <ppmd_followup_setup>
+                <setup>
+                    <module>PPMD_Followup</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </ppmd_followup_setup>
+        </resources>
+    </global>
+
+    <frontend>
+        <routers>
+            <ppmd_followup>
+                <use>standard</use>
+                <args>
+                    <module>PPMD_Followup</module>
+                    <frontName>followup</frontName>
+                </args>
+            </ppmd_followup>
+        </routers>
+    </frontend>
+
+    <crontab>
+        <jobs>
+            <ppmd_followup_emails>
+                <schedule>
+                    <cron_expr>0 0 * * *</cron_expr>
+                </schedule>
+                <run>
+                    <model>ppmd_followup/observer::processRecurringFollowupEmails</model>
+                </run>
+            </ppmd_followup_emails>
+        </jobs>
+    </crontab>
+</config>

@@ -1,0 +1,226 @@
+#order-shipping_address .entry-edit {
+	
+	display: none;
+	
+}
+
+#order-billing_address_choice {
+	
+	display: none;
+	
+}
+
+#order-shipping_method {
+	
+	display: none;
+	
+}
+
+.order-save-in-address-book {
+	
+	display: none;
+	
+}
+
+#order-form_account .fieldset {
+	
+	background: none;
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#customer_account_extra_fields .entry-edit-head{
+	
+	display: none;
+	
+}
+
+#customer_account_fieds .fieldset {
+	
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#customer_account_extra_fields fieldset {
+	
+	border: 0;
+	margin: 0;
+	padding: 0;
+	
+}
+
+#order-billing_address_fields .content {
+	padding: 0;	
+}
+
+#select-promo-code-div {
+	
+	margin-bottom: 10px;
+}
+
+#select-affiliate-div {
+	
+	margin-bottom: 15px;
+}
+
+#order-store-selector {
+	float: left;
+    margin-right: 2%;
+    width: 49%;
+}
+
+#order-billing_method {
+	float: left;
+    margin-right: 2%;
+    width: 100%;
+}
+
+#order-totals-div {
+	float: left;
+    margin-right: 2%;
+    width: 100%;
+}
+
+#nnr-selector {
+	float: left;
+    margin-right: 2%;
+    width: 49%;
+}
+
+#order-call-information {
+	float: left;
+    width: 49%;
+}
+
+#order-call-information .fieldset{
+	
+	height: 69px;
+	
+}
+
+#order-products {
+	
+	clear: both;
+	
+}
+
+#order-data {
+	
+	float: left;
+	width: 49%;
+	
+	
+}
+
+#order-products {
+	
+	width: 49%;
+	margin-right: 2%;
+	float: left;
+	
+}
+
+#order-total-div {
+	
+	width: 49%;
+	float: left;
+	
+}
+
+#order-account {
+	
+	width: 49%;
+	float: right;
+	
+}
+
+#customer_account_fieds td.label {
+	
+	width: 50px;
+	
+}
+
+#customer_account_fieds td.label label{
+	
+	width: 95px;
+	
+}
+
+.product-checkbox {
+	
+	float: left;
+    margin-bottom: 15px;
+    margin-right: 25px;
+	
+}
+
+#select-lab-products-div {
+	
+	height: 85px;
+}
+
+#select-home-products-div {
+	
+	height: 60px;
+	
+}
+
+#order-products .fieldset{
+	
+	height: 116px;
+}
+
+#order-total-div .fieldset{
+	
+	height: 47px;
+	
+}
+
+#location-results {
+	
+	padding-top: 10px;
+	
+}
+
+#location-results .item {
+background-color: #EFEFEF;
+    border: 1px solid;
+    float: left;
+    margin-bottom: 15px;
+    margin-right: 1%;
+    padding: 15px;
+    width: 45%;
+    height: 150px;
+}
+
+#order-coupons .box-left{
+	width: 100%;
+}
+
+#select-callreason-div {
+	
+	float: left;
+	margin-right: 20px;	
+}
+
+
+#submit_order_top_button {
+	
+	display: none;
+	
+}
+
+
+#customer_info_tabs_customerbalance,#customer_info_tabs_giftregistry,#customer_info_tabs_customer_edit_tab_agreements,#customer_info_tabs_customer_edit_tab_recurring_profile {
+	
+	display: none;
+	
+}
+
+#dt-shopingCart2,#dt-shopingCart1,#dt-shopingCart3,#dt-wishlist {
+	
+	display: none;
+	
+}

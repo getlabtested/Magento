@@ -1,0 +1,121 @@
+<?php
+
+	$states = $this->getStateList();
+	$baseDir = Mage::getBaseDir();
+			
+?>  
+
+<style>
+	#free-std-clinic-top { width:950px; background-image:url(http://c240340.r40.cf1.rackcdn.com/free-std-clinics-top-banner-bk-woman.jpg); background-repeat:no-repeat; font-family:Tahoma, Geneva, sans-serif; font-size:12px; border-bottom: solid 1px #999; margin-bottom: 20px; }
+	#free-std-clinic-top h1 { margin-left:300px; margin-top:0px; margin-bottom:5px; font-family:Tahoma, Geneva, sans-serif; font-size:28px; font-weight:bold; color:#023a4c; }
+	#free-std-clinic-top h2 {padding-bottom:0px; margin-left:300px; margin-top:0px; margin-bottom:10px; font-weight:normal; font-family:Tahoma, Geneva, sans-serif; color:#0c6e8e; font-size:19px; }
+	#free-std-clinic-top p { margin-top:0px; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#646262; }
+	#free-std-clinic-top .blue { color:#0c6e8e; font-weight:bold; font-size:19px; }
+	#free-std-clinic-top .orange { color:#e87640; font-weight:bold; font-size:19px; }
+	#news-tweets { width:315px; border: solid 1px #C1C1C1; -moz-border-radius:5px; border-radius:5px; }
+	#free-std-clinic-top .button-arrows { width:355px; height:65px; background-image:url(http://c240340.r40.cf1.rackcdn.com/free-std-clinics-top-banner-btn-arrows.jpg); background-repeat:no-repeat; margin-left:300px; float:left; margin-bottom:15px; }
+	#free-std-clinic-top .accreds { width:440px; height:63px; background-image:url(http://c240340.r40.cf1.rackcdn.com/free-std-clinics-top-banner-accreds.jpg); background-repeat:no-repeat; margin-left:5px; margin-top:10px; float:left; }
+</style>
+
+<div id="free-std-clinic-top">
+	<h1>Potential Free STD Clinics and<br />Free STD Testing Centers</h1>
+	<h2>search our directory of potentially free std testing clinics</h2>
+    <p style="margin-left:300px; margin-bottom:8px;">Find a free STD clinic in the United States with our comprehensive database of free clinics and health centers. Please note that we make no guarantee that any of these listings offer free testing, you are responsible to research each clinic's offering. If you would like to get guaranteed STD testing with fast results, please browse the getSTDtested.com clinics. Each getSTDtested.com STD testing center can perform HIV testing, Herpes testing, Chlamydia/Gonorrhea testing, Hepatitis testing, Syphilis testing and more. Please call us or browse the site to find a getSTDtested clinic near you!</p>
+    
+	<div class="button-arrows">
+	    <a class="btn_orange_reflection" href="/std-testing-options" style="font-size:14px; width:210px; margin-left:70px; margin-top:10px;">View Testing &amp; Pricing</a>
+    </div>
+    <div style="margin-top:30px;"><span class="blue">OR CALL US AT</span><span class="orange"> 866-749-6269</span></div>
+	<div style="clear:both;"></div>
+    <div style="margin-left:300px; width:200px; float:left;"><span class="blue">TEST WITH</span><br /><span class="orange">CONFIDENCE</span><p>Trusted by the medical community, the media and our customers</p></div>
+    <div class="accreds"></div>
+	<div style="clear:both;"></div>
+</div>
+<!-- /steps_module -->
+<div id="left_col">
+<h2 style="margin-bottom:0px; padding-bottom:10px;">Potential Free STD Clinics &amp; Testing Centers</h2>
+
+	<!-- start dynamic pages -->
+	<div class="states_list location_list">
+		<ul>
+		<?php
+		$x = 0;
+		foreach ($states as $state) {
+		?>
+				
+		 <?php if ($x == 17 || $x == 34)  { ?> 
+	 
+	 	</ul>
+	</div>
+	<div class="states_list location_list">
+		<ul>
+			
+		<?php } ?>   
+		          
+		<li><a href="/free-std-clinics/<?php echo strtolower(str_replace(" ","-",$state->getData('stateFull')));?>-<?php echo  strtolower($state->getState());?>"><?php echo $state->getData('stateFull');?> STD Testing</a></li>
+   		
+   		<?php $x++; } ?>
+		
+		</ul>
+	</div>
+	<!-- end dynamic pages -->
+	
+<div style="clear:both;"></div>	
+<div id="news-tweets" style="float:left; margin-right:30px; margin-top:30px;">
+	<div style="padding:10px;">
+		<?php 
+		$url = 'http://news.google.com/news?pz=1&cf=all&ned=us&hl=en&as_scoring=r&geo=60614&as_maxm=5&q=transmitted+diseases+stds+OR+hiv+OR+syphilis+OR+chlamydia+OR+gonorrhea+OR+herpes+OR+hepatitis+OR+sexually&as_qdr=a&as_drrb=q&as_mind=19&as_minm=4&cf=all&as_maxd=19&output=rss';
+	    include_once $baseDir.'/rss/rss-news.php';
+		?>
+	</div>
+</div>
+
+<div id="news-tweets" style="float:left; margin-top:30px;">
+	<div style="padding:10px;">
+		<?php
+	    $url = 'http://search.twitter.com/search.atom?q=stds&rpp=5';
+	    include_once $baseDir.'/rss/rss-twitter.php';
+		?>
+	</div>
+</div>
+<div style="clear:both;">&nbsp;</div>
+</div>
+<!-- /left_col -->
+<div id="right_col">
+
+<div class="box_blue_header" id="steps_side_widget">
+        	<div class="header">
+            	<h3>STD testing <br>in 4 easy steps</h3>
+            </div>
+            <div class="content">
+            	<p class="list">1 <span class="blue">order</span></p>
+                <ul>
+                	<li>Select STD test(s)</li>
+                    <li>Select closest testing location or test at home</li>
+                    <li>Pay with credit card, e-check, or anonymously with cash</li>
+                </ul>
+                
+                <p class="list">2 <span class="blue">test</span></p>
+                <ul>
+                	<li>Visit lab or test at home</li>
+                </ul>
+                
+                <p class="list">3 <span class="blue">results</span></p>
+                <ul>
+                	<li>1 to 3 days to test results: you'll be notified immediately</li>
+                    <li>View results via private, online portal or phone</li>
+                </ul>
+                
+                <p class="list">4 <span class="blue">treatment</span></p>
+                <ul>
+                	<li>Discuss results with our in-house physicians</li>
+                    <li>Receive a prescription if positive for a curable STD</li>
+                </ul>
+                <a href="/std-testing-options" class="btn_orange_25_reflection">order now</a>
+                <div class="clear">&nbsp;</div>
+            </div>
+        </div>
+
+
+</div>
+<!-- /right_col -->

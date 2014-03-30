@@ -1,0 +1,119 @@
+
+<?php echo $this->getChildHtml('onestepcheckout.errors') ?>
+<?php echo $this->getChildHtml('onestepcheckout.comment.wrapper') ?>
+
+<h1 class="no-border">You're Almost There</h1>
+<h2 class="no-border2">Complete the information below to get your testing done as soon as possible.</h2>
+
+<form id="one-step-checkout-form" method="post" action="<?php echo $this->getCheckoutUrl(); ?>">
+<br />
+    <?php echo $this->getChildHtml('onestepcheckout.lab.selector') ?>
+
+    <ul class="one-step-checkout">
+        <li class="address-order">
+            <?php if (Mage::getSingleton('core/session')->getScript()) {
+                echo "<div style='display:none;'>";
+            } ?>
+
+            <?php echo $this->getChildHtml('onestepcheckout.contact.information') ?>
+
+            <?php if (Mage::getModel('core/session')->getScript()) {
+                echo "</div>";
+            } ?>
+			<div class="order-information <?php if ($this->configData['page_layout'] == '3columns'):?>order-info-3-columns<?php endif;?>">
+				<ul style="list-style-type:none; padding-left:0px;">
+					<?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?>
+					<li class="shipping-method">
+						<h3  id="shipping_method_step_header" class="step_2 no-display">
+							<?php echo $this->__('SHIPPING METHOD'); ?>
+						</h3>
+						<div class="onestepcheckout-shipping-method-section">
+							<?php echo $this->getChildHtml('onestepcheckout.shipping_method'); ?>
+						</div>
+						<div class="ajax-loader1" id="ajax-loader1" style="display:none;"></div>
+					</li>
+					<?php elseif (Mage::helper('onestepcheckout')->isHideShippingMethod()):?>
+						<?php $_shippingMethod = $this->hasOnlyOneShippingMethod();?>
+						<span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_shippingMethod;?>" id="s_method_<?php echo $_shippingMethod; ?>" checked="checked" /></span>
+					<?php endif;?>
+					<li class="payment-method">
+						<?php echo $this->getChildHtml('onestepcheckout.payment_method'); ?>
+					</li>
+				</ul>
+				<div class="cboth"></div>
+			</div>
+
+			<div id="order-button-div">
+				<div class="content button-set clearfix">
+					<p class="left">
+						<?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>"><?php echo $this->__('Edit Your Cart') ?></a>
+					</p>
+					<p>
+						<input id="onestepcheckout-button-place-order" type="button" class="b-place-order" onclick="this.disabled=true;document.getElementById('ajax-loader-gif').style.display = 'block';" value="Place Order">
+						<img style="display:none; float:left; margin-left:20px; margin-top:1%;" id="ajax-loader-gif" src="/media/images/ajax-loader.gif" />
+						<div style="clear:both;"></div>
+					<p>By clicking "place order", you agree to the <a style="color:#028AFB; font-weight:bold;" onclick="window.open('/terms-of-service', 'Terms of Service', 'width=600, height=600,scrollbars=1'); return false;" href="#">terms of service</a> and will be automatically directed to an order confirmation page within 10 seconds.</p>
+					</p>
+					<div class="lab_rules_message"><?php echo Mage::helper('medivo/labs')->getLabRulesMessage() ?></div>
+				</div>
+			</div>
+
+            <div class="order-review-section">
+                <ul>
+                    <li class="order-review-info box">
+                        <label><?php echo $this->__('Order Summary'); ?></label>
+                        <?php echo $this->getChildHtml('onestepcheckout.review') ?>
+                        <div class="ajax-loader3" id="ajax-loader3"  style="display:none;"></div>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</form>
+
+<div class="clear">&nbsp;</div>
+
+<script type="text/javascript">
+    //<![CDATA[
+    var preloadImage = '<?php echo $this->getSkinUrl('images/onestepcheckout/preload.gif')?>';
+    var shipping_method_url = '<?php echo $this->getUrl('onestepcheckout/index/save_shipping', array('_secure' => true));?>';
+    var enable_update_payment = <?php echo $this->configData['update_payment'] ? 'true' : 'false'; ?>;
+    var login_url = '<?php echo $this->getUrl('onestepcheckout/index/show_login', array('_secure' => true));?>';
+    var show_login_link = <?php echo $this->configData['show_login_link'] ? 'true' : 'false'; ?>;
+    var show_term_condition_url = '<?php echo $this->getUrl('onestepcheckout/index/show_term_condition', array('_secure' => true));?>';
+    var form = $('one-step-checkout-form');
+    var reload_payment = <?php echo $this->configData['reload_payment']; ?>;
+    var error = '';
+
+    <?php if ($this->isCustomerLoggedIn()) { ?>
+    var save_address_url = '<?php echo $this->getUrl('onestepcheckout/index/save_address', array('_secure' => true))?>';
+    save_address_information(save_address_url);
+        <?php } ?>
+    //]]>
+</script>
+
+<script type="text/javascript">
+    var checkoutFormVerifier = new CheckoutFormVerification(<?php echo $this->generateSessionInfoJson() ?>);
+    checkoutFormVerifier.checkAjaxZipCodeConditions(<?php echo $this->generateAjaxZipCodeJson() ?>);
+</script>
+
+<script type="text/javascript">
+    jQuery(document).ready(function() {
+        var msie6 = ((jQuery.browser == 'msie') && (jQuery.browser.version < 7));
+        if (!msie6) {
+            var top = jQuery('#comment').offset().top - parseFloat(jQuery('#comment').css('margin-top').replace(/auto/, 0));
+            jQuery(window).scroll(function (event) {
+                // what the y position of the scroll is
+                var y = jQuery(this).scrollTop();
+                // whether that's below the form
+                if (y >= top) {
+                    // if so, ad the fixed class
+                    jQuery('#comment').addClass('fixed');
+                } else {
+                    // otherwise remove it
+                    jQuery('#comment').removeClass('fixed');
+                }
+            });
+        }
+    });
+</script>

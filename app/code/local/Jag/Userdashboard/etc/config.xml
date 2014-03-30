@@ -1,0 +1,131 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Userdashboard>
+            <version>0.1.0</version>
+        </Jag_Userdashboard>
+    </modules>
+    <frontend>
+        <routers>
+            <userdashboard>
+                <use>standard</use>
+                <args>
+                    <module>Jag_Userdashboard</module>
+                    <frontName>my-results</frontName>
+                </args>
+            </userdashboard>
+        </routers>
+        <layout>
+            <updates>
+                <userdashboard>
+                    <file>userdashboard.xml</file>
+                </userdashboard>
+            </updates>
+        </layout>
+    </frontend>
+    <admin>
+        <routers>
+			<userdashboard>
+				<use>admin</use>
+				<args>
+					<module>Jag_Userdashboard</module>
+					<frontName>userdashboard</frontName>
+				</args>
+			</userdashboard>
+        </routers>
+    </admin>
+    <!-- adminhtml>
+		<menu>
+			<userdashboard module="userdashboard">
+				<title>Userdashboard</title>
+				<sort_order>71</sort_order>               
+				<children>
+					<items module="userdashboard">
+						<title>Manage Items</title>
+						<sort_order>0</sort_order>
+						<action>userdashboard/adminhtml_userdashboard</action>
+					</items>
+				</children>
+			</userdashboard>
+		</menu>
+		<acl>
+			<resources>
+				<all>
+					<title>Allow Everything</title>
+				</all>
+				<admin>
+					<children>
+						<Jag_Userdashboard>
+							<title>Userdashboard Module</title>
+							<sort_order>10</sort_order>
+						</Jag_Userdashboard>
+					</children>
+				</admin>
+			</resources>
+		</acl>
+		<layout>
+			<updates>
+				<userdashboard>
+					<file>userdashboard.xml</file>
+				</userdashboard>
+			</updates>
+		</layout>
+    </adminhtml -->   
+    <global>
+        <models>
+            <userdashboard>
+                <class>Jag_Userdashboard_Model</class>
+                <!-- resourceModel>userdashboard_mysql4</resourceModel -->
+            </userdashboard>
+            <!-- userdashboard_mysql4>
+                <class>Jag_Userdashboard_Model_Mysql4</class>
+                <entities>
+                    <userdashboard>
+                        <table>userdashboard</table>
+                    </userdashboard>
+                </entities>
+            </userdashboard_mysql4 -->
+        </models>
+        <events>
+      		<customer_account_login>
+        		<observers>
+          		<jag_userdashboard_observer>
+            		<type>singleton</type>
+            		<class>Jag_Userdashboard_Model_Observer</class>
+            		<method>userdash</method>
+          		</jag_userdashboard_observer>
+        		</observers>
+      		</customer_account_login>  
+      	</events>
+        <resources>
+            <userdashboard_setup>
+                <setup>
+                    <module>Jag_Userdashboard</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </userdashboard_setup>
+            <userdashboard_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </userdashboard_write>
+            <userdashboard_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </userdashboard_read>
+        </resources>
+        <blocks>
+            <userdashboard>
+                <class>Jag_Userdashboard_Block</class>
+            </userdashboard>
+        </blocks>
+        <helpers>
+            <userdashboard>
+                <class>Jag_Userdashboard_Helper</class>
+            </userdashboard>
+        </helpers>
+    </global>
+</config>

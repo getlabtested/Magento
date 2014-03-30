@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Silverstaff>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Jag_Sendmail />
+            </depends>
+        </PPMD_Silverstaff>
+    </modules>
+</config>

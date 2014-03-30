@@ -1,0 +1,241 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Jag_Sendmail extension
+ */
+
+/**
+ * @category   Jag
+ * @package    Jag_Sendmail
+ */
+-->
+<config>
+    <modules>
+        <Jag_Sendmail>
+            <version>0.1.1</version>
+        </Jag_Sendmail>
+    </modules>
+    <global>
+        
+        <blocks>
+            <sendmail>
+                <class>Jag_Sendmail_Block</class>
+            </sendmail>
+        </blocks>
+        
+        <models>
+            <sendmail>
+                <class>Jag_Sendmail_Model</class>
+            </sendmail>
+        </models>
+        
+        <helpers>
+            <sendmail>
+                <class>Jag_Sendmail_Helper</class>
+            </sendmail>
+            <Sendmail>
+                <class>Jag_Sendmail_Helper</class>
+            </Sendmail>
+        </helpers>
+        
+	    <template>
+	        <email>
+	        
+	            <custom_email_template module="Sendmail">
+	                <label>Jag Sendmail Custom Email Module</label>
+	                <file>custom_email_template.html</file>
+	                <type>html</type>
+	            </custom_email_template>
+	            
+	            <ppmd_test_results_available_paid module="Sendmail">
+	                <label>Test Results Available Paid</label>
+	                <file>ppmd_test_results_available_paid.html</file>
+	                <type>html</type>
+	            </ppmd_test_results_available_paid>
+	            
+	            <efax module="Sendmail">
+	                <label>E Fax Req</label>
+	                <file>efax.html</file>
+	                <type>html</type>
+	            </efax>
+	            
+	            <ppmd_order_confirmation_lab module="Sendmail">
+	                <label>Order Confirmation Lab</label>
+	                <file>ppmd-order-conf-pay-now-lab-testing-online.html</file>
+	                <type>html</type>
+	            </ppmd_order_confirmation_lab>
+
+                <ppmd_order_confirmation_lab_getlabtested module="Sendmail">
+                    <label>Order Confirmation Lab</label>
+                    <file>ppmd-order-conf-pay-now-lab-testing-online_getlabtested.html</file>
+                    <type>html</type>
+                </ppmd_order_confirmation_lab_getlabtested>
+	            
+	            <ppmd_order_confirmation_home module="Sendmail">
+	                <label>Order Confirmation Home</label>
+	                <file>ppmd_order_confirmation_home.html</file>
+	                <type>html</type>
+	            </ppmd_order_confirmation_home>
+	            
+	            <ppmd_order_confirmation_home_nnr module="Sendmail">
+	                <label>Order Confirmation Home NNR</label>
+	                <file>ppmd_order_confirmation_home_nnr.html</file>
+	                <type>html</type>
+	            </ppmd_order_confirmation_home_nnr>
+	            
+	            <ppmd_order_confirmation_pwc_active module="Sendmail">
+	                <label>Order Confirmation PWC Active</label>
+	                <file>ppmd-order-conf-pay-with-cash-online.html</file>
+	                <type>html</type>
+	            </ppmd_order_confirmation_pwc_active>
+	            
+	            <ppmd_order_activation_pwc module="Sendmail">
+	                <label>Order Activation PWC</label>
+	                <file>ppmd-order-activation-pay-with-cash-online.html</file>
+	                <type>html</type>
+	            </ppmd_order_activation_pwc>
+	            
+	           <!--
+ <ppmd_order_activation_pwc_1 module="Sendmail">
+	                <label>Order Activation PWC 1</label>
+	                <file>ppmd_order_activation_pwc_1.html</file>
+	                <type>html</type>
+	            </ppmd_order_activation_pwc_1>
+-->
+	            
+	        <!-- PAY WITH CASH REMINDER EMAILS -->
+	            
+	             <ppmd_pwc_order_activation_reminder_1 module="Sendmail">
+	                <label>PWC Order Activation Reminder</label>
+	                <file>ppmd-order-activiation-reminder_1.html</file>
+	                <type>html</type>
+	            </ppmd_pwc_order_activation_reminder_1>
+	            
+	            <ppmd_pwc_reminder_8 module="Sendmail">
+	                <label>PWC Reminder to pay/test</label>
+	                <file>ppmd-test-results-reminder-8.html</file>
+	                <type>html</type>
+	            </ppmd_pwc_reminder_8>
+	            
+	         <!-- END PAY WITH CASH REMINDER EMAILS -->
+	            
+	            <ppmd_test_results_reminder_pwc_active_14 module="Sendmail">
+	                <label>Order Reminder PWC Active 14</label>
+	                <file>ppmd_test_results_reminder_pwc_active_14.html</file>
+	                <type>html</type>
+	            </ppmd_test_results_reminder_pwc_active_14>
+	            
+	            <ppmd_test_results_reminder_14 module="Sendmail">
+	                <label>PPMD Test Results Reminder 14</label>
+	                <file>ppmd_test_results_reminder_14.html</file>
+	                <type>html</type>
+	            </ppmd_test_results_reminder_14>
+	            
+	            <ppmd_test_results_available_unpaid module="Sendmail">
+	                <label>PPMD Test Results Available Unpaid</label>
+	                <file>ppmd_test_results_available_unpaid.html</file>
+	                <type>html</type>
+	            </ppmd_test_results_available_unpaid>
+	            
+	            <ppmd_order_confirmation_lab_paid_nnr module="Sendmail">
+	                <label>PPMD Order Confirmation NNR</label>
+	                <file>ppmd_order_confirmation_lab_paid_nnr.html</file>
+	                <type>html</type>
+	            </ppmd_order_confirmation_lab_paid_nnr>
+	            
+	            <ppmd_prescription_conf module="Sendmail">
+	                <label>PPMD Prescription Order Placed</label>
+	                <file>ppmd-prescription-conf.html</file>
+	                <type>html</type>
+	            </ppmd_prescription_conf>
+	            
+	             <ppmd_prescription_available module="Sendmail">
+	                <label>PPMD Prescription Available</label>
+	                <file>ppmd-prescription-available.html</file>
+	                <type>html</type>
+	            </ppmd_prescription_available>
+
+                <ppmd_doctor_consult_info module="Sendmail">
+                    <label>PPMD Doctor Consultation Information</label>
+                    <file>ppmd-doc-consult-info.html</file>
+                    <type>html</type>
+                </ppmd_doctor_consult_info>
+
+                <followup_initial_email module="Sendmail">
+                    <label>Follow Up Initial Email</label>
+                    <file>sales/followup_initial_email.html</file>
+                    <type>html</type>
+                </followup_initial_email>
+
+                <followup_recurring_email module="Sendmail">
+                    <label>Follow Up Recurring Email</label>
+                    <file>sales/followup_recurring_email.html</file>
+                    <type>html</type>
+                </followup_recurring_email>
+	        </email>
+	    </template>
+        
+    </global>
+    <frontend>
+        <routers>
+            <sendmail>
+                <use>standard</use>
+                <args>
+                    <module>Jag_Sendmail</module>
+                    <frontName>sendmail</frontName>
+                </args>
+            </sendmail>
+        </routers>
+        <resources>
+            <sendmail_setup>
+                <setup>
+                    <module>Jag_Sendmail</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </sendmail_setup>
+            <sendmail_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </sendmail_write>
+            <sendmail_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </sendmail_read>
+        </resources>
+        <translate>
+            <modules>
+                <Jag_Sendmail>
+                    <files>
+                        <default>Jag_Sendmail.csv</default>
+                    </files>
+                </Jag_Sendmail>
+            </modules>
+            
+        </translate>
+        <!--<layout>
+            <updates>
+                <sendmail module="jag_sendmail">
+                    <file>sendmail.xml</file>
+                </sendmail>
+            </updates>
+        </layout>-->
+    </frontend>
+
+    <default>
+        <jag_sendmail>
+            <templates>
+                <order_confirmation>
+                    <getlabtested>ppmd_order_confirmation_lab_getlabtested</getlabtested>
+                    <default>ppmd_order_confirmation_lab</default>
+                </order_confirmation>
+            </templates>
+            <no_email_instructions_file_stores>
+                <getlabtested />
+            </no_email_instructions_file_stores>
+        </jag_sendmail>
+    </default>
+</config>

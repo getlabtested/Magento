@@ -1,0 +1,34 @@
+/*** Demo specific css ***/
+body                   { font: 12px Tahoma, Geneva, sans-serif; background: #fff; color: #000; margin:0px; padding:0px; }
+a, a img               { border: 0; text-decoration: none; }
+
+h1                     { font: bold 60px Helvetica, Sans-Serif; letter-spacing: -2px; margin: 20px 0; text-align: center; }
+h2                     { font: bold 30px Helvetica, Sans-Serif; letter-spacing: -1px; margin: 0 0 10px 0; color: #002266; }
+h2.title               { text-align: center; }
+h3                     { font: bold 20px Georgia, Serif; margin: 0 0 10px 0; color: #003388; }
+h5, .header            { font: bold 15px Georgia, Serif; text-align: center; }
+pre, code              { font: 13px/1.8 Monaco, MonoSpace; margin: 0 0 15px 0; padding: 5px; background: #f5f5f5; block: inline; width: 100%; overflow-x: auto; }
+blockquote             { margin-left: 30px; }
+
+ul                     { margin: 0 0 25px 25px; }
+ul li                  { font: 14px Tahoma, Geneva, sans-serif; margin: 0 0 8px 0; }
+
+
+.progresso {
+	height:10px;
+	width: 0%;
+	background:#fff url('../images/progress.jpg') repeat-x;
+}
+
+.panecontain { background:#fff; color:#747474; padding:10px; }
+
+.question_text { font-size:17px; font-family: Georgia, "Times New Roman", Times, serif; color:#000; }
+
+.content_area { font-size:14px; font-weight:normal; font-family:Tahoma, Geneva, sans-serif; margin-top:10px; }
+
+#qa-container { height:125px; }
+
+.next { float:right; margin-top:20px; margin-right:20px; display:none; }
+
+#qa-nums { float:right; font-family:Tahoma, Geneva, sans-serif; font-weight:bold; font-size:60px; color:#D1D1D1; margin-right:20px; line-height:45px; }
+

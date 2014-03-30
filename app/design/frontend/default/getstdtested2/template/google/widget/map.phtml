@@ -1,0 +1,31 @@
+<?php if ($this->canShowMap()){ ?>
+
+    <script type="text/javascript"
+            src="https://maps.googleapis.com/maps/api/js?key=<?php echo $this->getMapApiKey() ?>&sensor=true">
+    </script>
+
+    <div id="map_canvas" style="width:<?php echo $this->getMapWidthValue(); ?>px; height:<?php echo $this->getMapHeightValue(); ?>px;"></div>
+
+    <script type="text/javascript">
+        function initialize() {
+            var mapOptions = {
+                center: new google.maps.LatLng(<?php echo $this->getMapLatitude() ?>, <?php echo $this->getMapLongitude() ?>),
+                zoom: 8,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+            <?php foreach ($this->getMarkerLocations() as $location_array) { ?>
+                var markerLatLong = new google.maps.LatLng(<?php echo $location_array['marker_lat'] ?>, <?php echo $location_array['marker_long'] ?>);
+                var marker = new google.maps.Marker({
+                    position: markerLatLong,
+                    map: map,
+                    title: 'Lab Location'
+                });
+            <?php } ?>
+        }
+
+        initialize();
+    </script>
+
+<?php } ?>

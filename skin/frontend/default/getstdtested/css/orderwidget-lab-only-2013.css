@@ -1,0 +1,235 @@
+
+.bg_white { margin-top: -20px; }
+#header_wrapper.bg_white { margin-top: 0; }
+
+#order_module3 {
+	clear: both;
+	width: 960px;
+	min-height: 425px;
+	background: #fff url(../images/order-widget-lab-2013.png) left top no-repeat;
+}
+
+#order_module3 #orderWidget {
+}
+
+#order_module3 #lab_package {
+	width: 960px;
+	height: 420px;
+	overflow: hidden;
+}
+
+#order_module3 #lab_package .header {
+	width: 218px;
+	height: 84px;
+	display: block;
+	text-indent: -9999px;
+}
+
+#order_module3 #lab_package .content {
+	height: 154px;
+}
+
+#order_module3 #lab_package .content ul {
+	float: left;
+	width: 400px;
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	list-style-image: none;
+	text-indent: -9999px;
+}
+
+#order_module3 #lab_package .content p {
+	display: block;
+	float: right;
+	width: 250px;
+	margin: 0;
+	padding: 0 230px 0 0;
+	color: #006589;
+	font-size: 15px;
+	line-height: 24px;
+}
+
+#order_module3 #lab_packapge_footer { clear: both; }
+
+#order_module3 #lab_packapge_footer input#expert_package {
+	display: block;
+	float: left;
+	width: 25px;
+	height: 20px;
+	margin: 20px 0 0 74px;
+}
+
+#order_module3 #lab_packapge_footer label {
+	float: left;
+	display: block;
+	width: 350px;
+	height: 60px;
+	text-indent: -9999px;
+	cursor: pointer;
+}
+
+#order_module3 #lab_packapge_footer label:hover {
+	background: transparent url(../images/order-complete-pack-over.jpg) 16px 11px no-repeat;
+}
+
+#order_module3 #lab_tests1 {
+	width: 960px;
+	height: 275px;
+	overflow: hidden;
+	text-shadow: 1px 2px 2px #0b485a;
+	background: transparent url(../images/order-individual-tests.jpg) left top no-repeat;
+}
+
+#order_module3 #lab_tests1 .header {
+	margin: 0;
+	padding: 25px 0 0 35px;
+	color: #fff;
+	font-size: 36px;
+	line-height: 36px;
+}
+
+#order_module3 #lab_tests1 .content {
+	padding: 25px 0 0 35px;
+	color: #fff;
+}
+
+#order_module3 #lab_tests1 #lab_tests1-col1 { float: left; width: 200px; padding-right: 35px; font-size: 14px; line-height: 22px; }
+#order_module3 #lab_tests1 #lab_tests1-col2 { float: left; width: 270px; }
+#order_module3 #lab_tests1 #lab_tests1-col3 { float: left; width: 160px; }
+#order_module3 #lab_tests1 #lab_tests1-col4 { float: left; width: 220px; }
+
+#order_module3 #lab_tests1 ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#order_module3 #lab_tests1 li {
+	display: block;
+	padding-bottom: 12px;
+	color: #fff;
+	font-size: 20px;
+	line-height: 20px;
+	list-style: none;
+}
+
+#order_module3 #lab_tests1 li input {
+	margin: 0 10px 0 0;
+	padding: 0;
+}
+
+#order_module3 #your_order {
+	float: right;
+	width: 330px;
+	height: 75px;
+	margin: 14px 28px 0 0;
+	border: 0;
+}
+
+#order_module3 .your_order_side {
+	width: 100% !important;
+}
+
+#order_module3 #your_order .total {
+	float: right;
+	width: 60px;
+}
+
+#order_module3 #your_order #total_price {
+	padding: 4px 0 18px 0;
+	color: #e87c31;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 38px;
+	font-weight: bold;
+	line-height: 68px;
+	text-align: right;
+	text-shadow: 1px 1px #bbb;
+}
+
+#order_module3 #your_order .submit {
+	float: left;
+	width: 215px !important;
+	height: 70px !important;
+	margin: 0;
+	padding: 70px 0 0 0;
+	background: none !important;
+	overflow: hidden;
+}
+
+#order_module3 #your_order .submit:hover {
+	background: transparent url(../images/order-individual-over.jpg) 10px 16px no-repeat !important;
+}
+
+
+
+
+
+
+#order #order-benefits {
+	clear: both;
+	font-size: 17px;
+}
+
+#order #order-benefits p {
+	margin: 0;
+	padding: 0;
+}
+
+#order #order-benefits h3 {
+	color: #126c8c;
+	font-size: 36px;
+	font-weight: 300;
+}
+
+#order #order-benefits h4 {
+	margin-bottom: 0;
+	padding-bottom: 4px;
+	color: #eb7700;
+	font-size: 18px;
+}
+
+#order #order-benefits-icon1 { float: left; width: 410px; padding-left: 50px; color: #073b4d; font-size: 14px; background: transparent url(../images/order-benefits-icon1.jpg) left 30px no-repeat; }
+#order #order-benefits-icon2 { float: right; width: 410px; padding-left: 50px; color: #073b4d; font-size: 14px; background: transparent url(../images/order-benefits-icon2.jpg) 10px 30px no-repeat; }
+#order #order-benefits-icon3 { float: left; width: 410px; padding-left: 50px; color: #073b4d; font-size: 14px; background: transparent url(../images/order-benefits-icon3.jpg) left 30px no-repeat; }
+#order #order-benefits-icon4 { float: right; width: 410px; padding-left: 50px; color: #073b4d; font-size: 14px; background: transparent url(../images/order-benefits-icon4.jpg) 12px 30px no-repeat; }
+#order #order-benefits-icon5 { float: left; width: 410px; padding-left: 50px; color: #073b4d; font-size: 14px; background: transparent url(../images/order-benefits-icon5.jpg) left 30px no-repeat; }
+#order #order-benefits-icon6 { float: right; width: 410px; padding-left: 50px; color: #073b4d; font-size: 14px; background: transparent url(../images/order-benefits-icon6.jpg) 10px 30px no-repeat; }
+
+#order-testing-locations-wrap {
+	clear: both;
+	width: 100%;
+	background: transparent url(../images/order-testing-locations-wrap.jpg) left top repeat-x;
+}
+
+#order-testing-locations {
+	width: 960px;
+	min-height: 330px;
+	margin: 0 auto;
+	background: transparent url(../images/order-testing-locations.jpg) left top no-repeat;
+}
+
+#order-testing-locations h2 {
+	margin: 0;
+	padding: 40px 0 0 320px;
+	color: #003a4e;
+	font-size: 43px;
+	font-weight: 600;
+	line-height: 43px;
+}
+
+#order-testing-locations p {
+	margin: 0;
+	padding: 20px 0 0 320px;
+	color: #003a4e;
+	font-size: 20px;
+	line-height: 26px;
+}
+
+#b-order-testing-locations {
+	float: right;
+	width: 250px;
+	height: 72px;
+	margin: 10px 12px 0 0;
+	text-indent: -9999px;
+}

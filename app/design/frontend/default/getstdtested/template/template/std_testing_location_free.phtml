@@ -1,0 +1,184 @@
+<?php
+
+	$cities = $this->getCityList();
+
+	$state =  $this->getCurState();
+
+	$stateFull = $this->getCurStateFull();
+
+	$count = count($cities);
+	$col = round($count/2);
+
+	//$states = $this->getStateList();
+	$baseDir = Mage::getBaseDir();
+
+	$locales = $this->getLocaleList();
+
+	$state =  $this->getCurState();
+
+	$stateFull = $this->getCurStateFull();
+
+	$city = $this->getCurCity();
+
+?>  
+
+
+<style>
+	#free-std-clinic-top { width:950px; background-image:url(http://c240340.r40.cf1.rackcdn.com/free-std-clinics-top-banner-bk-woman.jpg); background-repeat:no-repeat; font-family:Tahoma, Geneva, sans-serif; font-size:12px; border-bottom: solid 1px #999; margin-bottom: 20px; }
+	#free-std-clinic-top h1 { margin-left:300px; margin-top:0px; margin-bottom:5px; font-family:Tahoma, Geneva, sans-serif; font-size:28px; font-weight:bold; color:#023a4c; }
+	#free-std-clinic-top h2 {padding-bottom:0px; margin-left:300px; margin-top:0px; margin-bottom:10px; font-weight:normal; font-family:Tahoma, Geneva, sans-serif; color:#0c6e8e; font-size:19px; }
+	#free-std-clinic-top p { margin-top:0px; font-family:Arial, Helvetica, sans-serif; font-size:12px; color:#646262; }
+	#free-std-clinic-top .blue { color:#0c6e8e; font-weight:bold; font-size:19px; }
+	#free-std-clinic-top .orange { color:#e87640; font-weight:bold; font-size:19px; }
+	#news-tweets { width:315px; border: solid 1px #C1C1C1; -moz-border-radius:5px; border-radius:5px; }
+	#free-std-clinic-top .button-arrows { width:355px; height:65px; background-image:url(http://c240340.r40.cf1.rackcdn.com/free-std-clinics-top-banner-btn-arrows.jpg); background-repeat:no-repeat; margin-left:300px; float:left; margin-bottom:15px; }
+	#free-std-clinic-top .accreds { width:440px; height:63px; background-image:url(http://c240340.r40.cf1.rackcdn.com/free-std-clinics-top-banner-accreds.jpg); background-repeat:no-repeat; margin-left:5px; margin-top:10px; float:left; }	
+	.fvp-table-col-head-1 { width:230px; height:74px; background-image:url(http://c240340.r40.cf1.rackcdn.com/fvp-grad-head-col2.jpg); background-repeat:repeat-x; padding:10px; color:#FFF; font-family:Arial, Helvetica, sans-serif; text-align:center; font-size:23px; }
+	.fvp-table-col-head-2 { width:230px; height:74px; background-image:url(http://c240340.r40.cf1.rackcdn.com/fvp-grad-head-col3.jpg); background-repeat:repeat-x; padding:10px; color:#FFF; font-family:Arial, Helvetica, sans-serif; text-align:center; font-size:23px; }
+	.fvp-table-col1 { width:130px; background-color:#eff7f6; background-image:url(http://c240340.r40.cf1.rackcdn.com/fvp-grad-col1.jpg); background-repeat:repeat-x; padding:15px; font-family:Arial, Helvetica, sans-serif; color:#207e7c; font-size:14px; font-weight:bold; }
+	.fvp-table-col2 { width:230px; background-color:#bebcbd; background-image:url(http://c240340.r40.cf1.rackcdn.com/fvp-grad-col2.jpg); background-repeat:repeat-x; padding:10px; color:#FFF; font-family:Arial, Helvetica, sans-serif; font-size:12px; }
+	.fvp-table-col3 { width:230px; background-color:#adadad; background-image:url(http://c240340.r40.cf1.rackcdn.com/fvp-grad-col3.jpg); background-repeat:repeat-x; padding:10px; color:#FFF; font-family:Arial, Helvetica, sans-serif; font-size:12px; }
+	.loc-list-link a { color: #0C6E8E; font-weight:bold; }
+	.loc-list-link a:hover { text-decoration:underline; }
+</style>
+
+
+
+
+<div id="free-std-clinic-top">
+	<h1>Potential Free STD Clinics and<br />Free STD Testing Centers in <?php echo ucwords($city); ?>, <?php echo  ucwords($stateFull);?></h1>
+	<h2>search our directory of potentially free std testing clinics in <?php echo ucwords($city); ?>, <?php echo  ucwords($stateFull);?></h2>
+    <p style="margin-left:300px; margin-bottom:8px;">We found a number of potential free std testing centers in <?php echo ucwords($city); ?>, <?php echo  ucwords($stateFull);?> that may provide free testing. Due to the nature of this information in our database, we cannot guarantee that these locations provide free testing.</p>
+	<p style="margin-left:300px; margin-bottom:8px;">Be aware of the shortcomings of public STD testing centers and free std clinics in <?php echo ucwords($city); ?>. Be sure they can service your needs fully by asking the following questions: <em>Which STDs do you test for? Do you test for herpes as well?  Is it free? Income-based?  Do you report my name and information to the Federal Government or Insurance companies?  Can I come in to get tested today?  How long will I have to wait to see my results?  Do I have to come for a second visit to see results?  Can you prescribe medication for any of the conditions you test for?</em></p>
+	<p style="margin-left:300px; margin-bottom:8px;">
+For same-day STD testing in <?php echo ucwords($city); ?>, <?php echo  ucwords($stateFull);?> and guaranteed fast results, click on the <b>"VIEW TESTING &amp; PRICING"</b> button below.</p>
+	<div class="button-arrows">
+	    <a class="btn_orange_reflection" href="/std-testing-options" style="font-size:14px; width:210px; margin-left:70px; margin-top:10px;">View Testing &amp; Pricing</a>
+    </div>
+    <div style="margin-top:30px;"><span class="blue">OR CALL US AT</span><span class="orange"> 866-749-6269</span></div>
+	<div style="clear:both;"></div>
+    <div style="margin-left:300px; width:200px; float:left;"><span class="blue">TEST WITH</span><br /><span class="orange">CONFIDENCE</span><p>Trusted by the medical community, the media and our customers</p></div>
+    <div class="accreds"></div>
+	<div style="clear:both;"></div>
+</div>
+<div style="clear:both;"></div>
+
+
+<!-- /steps_module -->
+<div id="left_col">
+<h2 style="margin-bottom:0px; padding-bottom:10px;">Free STD Testing vs. Paid STD Testing in <?php echo ucwords($city); ?>, <?php echo  ucwords($stateFull);?></h2>
+
+<div>
+<table border="0" align="left" cellpadding="0" cellspacing="1">
+  <tr>
+    <td>&nbsp;</td>
+    <td class="fvp-table-col-head-1"><b>FREE STD TESTING</b></td>
+    <td class="fvp-table-col-head-2"><b>LOW COST STD TESTING</b></td>
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Appointment</td>
+
+    <td class="fvp-table-col2">Weeks to months to get an appointment</td>
+    <td class="fvp-table-col3">No appointment needed - test today</td>
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Sample</td>
+    <td class="fvp-table-col2">Often, painful swabbing</td>
+    <td class="fvp-table-col3">Painless, urine and blood testing</td>
+
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Wait Times</td>
+    <td class="fvp-table-col2">2+ hours</td>
+    <td class="fvp-table-col3">15-20 minutes</td>
+  </tr>
+  <tr>
+
+    <td class="fvp-table-col1">Tests Available</td>
+    <td class="fvp-table-col2">No herpes testing</td>
+    <td class="fvp-table-col3">Herpes testing</td>
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Convenience</td>
+    <td class="fvp-table-col2">Limited locations</td>
+
+    <td class="fvp-table-col3">Test at over 4,000 nationwide labs or test at home</td>
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Privacy</td>
+    <td class="fvp-table-col2">Free STD testing offers no privacy. Results will be reported.</td>
+    <td class="fvp-table-col3">At the lab, no one knows what you're getting tested for. STD test results are available via private, online portal. Results are not reported to insurance companies.</td>
+  </tr>
+
+  <tr>
+    <td class="fvp-table-col1">Accuracy</td>
+    <td class="fvp-table-col2">Free STD testing and paid STD testing offers the same level of accuracy</td>
+    <td class="fvp-table-col3">Free STD testing and paid STD testing offers the same level of accuracy</td>
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Results</td>
+
+    <td class="fvp-table-col2">2-3 weeks</td>
+    <td class="fvp-table-col3">1-5 days</td>
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Treatment</td>
+    <td class="fvp-table-col2">Available</td>
+    <td class="fvp-table-col3">Available</td>
+
+  </tr>
+  <tr>
+    <td class="fvp-table-col1">Cost</td>
+    <td class="fvp-table-col2">Free, but often difficult to find - primarily income and welfare based</td>
+    <td class="fvp-table-col3">Tests start as low as $30 when included in a test package</td>
+  </tr>
+</table>
+</div>
+
+<div style="clear:both;"></div>	
+<div id="news-tweets" style="float:left; margin-right:30px; margin-top:30px;">
+	<div style="padding:10px;">
+		<?php 
+		//$url = 'http://news.google.com/news?pz=1&cf=all&ned=us&hl=en&as_scoring=r&geo=60614&as_maxm=5&q=transmitted+diseases+stds+OR+hiv+OR+syphilis+OR+chlamydia+OR+gonorrhea+OR+herpes+OR+hepatitis+OR+sexually&as_qdr=a&as_drrb=q&as_mind=19&as_minm=4&cf=all&as_maxd=19&output=rss';
+		$url = 'http://news.search.yahoo.com/rss?ei=UTF-8&va_vt=any&vo=std+hiv+herpes+syphilis+chlamydia+gonorrhea+hepatitis&vo_vt=any&ve_vt=any&vp_vt=any&fl=1&vl=lang_en&smonth=11&emonth=12&sday=8&eday=8&location='.str_replace(" ", "+", $city).'&catfilt=1&cat=health';
+		$url2 = 'http://news.search.yahoo.com/rss?ei=UTF-8&va_vt=any&vo=std+hiv+herpes+syphilis+chlamydia+gonorrhea+hepatitis&vo_vt=any&ve_vt=any&vp_vt=any&fl=1&vl=lang_en&smonth=11&emonth=12&sday=8&eday=8&catfilt=1&cat=health';
+	    include_once $baseDir.'/rss/rss-news.php';
+		?>
+	</div>
+</div>
+
+<div id="news-tweets" style="float:left; margin-top:30px;">
+	<div style="padding:10px;">
+		<?php
+	    //$url = 'http://search.twitter.com/search.atom?q=stds&rpp=5';
+		$url = 'http://api.twitter.com/1/getSTDtested/lists/sex-and-sexual-health/statuses.atom';
+	    include_once $baseDir.'/rss/rss-twitter.php';
+		?>
+	</div>
+</div>
+<div style="clear:both;">&nbsp;</div>
+</div>
+<!-- /left_col -->
+<div id="right_col">
+
+	<h3>Potential Free Clinics in <?php echo ucwords($city); ?>, <?php echo ucwords($stateFull); ?></h3>
+
+	<div id="item-container" style="width:100%">
+		<?php
+			foreach ($locales as $local) {
+			//print_r($local); exit();
+		?>
+		<div class="location">
+			<span class="loc-list-link"><a title="<?php echo $local->getName(); ?>" href="/free-std-clinics/<?php echo strtolower(str_replace(" ","-",$stateFull));?>-<?php echo strtolower($state);?>/<?php echo str_replace(" ","-",strtolower($city));?>/<?php echo $local->getDynamicId();?>-<?php echo $local->getZip();?>"><?php echo $local->getName(); ?></a></span><br />
+			<?php echo $local->getAddress1(); ?><br />
+			<?php echo $local->getCity(); ?>, <?php echo $local->getState()." ".$local->getZip(); ?><br />
+			<?php if (strlen($local->getPhone()) > 1) { ?>
+			866-749-6269<br /><br />
+			<?php } ?>
+		</div>                            
+		<?php 
+		}
+        ?> 
+	</div>
+</div>
+<!-- /right_col -->

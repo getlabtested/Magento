@@ -1,0 +1,67 @@
+<?php
+
+	$localepage = Mage::registry('localepage');
+	
+	$values = unserialize($localepage->getValues());
+		
+?> 
+
+<div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+            	<a href="frontpage.html">Home</a>
+                <span class="separator"> > </span>
+                <a href="#" class="current">Free STD Testing</a>
+            </div> <!-- /breadcrumbs -->
+            	
+            <div id="content">
+
+				<div id="col_header">
+                	<div id="free_std_top_module">
+                    	<img src="/media/images/girl_laptop.jpg" style="float: left; margin-right: 15px;" />
+                        <h1 class="page-title"><?php echo  $values['h1'];?></h1>
+                        <h2><?php echo  $values['h2'];?></h2>
+                        <p><?php echo  $values['body_content'];?></p>
+                        
+                        <div class="info">
+                        	<div class="left">
+                            	<a class="btn_orange_reflection" href="#">view testing & prices</a>
+                            </div>
+                            <div class="right">
+                            	<span class="blue">or call us at</span> <span class="orange">866-749-6269</span>
+                            </div>
+                        </div> <!-- /.info -->
+                        
+                        <div class="trusted">
+                        	<div class="left">
+                            	<p class="large">
+                                	<span class="blue">test with</span><br />
+                                    <span class="orange">confidence</span>
+                                </p>
+                                <p>Trusted by the medical community, the media and our customers</p>
+                            </div>
+                            <div class="right">
+                            	<img src="/media/images/trusted_logos.png"  />
+                            </div>
+                        </div> <!-- /.trusted -->
+                        
+                        <div class="clear"></div>
+                    </div> <!-- /free_std_top_module -->
+                </div> <!-- /cols_header -->
+                
+                <div id="left_col">
+                	<div id="free_std_module_left">
+                    	<h3>Free STD Testing vs. Paid STD Testing</h3>
+                        <p>
+                        	<img src="/media/images/free_vs_pay_tests.jpg" alt="Free STD Testing vs. Paid STD Testing" />
+                        </p>
+                    </div> <!-- /free_std_module_left -->
+
+                </div> <!-- /left_col -->
+                
+                <div id="right_col">
+                	Widgets here
+                </div> <!-- /right_col -->
+                
+            </div> <!-- /content -->

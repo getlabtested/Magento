@@ -1,0 +1,29 @@
+<?php 
+
+$_locations = $this->getLabsByZip();
+
+$x = 0;
+
+foreach ($_locations as $location) {
+
+    $labId = $location['code'];
+    if ($x < 6) { ?>
+
+        <div class="item">
+            <h4>
+                <input onclick="document.getElementById('lab-hidden').value=this.value" type="radio" name="lab" value="<?php echo $labId;?>,<?php echo $location['lab-id'];?>">&nbsp;
+                <?php echo $location['address'];?>
+            </h4>
+            <div class="location">
+                <p><?php echo ucwords(strtolower($location['name']));?></p>
+                <?php echo ucwords(strtolower($location['city']));?>, <?php echo $location['state'];?> <?php echo $location['zip'];?><br /> <span class="blue"><?php echo $location['telephone'];?></span></p>
+            </div>
+            <div class="hours">
+                <label>Hours</label>
+                <p><?php echo $location['hours'];?></p>
+            </div>
+        </div>
+    <?php
+        $x++;
+    }
+} ?>

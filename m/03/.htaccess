@@ -1,0 +1,24 @@
+Options +FollowSymlinks
+RewriteEngine on
+
+#RewriteCond %{REQUEST_URI} !(.*).php$
+#RewriteRule ^(.*)$ http://getstdtested.com/m/03/$1.php [L]
+
+RewriteRule ^how-our-service-works$ http://getstdtested.com/m/03/how-our-service-works.php [L]
+RewriteRule ^chlamydia-and-gonorrhea-home-test-kit$ http://getstdtested.com/m/03/chlamydia-and-gonorrhea-home-test-kit.php [L]
+RewriteRule ^chlamydia-test$ http://getstdtested.com/m/03/chlamydia-test.php [L]
+RewriteRule ^compete-std-package$ http://getstdtested.com/m/03/compete-std-package.php [L]
+RewriteRule ^expert-recommended-package$ http://getstdtested.com/m/03/expert-recommended-package.php [L]
+RewriteRule ^find-a-testing-center$ http://getstdtested.com/m/03/find-a-testing-center.php [L]
+RewriteRule ^gonorrhea-test$ http://getstdtested.com/m/03/gonorrhea-test.php [L]
+RewriteRule ^hepatitis-b-test$ http://getstdtested.com/m/03/hepatitis-b-test.php [L]
+RewriteRule ^hepatitis-c-test$ http://getstdtested.com/m/03/hepatitis-c-test.php [L]
+RewriteRule ^herpes-i-test$ http://getstdtested.com/m/03/herpes-i-test.php [L]
+RewriteRule ^herpes-ii-test$ http://getstdtested.com/m/03/herpes-ii-test.php [L]
+RewriteRule ^hiv$ http://getstdtested.com/m/03/hiv.php [L]
+RewriteRule ^home-std-package$ http://getstdtested.com/m/03/home-std-package.php [L]
+RewriteRule ^std-tests-and-pricing$ http://getstdtested.com/m/03/std-tests-and-pricing.php [L]
+RewriteRule ^syphils$ http://getstdtested.com/m/03/syphils.php [L]
+RewriteRule ^who-should-get-tested$ http://getstdtested.com/m/03/who-should-get-tested.php [L]
+RewriteRule ^privacy-policy$ http://getstdtested.com/m/03/privacy-policy.php [L]
+RewriteRule ^terms-of-service$ http://getstdtested.com/m/03/terms-of-service.php [L]

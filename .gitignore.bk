@@ -1,0 +1,8 @@
+var/cache/
+var/session/
+app/etc/local.xml
+
+*dwsync.xml
+
+*/_notes
+index.php

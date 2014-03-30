@@ -1,0 +1,637 @@
+/* GetSTDtested.com */
+/* Mobile #5 */
+/* 2012 */
+
+
+/* Elements */
+
+body {
+	margin: 0;
+	padding: 0;
+	color: #666;
+	font-family: arial, tahoma, helvetica, verdana, sans-serif;
+	font-size: 12px;
+	line-height: 18px;
+	background: #fff;
+}
+
+* {
+	margin: 0;
+	padding: 0;
+	border: 0;
+}
+
+
+/* Body */
+
+#wrap {
+
+
+	width: 320px;
+
+
+	min-width: 320px;
+	max-width: 1000px;
+	height: 100%;
+	margin: 0 auto;
+}
+
+
+/* Header */
+
+#header {
+	height: 58px;
+	margin: 0 0 5px 0;
+	padding: 0;
+	color: #888;
+	font-size: 11px;
+	line-height: 17px;
+	text-align: center;
+	background: #ededed;
+	border-bottom: 2px solid #3792b4;
+}
+
+#header #logo {
+	display: block;
+	width: 320px;
+	height: 58px;
+	margin: 0 auto;
+	text-indent: -9999px;
+	background: transparent url(../images/logo.jpg) center top no-repeat;
+}
+
+
+/* Content */
+
+h1, h2, h3, h4 {
+	color: #023a4c;
+	font-family: helvetica, arial, tahoma, verdana, sans-serif;
+	font-weight: bold;
+}
+h1 { font-size: 28px; line-height: 36px; padding: 10px 15px 6px 15px; }
+h2 {	font-size: 20px; line-height: 28px; padding: 10px 15px 5px 15px; }
+h3 {	color: #E77640; font-size: 14px; line-height: 20px; padding: 8px 15px 4px 15px; }
+h4 {	font-size: 13px; line-height: 19px; padding: 8px 15px 2px 15px; }
+
+h1.home {
+	padding: 4px 5px 0 15px;
+	color: #023a4c;
+	font-family: helvetica, arial, tahoma, verdana, sans-serif;
+	font-weight: bold;
+	font-size: 28px;
+	line-height: 32px;
+}
+
+h2.home {
+	padding: 10px 5px 0 15px;
+	color: #e77640;
+	font-family: helvetica, arial, tahoma, verdana, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 21px;
+}
+
+h3.home {
+	padding: 10px 5px 6px 15px;
+	color: #023a4c;
+	font-family: helvetica, arial, tahoma, verdana, sans-serif;
+	font-weight: bold;
+	font-size: 15px;
+	line-height: 21px;
+}
+
+p {
+	margin: 0;
+	padding: 4px 15px 8px 15px;
+}
+
+a {
+	color: #0b6d91;
+	text-decoration: underline;
+}
+
+a:hover {
+	color: #0b6d91;
+	text-decoration: underline;
+}
+
+a:active, a:focus {
+	outline: none;
+}
+
+ul {
+	margin: 0;
+	padding: 10px 15px 12px 40px;
+	list-style-type: disc;
+	list-style-image: none;
+}
+
+li {
+	padding: 0 0 6px 0;
+}
+
+small {
+	font-size: 11px;
+}
+
+strong {
+	/*color: #e57133;*/
+}
+
+#quote {
+	padding: 10px 15px 8px 15px;
+	color: #666;
+	font-family: georgia, arial, tahoma, verdana, sans-serif;
+	font-size: 13px;
+	font-style: italic;
+	line-height: 18px;
+	text-align: center;
+	background: transparent url(../images/quote-bg.gif) left 6px no-repeat;
+}
+
+#quote strong {
+	color: #e97640;
+	font-weight: normal;
+}
+
+#quote span {
+	display: block;
+	padding: 10px 0 0 0;
+	color: #777;
+	font-family: arial, tahoma, verdana, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	line-height: 18px;
+	text-align: right;
+}
+
+#b-orange, #b-orange2 {
+	float: left;
+	width: 162px;
+	height: 42px;
+	margin: 0 0 0 6px;
+	padding: 0;
+	color: #fff;
+	font-size: 15px;
+	line-height: 42px;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 0 1px #de3b12;
+	background: transparent url(../images/b-orange.jpg) center top no-repeat;
+}
+#b-orange span, #b-orange2 span { color: #fcd8c4; }
+#b-orange a, #b-orange a:hover, #b-orange2 a, #b-orange2 a:hover { color: #fff; text-decoration: none; }
+
+a#b-blue {
+	float: right;
+	width: 144px;
+	height: 42px;
+	margin: 0 6px 0 0;
+	padding: 0;
+	color: #fff;
+	font-size: 15px;
+	line-height: 42px;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 0 1px #001f2e;
+	text-decoration: none;
+	background: transparent url(../images/b-blue.jpg) center top no-repeat;
+}
+
+
+/* Find a Lab */
+
+#labs-by-zip {
+	float: left;
+	margin-left: 15px;
+}
+
+#labs-by-zip #zip_code {
+	float: left;
+	width: 85px;
+	height: 35px;
+	margin: 3px 5px 0 0;
+	padding: 0 1px 0 5px;
+	color: #666;
+	font-size: 19px;
+	line-height: 33px;
+	border: 1px solid #023a4c;
+}
+
+#labs-by-zip .b-orange {
+	float: left;
+	width: 92px;
+	height: 42px;
+	margin: 0 0 0 6px;
+	padding: 0;
+	color: #fff;
+	font-size: 15px;
+	line-height: 42px;
+	font-weight: bold;
+	text-align: center;
+	text-shadow: 0 1px #de3b12;
+	background: transparent url(../images/b-orange-small.jpg) center top no-repeat;
+	cursor: pointer;
+}
+
+#LoadLocation {
+	display: none;
+	float: left;
+	margin: 5px 0 0 10px;
+}
+
+#location_results {
+	margin: 10px 15px;
+}
+
+#location_results .item {
+	clear: both;
+	margin: 8px 0 0 0;
+}
+
+#location_results h4, #location_results p {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+#location_results p em {
+	font-size: 11px;
+}
+
+#location_results p.header {
+	padding-top: 0;
+	padding-bottom: 0;
+	font-weight: bold;
+}
+
+#location_results #loc-sub {
+	padding: 5px 0 14px 76px;
+	background: #fff;
+}
+
+#location_results #loc-sub .btn_orange_32_reflection-location {
+	width: 148px;
+	height: 36px;
+	margin: 0 auto;
+	background: transparent url(../images/b-order.jpg) left top no-repeat;
+	cursor: pointer;
+}
+
+
+/* How It Works */
+
+#how-it-works {
+	margin: 8px 15px 0 15px;
+	font-family: Tahoma, Geneva, sans-serif;
+}
+
+#how-it-works .how-it-works-step1 { /*height: 37px;*/ padding: 6px 10px 6px 50px; color: #0c6e8e; font-size: 18px; line-height: 23px; background: transparent url('http://getstdtested.com/media/images/circle-step-1.gif') left top no-repeat; }
+#how-it-works .how-it-works-step2 { height: 37px; padding: 6px 10px 0 50px; color: #0c6e8e; font-size: 18px; line-height: 23px; background: transparent url('http://getstdtested.com/media/images/circle-step-2.gif') left top no-repeat; }
+#how-it-works .how-it-works-step3 { /*height: 37px;*/ padding: 6px 10px 6px 50px; color: #0c6e8e; font-size: 18px; line-height: 23px; background: transparent url('http://getstdtested.com/media/images/circle-step-3.gif') left top no-repeat; }
+
+#how-it-works .arrow-down {
+	float: left;
+	width: 37px;
+	height: 82px;
+	margin-right: 15px;
+	margin-bottom: 15px;
+	background: transparent url('http://getstdtested.com/media/images/arrow-down.gif') left top no-repeat;
+}
+
+#how-it-works .hiw-blocks {
+	float: left;
+	width: 82px;
+	height: 92px;
+	margin-right: 15px;
+}
+
+#how-it-works .provide-sample-text {
+	float: left;
+	width: 205px;
+	height: 82px;
+	color: #6E6E6E;
+	margin-right: 15px;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 14px;
+}
+
+
+/* STD Tests > Complete Pack */
+
+#tests-complete-pack {
+	margin: 12px 15px 20px 15px;
+}
+
+#tests-complete-pack #tests-header {
+	width: 288px;
+	height: 72px;
+	padding: 0;
+	color: #fff;
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	text-shadow: 0 1px #de3b12;
+	text-indent: -9999px;
+	background: #ee763a url(../images/tests-complete.jpg) left top no-repeat;
+}
+
+#tests-complete-pack #tests-header span {
+	color: #fff;
+	font-size: 33px;
+	line-height: 30px;
+	font-weight: bold;
+}
+
+#tests-complete-pack #tests-content {
+	margin: 0 6px 0 4px;
+	background: #f5f7f6;
+	border-left: 1px solid #d5d5d5;
+	border-right: 1px solid #d5d5d5;
+}
+
+#tests-complete-pack #tests-content ul {
+	margin: 0;
+	padding: 14px 2px 12px 25px;
+	list-style-type: none;
+	list-style-image: none;
+}
+
+#tests-complete-pack #tests-content li {
+	padding: 0 0 6px 20px;
+	color: #005f7e;
+	font-size: 13px;
+	text-shadow: 1px 1px #fff;
+	background: transparent url(../images/checkmark.gif) left 2px no-repeat;
+}
+
+#tests-complete-pack #tests-footer {
+	margin: 0 6px 0 4px;
+	text-shadow: 1px 1px #fff;
+	border-left: 1px solid #d5d5d5;
+	border-right: 1px solid #d5d5d5;
+	border-bottom: 1px solid #d5d5d5;
+	border-radius: 0 0 5px 5px;
+	background: #d3d3d3;
+}
+
+#tests-complete-pack #tests-footer #tests-price {
+	float: left;
+	width: 93px;
+	height: 46px;
+	color: #E75716;
+	text-indent: -9999px;
+	background: transparent url(../images/tests-price.jpg) 21px 18px no-repeat;
+}
+
+#tests-complete-pack #tests-footer a#b-add-to-cart {
+	float: right;
+	height: 33px;
+	margin: 15px 16px 0 0;
+	padding: 0 12px 0 38px;
+	color: #fff;
+	font-size: 14px;
+	line-height: 35px;
+	font-weight: bold;
+	text-shadow: 0 1px #de3b12;
+	text-decoration: none;
+	background: transparent url(../images/b-add-to-cart.jpg) left top no-repeat;
+}
+
+#tests-complete-pack #tests-footer #tests-savings {
+	clear: both;
+	padding: 11px 0 14px 0;
+	color: #003446;
+	font-family: georgia, arial, tahoma, helvetica, verdana, sans-serif;
+	font-style: italic;
+	font-size: 12px;
+	line-height: 18px;
+	text-align: center;
+}
+
+
+/* STD Tests > Individual Tests */
+
+#tests-individual {
+	margin: 12px 15px 20px 15px;
+}
+
+#tests-individual #tests-header {
+	width: 288px;
+	height: 72px;
+	padding: 0;
+	color: #fff;
+	font-size: 18px;
+	line-height: 24px;
+	text-align: center;
+	text-shadow: 0 1px #013040;
+	text-indent: -9999px;
+	background: #024359 url(../images/tests-individual.jpg) left top no-repeat;
+}
+
+#tests-individual #tests-header span {
+	color: #fff;
+	font-size: 33px;
+	line-height: 30px;
+	font-weight: bold;
+}
+
+#tests-individual #tests-content {
+	margin: 0 6px 0 4px;
+	padding: 14px 0 12px 0;
+	background: #f5f7f6;
+	border-left: 1px solid #d5d5d5;
+	border-right: 1px solid #d5d5d5;
+}
+
+#tests-individual #tests-content ul {
+	margin: 0;
+	padding: 0 2px 0 25px;
+	list-style-type: none;
+	list-style-image: none;
+}
+
+#tests-individual #tests-content li {
+	float: left;
+	display: block;
+	width: 170px;
+	padding: 0 0 11px 0;
+	color: #5c5c5c;
+	font-size: 13px;
+	line-height: 18px;
+	text-shadow: 1px 1px #fff;
+}
+
+#tests-individual #tests-content ul li input {
+	margin: 0 8px 0 0;
+	padding: 0;
+}
+
+#tests-individual #tests-content ul li.price {
+	float: right;
+	width: 60px;
+	color: #e75716;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+#tests-individual #tests-footer {
+	margin: 0 6px 0 4px;
+	text-shadow: 1px 1px #fff;
+	border-radius: 0 0 5px 5px;
+	background: #d3d3d3;
+}
+
+#tests-individual #tests-footer #order-total {
+	width: 84%;
+	margin: 0 auto;
+	padding: 15px 0 0 0;
+	color: #023a4c;
+	font-size: 15px;
+	font-weight: bold;
+}
+
+#tests-individual #tests-footer #order-total-price {
+	float: right;
+	color: #023a4c;
+	font-size: 15px;
+	font-weight: bold;
+	text-align: right;
+}
+
+#tests-individual #tests-footer a#b-add-to-cart {
+	clear: both;
+	display: block;
+	width: 268px;
+	height: 33px;
+	margin: 6px auto 0 auto;
+	text-indent: 38px;
+	color: #fff;
+	font-size: 14px;
+	line-height: 35px;
+	font-weight: bold;
+	text-shadow: 0 1px #de3b12;
+	text-decoration: none;
+	background: transparent url(../images/b-add-to-cart-big.jpg) left top no-repeat;
+}
+
+
+/* Navigation Tabs */
+
+#tabs {
+	width: 100%;
+}
+
+#tabs ul {
+	margin: 10px 0;
+	padding: 0;
+	list-style-type: none;
+	list-style-image: none;
+	border-top: 1px solid #63b1ce;
+}
+
+#tabs li {
+	display: block;
+	width: 100%;
+	height: 48px;
+	margin: 0;
+	padding: 0;
+	border-bottom: 1px solid #63b1ce;
+}
+
+#tabs li a {
+	display: block;
+	width: 100%;
+	height: 48px;
+	margin: 0;
+	padding: 0;
+	text-indent: 15px;
+	color: #fff;
+	font-size: 18px;
+	line-height: 46px;
+	font-weight: bold;
+	text-decoration: none;
+	text-shadow: 0px -1px #023a4c;
+	background: #1584ac url(../images/tab-bg.jpg) left top repeat-x;
+}
+
+#tabs li a div {
+	float: right;
+	width: 25px;
+	height: 48px;
+	background: transparent url(../images/tab-arr.png) left center no-repeat;
+}
+
+#tabs li a:hover, #tabs li a.current {
+	background: #016185;
+}
+
+
+/* Toolbox */
+
+.aleft { text-align: left; }
+.acenter { text-align: center; }
+.aright { text-align: right; }
+
+.fleft { float: left; }
+.fright { float: right; }
+
+.cboth { clear: both; }
+.cleft { clear: left; }
+.cright { clear: right; }
+
+
+/* Footer */
+
+#footer {
+	clear: both;
+	margin: 12px 0 0 0;
+	padding: 0 0 25px 0;
+	color: #888;
+	font-size: 11px;
+	line-height: 17px;
+	text-align: center;
+	background: #ededed;
+	border-top: 2px solid #d4d4d4;
+	text-shadow: 1px 1px #fff;
+}
+
+#footer p {
+	padding: 0;
+}
+
+#footer a {
+	color: #888;
+	text-decoration: none;
+}
+
+#footer a:hover {
+	color: #666;
+	text-decoration: underline;
+}
+
+#footer #trustbuilders {
+	height: 160px;
+	color: #717171;
+	font-size: 13px;
+	font-weight: bold;
+	line-height: 120px;
+	background: transparent url(../images/footer-logos.jpg) center top no-repeat;
+}
+
+#footer #trustbuilders span {
+	color: #0b6e91;
+}
+
+#footer a#full-site {
+	color: #555;
+	font-size: 12px;
+	line-height: 26px;
+	text-align: center;
+	text-decoration: underline;
+}
+
+#footer a#full-site:hover {
+	color: #333;
+	text-decoration: none;
+}

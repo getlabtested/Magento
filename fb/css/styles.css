@@ -1,0 +1,43 @@
+/* CSS overwrites to the main styleshet for FB custom tab page */
+
+body {
+	background: #fff;
+}
+
+.all {
+	width: 520px; 
+	margin: 0 auto;
+	left: 0;
+}
+
+#banner {
+	clear: both; 
+	width: 520px; 
+	height: 800px; 
+	padding: 55px 0 0 0; 
+	background-position: left 10px;
+}
+
+#logo {
+	float: right; 
+	background: transparent url('../images/logo.png') left center no-repeat;
+}
+
+#prices {
+	float: none; 
+	margin: 0 auto;
+}
+
+#find_location {
+	width: 290px;
+}
+
+#locations_steps #steps {
+	width: 230px; 
+	background-image: url('../images/frontpage_steps.png');
+}
+
+#benefits {
+	width: 520px;
+}
+

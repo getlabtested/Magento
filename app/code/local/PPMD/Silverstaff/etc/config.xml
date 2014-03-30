@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Silverstaff>
+            <version>0.0.1</version>
+        </PPMD_Silverstaff>
+    </modules>
+
+    <global>
+        <models>
+            <silverstaff>
+                <class>PPMD_Silverstaff_Model</class>
+            </silverstaff>
+        </models>
+        
+        <helpers>
+            <silverstaff>
+                <class>PPMD_Silverstaff_Helper</class>
+            </silverstaff>
+        </helpers>
+        
+        <template>
+            <email>
+                <silverstaff_purchase_success module="Sendmail">
+                    <label>Silverstaff Product Purchase Email</label>
+                    <file>ppmd-silverstaff.html</file>
+                    <type>html</type>
+                </silverstaff_purchase_success>
+            </email>
+        </template>
+    </global>
+
+    <default>
+        <silverstaff>
+            <emails>
+                <templates>
+                    <order_success>
+                        <instructions_emails>
+                            <subject>GetLabTested Order Purchase</subject>
+                            <template_name>silverstaff_purchase_success</template_name>
+                        </instructions_emails>
+                    </order_success>
+                </templates>
+            </emails>
+            <unallowed_states>
+                <list>
+                    <CA />
+                    <NY />
+                    <RI />
+                </list>
+            </unallowed_states>
+        </silverstaff>
+        <ppmd_tests>
+            <test_type_vendors>
+                <Silverstaff>silverstaff</Silverstaff>
+            </test_type_vendors>
+        </ppmd_tests>
+    </default>
+</config>

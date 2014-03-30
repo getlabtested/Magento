@@ -1,0 +1,1624 @@
+<style>
+#coupon_box {
+    background: none repeat scroll 0 0 white;
+    border: 1px solid #DBDBDB;
+    border-radius: 10px 10px 10px 10px;
+    padding: 15px;
+     margin-top: 17px;
+}
+#coupon_box label {
+    color: #E97640;
+    font-size: 15px;
+    font-weight: bold;
+   
+}
+
+#error {
+    background-color: #FDD8C6;
+    border: 1px solid #E77640;
+    color: #BF511C;
+    margin-bottom: 17px;
+    padding: 8px;
+    width: 72%;
+}
+
+#error ul {
+	
+	list-style: none outside none;
+    margin: 0;
+    padding-left: 10px;
+	
+}
+
+</style>
+<script type="text/javascript">
+function addCoupon() {
+	
+	document.getElementById('ajax-loader-gif-cu').style.display = 'block';
+
+	var request = new Ajax.Request(
+        '<?php echo $this->getUrl('onestepcheckout/index/addcoupon', array('_secure' => true)); ?>',
+        {
+            method: 'post',
+            onComplete: function(transport){ 
+ 
+            var jsonResponse=transport.responseText;
+
+            	if (jsonResponse != 0) {
+            		
+            		document.getElementById('ajax-loader-gif-cu').style.display = 'none';
+            		document.getElementById('remove_button').style.display = 'block';
+            		document.getElementById('apply_button').style.display = 'none';
+            		document.getElementById('order_total_dyn').innerHTML = jsonResponse;
+            		
+            		
+            	} else {
+            		
+            		document.getElementById('ajax-loader-gif-cu').style.display = 'none';
+            		alert('We\'re Sorry! The coupon code you attempted to enter is invalid. Please try again.');
+            		
+            	}
+                    
+            },
+            parameters: "coupon_code="+document.getElementById('coupon_code').value    
+       }
+    );
+	
+}
+
+
+function removeCoupon() {
+	
+	document.getElementById('ajax-loader-gif-cu').style.display = 'block';
+	
+	var request = new Ajax.Request(
+        '<?php echo $this->getUrl('onestepcheckout/index/addcoupon', array('_secure' => true)); ?>',
+        {
+            method: 'post',
+            onComplete: function(transport){ 
+ 
+            var jsonResponse=transport.responseText;
+
+            	if (jsonResponse != 0) {
+            		
+            		document.getElementById('ajax-loader-gif-cu').style.display = 'none';
+            		document.getElementById('apply_button').style.display = 'block';
+            		document.getElementById('remove_button').style.display = 'none';
+            		document.getElementById('order_total_dyn').innerHTML = jsonResponse;
+            		
+            		
+            	} 
+                    
+            },
+            parameters: "remove=1"   
+       }
+    );
+	
+}
+
+</script>
+<?php
+
+$data = Mage::getSingleton('core/session')->getVisitorData();
+
+
+if ($data && isset($data['customer_id']) && $customerId = $data['customer_id']) {
+		
+	$_customer = Mage::getModel('customer/customer')->load($customerId);
+	
+	Mage::getSingleton('core/session')->setCustomerData($_customer->getData());
+	
+} 
+
+$labsByZip = (array)Mage::getSingleton('core/session')->getLabsByZip();
+
+$slab = Mage::getSingleton('core/session')->getLabId();
+
+?>
+<?php //echo $this->getMessagesBlock()->getGroupedHtml() ?> 
+<?php
+
+if (is_array(Mage::getSingleton('checkout/session')->getMessages()->getErrors()) && count(Mage::getSingleton('checkout/session')->getMessages()->getErrors()) > 0) {
+	
+?>
+
+<div id="error">
+	
+<?php Mage::app()->getLayout()->getMessagesBlock()->setMessages(Mage::getSingleton('checkout/session')->getMessages(true));
+echo $this->getMessagesBlock()->getGroupedHtml(); ?> 
+	
+</div>
+
+
+<?php
+	
+}
+
+?>
+<div style="float:right;width:232px;">
+	<div id="order_review_js" class="box">
+		<label>Order Summary</label><br>
+		<p>
+		<?php
+
+		if (!Mage::getModel('core/session')->getScript()) {
+		
+		?>
+			<b>Your Test(s):</b>
+		<?php 
+		
+		} else { 
+			
+		?>
+		
+			<b>Your Order:</b>
+			
+		<?php } ?>
+		</p>	
+		<div id="cart_items_opc">
+			<ul>
+			<?php 
+			if (!isset($total)) $total = 0;
+			if (!isset($itemSubTotal)) $itemSubTotal = 0;
+			foreach (Mage::getSingleton('core/session')->getCartArr() as $id) { 
+						
+			if ($id && $id != 29){
+			
+			$product = Mage::getModel('catalog/product')->load($id);
+			
+			?>
+			
+			<li><?php echo $product->getName();?></li>
+					
+			<?php 
+			
+				$total = $total + $product->getPrice();
+				
+				$itemSubTotal = $itemSubTotal + $product->getPriceOptOne();
+				
+			}
+			
+			} 
+			
+			?>
+			
+			
+			
+			</ul>
+			
+			<hr style="width:200px;"/>
+						
+				<?php if (Mage::getSingleton('core/session')->getIsNnr() && Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+					
+				<span style="color:#0C6E8E; font-weight:bold;" class="total-span">Total Paid Now:</span> <label>$125</label><br>
+				<span style="color:#0C6E8E; font-weight:bold;" class="total-span">Total Paid At Lab:</span> <label>$<?php echo round($itemSubTotal+10, 2); //money_format("%!n",$itemSubTotal+10);?></label>
+			
+				<?php } else { ?>
+				
+				<span style="color:#0C6E8E; font-weight:bold;" class="total-span">Total:</span><label>$<div id="order_total_dyn" style="display: inline-block;"><?php echo round(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(), 2); //money_format("%!n",Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal());?></div></label><br>
+				
+				<?php } ?>
+							
+				<?php if (Mage::getSingleton('core/session')->getIsNnr() && Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+				<p>
+				Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, pricing and payment options vary by state. Pay  $125 today and the remaining fee directly at the lab.  Please note that lab fees may be as low as $0 if covered by your insurance provider.
+				</p>
+				<?php } ?>
+			
+			
+		
+		</div>
+			
+	</div>
+	<?php if (Mage::getSingleton('checkout/session')->getQuote()->getProductLine() != 2) { ?>
+	<?php if (!Mage::getSingleton('core/session')->getIsNnr() && !Mage::getModel('core/session')->getScript()) { ?>
+	<div id="coupon_box" class="box">
+		<label>Coupon Code</label><br>
+		<input type="text" name="coupon_code" id="coupon_code">
+		<div id="apply_button" style="margin-top:10px; float:left;">
+		<input style="font-size:12px; height:25px; margin-left:0px;" class="submit btn_blue_reflection" value="APPLY" type="button" onclick="addCoupon();" />
+		</div>
+		<div id="remove_button" style="display:none; margin-top:10px; float:left;">
+		<input style="font-size:12px; height:25px; margin-left:0px;" class="submit btn_blue_reflection" value="REMOVE" type="button" onclick="removeCoupon()" />
+		</div>
+		<img style="display:none;float:right; margin-top:5px;" id="ajax-loader-gif-cu" src="/media/images/ajax-loader.gif" />
+		<div style="clear:both;"></div>
+		
+	</div>
+	<?php } ?>
+	<?php } ?>
+</div>
+
+
+
+
+<?php
+
+if (!Mage::getModel('core/session')->getScript()) {
+
+?>
+
+
+<?php if(Mage::getModel('checkout/cart')->getQuote()->getIsVirtual()) { ?>
+
+<script type="text/javascript">
+
+function submitenter(e)
+{
+var keycode;
+if (window.event) keycode = window.event.keyCode;
+else if (e) keycode = e.which;
+else return true;
+
+if (keycode == 13)
+   {
+   document.getElementById('zip-loc-sub').click();
+   return false;
+   }
+else
+   return true;
+}
+
+function handlerFunction(zipcode){
+	
+	//document.getElementById("zip-loc-sub").disabled = 'true';
+ 
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/getlabscheckout",array('_secure'=>true)) ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse == "NNR"){
+                        alert('<?php echo Mage::helper('medivo')->getNnrStatesPricingMessage() ?>');
+			            location = '<?php echo $this->getUrl().'std-testing-options';?>';
+                    }
+                    else{
+                    	//document.getElementById("zip-loc-sub").disabled = 'false';
+                    	document.getElementById("ajax-loader-gif-co").style.display = 'none';
+                        document.getElementById("location_results").innerHTML =jsonResponse;
+                    }
+                },
+                parameters: "zip_code="+zipcode      
+           }
+        );
+}
+
+function handlerLabFunction(labId,labType){
+	
+		document.getElementById('lab-selected').value = labId;
+ 
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/selectlabcheckout",array('_secure'=>true)) ?>',
+            {
+                method: 'get',
+                onComplete: function(transport){ 
+ 
+                    var jsonResponse=transport.responseText;
+
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                    }
+                    else{
+                        //document.getElementById("location_results").innerHTML =jsonResponse;
+                    }
+                },
+                parameters: "lab_id="+labId+"&lab_type="+labType      
+           }
+        );
+}
+
+/*
+function addCoupon() {
+	
+	document.getElementById('ajax-loader-gif-cu').style.display = 'block';
+
+	var request = new Ajax.Request(
+        '<?php echo $this->getUrl('onestepcheckout/index/addcoupon', array('_secure' => true)); ?>',
+        {
+            method: 'post',
+            onComplete: function(transport){ 
+ 
+            var jsonResponse=transport.responseText;
+
+            	if (jsonResponse != 0) {
+            		
+            		document.getElementById('ajax-loader-gif-cu').style.display = 'none';
+            		document.getElementById('remove_button').style.display = 'block';
+            		document.getElementById('apply_button').style.display = 'none';
+            		document.getElementById('order_total_dyn').innerHTML = jsonResponse;
+            		
+            		
+            	} else {
+            		
+            		document.getElementById('ajax-loader-gif-cu').style.display = 'none';
+            		alert('We\'re Sorry! The coupon code you attempted to enter is invalid. Please try again.');
+            		
+            	}
+                    
+            },
+            parameters: "coupon_code="+document.getElementById('coupon_code').value    
+       }
+    );
+	
+}
+
+function removeCoupon() {
+	
+	document.getElementById('ajax-loader-gif-cu').style.display = 'block';
+	
+	var request = new Ajax.Request(
+        '<?php echo $this->getUrl('onestepcheckout/index/addcoupon', array('_secure' => true)); ?>',
+        {
+            method: 'post',
+            onComplete: function(transport){ 
+ 
+            var jsonResponse=transport.responseText;
+
+            	if (jsonResponse != 0) {
+            		
+            		document.getElementById('ajax-loader-gif-cu').style.display = 'none';
+            		document.getElementById('apply_button').style.display = 'block';
+            		document.getElementById('remove_button').style.display = 'none';
+            		document.getElementById('order_total_dyn').innerHTML = jsonResponse;
+            		
+            		
+            	} 
+                    
+            },
+            parameters: "remove=1"   
+       }
+    );
+	
+}
+*/
+
+</script>
+
+<div id="checkout_location" class="box">
+
+		<?php
+	   	if ($labId =  Mage::getSingleton('core/session')->getLabId() || Mage::getSingleton('core/session')->getZip() || Mage::getSingleton('core/session')->getZip() ){
+		?>
+
+		<h2>1. Select Testing Location near you:</h2>
+		<div class="location_form" style="width: 315px;">
+			<label>Update ZIP Code:</label>
+	
+		<?php
+		} else {
+		?>
+		
+		<h2 class="first">1. Enter ZIP Code and select Testing Location near you:</h2>
+		<div class="location_form" style="clear: both; float: none; padding: 7px 0 0 23px; width: 357px;">
+		
+		<?php
+		}
+		?>
+		
+			<form id="zip-locator" onsubmit="return false;">
+				<input type="text" onKeyPress="return submitenter(event);" name="zip_code" id="zip_code_form" class="text" value="<?php echo Mage::getSingleton('core/session')->getZip(); ?>" style="height: 24px; margin: 0 4px 0 0; padding: 0 7px; font-size: 16px; font-weight: normal;" maxlength="5">
+				<input id='zip-loc-sub' type="submit" value="Submit" class="submit btn_blue_reflection" onClick="handlerFunction(document.getElementById('zip_code_form').value);document.getElementById('ajax-loader-gif-co').style.display = 'block';return false;" style="height: 26px; top: 0;">
+				<img style="display:none;float:right;" id="ajax-loader-gif-co" src="/media/images/ajax-loader.gif" />
+			</form>
+		</div>
+		<div id="location_results">
+		<?php $qcount = 0; $set = 0;?>
+			<?php if ($labsByZip && is_array($labsByZip) && count($labsByZip) > 0) { ?>
+				<?php $x = 0;
+				
+					if ($slab) {
+					
+					
+					
+						foreach ($labsByZip as $lab) { 
+				
+							$lab = (array)$lab;
+							
+							if (isset($lab['id'])) $labId = $lab['id'];
+							
+							if (isset($lab['nnr_id'])) $labId = $lab['nnr_id'];
+							
+				
+						?>
+						<?php if ($slab == $labId) {
+							
+							$qcount++;
+							
+							$x++;
+						
+						 ?>
+						<div class="item">
+							<div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab['lab-id'];?>);"  <?php if($slab == $labId) { echo ' checked="checked" '; $set = 1;}; ?> type="radio" value="<?php echo $labId; ?>" name="location"></div>
+							<div class="content">
+							<p><?php echo trim($lab['address'],",");?> <br><?php echo $lab['city'];?>, <?php echo $lab['state'];?> <?php echo $lab['zip'];?></p>
+							<p class="hours">
+								<span class="blue">Hours: </span>
+									<?php echo str_ireplace("|Sa","<br>Sa",$lab['hours']);?>
+								</p>
+							</div>
+						</div>
+						<?php
+											
+							} 
+								
+						}
+					
+					}
+				
+				foreach ($labsByZip as $lab) { 
+				
+					$lab = (array)$lab;
+					
+					if (isset($lab['id'])) $labId = $lab['id'];
+					
+					if (isset($lab['nnr_id'])) $labId = $lab['nnr_id'];
+					
+		
+				?>
+				<?php if ($x <= 4 && $lab['lab-id'] == 119 && $slab != $labId) {
+					
+					$qcount++;
+				
+				 ?>
+				<div class="item">
+					<div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab['lab-id'];?>);"  <?php if($set == 0 && $x==0) { echo ' checked="checked" ';}; ?> type="radio" value="<?php echo $labId; ?>" name="location"></div>
+					<div class="content">
+					<p><?php echo trim($lab['address'],",");?> <br><?php echo $lab['city'];?>, <?php echo $lab['state'];?> <?php echo $lab['zip'];?></p>
+					<p class="hours">
+						<span class="blue">Hours: </span>
+							<?php echo str_ireplace("|Sa","<br>Sa",$lab['hours']);?>
+						</p>
+					</div>
+				</div>
+				<?php
+				
+					if($set == 0 && $x==0) {		
+					
+						$preCheck1 = $labId;
+						$preCheck2 = $lab['lab-id'];
+						
+					?>
+					
+					
+					<?php
+					
+					}
+				
+					$x++;
+			
+					} 
+						
+				}
+				
+				$y = 0;
+				
+				foreach ($labsByZip as $lab) { 
+				
+					$lab = (array)$lab;
+					
+					if (isset($lab['id'])) $labId = $lab['id'];
+					
+					if (isset($lab['nnr_id'])) $labId = $lab['nnr_id'];
+					
+		
+				?>
+				<?php if ($y <= (6-$qcount) && (6-$qcount) > 0 && $lab['lab-id'] == 129 && $slab != $labId) {
+									
+				 ?>
+				<div class="item">
+					<div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab['lab-id'];?>);"  <?php if($slab == $labId) { echo ' checked="checked" ';}; ?> type="radio" value="<?php echo $labId; ?>" name="location"></div>
+					<div class="content">
+					<p><?php echo trim($lab['address'],",");?> <br><?php echo $lab['city'];?>, <?php echo $lab['state'];?> <?php echo $lab['zip'];?></p>
+					<p class="hours">
+						<span class="blue">Hours: </span>
+							<?php echo str_ireplace("|Sa","<br>Sa",$lab['hours']);?>
+						</p>
+					</div>
+				</div>
+				<?php
+			
+					} 
+			
+					$y++; 
+			
+				}
+			
+			 } 
+			 
+		?>
+				<div class="clear">&nbsp;</div>
+		</div> <!-- /location_results -->
+</div>
+
+<? } ?>
+
+<? } ?>
+
+<?php
+
+$tpost = Mage::getSingleton('checkout/session')->getTmpPost();
+
+if (is_array($tpost) && count($tpost) > 0) {
+	
+	$t = 1;
+	
+} else {
+	
+	$t = 0;
+	
+}
+
+?>
+
+<form id="one-step-checkout-form" method="post" action="<?php echo $this->getCheckoutUrl(); ?>">
+<ul class="one-step-checkout">
+	
+	<?php if (Mage::getSingleton('core/session')->getLabId()) { ?>
+	<input type="hidden" id="lab-selected" name="lab-selected" value="<?php echo Mage::getSingleton('core/session')->getLabId();?>" />
+	<?php } else { ?>
+	<input type="hidden" id="lab-selected" name="lab-selected" value="" />
+	<?php } ?>
+	
+	<li class="address-order">
+		<!-- <form id="one-step-checkout-form" method="post" action="<?php echo $this->getCheckoutUrl(); ?>"> -->
+			<div id="left-info">
+			
+			<?php
+
+			if (Mage::getSingleton('core/session')->getScript()) {
+			
+			echo "<div style='display:none;'>";
+				
+			}
+			
+			?>
+				
+			<div  id="address-info" class="address-information <?php if ($this->configData['page_layout'] == '3columns'):?>address-info-3-columns<?php endif;?>">
+				<?php //echo $this->getChildHtml('onestepcheckout.billing');?>				
+				<?php //echo $this->getChildHtml('onestepcheckout.shipping');?>
+			
+<?php	
+
+$cdata = Mage::getSingleton('customer/session')->getCustomer()->getData();
+	
+	if (is_array($cdata) && count($cdata) > 1) {
+		
+		if (isset($cdata['dob'])) {
+ 	
+		$dobTmp = explode(" ",$cdata['dob']);
+		
+		$dobTmpB = explode("-", $dobTmp[0]);
+		
+		}
+				
+	}
+
+$virtual = 0;
+
+if (Mage::getSingleton('checkout/session')->getQuote()->getOrderType() == 1 || Mage::getSingleton('core/session')->getOrderType() == 1) { 
+
+$virtual = 1;
+
+?>
+
+<h3 id="billing_step_header" class="step_1"><?php echo($this->__("2. Provide Contact Information")); ?></h3>
+
+<? } else { ?>
+	
+<h3 id="billing_step_header" class="step_1"><?php echo($this->__("1. Provide Shipping and Contact Information")); ?></h3>
+	
+<?php } ?>				
+								
+				
+<fieldset id="billing-new-address-form" class="group-select">	
+	<input type="hidden" id="billing:address_id" value="25" name="billing[address_id]">
+	<ul>
+		<li>
+			<div class="input-box">
+				<label for="billing:firstname">First Name:&nbsp;</label>
+				<input type="text" value="<?php echo ($t == 1?$tpost['billing']['firstname']:Mage::getSingleton('customer/session')->getCustomer()->getFirstname());?>" class="input-text required-entry" title="First Name" name="billing[firstname]" id="billing:firstname">
+			</div>
+			<div class="input-box">
+				<label for="billing:lastname">Last Name:&nbsp;</label>
+				<input type="text" value="<?php echo ($t == 1?$tpost['billing']['lastname']:Mage::getSingleton('customer/session')->getCustomer()->getLastname());?>" class="input-text required-entry" title="Last Name" name="billing[lastname]" id="billing:lastname">
+			</div>
+		</li>
+		
+		<li>
+			<div class="input-box">
+				<label for="billing:gender">Gender: &nbsp;</label>
+	    		<select autocomplete="off" id="billing:gender" name="billing[gender]" title="Gender">
+					<option <?php if (!isset($cdata['gender']) || !$cdata['gender']) { ?>selected="selected"<?php } ?> value="" ></option>
+					<option <?php if ((isset($cdata['gender']) && $cdata['gender'] == 1) || ($t == 1 && $tpost['billing']['gender'] == 1)) { ?>selected="selected"<?php } ?>  value="1">Male</option>
+					<option <?php if ((isset($cdata['gender']) && $cdata['gender'] == 2) || ($t == 1 && $tpost['billing']['gender'] == 2)) { ?>selected="selected"<?php } ?> value="2">Female</option>
+	            </select>
+			</div>
+		</li>
+		<div style="clear:both; margin-bottom:10px;"></div>
+		<li>
+			<div class="input-box">
+			<label for="billing:dob">Date of Birth: &nbsp;</label>
+				<select id="m_select" name="m_select">
+					<option value=""></option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "01") || ($t == 1 && $tpost['m_select'] == "01")) { ?>selected="selected"<?php } ?> value="01">Jan</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "02") || ($t == 1 && $tpost['m_select'] == "02")) { ?>selected="selected"<?php } ?> value="02">Feb</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "03") || ($t == 1 && $tpost['m_select'] == "03")) { ?>selected="selected"<?php } ?> value="03">Mar</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "04") || ($t == 1 && $tpost['m_select'] == "04")) { ?>selected="selected"<?php } ?> value="04">Apr</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "05") || ($t == 1 && $tpost['m_select'] == "05")) { ?>selected="selected"<?php } ?> value="05">May</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "06") || ($t == 1 && $tpost['m_select'] == "06")) { ?>selected="selected"<?php } ?> value="06">Jun</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "07") || ($t == 1 && $tpost['m_select'] == "07")) { ?>selected="selected"<?php } ?> value="07">Jul</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "08") || ($t == 1 && $tpost['m_select'] == "08")) { ?>selected="selected"<?php } ?> value="08">Aug</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "09") || ($t == 1 && $tpost['m_select'] == "09")) { ?>selected="selected"<?php } ?> value="09">Sep</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "10") || ($t == 1 && $tpost['m_select'] == "10")) { ?>selected="selected"<?php } ?> value="10">Oct</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "11") || ($t == 1 && $tpost['m_select'] == "11")) { ?>selected="selected"<?php } ?> value="11">Nov</option>
+					<option <?php if ((isset($dobTmpB[1]) && $dobTmpB[1] == "12") || ($t == 1 && $tpost['m_select'] == "12")) { ?>selected="selected"<?php } ?> value="12">Dec</option>
+				</select>
+				
+				<select id="d_select" name="d_select">
+					<option value=""></option>
+					<?php for ($i = 1; $i <= 9; $i++) { ?>
+					<option <?php if ((isset($dobTmpB[2]) && $dobTmpB[2] == "0$i") || ($t == 1 && $tpost['d_select'] == "0$i")) { ?>selected="selected"<?php } ?> value="0<?php echo $i;?>">0<?php echo $i;?></option>
+					<? } ?>
+					<?php for ($i = 10; $i <= 31; $i++) { ?>
+					<option <?php if ((isset($dobTmpB[2]) && $dobTmpB[2] == $i) || ($t == 1 && $tpost['d_select'] == $i)) { ?>selected="selected"<?php } ?> value="<?php echo $i;?>"><?php echo $i;?></option>
+					<? } ?>
+				</select>
+				
+				<select id="y_select" name="y_select">
+					<option value=""></option>
+					<?php for ($i = 1993; $i >= 1935; $i--) { ?>
+					<option <?php if ((isset($dobTmpB[0]) && $dobTmpB[0] == $i) || ($t == 1 && $tpost['y_select'] == $i)) { ?>selected="selected"<?php } ?> value="<?php echo $i;?>"><?php echo $i;?></option>
+					<? } ?>
+				</select>
+			</div>
+			<input type="hidden" value="" autocomplete="off" id="full" name="dob">
+		</li>
+		
+		<li style="clear:both;" class="input-box">
+			<div class="input-box">
+				<label for="billing:email">E-mail:&nbsp;</label>
+				<input type="text" value="<?php echo ($t == 1?$tpost['billing']['email']:Mage::getSingleton('customer/session')->getCustomer()->getEmail()) ;?>" class="required-entry input-text" title="Email Address" id="billing:email" name="billing[email]">
+				<span style="display:none;" id="valid_email_address_image"><img width="18" alt="Valid Email Address" title="Valid Email Address" src="https://getstdtested.com/skin/frontend/default/getstdtested/images/onestepcheckout/valid.gif"></span>				
+			</div>
+			<div style="clear:both;"></div>
+			<div class="input-box">
+				<label for="billing:email-confirm">Confirm E-mail:&nbsp;</label>
+				<input value="<?php echo ($t == 1?$tpost['billing']['email-confirm']:Mage::getSingleton('customer/session')->getCustomer()->getEmail()) ;?>" style="margin-top:5px;" type="text" class="validate-email required-entry input-text" title="Confirm Email" id="billing:email-confirm" name="billing[email-confirm]">
+			</div>
+
+			<div class="input-box" style="margin-right:93px;padding-top:10px;">
+				<label for="ppmd_notify">How would you like to be notified when results become available?:&nbsp;</label>
+				<input checked="checked" onclick="document.getElementById('phone-box').style.display='none';" type="radio" title="Email" value="11" id="ppmd_notify" name="ppmd_notify">Email
+				<input type="radio" onclick="document.getElementById('phone-box').style.display='block';" title="Phone" value="12" id="ppmd_notify" name="ppmd_notify">Phone
+			</div>
+			
+			<div id="phone-box" style="display:none;" class="input-box">
+				<label for="billing:telephone">Phone Number:&nbsp;</label>
+				<input style="margin-top:5px;" type="text" class="input-text" title="Phone Number" value="" id="billing:telephone" name="billing[telephone]">
+			</div>
+			
+			<div style="clear:both;"></div>
+			
+			<?php if (!$this->isCustomerLoggedIn()) { ?>
+			<div style="float:left;padding-top:10px;">
+			<a onclick="showloginbox();return false;" id="show-login" href="#" style="color:#028AFB; font-weight:bold;">
+			Existing customer? Log in to save 5%
+			</a>
+			</div>
+			<?php } ?>
+		</li>
+								
+<!-- begin simple order -->	
+	<?php if ($virtual) { ?>
+	<div class="opc-none">
+	<?php } ?>
+		<li class="wide">
+			<div style="float:left;width:440px;">
+				<label for="billing:street1">Address:&nbsp;</label>
+				<input type="text" class="required-entry input-text" value="<?php echo ($virtual?"WITHHELD":"");?>" id="billing:street1" name="billing[street][]" title="Street Address">
+			</div>
+			
+			<div>
+				<label for="billing:street2">Apt/Ste:&nbsp;</label>
+				<input type="text" class="input-text" value="" id="billing:street2" name="billing[street][]" title="Street Address 2" style="width: 63px;">
+			</div>
+		</li>
+
+		<li style="margin-top:2px;" id="">
+			<div>
+				<label for="billing:city">City:&nbsp;</label>
+				<input style="margin-top:5px; margin-bottom:5px;" type="text" id="billing:city" class="required-entry input-text" value="<?php echo ($virtual?"WITHHELD":"");?>" name="billing[city]" title="City" style="width:180px;">
+			</div>
+			<div class="input-box" style="display: none;">
+				<label for="billing:country_id">Country </label><br>
+				<select style="width:135px" title="Country" class="validate-select" id="billing:country_id" name="billing[country_id]">
+					<option selected="selected" value="US">United States</option>
+				</select>			
+			</div>
+			<div id="">
+				<label for="billing:region">State:&nbsp;</label>
+				<select class="validate-select" title="State/Province" name="billing[region_id]" id="billing:region_id" style="margin-top: 10px; width: 136px;" defaultvalue="">
+					<option value=""></option>
+					<option value="1">Alabama</option>
+					<option value="2">Alaska</option>
+					<option value="4">Arizona</option>
+					<option value="5">Arkansas</option>
+					<option value="12">California</option>
+					<option value="13">Colorado</option>
+					<option value="14">Connecticut</option>
+					<option value="15">Delaware</option>
+					<option value="16">District of Columbia</option>
+					<option value="18">Florida</option>
+					<option value="19">Georgia</option>
+					<option value="21">Hawaii</option>
+					<option value="22">Idaho</option>
+					<option <?php echo ($virtual?"selected='selected'":"");?> value="23">Illinois</option>
+					<option value="24">Indiana</option>
+					<option value="25">Iowa</option>
+					<option value="26">Kansas</option>
+					<option value="27">Kentucky</option>
+					<option value="28">Louisiana</option>
+					<option value="29">Maine</option>
+					<option value="31">Maryland</option>
+					<option value="32">Massachusetts</option>
+					<option value="33">Michigan</option>
+					<option value="34">Minnesota</option>
+					<option value="35">Mississippi</option>
+					<option value="36">Missouri</option>
+					<option value="37">Montana</option>
+					<option value="38">Nebraska</option>
+					<option value="39">Nevada</option>
+					<option value="40">New Hampshire</option>
+					<option value="41">New Jersey</option>
+					<option value="42">New Mexico</option>
+					<option value="43">New York</option>
+					<option value="44">North Carolina</option>
+					<option value="45">North Dakota</option>
+					<option value="47">Ohio</option>
+					<option value="48">Oklahoma</option>
+					<option value="49">Oregon</option>
+					<option value="51">Pennsylvania</option>
+					<option value="53">Rhode Island</option>
+					<option value="54">South Carolina</option>
+					<option value="55">South Dakota</option>
+					<option value="56">Tennessee</option>
+					<option value="57">Texas</option>
+					<option value="58">Utah</option>
+					<option value="59">Vermont</option>
+					<option value="61">Virginia</option>
+					<option value="62">Washington</option>
+					<option value="63">West Virginia</option>
+					<option value="64">Wisconsin</option>
+					<option value="65">Wyoming</option>
+				</select>
+				<script type="text/javascript">
+						$('billing:region_id').setAttribute('defaultValue',  "");
+				</script>
+				<input type="text" style="display:none" class="input-text" title="State/Province" value="" name="billing[region]" id="billing:region">
+			</div>
+			<div>
+				<label for="billing:postcode">Zip Code:&nbsp;</label>
+				<input type="text" class="validate-zip-international required-entry input-text" value="<?php echo ($virtual?Mage::getSingleton('core/session')->getLabZip():"");?>" id="billing:postcode" name="billing[postcode]" title="Zip/Postal Code" maxlength="5" style="width: 61px;">
+			</div>
+				
+		</li>
+		<li>
+			<input type="hidden" value="1" id="billing:use_for_shipping" name="billing[use_for_shipping]">
+		</li>
+		<?php if ($virtual) { ?>
+		</div>
+		<?php } ?>
+<!-- end simple order -->		
+
+<?php if (!$this->isCustomerLoggedIn()) { ?>	
+<!-- password -->		
+		<div class="opc-none">
+		<li style="display:block" id="password_section_id">
+			<div class="input-box">
+				<label for="billing:customer_password">Password </label><br>
+				<input type="password" value="1234asdf" class="input-text required-entry validate-password" title="Password" id="billing:customer_password" name="billing[customer_password]" autocomplete="off">
+			</div>
+			<div class="input-box">
+				<label for="billing:confirm_password">Confirm Password </label><br>
+				<input type="password" value="1234asdf" class="input-text required-entry validate-cpassword" id="billing:confirm_password" title="Confirm Password" name="billing[confirm_password]" autocomplete="off">
+			</div>
+		</li>	
+		</div>
+<!-- end password -->
+<?php } ?>		
+								
+		
+	</ul>
+</fieldset>
+								
+				
+			</div>
+			
+			<?php 
+			
+			if (Mage::getModel('core/session')->getScript()) {
+			
+			echo "</div>";
+			
+			} 
+			
+			?>
+			
+			
+			<div class="order-information <?php if ($this->configData['page_layout'] == '3columns'):?>order-info-3-columns<?php endif;?>">
+				<ul style="list-style-type:none; padding-left:0px;">
+					<?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?>
+					<li class="shipping-method">			
+						<h3  id="shipping_method_step_header" class="step_2">
+							<?php echo $this->__('SHIPPING METHOD'); ?>
+						</h3>
+						<div class="onestepcheckout-shipping-method-section">
+							<?php echo $this->getChildHtml('onestepcheckout.shipping_method'); ?>						
+						</div>
+						<div class="ajax-loader1" id="ajax-loader1" style="display:none;"></div>
+					</li>
+					<?php elseif (Mage::helper('onestepcheckout')->isHideShippingMethod()):?>
+						<?php $_shippingMethod = $this->hasOnlyOneShippingMethod();?>
+						<span class="no-display"><input name="shipping_method" type="radio" value="<?php echo $_shippingMethod;?>" id="s_method_<?php echo $_shippingMethod; ?>" checked="checked" /></span>
+					<?php endif;?>
+					
+					<h3 id="payment_method_step_header" <?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?> class="step_3"<?php else:?> class="step_2"<?php endif;?>>
+							
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 2) { ?>
+							<?php echo $this->__('<div style="margin-left:10px;">2. Select Payment Option</div>'); ?>
+							<?php } else if (Mage::getSingleton('core/session')->getScript()) { ?>
+							<div style="margin-left:10px;">Enter payment information.  After checkout, you'll receive an e-mail notification with further details.</div>
+							<? } else { ?>
+							<?php echo $this->__('<div style="margin-left:10px;">3. Select Payment Option</div>'); ?>	
+							<?php } ?>
+						</h3>
+					<li class="payment-method">			
+											
+						<?php echo $this->getChildHtml('onestepcheckout.payment_method'); ?>							
+					</li>
+
+				</ul>
+			</div>
+			
+			
+			<div id="order-button-div">
+				<div class="content button-set clearfix">
+			  		<p class="left">
+			  			<?php echo $this->__('Forgot an Item?') ?> <a href="<?php echo $this->getUrl('checkout/cart') ?>"><?php echo $this->__('Edit Your Cart') ?></a>
+			  		</p>
+					<p>
+			  			
+						<input <?php if (!empty($_SERVER['HTTPS'])) { ?><?php } ?> id="onestepcheckout-button-place-order" type="button" class="btn_orange_reflection" style="float:left; border:none;" onclick="this.disabled=true;document.getElementById('ajax-loader-gif').style.display = 'block';" value="Place Order">
+					<!--   		<input id="onestepcheckout-button-place-order" type="button" class="btn_orange_reflection" onclick="this.disabled=true;document.getElementById('ajax-loader-gif').style.display = 'block';" value="Place Order"> <!-- this.form.submit(); -->  		
+					
+					<img style="display:none; float:left; margin-left:20px; margin-top:1%;" id="ajax-loader-gif" src="/media/images/ajax-loader.gif" />
+					
+					<div style="clear:both;"></div>
+					
+					<p>By clicking "place order", you agree to the <a style="color:#028AFB; font-weight:bold;" onclick="window.open('/terms-of-service', 'Terms of Service', 'width=600, height=600,scrollbars=1'); return false;" href="#">terms of service</a> and will be automatically directed to an order confirmation page within 10 seconds.</p>
+					<!-- button id="onestepcheckout-button-place-order" type="button" title="<?php echo $this->__('Place Order') ?>" class="button btn-red-2 right"><span><span><span><?php echo $this->__('Place Order') ?></span></span></span></button -->
+			  		</p>
+				</div>	
+			</div>	
+
+			
+			
+			</div>
+			
+			
+			
+			<div class="order-review-section">
+				<ul>
+					<li class="order-review-info box">		
+						<!-- <h3 id="review_step_header" <?php if (!$this->isVirtual() && !Mage::helper('onestepcheckout')->isHideShippingMethod()):?> class="step_4" <?php else:?> class="step_3"<?php endif?>> -->
+						<label><?php echo $this->__('Order Summary'); ?></label>	
+						<!-- </h3> -->				
+						<?php echo $this->getChildHtml('onestepcheckout.review') ?>						
+						<div class="ajax-loader3" id="ajax-loader3"  style="display:none;"></div>
+					</li>
+				</ul>
+			</div>			
+		<!-- </form> -->
+			
+		
+	</li>
+
+	
+</ul>
+
+
+</form>
+
+
+<div class="clear">&nbsp;</div>
+<div class="sep20">&nbsp;</div>
+<script type="text/javascript">
+//<![CDATA[
+	var preloadImage = '<?php echo $this->getSkinUrl('images/onestepcheckout/preload.gif')?>';
+	var shipping_method_url = '<?php echo $this->getUrl('onestepcheckout/index/save_shipping', array('_secure' => true));?>';
+	var enable_update_payment = <?php echo $this->configData['update_payment'] ? 'true' : 'false'; ?>;
+  var login_url = '<?php echo $this->getUrl('onestepcheckout/index/show_login', array('_secure' => true));?>';	
+	var show_login_link = <?php echo $this->configData['show_login_link'] ? 'true' : 'false'; ?>;
+	var show_term_condition_url = '<?php echo $this->getUrl('onestepcheckout/index/show_term_condition', array('_secure' => true));?>';
+	var form = $('one-step-checkout-form');
+	var reload_payment = <?php echo $this->configData['reload_payment']; ?>;
+	var error = '';
+	
+	function showloginbox() {
+		var url = '<?php echo $this->getUrl('onestepcheckout/index/show_login', array('_secure' => true));?>';
+		showLogin(url);
+	}
+
+	function showforgotpwd() {
+		var url = '<?php echo $this->getUrl('onestepcheckout/index/show_password', array('_secure' => true));?>';
+		showpwdbox(url);
+	}
+	
+	function showPasswordForm() {
+		$('onestepcheckout-login').hide();
+		$('onestepcheckout-forgot-password').show();
+	}
+	
+	function showloginform() {
+		$('onestepcheckout-forgot-password').hide();
+		$('onestepcheckout-login').show();		
+	}
+	
+	function submitLoginForm() {
+		var login_validator = new Validation('onestepcheckout-login-form');
+		if (login_validator.validate()) {
+			showLoginLoading();
+			var url = '<?php echo $this->getUrl('onestepcheckout/index/loginPost', array('_secure' => true))?>';
+			var email = $('osclogin:email_address').value;
+			var password = $('osclogin:password').value;
+			var parameters = {email:email, password:password};		
+			var loginRequest = new Ajax.Request(url, {
+				parameters: parameters,
+				onComplete: loginProcess.bindAsEventListener(this),
+				onFailure: ""
+			});						
+		}
+	}
+	
+	function retrievePassword() {
+		var passwordValidator = new Validation('osc-forgotpassword-form');
+		if (passwordValidator.validate()) {
+			showPassLoading();
+			var url = '<?php echo $this->getUrl('onestepcheckout/index/retrievePassword', array('_secure' => true))?>';
+			var email = $('forgotpassword_email_address').value;
+			var parameters = {email:email};			
+			var loginRequest = new Ajax.Request(url, {
+				parameters: parameters,
+				onComplete: passwordProcess.bindAsEventListener(this),
+				onFailure: ""
+			});
+		}
+	}
+	
+	Event.observe('billing:email', 'change', function() {
+		v = document.getElementById('billing:email').value;
+		
+		r = Validation.get('IsEmpty').test(v);
+		
+		if (r === true) {
+		
+			alert('Please enter an email address.');
+			error = 'Please enter an email address.';
+			return;
+		
+		}
+		
+		x = /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i.test(v);
+				
+		if (x === false) {
+		
+			alert('Please enter a valid email address.');
+			error = 'Please enter a valid email address.';
+			return;
+		}
+		
+		error = 0;
+		
+		//Validation.get('IsEmpty').test(v) || /^([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9,!\#\$%&'\*\+\/=\?\^_`\{\|\}~-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*@([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z0-9-]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*\.(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]){2,})$/i.test(v)
+				
+	});	
+	
+	<?php if ($this->configData['enable_ajax']):?>
+		var save_address_url = '<?php echo $this->getUrl('onestepcheckout/index/save_address', array('_secure' => true))?>';
+		
+		<?php if ($this->isAjaxBillingField('postcode')):?>
+			//save billing when postcode is changed
+			<?php if ($this->configData['show_zipcode']):?>
+				Event.observe('billing:postcode', 'change', function() {
+					
+					var request = new Ajax.Request(
+			            '<?php echo $this->getUrl('onestepcheckout/index/nnr', array('_secure' => true)); ?>',
+			            {
+			                method: 'post',
+			                onComplete: function(transport){ 
+			 
+			                    var jsonResponse=transport.responseText;
+			
+			                    if (transport.responseText == 2) {
+			                    	
+			                    	alert('Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, at home testing for chlamydia, gonorrhea, and trichomoniasis is not currently available.');
+			                    	
+			                    	location = '<?php echo $this->getUrl().'std-testing-options';?>';
+			                    	
+			                    }
+			                    
+			                },
+			                parameters: "zip_code="+document.getElementById('billing:postcode').value      
+			           }
+			        );
+				});
+				
+			<?php endif?>
+		<?php endif;?>
+	<?php endif?>			
+
+	function disable_payment(){
+		var options = document.getElementsByName('payment[method]');
+		for(var i=0;i<options.length;i++){
+			if(!$(options[i].id).checked){
+				var container = options[i].id.replace('p_method','container_payment_method');
+				if($(container)){
+					$(container).innerHTML = '';
+				}
+			}
+		}	
+	}
+
+	function checkpayment(){
+	var options = document.getElementsByName('payment[method]');
+		var pay = true;
+		for(var i=0;i<options.length;i++){
+			if($(options[i].id).checked){
+				pay = false;
+				break;
+			}
+		}
+		if(pay==true){
+			return false;
+		}
+		return true;
+	}
+	
+	function validateEmailConfirm() {
+		
+		<?php if (!$this->isCustomerLoggedIn()) { ?>
+
+		if (document.getElementById('billing:email').value != document.getElementById('billing:email-confirm').value) {
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+			
+			alert('Email Address does not match Confirm Email Address');
+			
+			
+			
+			return false;
+			
+		} else {
+			
+			return true;
+			
+		}
+		
+		<?php } else { ?>
+			
+			return true;
+			
+		<?php } ?>
+	
+	}
+	
+	function didSelectLab() {
+		
+		if (document.getElementById('zip_code_form').value == '' || document.getElementById('lab-selected').value != 1) {
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+			alert('Please enter your zip code and select a testing location.');
+			return false;
+			
+		}
+		
+	}
+	
+	function checkCheckbox() {
+		
+		if ((document.getElementById('p_method_paynearme').checked || document.getElementById('p_method_paynearme').checked ==  'checked') && (!document.getElementById('cash').checked || document.getElementById('p_method_paynearme').checked ==  false))
+		
+		document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+		
+		alert('You have selected our Pay With Cash option. Please check the checkbox to confirm.');
+			
+			
+		return false;
+		
+		
+	}
+	
+	function checkValues() {
+		
+		err = 0;
+		
+		if (document.getElementById('billing:firstname').value == '') {
+		
+		document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+		
+		alert('First Name is required.');
+			
+		
+		
+		err = 1;
+			
+		return false;
+		
+		}
+		
+		if (document.getElementById('billing:lastname').value == '') {
+		
+		document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+		
+		alert('Last Name is required.');
+			
+		
+			
+		err = 1;
+			
+		return false;
+		
+		}
+		
+		<?php if (!Mage::getModel('core/session')->getScript()) { ?>
+		
+		if (document.getElementById('billing:gender').value == '') {
+		
+		document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+		
+		alert('Gender is required.');
+			
+		
+		
+		err = 1;
+			
+		return false;
+		
+		}
+		
+		<?php if (!$this->isCustomerLoggedIn()) { ?>
+		
+		if (document.getElementById('billing:email').value == '') {
+		
+		document.getElementById('onestepcheckout-button-place-order').disabled=false;
+		document.getElementById('ajax-loader-gif').style.display='none';
+		
+		alert('Email is required.');
+			
+		
+		
+		err = 1;
+			
+		return false;
+		
+		}
+		
+		<?php } ?>
+		
+		<?php if (!$this->isCustomerLoggedIn()) { ?>
+		
+		if (document.getElementById('m_select').value == '' || document.getElementById('d_select').value == '' || document.getElementById('y_select').value == '') {
+		
+		
+		document.getElementById('onestepcheckout-button-place-order').disabled=false;
+				document.getElementById('ajax-loader-gif').style.display = 'none';
+		alert('Date of Birth is required.');
+			
+		
+		
+		err = 1;
+			
+		return false;
+		
+		}
+		
+		<?php } ?>
+		
+		
+		<?php } ?>
+		
+		if (err == 1) {
+		
+			return false;
+		
+		} else {
+			
+			return true;
+			
+		}
+		
+		
+	}
+	
+	function isOfAge() { 
+				
+		var nD = "<?php echo date("d"); ?>";
+		var nM = "<?php echo date("m"); ?>";
+		var nY = "<?php echo date("Y")-18; ?>";
+				
+		m = document.getElementById('m_select').value;
+		d = document.getElementById('d_select').value;
+		y = document.getElementById('y_select').value;
+				
+		if (y < nY) {
+			
+			return true;
+			
+		} 
+		
+		if (y == nY && m < nM){
+
+        	return true;
+
+        } 
+        
+        if (y == nY && m == nM && d <= nD) {
+
+        	return true;
+
+        } 
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+			document.getElementById('ajax-loader-gif').style.display = 'none';
+			alert('You must be over 18.');
+			
+			return false;
+				
+	}
+	
+	
+	function customSubmit() {
+		
+		if (!checkValues()) {
+			
+			return false;
+			
+		} else {
+		
+			return true;
+		
+		}
+		
+	}
+	
+	function checkCc() {
+		
+		if(document.getElementById('authorizenet_cc_type').value == '') {
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+			document.getElementById('ajax-loader-gif').style.display = 'none';
+			alert('Please select a credit card type.');
+			return false;
+			
+		}
+		
+		if(document.getElementById('authorizenet_cc_number').value == '') {
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+				document.getElementById('ajax-loader-gif').style.display = 'none';
+			alert('Please enter a valid credit card number.');
+			return false;
+			
+		}
+		
+		if(document.getElementById('authorizenet_expiration').value == '') {
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+				document.getElementById('ajax-loader-gif').style.display = 'none';
+			alert('Please select an expiration month.');
+			return false;
+			
+		}
+		
+		if(document.getElementById('authorizenet_expiration_yr').value == '') {
+			
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+				document.getElementById('ajax-loader-gif').style.display = 'none';
+			alert('Please select an expiration year.');
+			return false;
+			
+		}
+		
+		return true;
+		
+	}	
+	
+<?php if (!Mage::getSingleton('core/session')->getScript()) { ?>
+	
+	Event.observe('onestepcheckout-button-place-order', 'click', function(e) {
+				
+		var form = new VarienForm('one-step-checkout-form');
+		var validator = new Validation(this.form);	
+		
+		if (error != "") {
+			
+			alert(error);
+			document.getElementById('onestepcheckout-button-place-order').disabled=false;
+			document.getElementById('ajax-loader-gif').style.display = 'none';
+						
+		} else {
+			
+			if (checkValues()) {
+				
+				if (validateEmailConfirm()) {
+ 						
+					if (isOfAge()) {
+							
+						//if (checkCheckbox()) {
+							
+						if (document.getElementById('p_method_authorizenet').checked) {
+							
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+							
+							if (document.getElementById('zip_code_form').value == '' || document.getElementById('lab-selected').value == 0 || document.getElementById('lab-selected').value == '') {
+								
+								
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please select a testing location in your area.');
+								
+								
+							} else {
+								
+							<?php } ?>
+							
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 2) { ?>
+							
+							if (document.getElementById('billing:street1').value == '') {
+								
+								
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please enter your street address.');
+								return false;
+								
+								
+							} else if (document.getElementById('billing:city').value == ''){
+							
+							
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please enter your city.');
+								return false;
+
+							
+							
+							} else if (document.getElementById('billing:region_id').value == '') {
+							
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please select your state.');
+								return false;
+							
+							} else  if (document.getElementById('billing:postcode').value == '') {
+							
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please enter your zip code.');
+								return false;
+							
+							
+							} else {
+								
+							<?php } ?>
+								
+								if (checkCc()) {
+			
+									document.getElementById('one-step-checkout-form').submit();
+											
+								} else {
+									
+									document.getElementById('onestepcheckout-button-place-order').disabled=false;
+									document.getElementById('ajax-loader-gif').style.display='none';
+									
+								}
+								
+								<?php if (Mage::getSingleton('core/session')->getOrderType() == 2) { ?>
+							
+								}
+							
+							<?php } ?>
+											
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+							
+								}
+							
+							<?php } ?>
+							
+						} else {
+							
+							
+							
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+							
+							if (document.getElementById('zip_code_form').value == '' || document.getElementById('lab-selected').value == 0 || document.getElementById('lab-selected').value == '') {
+								
+								
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please select a testing location in your area.');
+								
+								
+							} else {
+								
+							<?php } ?>
+							
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 2) { ?>
+							
+							if (document.getElementById('billing:street1').value == '') {
+								
+								
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please enter your street address.');
+								return false;
+								
+								
+							} else if (document.getElementById('billing:city').value == ''){
+							
+							
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please enter your city.');
+								return false;
+
+							
+							
+							} else if (document.getElementById('billing:region_id').value == '') {
+							
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please select your state.');
+								return false;
+							
+							} else  if (document.getElementById('billing:postcode').value == '') {
+							
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('Please enter your zip code.');
+								return false;
+							
+							
+							} else {
+								
+							<?php } ?>
+							
+							
+							
+							
+							if (!document.getElementById('cash').checked) {
+							
+															
+								document.getElementById('onestepcheckout-button-place-order').disabled=false;
+								document.getElementById('ajax-loader-gif').style.display='none';
+								alert('You have selected our Pay With Cash option, please check the checkbox to continue.');
+								
+							} else {
+			
+								document.getElementById('one-step-checkout-form').submit();
+							
+							}
+							
+							
+							
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 2) { ?>
+							
+								}
+							
+							<?php } ?>
+											
+							<?php if (Mage::getSingleton('core/session')->getOrderType() == 1) { ?>
+							
+								}
+							
+							<?php } ?>
+							
+											
+							
+						}
+						
+					} else {
+						
+						document.getElementById('onestepcheckout-button-place-order').disabled=false;
+						document.getElementById('ajax-loader-gif').style.display = 'none';
+						
+					}
+					
+				} else {
+					
+					document.getElementById('onestepcheckout-button-place-order').disabled=false;
+					document.getElementById('ajax-loader-gif').style.display = 'none';
+					
+				}
+			
+			} else {
+				
+				document.getElementById('onestepcheckout-button-place-order').disabled=false;
+				document.getElementById('ajax-loader-gif').style.display = 'none';
+				
+			}
+			
+		}
+				
+	});
+	
+<?php } else { ?>
+	
+	Event.observe('onestepcheckout-button-place-order', 'click', function(e) {
+		var form = new VarienForm('one-step-checkout-form');
+		var validator = new Validation(this.form);	
+		
+		//if (checkValues()) {
+					
+			if (validator.validate()) {			
+				var element = e.element();
+				//disable the button
+				if(checkpayment()) {
+					element.disabled = true;
+					disable_payment();
+					
+					$('one-step-checkout-form').submit();
+						
+				}
+			} else {
+				//alert('Error');
+			}
+
+	});
+	
+	
+<?php } ?>	
+	
+	<?php if ($this->isCustomerLoggedIn()):?>
+	var save_address_url = '<?php echo $this->getUrl('onestepcheckout/index/save_address', array('_secure' => true))?>';
+	save_address_information(save_address_url);
+	<?php endif;?>
+//]]>
+</script>
+<?php if (isset($preCheck1) && isset($preCheck2) && $preCheck1 != "" && $preCheck2 != "") { ?>
+<script>
+						handlerLabFunction('<?php echo $preCheck1; ?>',<?php echo $preCheck2;?>);
+					</script>
+					
+<?php } ?>
+
+
+<!-- PerfectMatch conversion -> Checkout Page -->
+<script type="text/javascript">
+/* <![CDATA[ */
+var google_conversion_id = 1005508428;
+var google_conversion_language = "en";
+var google_conversion_format = "3";
+var google_conversion_color = "ffffff";
+var google_conversion_label = "0QDdCMzoggMQzK673wM";
+var google_conversion_value = 0;
+/* ]]> */
+</script>
+<script type="text/javascript" src="https://www.googleadservices.com/pagead/conversion.js">
+</script>
+<noscript>
+<div style="display:inline;">
+<img height="1" width="1" style="border-style:none;" alt="" src="https://www.googleadservices.com/pagead/conversion/1005508428/?label=0QDdCMzoggMQzK673wM&amp;guid=ON&amp;script=0"/>
+</div>
+</noscript>
+<!-- EOF PerfectMatch conversion -> Checkout Page -->

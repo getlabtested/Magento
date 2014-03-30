@@ -1,0 +1,270 @@
+<script type="text/javascript">
+<!--
+
+function selectLab(labId) {
+
+var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/selectlab") ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){},
+                parameters: labId    // Seriallizing the form input values
+            }
+        );
+
+}
+
+function is_int(value){
+   for (i = 0 ; i < value.length ; i++) {
+      if ((value.charAt(i) < '0') || (value.charAt(i) > '9')) return false 
+    }
+   return true;
+}
+
+function handlerFunction(){
+	
+	$('location_submit_button').disabled = true;
+	document.getElementById('LoadLocation').style.display='block';
+ 					
+	// if ($("zip_code").value.length != 5 || is_int($("zip_code").value) === false) {
+// 		
+		// alert('Please enter a valid 5 digit zip code.');
+		// $('location_submit_button').disabled = false;
+		// document.getElementById('LoadLocation').style.display = 'none'; 
+		// return false;
+// 		
+	// }
+
+
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/getlabs") ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ // Defining Complete Callback Function
+ 
+                    // Getting Ajax Response Text Which is JSON Object
+                    var jsonResponse=transport.responseText;
+
+                    //Checking JSON Objects property and performing related action
+                    // You will understand the response Text format after going through the controller description (Below)
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                    }
+                    else{
+                    	document.getElementById('location_submit_button').disabled = false;
+                    	document.getElementById('LoadLocation').style.display='none';
+                        document.getElementById("location_results").innerHTML = jsonResponse;
+                    }
+                },
+                parameters: Form.serialize($("labs-by-zip"))    // Seriallizing the form input values
+            }
+        );
+}
+
+function submitenter(e)
+{
+var keycode;
+if (window.event) keycode = window.event.keyCode;
+else if (e) keycode = e.which;
+else return true;
+
+if (keycode == 13)
+   {
+   document.getElementById('location_submit_button').click();
+   return false;
+   }
+else
+   return true;
+}
+//-->
+</script>
+<div id="main_col">
+                    
+	<div id="locations">
+	<div id="location_module">
+	
+		<h1 class="page-title">4,000+ trusted STD testing locations</h1>
+		<h2>Enter zip code to find a location near your home or office</h2>
+		
+		<div class="box_blue_bg">
+		
+			<form id="labs-by-zip" method="post">
+				<label>Enter your zip code:</label>
+				<input class="text" id="zip_code" onKeyPress="return submitenter(event);" name="zip_code" type="text" value="<?php echo ($this->getRequest()->getPost('zip_code')? $this->getRequest()->getPost('zip_code') : Mage::getSingleton('core/session')->getZip());?>"/> 
+				<a id="location_submit_button" onClick="handlerFunction();return false;" class="btn_orange" href="#"><img src="images/arrow_right_white.png"> submit</a>
+				<div class="clear">&nbsp;</div>
+				<input type="hidden" name="ref_page" value="test-locally" /> 
+			</form>
+		
+		</div>
+		
+		<div class="clear">&nbsp;</div>
+		<div class="sep20">&nbsp;</div>
+		
+		<?php 
+
+		if ($this->getRequest()->getPost('zip_code') && $this->getRequest()->getPost('ref_page') == 'home') { 
+			
+			$show = 0;
+			
+			?>
+
+			<?php if (Mage::getSingleton('core/session')->getIsNnr()) { ?>
+				
+				<h3>Due to state regulations in <?php echo Mage::helper('medivo')->getNnrStatesString() ?>, pricing may vary.</h3>
+						
+			<?php } /* else { ?>
+				
+				<h3>Select location below. Many labs open until 5:00 PM or later.</h3>
+				
+			<?php } */ ?>
+		
+		<?php } else {
+			
+			$show = 1;
+			
+		} ?>
+				
+		<div align="center" id="LoadLocation" style="display:none; padding-top:10px;"><img alt="loading" src="http://c0001470.cdn1.cloudfiles.rackspacecloud.com/ajaxloading.gif"></div>
+
+		
+		
+		
+		<div id="location_results" class="results">
+		
+		<?php if ($show == 1) { ?>
+			
+			<div class="no_results">
+		<img src="images/arrow_blue_wide_down.png"> Local STD testing centers will appear here after entering zip code
+		</div>
+		
+			
+		<?php } ?>
+			
+		
+		
+		<!-- <h3>Local STD Testing Centers:</h3> -->
+		
+		
+		
+		<?php 
+
+if ($this->getRequest()->getPost('zip_code') && $this->getRequest()->getPost('ref_page') == 'home') {
+
+$_locations = $this->getLabsByZip();
+	
+	if (!is_array($_locations) && !is_object($_locations)) {
+	
+		echo "<h3>We apologize - it appears your zip code is invalid or there are no testing locations within 100 miles.  
+		Call 866-749-6269 and we'll help determine the best private option for testing.  
+		Alternately, click 'ORDER NOW' to order at home STD testing.</h3>";
+	
+	} else {
+		
+		echo "<h3>Select location below. Many labs open until 5:00 PM or later.</h3>";
+
+		$x = 0;
+
+		foreach ($_locations as $location) {
+		
+		
+		if ($x < 6) {
+		
+		?>
+					<div class="item">
+					<form name="lab" action="/medivo/local/selectlab" method="post">
+					<?php if ($location->{'lab-id'} == 129) { 
+						
+						$name = "Labcorp";
+						
+						?>
+					<h4><?php echo $location->address;?></h4>
+					<?php } else { 
+						
+						$name = "Quest Diagnostics";
+						
+						?>
+					<h4>Exact address displayed after test selection</h4>
+					<?php } ?>
+					
+					<div class="location">
+						<!-- <p><?php echo ucwords(strtolower($location->name));?></p> -->
+						<p><?php echo $name; ?></p>
+						<?php echo ucwords(strtolower($location->city));?>, <?php echo $location->state;?> <?php echo $location->zip;?><br /> <span class="blue">866-749-6269</span></p>
+					</div>
+					<div class="hours">
+						<p class="header">Hours</p>
+						<p><?php echo str_ireplace("|Sa","<br>Sa",$location->hours);?></p>
+					</div>
+					
+					<div id="loc-sub" style="float: left;">
+						<!-- button  type="submit" >Order & Test Here</button -->
+						<input type="button" value="Submit" onclick="this.form.submit();" class="btn_orange_32_reflection-location submit "/>
+						
+					</div>
+					
+					<?php if (isset($location->{'id'})) { ?>
+								
+					<input type="hidden" name="lab_id" value="<?php echo $location->{'id'};?>">
+					
+					<?php } else { ?>
+					<input type="hidden" name="lab_id" value="<?php echo $location->{'nnr_id'};?>">	
+						
+					<?php } ?>
+					
+					<input type="hidden" name="lab_type" value="<?php echo $location->{'lab-id'};?>">
+					<!-- button type="submit" >Order & Test Here</button -->
+					</form>
+					</div>
+		<?php 
+		
+		$x++;
+		
+		}
+		
+		}
+
+	}
+	
+} else {
+	
+?>
+	
+	<div><img style="margin-top:20px;" src="http://c240340.r40.cf1.rackcdn.com/gst-locations-zipcode-gray.gif" /></div>
+	
+<?php } ?>
+
+		
+		
+		
+		
+		    
+		</div> <!-- /search_location_results -->
+	
+	
+	</div>
+	</div> <!-- /locations -->
+	
+	</div>
+
+<div id="right_col">
+	<div id="widgets_right">
+                    
+                    <div class="sep20">&nbsp;</div>
+                    
+                    <div class="side_widget box_grey_border box_blue_bg" id="questions_side_widget">
+                        <div class="header">
+                            <h4>Questions?</h4>
+                            <p><span class="blue">Or to order by phone.</span></p>
+                        </div>
+                        <div class="content">
+                            <p>Call us at: <br>
+                                <span class="navy">866-236-8491</span>
+                            </p>
+                        </div>
+                    </div> <!-- /questions_side_widget -->
+                    
+                </div>
+</div>
+<!-- /right_col -->

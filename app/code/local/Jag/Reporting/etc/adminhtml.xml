@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<reporting module="reporting">
+			<title>Reporting</title>
+			<sort_order>71</sort_order>               
+			<children>
+				<reporting_reporting module="reporting">
+					<title>Revenue Reports</title>
+					<sort_order>0</sort_order>
+					<action>reporting/adminhtml_reporting</action>
+				</reporting_reporting>
+				<reporting_realtime module="reporting">
+					<title>Real Time Revenue Reports</title>
+					<sort_order>0</sort_order>
+					<action>reporting/adminhtml_realtime</action>
+				</reporting_realtime>
+				<reporting_reportingaffcall module="reporting">
+					<title>Revenue Reports Test</title>
+					<sort_order>0</sort_order>
+					<action>reporting/adminhtml_reportingaffcall</action>
+				</reporting_reportingaffcall>
+				<reporting_rep module="reporting">
+					<title>Callcetner Rep Reports</title>
+					<sort_order>0</sort_order>
+					<action>reporting/adminhtml_rep</action>
+				</reporting_rep>
+				<reporting_customer module="reporting">
+					<title>Marketing Report</title>
+					<sort_order>5</sort_order>
+					<action>reporting/adminhtml_customer</action>
+				</reporting_customer>
+				<reporting_sales module="reporting">
+					<title>Call Affiliate Report</title>
+					<sort_order>10</sort_order>
+					<action>reporting/adminhtml_sales</action>
+				</reporting_sales>
+				<reporting_afftwo module="reporting">
+					<title>Online Affiliate Report</title>
+					<sort_order>20</sort_order>
+					<action>reporting/adminhtml_afftwo</action>
+				</reporting_afftwo>
+				<reporting_affiliatecustomer module="reporting">
+					<title>Affiliate Customer Report</title>
+					<sort_order>25</sort_order>
+					<action>reporting/adminhtml_affiliatecustomer</action>
+				</reporting_affiliatecustomer>
+				<tests module="tests">
+					<title>Positives Report</title>
+					<sort_order>90</sort_order>
+					<action>tests/adminhtml_tests</action>
+				</tests>
+			</children>
+		</reporting>
+	</menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <reporting translate="title" module="reporting">
+          		<title>Reporting</title>
+                <sort_order>40</sort_order>
+	            <children>
+	             	<reporting_reporting module="reporting">
+						<title>Revenue Reports</title>
+						<sort_order>0</sort_order>
+					</reporting_reporting>
+					<reporting_reportingaffcall module="reporting">
+						<title>Revenue Reports Test</title>
+						<sort_order>0</sort_order>
+					</reporting_reportingaffcall>
+		            <reporting_rep module="reporting">
+						<title>Callcetner Rep Reports</title>
+						<sort_order>0</sort_order>
+					</reporting_rep>
+					<reporting_customer module="reporting">
+						<title>Customer Reports</title>
+						<sort_order>5</sort_order>
+					</reporting_customer>
+					<reporting_sales module="reporting">
+						<title>Affilate Report #1</title>
+						<sort_order>10</sort_order>
+					</reporting_sales>
+					<reporting_afftwo module="reporting">
+						<title>Affilate Report #2</title>
+						<sort_order>20</sort_order>
+					</reporting_afftwo>
+					<reporting_affiliatecustomer module="reporting">
+						<title>Affilate Customer Report</title>
+						<sort_order>20</sort_order>
+					</reporting_affiliatecustomer>
+	            </children>
+          </reporting>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>

@@ -1,0 +1,11 @@
+<?php
+    $test_subcategories = $this->getTestSubcategories();
+?>
+
+<div id="col-left-sidebar">
+    <ul id="tests-list">
+        <?php foreach ($test_subcategories->getItems() as $subcategory) { ?>
+        <li><a class="subcategory_selector" id="subcategory_selector<?php echo $subcategory->getUrlKey() ?>" href="<?php echo $subcategory->getUrl() ?>"><?php echo $subcategory->getName() ?></a></li>
+        <?php } ?>
+    </ul>
+</div>

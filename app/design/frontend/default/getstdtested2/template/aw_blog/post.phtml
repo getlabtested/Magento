@@ -1,0 +1,160 @@
+<?php $post = $this->getPost();?>
+<div id="messages_product_view"><?php echo $this->getMessagesBlock()->getGroupedHtml() ?></div>
+
+<div id="content">
+    <div id="left_col">
+
+        <div class="postWrapper">
+
+			<div class="postTitle">
+                <h1><a href="<?php echo $post->getAddress(); ?>" ><?php echo $post->getTitle();?></a></h1>
+                <p class="info"><?php echo Mage::helper('blog')->__('Posted');?> <?php echo $this->__("by"); ?> <?php echo $post->getUser(); ?> on <?php echo date('l, F jS, Y', strtotime($post->getCreatedTime())); ?></p>
+			</div>
+
+			<div class="socials">
+				<?php
+					$page_title=$this->getLayout()->getBlock('head')->getTitle();
+					$page_url=Mage::helper('core/url')->getCurrentUrl();
+				?>
+				<a href="https://twitter.com/share" class="twitter-share-button" data-url="<?php echo $page_url; ?>" data-text="<?php echo $page_title; ?>" data-count="vertical" data-via="getstdtested">Tweet</a><script type="text/javascript" src="//platform.twitter.com/widgets.js"></script> &nbsp;
+				<div class="fb-like" data-href="<?php echo $page_url; ?>" data-send="false" data-layout="box_count" data-width="450" data-show-faces="true"></div>
+			</div>
+            
+            <div class="postContent"><?php echo $post->getPostContent(); ?></div>
+            <?php echo $this->getBookmarkHtml($post); ?>
+
+        </div>
+			
+			<div id="fb-root"></div>
+			<script>(function(d, s, id) {
+			  var js, fjs = d.getElementsByTagName(s)[0];
+			  if (d.getElementById(id)) return;
+			  js = d.createElement(s); js.id = id;
+			  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+			  fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));</script>
+			
+			<div class="fb-comments" data-href="<?php echo $page_url; ?>" data-num-posts="5" data-width="680"></div>
+        
+        <!-- Comment Section -->
+        
+        <?php if($this->getCommentsEnabled()): ?>
+            <?php $comments = $this->getComment(); ?>
+            <div class="postTitle"><a name="commentBox" ></a>
+                <h2><?php echo $this->getCommentTotalString($comments);?></h2>
+            </div>
+            
+            <?php foreach ($comments as $comment):	?>
+                <div class="commentWrapper">
+                    <div class="commentDetails"><h4 class="username"><?php echo $comment->getUser();?></h4> <?php echo $this->__("posted on")?> <?php echo $this->formatDate($comment->getCreatedTime(),"full",true);?></div>
+                    <div class="commentContent"><?php echo $comment->getComment();?></div>
+                    
+                </div>
+            <?php endforeach; ?>
+            
+            <?php if ($post->getComments()): ?>
+                <div class="postError"><?php echo Mage::helper('blog')->__('Comments are Closed for this post') ?></div>
+            <?php else: ?>
+                <?php if ($this->getLoginRequired()): ?>
+                    <?php if ($this->helper('customer')->isLoggedIn()): ?>
+                        <form action="" id="postComment" method="post">  
+                           <fieldset class="group-select">
+                                <h4 class="legend"><?php echo Mage::helper('blog')->__('Submit Comment') ?></h4>
+                                <ul>
+                                    <li>
+                                                           
+                                        <div class="input-box">
+                                            <label for="comment"><?php echo Mage::helper('blog')->__('Comment') ?><span class="required">*</span></label><br />
+                                            <textarea name="comment" id="comment" title="<?php echo $this->__('Comment') ?>" class="required-entry input-text" style="height:150px;width:400px;" cols="50" rows="5"><?php echo $this->getCommentText(); ?></textarea>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </fieldset>
+                            <div class="button-set">
+                                <input name="post_id" type="hidden" value="<?php echo $post->getPostId();?>" />
+                                <input name="email" type="hidden" value="<?php echo $this->htmlEscape($this->helper('blog')->getUserEmail()) ?>"/>
+                                <input name="user" type="hidden" value="<?php echo $this->htmlEscape($this->helper('blog')->getUserName()) ?>"/>
+                                <p class="required" style="width:400px"><?php echo $this->__('* Required Fields') ?></p>
+                                <button class="button" type="submit"><span><span><?php echo Mage::helper('blog')->__('Submit Comment') ?></span></span></button>
+                            </div>
+                        </form>
+                        
+                        <script type="text/javascript">
+                            var contactForm = new VarienForm('commentForm', true);
+                        </script>            
+                        
+                    <?php else: ?>
+                        <p><?php echo Mage::helper('blog')->__('You must be logged in to post a comment.');?></p>
+                        <p><a href="<?php echo Mage::helper('customer')->getLoginUrl(); ?>"><?php echo Mage::helper('blog')->__('click here');?></a> <?php echo Mage::helper('blog')->__('to log in');?></p>
+                     <?php endif ?>
+                     
+                <?php else: ?>
+                    
+                    <form action="" id="postComment" method="post">
+                        <fieldset class="group-select">
+                            <h4 class="legend"><?php echo Mage::helper('blog')->__('Submit Comment') ?></h4>
+                            <ul>
+                                <li>
+                                    <div class="input-box">
+                                        <label for="name"><?php echo Mage::helper('blog')->__('Name') ?> <span class="required">*</span></label><br />
+                                        <input name="user" id="user" value="<?php echo $this->getCommentName(); ?>" title="<?php echo $this->__('Name') ?>" class="required-entry input-text" type="text" />
+                                    </div>
+                                
+                                    <div class="input-box">
+                                        <label for="email"><?php echo Mage::helper('blog')->__('Email') ?> <span class="required">*</span></label><br />
+                                        <input name="email" id="email" value="<?php echo $this->getCommentEmail(); ?>" title="<?php echo $this->__('Email') ?>" class="required-entry input-text validate-email" type="text" />
+                                    </div>
+                                
+                                    <div class="clear"></div>
+                                
+                                    <div class="input-box">
+                                        <label for="comment"><?php echo Mage::helper('blog')->__('Comment') ?><span class="required">*</span></label><br />
+                                        <textarea name="comment" id="comment" title="<?php echo Mage::helper('blog')->__('Comment') ?>" class="required-entry input-text" style="height:150px;width:400px;" cols="50" rows="5"><?php echo $this->getCommentText(); ?></textarea>
+                                    </div>
+                                </li>
+                                
+                                <?php 
+                                if (Mage::getStoreConfig('blog/recaptcha/enabled') && !$this->helper('customer')->isLoggedIn())
+                                {
+                                    ?><li><?php
+                                        require_once 'recaptcha/recaptchalib-aw.php';
+                    
+                                        // Get a key from http://recaptcha.net/api/getkey
+                                        $publickey = Mage::getStoreConfig('blog/recaptcha/publickey');
+                                        $privatekey = Mage::getStoreConfig('blog/recaptcha/privatekey');
+                                        $error = null;
+                                    
+                                        echo recaptcha_get_html($publickey, $error);
+                                    ?></li><?php
+                                }
+                                ?>
+                                </li>
+                            </ul>
+                        </fieldset>
+                        <div class="button-set">
+                            <input name="post_id" type="hidden" value="<?php echo $post->getPostId();?>" />
+                            <p class="required" style="width:400px"><?php echo $this->__('* Required Fields') ?></p>
+                            <button class="button" type="submit"><span><span><?php echo Mage::helper('blog')->__('Submit Comment') ?></span></span></button>
+                        </div>
+                    </form>
+                
+                    <script type="text/javascript">
+                        var contactForm = new VarienForm('postComment', false);
+                    </script>
+                <?php endif; ?>
+            <?php endif; ?>
+        <?php endif; ?>
+   
+   	</div> <!-- /left_col -->
+    
+    <div id="right_col">
+		<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('test-recommender-banner')->toHTML();?>
+		<?php echo $this->getLayout()->createBlock('cms/block')->setBlockId('trusted-accredited-banner')->toHTML();?>
+		<div style="margin-top: 43px; text-align: center;">
+			<script type="text/javascript" src="http://cdn.widgetserver.com/syndication/subscriber/InsertWidget.js"></script><script type="text/javascript">if (WIDGETBOX) WIDGETBOX.renderWidget('75f80afb-94c9-4d1b-9760-59c7c8a2d549');</script>
+			<noscript>Not seeing a widget? Visit <a href="http://www.empowher.com">EmpowHER.com</a> for women's health and wellness community, news and resources.</noscript>
+		</div>
+    </div>
+
+</div> <!-- /content -->
+     

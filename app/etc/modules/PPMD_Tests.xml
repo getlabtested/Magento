@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_Tests>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Mage_CatalogRule/>
+            </depends>
+        </PPMD_Tests>
+    </modules>
+</config>

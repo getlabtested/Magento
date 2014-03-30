@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+    <reference name="head">
+        <action method="addCss"><stylesheet>testrecommender/styles.css</stylesheet></action>
+        <action method="addJs"><script>jquery/jquery-1.6.2.min.js</script></action>
+        <action method="addJs"><script>testrecommender/jquery.easing.js</script></action>
+        <action method="addJs"><script>testrecommender/jquery.dimensions.js</script></action>
+        <action method="addJs"><script>testrecommender/jquery.accordion.js</script></action>
+        <action method="addJs"><script>testrecommender/scripts.js</script></action>
+        <action method="addJs"><script>testrecommender/std-testing-options.js</script></action>
+        <action method="addJs"><script>testrecommender/chili-1.7.pack.js</script></action>
+    </reference>
+    </default>
+    <testrecommender_index_index>
+        <reference name="root">
+            <action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+        </reference>
+        <reference name="content">
+            <block type="core/template" name="testrecommender_form_index" template="testrecommender/form/index.phtml" />
+        </reference>
+    </testrecommender_index_index>
+    
+    <testrecommender_index_post>
+		<reference name="root">
+			<action method="setTemplate"><template>page/2columns-left.phtml</template></action>
+		</reference>
+		<reference name="content">
+		<block type="core/template" name="testrecommender_results_index" output="toHtml" template="testrecommender/results/index.phtml" />
+		</reference>
+	</testrecommender_index_post>
+</layout>

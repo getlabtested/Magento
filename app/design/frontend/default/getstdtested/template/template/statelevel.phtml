@@ -1,0 +1,223 @@
+<script type="text/javascript">
+<!--
+
+function selectLab(labId) {
+
+var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/selectlab") ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){},
+                parameters: labId    // Seriallizing the form input values
+            }
+        );
+
+}
+
+function is_int(value){
+   for (i = 0 ; i < value.length ; i++) {
+      if ((value.charAt(i) < '0') || (value.charAt(i) > '9')) return false 
+    }
+   return true;
+}
+
+
+function handlerFunction(){
+	
+	$('location_submit_button').disabled = true;
+	document.getElementById('LoadLocation').style.display='block';
+	
+	if ($("zip_code").value.length != 5 ||is_int($("zip_code").value) === false) {
+		
+		alert('Please enter a valid 5 digit zip code.');
+		$('location_submit_button').disabled = false;
+		document.getElementById('LoadLocation').style.display = 'none'; 
+		return false;
+		
+	}
+ 
+
+        var request = new Ajax.Request(
+            '<?php echo $this->getUrl("medivo/local/getlabs") ?>',
+            {
+                method: 'post',
+                onComplete: function(transport){ // Defining Complete Callback Function
+ 
+                    // Getting Ajax Response Text Which is JSON Object
+                    var jsonResponse=transport.responseText;
+
+                    //Checking JSON Objects property and performing related action
+                    // You will understand the response Text format after going through the controller description (Below)
+                    if(jsonResponse.error){
+                        alert("Error Occured");
+                        return false;
+                    }
+                    else{
+                    	document.getElementById('location_submit_button').disabled = false;
+                    	document.getElementById('LoadLocation').style.display='none';
+                        document.getElementById("location_results").innerHTML = jsonResponse;
+                    }
+                },
+                parameters: Form.serialize($("labs-by-zip"))    // Seriallizing the form input values
+            }
+        );
+}
+//-->
+</script>
+<?php
+
+	$states = $this->getStateList();
+	
+			
+?>  
+
+<div id="content">
+
+				<div id="left_col">
+                	
+                    <div id="std_testing_state_module">
+                        <h1 class="page-title">Over 4,000 locations to test for STDs. </h1>
+                        <h2>Find a private testing location near you</h2>
+                        
+                        <div style="width:625px;" class="bg_grey_round">
+			<form id="labs-by-zip" method="post"> 
+				<label for="zip_code">Enter your zip code</label> 
+				<input style="margin-left:10px; margin-right:0px;" class="text" id="zip_code" name="zip_code" type="text" value="<?php echo ($zip = $this->getRequest()->getPost('zip_code')? $zip : Mage::getSingleton('core/session')->getZip());?>"/> 
+				<input type="hidden" name="ref_page" value="test-locally" /> 
+				<!-- div class="submit btn_orange_32_reflection" id="location_submit_div" onclick="this.innerHTML='Loading';" -->
+				<input id="location_submit_button" class="submit btn_orange_32_reflection" type="button" onClick="handlerFunction();return false;" value="Submit" />
+			</form>
+		</div>
+                        
+                        <div id="std_state_search_results">
+                        
+							<h3>Many labs open until 5:00 p.m. or later. Order and test as soon as today.</h3>
+	                        
+	                        <div  align="center" id="LoadLocation" style="display:none; width:625px;">
+	                        	<img alt="loading" src="http://c0001470.cdn1.cloudfiles.rackspacecloud.com/ajaxloading.gif">
+	                        </div>
+                            
+                          <div style="width:655px;" id="location_results">
+                                                      
+                            <!-- div class="item">
+                            	<h4>6191 N Canfield Ave</h4>
+                                <div class="address">
+                                	<p class="header">3,6 miles away</p>
+                                    <p>
+                                    	Labcorp<br>
+                                        Chicago, IL 60631<br>
+                                        <span class="blue">888-749-6269</span>
+                                </p></div>
+                                <div class="hours">
+                                	<p class="header">Hours:</p>
+                                    <p>
+                                    	M-F DRUG SCREENS DRUG SCREENS<br>
+                                        7:30am-3:30pm, 7:30am-3:30pm 7:30am-3:30pm<br>
+                                        10:00am-5:00pm
+                                </p></div>
+                                <a href="#" class="btn_orange_25_reflection">order &amp; test here</a>
+                                
+                                <div class="clear"></div>
+                            </div -->
+                            
+                          </div>
+                            
+                        </div> <!-- /std_state_search_results -->
+                        
+                        <h2 style="margin-top:20px; margin-bottom:0px; padding-bottom:0px;">STD Testing Centers By State:</h2>
+                        <p style="width:650px;">Choose from more than 4,000 local testing centers in the U.S. that provide convenient, affordable and confidential HIV and Sexually Transmitted Disease testing. If you choose our at-home testing option, you can test in the comfort of your home. In either case, results are ready within days after the sample is received and are made available securely online. Testing is always 100% private and confidential.</p>
+    
+    
+    <div class="states_list location_list">
+                        	<ul>
+                        
+<?php
+
+	$x = 0;
+
+	foreach ($states as $state) {
+	
+?>
+                        
+                        
+         <?php if ($x == 16 || $x = 33)  { ?> 
+         
+         				</ul>
+                        </div>
+                        
+                        <div class="states_list location_list">
+                        	<ul>
+         
+         
+         <?php } ?>             
+                        
+                        
+		<li><a href="/std-test-centers/<?php echo strtolower(str_replace(" ","-",$state->getData('stateFull')));?>-<?php echo  strtolower($state->getState());?>"><?php echo $state->getData('stateFull');?> STD Testing</a></li>
+                            	
+                            	
+   <?php $x++; } ?>
+
+                            
+                            </ul>
+                        </div>
+                        
+                    </div> <!-- /std_testing_state -->
+                    
+                </div> <!-- /left_col -->
+                
+                <div id="right_col">
+                
+                	
+                	<div id="blocks-widgets">
+						<div class="bg_white">
+							<div id="steps_side_widget" class="box_blue_header">
+								<div class="header">
+									<h3>PEACE OF MIND IN 4 EASY STEPS</h3>
+								</div>
+								<div class="content">
+									<p class="list">1 <span class="blue">order</span></p>
+									<p class="list">2 <span class="blue">test</span></p>
+									<p class="list">3 <span class="blue">results</span></p>
+									<p class="list">4 <span class="blue">treatment</span></p>
+									<div class="clear">&nbsp;</div>
+								</div>
+							</div>
+						<!-- /steps_side_widget --></div>
+					</div>
+					
+					<div id="blocks-widgets">
+						<div class="bg_white">
+							<div id="question_side_widget" class="box_blue_header box_quote_left">
+								<div class="header">
+									<h3>Questions?</h3>
+									<p>Or To Order By Phone.</p>
+								</div>
+								<div class="content">
+									<p><span class="blue">Call us at:</span> <span class="orange">866-749-6269</span></p>
+									<p>M-F 7am-7pm <br />Sat-Sun 9am-3pm CST</p>
+								</div>
+							</div>
+						<!-- /question_side_widget --></div>
+					</div>
+
+					<div id="blocks-widgets">
+						<div class="bg_white">
+							<div id="hassle_free_widget" class="box_blue_header" style="background: none; border: none;">
+								<div class="content" style="font-size: 12px;">
+									<p><span class="blue" style="font-size: 14px;">HASSLE FREE STD TESTING</span></p>
+									<p><span class="orange">Test Today.</span> No appointments needed. Test at your convenience. Most lab visits are less then 15 minutes.</p>
+									<p><span class="orange">Complete privacy.</span> No insurance reporting. Our labs test people for a variety of reasons so no one will know why you're there and what you're getting tested for. At-home STD testing also available.</p>
+									<p><span class="orange">Quick Results.</span> Get results in 1 to 5 business days; faster than your doctor's office.</p>
+									<p><span class="orange">High level of accuracy.</span> Same tests administered by doctors and hospitals nationwide.</p>
+									<p><span class="orange">Painless testing.</span> Lab testing involves either a painless urine sample and/or simple blood draw.</p>
+									<p><span class="orange">Private Treatment.</span> In-house physician network available to provide treatment for curable STDs including chlamydia, gonorrhea, and trichomonasis. We can also provide medication to control herpes outbreaks.</p>
+									<p><span class="orange">Free Physician Consult.</span> In-house physicians available to answer questions and prescribe treatment.</p>
+								</div>
+							</div>
+						<!-- /hassle_free_widget --></div>
+					</div>
+
+					
+                </div> <!-- /right_col -->
+                
+            </div>

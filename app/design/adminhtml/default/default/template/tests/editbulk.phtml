@@ -1,0 +1,74 @@
+<div style="float:left;">
+<form method="get" name="edit-results" id="edit-results" action="<?php echo Mage::helper("adminhtml")->getUrl("tests/adminhtml_editbulk/post"); ?>">
+<table cellspacing="10px" cellpadding="10px">
+<?php
+
+foreach ($this->getTests() as $test) {
+	
+	$orderId = $test->getOrderId();
+	$customerId = $test->getCustomerId();
+	
+	if (!in_array($test->getTestName(), array("Lipid", "Diabetes", "Liver", "Thyroid", "Complete Checkup Panel"))) {
+
+?>
+
+	<tr>
+		<td>
+			<?php echo $test->getTestName(); ?>
+		</td>
+		<td>
+			<select name="arr[<?php echo $test->getId(); ?>]">
+				<option value="0">Pending</option>
+				<option value="1">Positive</option>
+				<option value="2">Negative</option>
+				<option value="3">Inconclusive</option>
+			</select>
+		</td>
+	</tr>
+	
+<?php
+
+	}
+	
+}
+ 
+?>
+</table>
+<button type="submit">Submit</button>
+
+<input type="hidden" name="customer_id" value="<?php echo $customerId;?>" />
+
+<input type="hidden" name="order_id" value="<?php echo $orderId;?>" />
+
+<textarea name="notes" id="notes" style="width: 300px;height:200px;"></textarea>
+
+</form>
+
+</div>
+
+<?php 
+
+$inc = Mage::getModel('sales/order')->load($orderId)->getIncrementId(); 
+
+$baseDir = Mage::getBaseDir();
+		
+			
+		if (!file_exists($baseDir.'/res/'.$inc.'.pdf')) {
+	    		
+				if (Mage::getModel('medivo/medivo')->pullRes($orderId)) {
+					
+					$incPath = '/res/'.$inc.'.pdf';
+					
+				}
+				
+	    	} else {
+	    		
+				$incPath = '/res/'.$inc.'.pdf';
+				
+	    	}
+			
+
+?>
+<div style="float:left;margin-left:20px;">
+<iframe src="http://docs.google.com/gview?url=https://admin.getstdtested.com<?php echo $incPath;?>&embedded=true&zoom=85" style="width:700px; height:500px;" frameborder="0"></iframe>
+</div>

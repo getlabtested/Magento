@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Magestore_Upsell>
+            <version>0.0.1</version>
+        </Magestore_Upsell>
+    </modules>
+
+    <global>
+        <blocks>
+            <upsell>
+                <class>Magestore_Upsell_Block</class>
+            </upsell>
+        </blocks>
+
+        <resources>
+            <upsell_setup>
+                <setup>
+                    <module>Magestore_Upsell</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </upsell_setup>
+        </resources>
+
+        <models>
+            <upsell>
+                <class>Magestore_Upsell_Model</class>
+            </upsell>
+        </models>
+
+        <helpers>
+            <upsell>
+                <class>Magestore_Upsell_Helper</class>
+            </upsell>
+        </helpers>
+    </global>
+
+    <frontend>
+        <routers>
+            <upsell>
+                <use>standard</use>
+                <args>
+                    <module>Magestore_Upsell</module>
+                    <frontName>upsell</frontName>
+                </args>
+            </upsell>
+        </routers>
+
+        <events>
+            <controller_action_predispatch>
+                <observers>
+                    <check_for_upsell_page>
+                        <type>singleton</type>
+                        <class>upsell/observer</class>
+                        <method>checkForUpsellPage</method>
+                    </check_for_upsell_page>
+                </observers>
+            </controller_action_predispatch>
+        </events>
+
+        <layout>
+            <updates>
+                <upsell>
+                    <file>upsell.xml</file>
+                </upsell>
+            </updates>
+        </layout>
+    </frontend>
+
+    <default>
+        <upsell_products>
+            <not_to_display_as_individuals>
+                <complete-checkup-lab/>
+            </not_to_display_as_individuals>
+        </upsell_products>
+        <upsell_routes>
+            <upsell_url>upsell/upsell/index</upsell_url>
+            <upsell_index>upsell_upsell_index</upsell_index>
+            <checkout_page_index>onestepcheckout_index_index</checkout_page_index>
+            <intermediate_checkout_pages>
+                <customroute_index_checkout/>
+                <checkout_onepage_index/>
+            </intermediate_checkout_pages>
+        </upsell_routes>
+        <upsell_stores>
+            <active>
+                <getlabtested/>
+            </active>
+        </upsell_stores>
+    </default>
+</config>

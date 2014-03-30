@@ -1,0 +1,195 @@
+<?php
+$session_lab_data = $this->getSessionLabData();
+$session_selected_lab = $session_lab_data['selected_lab_id'];
+$labsByZip = $session_lab_data['labs_by_zip'];
+?>
+<input type="hidden" id="lab-selected" name="lab-selected" value="<?php echo $session_selected_lab ?>" />
+
+<?php if (!Mage::getModel('core/session')->getScript()) { ?>
+    <?php if(Mage::getModel('checkout/cart')->getQuote()->getIsVirtual()) { ?>
+    <script type="text/javascript">
+        function submitenter(e)
+        {
+            var keycode;
+            if (window.event)
+            {
+                keycode = window.event.keyCode;
+            }
+            else if (e)
+            {
+                keycode = e.which;
+            }
+            else
+            {
+                return true;
+            }
+
+            if (keycode == 13)
+            {
+                document.getElementById('zip-loc-sub').click();
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        function handlerFunction(zipcode){
+            var request = new Ajax.Request(
+                    '<?php echo $this->getUrl("medivo/local/getlabscheckout",array('_secure'=>true)) ?>',
+                    {
+                        method: 'post',
+                        onComplete: function(transport){
+                            var jsonResponse=transport.responseText;
+
+                            if(jsonResponse == "NNR"){
+                                alert('<?php echo Mage::helper('medivo')->getNnrStatesPricingMessage() ?>');
+                                location = '<?php echo $this->getUrl().'std-testing-options';?>';
+                            }
+                            else{
+                                //document.getElementById("zip-loc-sub").disabled = 'false';
+                                document.getElementById("ajax-loader-gif-co").style.display = 'none';
+                                document.getElementById("location_results").innerHTML =jsonResponse;
+                            }
+                        },
+                        parameters: "zip_code="+zipcode
+                    }
+            );
+        }
+
+        function handlerLabFunction(labId,labType){
+            document.getElementById('lab-selected').value = labId;
+            var request = new Ajax.Request(
+                    '<?php echo $this->getUrl("medivo/local/selectlabcheckout",array('_secure'=>true)) ?>',
+                    {
+                        method: 'get',
+                        onComplete: function(transport){
+                            var jsonResponse=transport.responseText;
+                            if(jsonResponse.error){
+                                alert("Error Occured");
+                                return false;
+                            }
+                            else{
+                                //document.getElementById("location_results").innerHTML =jsonResponse;
+                            }
+                        },
+                        parameters: "lab_id="+labId+"&lab_type="+labType
+                    }
+            );
+        }
+    </script>
+
+<div id="checkout_location" class="box">
+    <div class="onestepcheckout-header">
+        <div class="onestepcheckout-header-digit">1</div>
+        <h2>Select Testing Location Near You</h2>
+    </div>
+    <?php
+    if ($labId = Mage::getSingleton('core/session')->getLabId() || Mage::getSingleton('core/session')->getZip() ){ ?>
+        <div class="location_form" style="float: left; width: 500px; padding: 5px 0 0 15px;">
+            <label>Update ZIP Code:</label>
+    <?php }
+    else
+    { ?>
+        <div class="location_form" style="clear: both; float: none; padding: 7px 0 0 23px; width: 357px;">
+            <label for="zip_code_form">Enter ZIP Code:</label>
+    <?php } ?>
+            <input type="text" onKeyPress="return submitenter(event);" name="zip_code" id="zip_code_form" class="text" value="<?php echo Mage::getSingleton('core/session')->getZip(); ?>" style="height: 24px; margin: 0 4px 0 0; padding: 0 7px; font-size: 16px; font-weight: normal;" maxlength="5">
+            <input id='zip-loc-sub' type="button" value="Submit" class="submit btn_blue_reflection" onClick="handlerFunction(document.getElementById('zip_code_form').value);document.getElementById('ajax-loader-gif-co').style.display = 'block';return false;" style="height: 26px; top: 0;">
+            <img style="display:none;float:right;" id="ajax-loader-gif-co" src="/media/images/ajax-loader.gif" />
+        </div>
+        <div id="location_results">
+            <?php
+            $qcount = 0;
+            $set = 0;
+            ?>
+            <?php $x = 0;
+                if ($session_selected_lab) {
+                    foreach ($labsByZip as $lab) {
+                        $lab = (array)$lab;
+                        if (isset($lab['id'])) $labId = $lab['id'];
+                        if (isset($lab['nnr_id'])) $labId = $lab['nnr_id'];
+                        ?>
+                        <?php if ($session_selected_lab == $labId) {
+                            $qcount++;
+                            $x++;
+                        ?>
+                            <div class="item">
+                                <div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab['lab-id'];?>);" <?php if($session_selected_lab == $labId) { echo ' checked="checked" '; $set = 1;} ?> type="radio" value="<?php echo $labId; ?>" name="lab_id"></div>
+                                <div class="content">
+                                    <p><?php echo trim($lab['address'],",");?> <br><?php echo $lab['city'];?>, <?php echo $lab['state'];?> <?php echo $lab['zip'];?></p>
+                                    <p class="hours">
+                                        <span class="blue">Hours: </span>
+                                        <?php echo str_ireplace("|Sa","<br>Sa",$lab['hours']);?>
+                                    </p>
+                                </div>
+                            </div>
+                        <?php
+                        }
+                    }
+                }
+                foreach ($labsByZip as $lab) {
+                    $lab = (array)$lab;
+                    if (isset($lab['id'])) $labId = $lab['id'];
+                    if (isset($lab['nnr_id'])) $labId = $lab['nnr_id'];
+                    ?>
+                    <?php if ($x <= 4 && $lab['lab-id'] == 129 && $session_selected_lab != $labId) {
+                        $qcount++;
+                    ?>
+                        <div class="item">
+                            <div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab['lab-id'];?>);"  <?php if($set == 0 && $x==0) { echo ' checked="checked" ';}; ?> type="radio" value="<?php echo $labId; ?>" name="lab_id"></div>
+                            <div class="content">
+                                <p><?php echo trim($lab['address'],",");?> <br><?php echo $lab['city'];?>, <?php echo $lab['state'];?> <?php echo $lab['zip'];?></p>
+                                <p class="hours">
+                                    <span class="blue">Hours: </span>
+                                    <?php echo str_ireplace("|Sa","<br>Sa",$lab['hours']);?>
+                                </p>
+                            </div>
+                        </div>
+                        <?php
+                        if($set == 0 && $x==0)
+                        {
+                            $preCheck1 = $labId;
+                            $preCheck2 = $lab['lab-id'];
+                        }
+                        $x++;
+                    }
+                }
+                $y = 0;
+
+                foreach ($labsByZip as $lab) {
+                    $lab = (array)$lab;
+                    if (isset($lab['id'])) $labId = $lab['id'];
+                    if (isset($lab['nnr_id'])) $labId = $lab['nnr_id'];
+                    ?>
+                    <?php if ($y <= (6-$qcount) && (6-$qcount) > 0 && $lab['lab-id'] == 119 && $session_selected_lab != $labId)
+                    {
+                        ?>
+                        <div class="item">
+                            <div class="radio"><input onclick="handlerLabFunction('<?php echo $labId; ?>',<?php echo $lab['lab-id'];?>);"  <?php if($session_selected_lab == $labId) { echo ' checked="checked" ';}; ?> type="radio" value="<?php echo $labId; ?>" name="lab_id"></div>
+                            <div class="content">
+                                <p><?php echo trim($lab['address'],",");?> <br><?php echo $lab['city'];?>, <?php echo $lab['state'];?> <?php echo $lab['zip'];?></p>
+                                <p class="hours">
+                                    <span class="blue">Hours: </span>
+                                    <?php echo str_ireplace("|Sa","<br>Sa",$lab['hours']);?>
+                                </p>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                    $y++;
+                }
+            ?>
+            <div class="clear">&nbsp;</div>
+        </div> <!-- /location_results -->
+</div>
+    <? } ?>
+<? } ?>
+
+<?php if (isset($preCheck1) && isset($preCheck2) && $preCheck1 != "" && $preCheck2 != "") { ?>
+    <script>
+        handlerLabFunction('<?php echo $preCheck1; ?>',<?php echo $preCheck2;?>);
+    </script>
+<?php } ?>
+

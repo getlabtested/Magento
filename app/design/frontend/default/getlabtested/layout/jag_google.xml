@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<layout version="0.0.1">
+    <checkout_onepage_success translate="label">
+        <reference name="content">
+            <block type="jag_google/tracking" name="adwords_conversion_tracking_js" template="jag_google/adwords_conversion_tracking_js.phtml"/>
+        </reference>
+    </checkout_onepage_success>
+
+    <default>
+        <reference name="root">
+            <block type="jag_google/analytics" name="first_body_block" template="jag_google/analytics_body_start.phtml" />
+            <block type="jag_google/analytics" name="last_body_block" template="jag_google/analytics_body_end.phtml" />
+        </reference>
+    </default>
+</layout>

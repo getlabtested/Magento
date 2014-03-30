@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+       <Jag_Paynearme>
+          <version>1.0.1</version>
+       </Jag_Paynearme>
+    </modules>
+ 
+    <frontend>
+        <routers>
+            <checkout>
+                <use>standard</use>
+                <args>
+                    <modules>
+                        <Jag_Paynearme before="Mage_Checkout">Jag_Paynearme</Jag_Paynearme>
+                    </modules>
+                </args>
+            </checkout>
+        </routers>
+    </frontend>
+ 
+    <global>
+    	<blocks>
+			<paynearme>
+				<class>Jag_Paynearme_Block</class>
+			</paynearme>
+		</blocks>
+		
+		<payment>
+			<groups>
+				<offline>Offline Payment Methods</offline>
+			</groups>
+		</payment>
+		
+     	<helpers>
+        	<paynearme>
+            	<class>Jag_Paynearme_Helper</class>
+        	</paynearme> 
+    	</helpers>
+		
+        <models>
+            <paynearme>
+                <class>Jag_Paynearme_Model</class>
+            </paynearme>
+        </models>
+		 
+		 <resources>
+            <paynearme_setup>
+                <setup>
+                    <module>Jag_Paynearme</module>
+                    <class>Jag_Paynearme_Model_Mysql4_Setup</class>
+                </setup>
+				<connection>
+						<use>core_setup</use>
+				</connection>
+            </paynearme_setup>
+        </resources>
+		
+		
+    </global>
+	
+    <default>
+        <payment>
+			<paynearme>
+                <active>1</active>
+                <model>paynearme/paymentmethod</model>
+			    <payment_action>authorize</payment_action>
+                <order_status>pending_payment</order_status>
+                <title>Pay Near Me</title>
+                <allowspecific>0</allowspecific>
+                <group>offline</group>
+            </paynearme>
+         </payment>
+    </default>
+    
+</config>

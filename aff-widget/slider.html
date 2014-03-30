@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>GetSTDTested.com STD Test Recommender</title>
+<!-- jQuery (required) -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js"></script>
+<!-- Demo stuff -->
+<link rel="stylesheet" href="css/page.css">
+<!-- Anything Slider -->
+<link rel="stylesheet" href="css/anythingslider.css">
+<script src="js/jquery.anythingslider.js"></script>
+<script>
+// DOM Ready
+$(function(){
+	$('#slider').anythingSlider({
+		// Appearance
+		resizeContents      : true,      // If true, solitary images/objects in the panel will expand to fit the viewport
+		// Appearance
+		width               : "310px",      // Override the default CSS width
+		height              : "280px",      // Override the default CSS height  // Navigation
+		startPanel          : 1,         // This sets the initial panel
+		hashTags            : true,      // Should links change the hashtag in the URL?
+		buildArrows         : false,      // If true, builds the forwards and backwards buttons
+		buildNavigation     : false,      // If true, buildsa list of anchor links to link to each panel
+		navigationFormatter : null,      // Details at the top of the file on this use (advanced use)
+		forwardText         : "&raquo;", // Link text used to move the slider forward (hidden by CSS, replaced with arrow image)
+		backText            : "&laquo;", // Link text used to move the slider back (hidden by CSS, replace with arrow image)
+	
+		// Slideshow options
+		autoPlay            : false,      // This turns off the entire slideshow FUNCTIONALY, not just if it starts running or not
+		startStopped        : false,     // If autoPlay is on, this can force it to start stopped
+		easing              : "swing"    // Anything other than "linear" or "swing" requires the easing plugin
+	});
+});
+function next(){
+	var qno = 11; // enter the number of questions here for the progress bar
+	var wide = $("div.progresso").parent().width();
+	var increment = parseInt(wide/qno);
+	$("div.progresso").animate({    
+		width: '+='+increment
+	}, 800, function() {
+	// Animation complete.
+	});
+$('#slider').data('AnythingSlider').goForward();	
+}
+function prev()
+{
+var qno = 11; // enter the number of questions here for the progress bar
+var wide = $("div.progresso").parent().width();
+var increment = parseInt(wide/qno);
+$("div.progresso").animate({    
+		width: '-='+increment
+	}, 800, function() {
+	// Animation complete.
+	});
+$('#slider').data('AnythingSlider').goBack();	
+}
+
+	</script>
+
+	<!-- Older IE stylesheet, to reposition navigation arrows, added AFTER the theme stylesheet -->
+	<!--[if lte IE 7]>
+	<link rel="stylesheet" href="css/anythingslider-ie.css" type="text/css" media="screen" />
+	<![endif]-->
+</head>
+
+<body>
+
+		<!-- Simple AnythingSlider -->
+<div style="width: 310px;height: 310px;float: left;overflow: hidden;border:5px solid #131313;background: #0e7b76;">
+
+	<ul id="slider">
+    
+		<li>
+			<div class="panecontain">
+				<span>Do you want to start the test? then let's begin</span><br/>
+				<div style="float: right;margin-top: 150px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+            </div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 1:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be question 2:put all the form input elements  in here</span><br/>
+				<div style="float: right;margin-top: 120px;margin-right: 20px;">
+                	<a href="#" onClick="next();"><img src="images/btn-next-question1.png" alt="" onMouseOver="this.src='images/btn-next-question.png';" onMouseOut="this.src='images/btn-next-question1.png';"/></a>
+                </div>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+		<li>
+			<div class="panecontain">
+				<span>This can be last question:put all the form input elements  in here</span><br/>
+				<div style="float: left;margin-top: 120px;margin-left: 3px;">
+                	<a href="#" onClick="prev();"><img src="images/btn-previous-question1.png" alt="" onMouseOver="this.src='images/btn-previous-question.png';" onMouseOut="this.src='images/btn-previous-question1.png';"/></a>
+                </div>
+			</div>
+		</li>
+
+	</ul>
+    
+<div style="padding: 4px;"></div>
+
+<div style="float:left; width:40px; font-size:10px; font-weight:bold;">START</div>
+
+<div style="width: 220px; height:10px; border:1px solid #008C8A;background: #fff; margin-bottom:10px; float:left;">
+	<div class="progresso"></div>
+</div>		
+
+<div style="float:left; width:40px; font-size:10px; font-weight:bold; text-align:right;">FINISH</div>
+
+<div style="clear:both"></div>
+
+</div>
+	<!-- END AnythingSlider -->
+</body>
+
+</html>

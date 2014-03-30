@@ -1,0 +1,187 @@
+<?php
+/**
+ *Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to theMagento License
+ * that is bundled with this package in the file LICENSE_EE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category    design
+ * @package     enterprise_default
+ * @copyright   Copyright (c) 2010 Magento Inc. (http://www.magentocommerce.com)
+ * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+/**
+ * @var Mage_Page_Block_Html_Header $this
+ */
+?>
+
+<?php
+/*
+echo "<!-- ";
+echo Mage::app()->getRequest()->getRequestString();
+echo " -->";
+*/
+?>
+
+
+<style type="text/css">
+	/* PIOTR: check if needed?? */
+	#user_nav_logout {
+		float: left;		
+	}
+</style>
+
+
+<?php // PAP Header Tracking
+
+//if (isset($_GET['a_aid'])) { $_SESSION['a_aid'] = $_GET['a_aid']; } else { $_SESSION['a_aid'] = 0; }
+if (isset($_GET['a_aid'])) { $_SESSION['a_aid'] = $_GET['a_aid']; }
+
+if (isset($_SESSION['a_aid'])) { //create div for tracking
+	//$model = Mage::getModel('affiliates/affiliates');
+	//$collection = $model->getCollection();
+	
+	echo "<!-- jagmedia -->";
+	
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+
+	$db = new PDO ('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+
+	$affiliate_exists = false;
+	
+	Mage::getSingleton('core/session')->setAffiliateId($_SESSION['a_aid']);
+	Mage::getSingleton('core/session')->setPpmdAffiliate($_SESSION['a_aid']);
+	
+	$q = 'select phone from affiliates where referral_id = "'.$_SESSION['a_aid'].'";';
+	
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    	$sth->execute();  
+    		
+    	$res = $sth->fetchAll();
+    	
+    	$sth = "";
+    	
+    
+        	    	
+    $phone = $res[0]['phone'];
+    
+    //echo $phone; 
+
+	/*
+foreach($collection as $item){
+		if($item->getData('referral_id') == $_SESSION['a_aid']) {
+			$affiliate_exists = true;
+			$affiliate = $item;
+		}
+	}
+*/
+	if ($phone){
+	//if($affiliate_exists && $affiliate->getData('phone')) {
+	
+	
+			//$phone = $affiliate->getData('phone');		
+		
+			$phone = str_replace("-","",$phone);
+			$phone = str_replace(".","",$phone);
+			$phone = str_replace(" ","",$phone);
+			
+			$p1 = substr($phone,0,3);
+			$p2 = substr($phone,3,3);
+			$p3 = substr($phone,6,4);
+			
+			/*
+			$j("#header_phone").innerHTML = phone;
+			$j("#question_side_widget .content p .orange").innerHTML = phone;
+			$j("#question_form_side_widget .content p.large .orange").innerHTML = phone;
+			*/
+			$phone = $p1."-".$p2."-".$p3;
+				
+		?>
+		<div id="affiliate" style="display:none;">
+			<div class="promoNumber">
+				<?php echo $phone; ?>
+			</div>
+		</div>
+		
+		
+		
+		<?php
+		
+	} else {
+	
+		//$phone = Mage::getStoreConfig('general/store_information/phone');
+		$phone = "877-317-3178";
+	
+	}
+	
+}
+
+// END PAP Header Tracking
+
+?>
+
+<?php
+    $items_count = Mage::helper('checkout/cart')->getItemsCount();
+    $order_total = Mage::helper('checkout/cart')->getQuote()->getGrandTotal();
+?>
+
+
+<div class="wrap">
+
+	<div id="header">
+		<div id="logo"><a href="http://getlabtested.com/" title="Home | LAB Testing">LAB Testing</a></div>
+		<div id="cart-summary">
+			Tests in Cart: <span><?php echo $items_count ?></php></span> &nbsp; | &nbsp;
+			Subtotal: <span>$<?php echo ($order_total) ? number_format($order_total, 2) : 0.00 ?></span> &nbsp; | &nbsp;
+			<a href="http://getlabtested.com/checkout/cart">View Cart</a> &nbsp; | &nbsp; 
+			<a href="https://getlabtested.com/onestepcheckout/index/">Checkout</a>
+		</div>
+		<div id="phone">
+			Questions? Call Us
+			<strong>(877) 317-3178</strong>
+		</div>
+	</div>
+
+	<div id="nav">
+		<ul>
+			<li id="nav-home"><a href="http://getlabtested.com/">Home</a></li>
+			<li><a href="http://getlabtested.com/how-it-works">How It Works</a></li>
+			<li><a href="http://getlabtested.com/locate-testing-center">Find Testing Location</a></li>
+			<li><a href="http://getlabtested.com/faq">FAQ</a></li>
+			<li><a href="http://getlabtested.com/my-results">My Results</a></li>
+			<li id="nav-get-tested"><a href="<?php echo Mage::helper('ppmd_tests')->getTestsPageUrl() ?>">Get Tested</a></li>
+		</ul>
+	</div>
+
+<?php
+/*
+echo "<!-- ";
+echo "\n-- core --\n";
+print_r(Mage::getSingleton('core/session')->getData());
+echo "\n-- checkout quote--\n";
+print_r(Mage::getSingleton('checkout/session')->getQuote()->getData());
+echo "\n-- customer --\n";
+print_r(Mage::getSingleton('customer/session')->getCustomer()->getData());
+echo "\n-- core messages --\n";
+print_r(Mage::getSingleton('core/session')->getMessages()->getErrors());
+echo "\n-- checkout messages --\n";
+print_r(Mage::getSingleton('checkout/session')->getMessages()->getErrors());
+echo "\n-- checkout data --\n";
+print_r(Mage::getSingleton('checkout/session')->getData());
+echo " -->"; 
+*/
+?>

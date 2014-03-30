@@ -1,0 +1,36 @@
+#result-customer-info {
+	width: 49%;
+	margin-right: 2%;
+	float: left
+}
+
+#result-customer-info label{
+	float: left;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+#result-order-info {
+	width: 49%;
+	float: left;
+}
+
+#result-order-info label{
+	float: left;
+	margin-right: 5px;
+	font-weight: bold;
+}
+
+.spc {
+	
+	margin-bottom: 10px;
+	
+}
+
+#result-order-info-lab .type {
+	
+	margin-right:10px;
+	
+}
+
+

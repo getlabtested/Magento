@@ -1,0 +1,76 @@
+<?php
+
+	$locales = $this->getLocaleList();
+	
+			
+?>            
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+             <a href="frontpage.html">Home</a>
+                <span class="separator"> > </span>
+                <a href="#" class="current">Test Locally</a>
+            </div> <!-- /breadcrumbs -->
+            
+            <div id="content">
+             <h1 class="page-title">Over 4,000 locations to test for STDs. </h1>
+                <h3>Find a private, testing location near you</h3>
+                
+                <div id="left_col">
+                 <div id="location_module">
+                     <div class="bg_grey_round">
+                            <form action="" method="post">
+                                <label for="zip_code">Enter your zip code</label>
+                                <input type="text" class="text" name="zip_code" />
+                                <input type="submit" class="submit btn_orange_32_reflection" value="find locations near you" />
+                            </form>
+                        </div>
+                        <p class="map_placeholder">
+                         <img src="images/map_placeholder.jpg" alt="Replace me with iframe" />
+                        </p>
+                        
+                        <h3>Many labs open until 5:00 p.m. or later. Order and test as soon as today.</h3>
+                        
+                        <div id="location_results">
+                        
+	<?php
+                        
+	foreach ($locales as $local) {
+						
+	?>
+						                        
+	<div class="item">
+		<div class="pin"><img src="images/pin_sample.png" /></div>
+		<h4>Exact address displayed after test selection</h4>
+		<div class="location">
+			<p class="header">3.6 miles away</p>
+			<p><?php echo $local->getName(); ?>
+			<br/><?php echo $local->getCity(); ?>, <?php echo $local->getState()." ".$local->getZip(); ?><br />
+			<?php if (strlen($local->getPhone()) > 1) { ?>
+			<span class="blue">888-749-6269</span></p>
+			<?php } ?>
+		</div>
+		<div class="hours">
+			<p class="header">Hours</p>
+			<p>M-F: 8:30 am - 12:00 pm & 1:00 pm - 5:00 pm<br/>Sa 8:00 am - 1:00 pm</p>
+		</div>
+		<a href="#" class="btn_orange_25_reflection">order & test here</a>
+	</div><!-- /.item -->
+                            
+	<?php 
+                         
+	}
+                         
+	?>  
+                    
+                        </div> <!-- /location_results -->
+                    </div> <!-- /location_module -->
+                </div> <!-- /left_col -->
+                
+                <div id="right_col">
+                 Widgets here
+                </div> <!-- /right_col -->
+                
+            </div> <!-- /content -->
+            

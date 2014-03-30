@@ -1,0 +1,7 @@
+
+
+#sales_order_grid_table .grid tr.filter .range input {
+    float: right;
+    margin-top: 0;
+    width: 30px !important;
+}

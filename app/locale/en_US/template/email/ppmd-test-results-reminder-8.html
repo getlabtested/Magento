@@ -1,0 +1,24 @@
+<p>{{var customer.name}},</p>
+
+<p>This is a courtesy reminder from PinpointMD regarding the testing services you recently ordered.  Our records indicate there are no test results on file. Have you visited the lab for testing? If not, please visit at your earliest convenience to provide a sample – no appointment needed. You are welcome to pay AFTER testing if you prefer.</p>
+<p>Here's what you need to do next:</p>
+<ol>
+    <li><b>TEST</b> - Visit the testing center at your convenience and avoid urination for one hour prior to testing. Print and bring along the attached forms.<br />
+        <p style="margin-left:50px;">
+
+        {{block type='core/template' area='frontend' template='sendmail/lab.phtml' order=$order}} 
+        
+        </p>
+    </li>
+	<li><b>PAY</b> - <a href="{{var payslip}}">CLICK HERE</a> to print your private, payment slip and then pay at the nearest 7-11 store. Test results cannot be released until payment has been processed.</li>
+
+	<li><b>GET RESULTS</b> - Results are typically available within 3 business days after testing.</li>
+</ol>
+
+<p>Private password to access results: <b>{{var pass}}</b></p>
+
+<p><b>Questions?</b><br>
+We're at your service.  Call us at <b>866-749-6269</b> or e-mail <a href="mailto:support@getlabtested.net?subject=order-help">support@getlabtested.net</a>. Please do not respond directly to this e-mail.</p>
+<p>Best wishes,<br>
+
+The Pinpoint MD Team</p>

@@ -1,0 +1,491 @@
+<?php 
+
+	$params = Mage::app()->getRequest()->getParams();
+	
+	//print_r($params);
+
+?>
+
+<div>
+    <div class="entry-edit">
+    <form method="get" action="<?php echo Mage::helper('adminhtml')->getUrl('reporting/adminhtml_reportingaffcall/index'); ?>" id="filter_form"><div></div><div class="entry-edit-head">
+    <h4 class="icon-head head-edit-form fieldset-legend">Filter</h4>
+    <div class="form-buttons">
+    
+    <div class="buttons-set form-buttons btn-only">
+			        <button type="submit" class="button" style="background-color:#FFAC47;padding: 2px 6px;margin-bottom: 0px;" title="Submit"><span><span>Submit</span></span></button>
+			    </div>
+    </div>
+	</div>
+    <div id="sales_report_base_fieldset" class="fieldset ">
+    <div class="hor-scroll">
+                        <table cellspacing="0" class="form-list">
+            <tbody>
+                <tr>
+        <td class="hidden" colspan="2"><input type="hidden" value="" name="store_ids" id="sales_report_store_ids"></td>
+    </tr>
+
+	<tr>
+        <td class="label"><label for="sales_report_period_type">Period</label></td>
+		<td class="value">
+			<select class=" select" title="Period" name="period_type" id="sales_report_period_type">
+				<option value="day">Day</option>
+				<option value="month">Month</option>
+				<option value="year">Year</option>
+			</select>
+		</td>
+    </tr>
+    
+    <tr>
+        <td class="label"><label for="sales_report_period_type">Affiliate</label></td>
+		<td class="value">
+			<select class=" select" title="Period" name="period_type" id="sales_report_period_type">
+				<option value="all">All</option>
+				
+			</select>
+		</td>
+    </tr>
+    
+    
+	<tr>
+        <td class="label"><label for="sales_report_from">From <span class="required">*</span></label></td>
+    <td class="value">
+        <input type="text" style="width:110px !important;" class=" required-entry input-text" title="From" value="<?php echo $params['from'];?>" id="sales_report_from" name="from"> <img style="" title="Select Date" id="sales_report_from_trig" class="v-middle" alt="" src="https://admin.getstdtested.com/skin/adminhtml/default/enterprise/images/grid-cal.gif">
+            <script type="text/javascript">
+            //&lt;![CDATA[
+                Calendar.setup({
+                    inputField: "sales_report_from",
+                    ifFormat: "%m/%e/%y",
+                    showsTime: false,
+                    button: "sales_report_from_trig",
+                    align: "Bl",
+                    singleClick : true
+                });
+            //]]&gt;
+            </script>            </td>
+    </tr>
+<tr>
+        <td class="label"><label for="sales_report_to">To <span class="required">*</span></label></td>
+    <td class="value">
+        <input type="text" style="width:110px !important;" class=" required-entry input-text" title="To" value="<?php echo $params['to'];?>" id="sales_report_to" name="to"> <img style="" title="Select Date" id="sales_report_to_trig" class="v-middle" alt="" src="https://admin.getstdtested.com/skin/adminhtml/default/enterprise/images/grid-cal.gif">
+            <script type="text/javascript">
+            //&lt;![CDATA[
+                Calendar.setup({
+                    inputField: "sales_report_to",
+                    ifFormat: "%m/%e/%y",
+                    showsTime: false,
+                    button: "sales_report_to_trig",
+                    align: "Bl",
+                    singleClick : true
+                });
+            //]]&gt;
+            </script>            </td>
+    </tr>
+
+            </tbody>
+        </table>
+            </div>
+        </div>
+        
+</form></div>
+</div>
+
+
+
+<?php
+function week_start_date($wk_num, $yr, $first = 1, $format = 'Y-m-d')
+{
+    $wk_ts  = strtotime('+' . $wk_num . ' weeks', strtotime($yr . '0101'));
+    $mon_ts = strtotime('-' . date('w', $wk_ts) + $first . ' days', $wk_ts);
+    return date($format, $mon_ts);
+}
+
+$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+
+$path = Mage::getBaseDir();
+
+function makeReport($start = null,$end = null,$period = null) {
+
+	$cur = 0;
+
+	$config  = Mage::getConfig()->getResourceConnectionConfig("default_setup");
+	
+	$db = new PDO('mysql:dbname='.$config->dbname.';host='.$config->host, $config->username, $config->password);
+		
+	$q = "SELECT `entity_id`, `affiliate_id`, `ppmd_affiliate`, `store_id`, COUNT(*) AS `total_calls` FROM `sales_flat_quote` AS `main_table` WHERE (ppmd_rep != 99) ";
+	
+	if($start && $end) {
+		$q .= " and created_at >='$start' and created_at <='$end'";
+	}
+	
+	$q .= " and ppmd_affiliate != '' group by ppmd_affiliate;";	
+	
+	//echo $q; exit();							
+	
+	$sth = $db->prepare($q);
+	$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+    $sth->execute();
+	
+	$rows = $sth->fetchAll();
+	
+	/* START CALL TOTALS */
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select count(*) as sales from sales_flat_order as b join sales_flat_order_payment as a on a.parent_id = b.entity_id where a.method = 'authorizenet'";
+		
+		if($start && $end) {
+		$q .= " and b.created_at >='$start' and b.created_at <='$end'";
+		}
+		
+		$q .= " and b.ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."'  and b.ppmd_rep != 99;";
+				
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['authorizenet'] = $tmp[0]['sales'];
+			
+	}
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select count(*) as sales from sales_flat_order as b join sales_flat_order_payment as a on a.parent_id = b.entity_id where a.method = 'paylater'";
+		
+		if($start && $end) {
+		$q .= " and b.created_at >='$start' and b.created_at <='$end'";
+		}
+		
+		$q .= " and b.ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."' and b.ppmd_rep != 99;";
+	
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['paylater'] = $tmp[0]['sales'];
+			
+	}
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select count(*) as sales from sales_flat_order as b join sales_flat_order_payment as a on a.parent_id = b.entity_id where a.method = 'paynearme'";
+		
+		if($start && $end) {
+		$q .= " and b.created_at >='$start' and b.created_at <='$end'";
+		}
+		
+		$q .= " and b.ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."' and b.ppmd_rep != 99;";
+	
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['paynearme'] = $tmp[0]['sales'];
+			
+	}
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select count(*) as sales from sales_flat_order where ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."'";
+		
+		if($start && $end) {
+		$q .= " and created_at >='$start' and created_at <='$end'";
+		}
+		
+		$q .= "and ppmd_rep != 99;";
+		
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['total_sales'] = $tmp[0]['sales'];
+			
+	}
+	
+	/* END CALL TOTALS */
+	
+	/* START REVENUE TOTALS */
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select IFNULL(SUM(grand_total),0) as revenue from sales_flat_order where ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."'";
+		
+		if($start && $end) {
+		$q .= " and created_at >='$start' and created_at <='$end'";
+		}
+		
+		$q .= "and ppmd_rep != 99;";
+								
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['revenue'] = $tmp[0]['revenue'];
+			
+	}
+	
+	/* END REVENUE TOTALS */	
+	
+	/* START PAID TOTALS */
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select IFNULL(SUM(a.grand_total),0) as paid from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id where b.ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."'";
+		
+		if($start && $end) {
+		$q .= " and a.updated_at >='$start' and a.updated_at <='$end'";
+		}
+		
+		$q .= " and b.ppmd_rep != 99;";
+								
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['paid'] = $tmp[0]['paid'];
+			
+	}
+	
+	/* END PAID TOTALS */
+	
+	/* START REFUND TOTALS */
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		$q = "select IFNULL(SUM(a.base_total_refunded),0) as refunded from sales_flat_invoice as a join sales_flat_order as b on b.entity_id = a.order_id where b.ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."'";
+		
+		if($start && $end) {
+		$q .= " and a.updated_at >='$start' and a.updated_at <='$end'";
+		}
+		
+		$q .= "and b.ppmd_rep != 99;";
+								
+		$tmp = '';
+		$sth = $db->prepare($q);
+		$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+	    $sth->execute();
+		
+		$tmp = $sth->fetchAll();
+		
+		$rows[$i]['refunded'] = $tmp[0]['refunded'];
+			
+	}
+	
+	/* END REFUND TOTALS */
+	
+	/* START CALL REASON TOTALS */
+	
+	
+	$reas[4] = 'serious_interest';
+    $reas[6] = 'wrong_number';
+  	$reas[7] = 'hang_up';
+  	$reas[1] = 'customer';
+  	$reas[3] = 'general';
+  	$reas[2] = 'free';
+  	$reas[5] = 'not';
+	$reas[8] = 'solicitation';
+	
+	for ($i = 0; $i <= count($rows)-1; $i++) {
+		
+		foreach ($reas as $k=>$v) {
+		
+			//echo $k; echo $v;
+		
+			$q = "select IFNULL(COUNT(*),0) as calls from sales_flat_quote where ppmd_affiliate = '".$rows[$i]['ppmd_affiliate']."' and ppmd_call_reason = ".$k;
+			
+			if($start && $end) {
+			$q .= " and created_at >='$start' and created_at <='$end'";
+			}
+			
+			$q .= " and ppmd_rep != 99;";
+									
+			$tmp = '';
+			$sth = $db->prepare($q);
+			$sth->setFetchMode(Zend_Db::FETCH_ASSOC);
+		    $sth->execute();
+			
+			$tmp = $sth->fetchAll();
+			
+			$rows[$i][$v] = $tmp[0]['calls'];
+		
+		}
+		
+	}
+	
+	/* END CALL REASON TOTALS */
+	
+	return $rows;
+	
+}
+
+
+	if ($params['from']) {
+	
+	$s = strtotime($params['from']);
+	
+	$startGa = date('Y-m-d',$s);
+			
+	$start = date('Y-m-d',$s)." 06:00:00";
+	
+	}
+	
+	if ($params['to']) {
+	
+	$e = strtotime($params['to']);
+	
+	$endGa = date('Y-m-d',$e);
+			
+	$end = date('Y-m-d',$e)." 06:00:00";
+	
+	}
+
+?>
+
+<div class="grid">
+	
+<?php
+	
+
+
+$period = $params['period_type'];
+
+if (!$period) {
+
+	$period = null;
+
+}
+
+if (!$start) {
+
+	$start = null;
+
+}
+
+if (!$end) {
+
+	$end = null;
+
+}
+
+		
+$rows = makeReport($start,$end,$period);
+	
+		
+?>
+
+<div class="entry-edit">
+		<div class="entry-edit-head">
+			<h4><?php echo $start; echo " - "; echo $end;?></h4>
+		</div>
+		<fieldset class="np">
+
+
+			<table cellspacing="0" id="reportingGrid_table" class="data">
+                <colgroup>
+	                <col width="70">
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+	                <col>
+                </colgroup>
+                <thead>
+                	<tr class="headings">
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="store_id" href="#"><span class="sort-title">Store</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="affiliate_id" href="#"><span class="sort-title">Affiliate</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="total_calls" href="#"><span class="sort-title">Total Calls</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="authorizenet" href="#"><span class="sort-title">PN</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="paylater" href="#"><span class="sort-title">PL</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="paynearme" href="#"><span class="sort-title">PC</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="sales" href="#"><span class="sort-title">Total Sales</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="conversion" href="#"><span class="sort-title">Conversion</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="total_revenue" href="#"><span class="sort-title">Sales</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="total_paid" href="#"><span class="sort-title">Paid</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="total_refunded" href="#"><span class="sort-title">Ref</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="total_cash" href="#"><span class="sort-title">Cash</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="serious_interest" href="#"><span class="sort-title">Serious Interest</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="customer_service" href="#"><span class="sort-title">Customer Service</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="general_inquiry" href="#"><span class="sort-title">General Inquiry</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="free_testing" href="#"><span class="sort-title">Free Testing</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="wrong_number" href="#"><span class="sort-title">Wrong Number</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="test_not_offered" href="#"><span class="sort-title">Test Not Offered</span></a></span></th>
+                        <th><span class="nobr"><a class="not-sort" title="asc" name="hang_up" href="#"><span class="sort-title">Hang Up</span></a></span></th>
+                        <th class=" last"><span class="nobr"><a class="not-sort" title="asc" name="solicitation" href="#"><span class="sort-title">Solicitation</span></a></span></th>
+                    </tr>
+                </thead>
+        		<tbody id="">
+        		<!--
+<pre>
+        			<?php print_r($rows); ?>
+        		</pre>
+-->
+        			<?php foreach ($rows as $row) { ?>
+                	<tr class="even pointer">
+						<td class=" ">GST</td>
+						<td class="a-left "><?php echo $row['ppmd_affiliate'];?></td>
+						<td class="a-left "><?php echo $row['total_calls'];?></td>
+						<td class="a-left "><?php echo $row['authorizenet'];?></td>
+						<td class="a-left "><?php echo $row['paylater'];?></td>
+						<td class="a-left "><?php echo $row['paynearme'];?></td>
+						<td class="a-left "><?php echo $row['total_sales'];?></td>
+						<?php
+						
+							$c = ($row['total_sales']/$row['total_calls'])*100;
+						
+						?>
+						<td class="a-left "><?php echo round($c,2);?>%</td>
+						<td class="a-left ">$<?php echo round($row['revenue'],2);?></td>
+						<td class="a-left ">$<?php echo round($row['paid'],2);?></td>
+						<td class="a-left ">$<?php echo round($row['refunded'],2);?></td>
+						<td class="a-left ">$<?php echo round(($row['paid'] - $row['refunded']),2); ?></td>
+						<td class="a-left "><?php echo $row['serious_interest'];?></td>
+						<td class="a-left "><?php echo $row['customer'];?></td>
+						<td class="a-left "><?php echo $row['general'];?></td>
+						<td class="a-left "><?php echo $row['free'];?></td>
+						<td class="a-left "><?php echo $row['wrong_number'];?></td>
+						<td class="a-left "><?php echo $row['not'];?></td>
+						<td class="a-left "><?php echo $row['hang_up'];?></td>
+						<td class="a-left last"><?php echo $row['solicitation'];?></td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+
+
+
+		</fieldset>
+	</div>
+
+</div>

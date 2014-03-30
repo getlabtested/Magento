@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+    <default>
+	 	<reference name="head">
+	 		<action method="addItem"><type>skin_js</type><name>js/opcheckout.js</name></action>
+		</reference>
+    </default>
+    <userdashboard_index_index>
+        <reference name="head">
+            <action method="setTitle"><title>My Results Portal</title></action>
+        </reference>
+        <reference name="content">
+            <block type="userdashboard/userdashboard" name="userdashboard" template="userdashboard/userdashboard.phtml">
+			       <block type="userdashboard/tabs_customer" name="tab.customer"  as="customertab" template="userdashboard/tabs/customer.phtml" />
+			</block>
+        </reference>
+    </userdashboard_index_index>
+</layout> 

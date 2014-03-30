@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Reporting>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Jag_Reporting>
+    </modules>
+</config> 

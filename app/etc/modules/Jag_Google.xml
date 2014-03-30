@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <Jag_Google>
+            <active>true</active>
+            <codePool>local</codePool>
+            <depends>
+                <Magestore_Onestepcheckout />
+            </depends>
+        </Jag_Google>
+    </modules>
+</config>

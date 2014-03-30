@@ -1,0 +1,309 @@
+
+#order h1 {
+    margin: 0;
+    padding: 20px 0 18px 0;
+    color: #1f6794;
+    font-family: 'Open Sans Condensed',arial,tahoma,verdana,helvetica,sans-serif;
+    font-size: 36px;
+    font-style: normal;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 42px;
+	text-align: center;
+}
+
+#order h1 em {
+    color: #e9692c;
+}
+
+#order h2 {
+    margin: 0;
+    padding: 18px 0 15px 0;
+    color: #1f6794;
+    font-family: 'Open Sans Condensed',arial,tahoma,verdana,helvetica,sans-serif;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: bold;
+    line-height: 32px;
+}
+
+#order_module2 {
+	clear: both;
+	width: 960px;
+	height: 400px;
+	background: #fff url(../images/order-widget-home-only-bg.jpg) 224px 35px no-repeat;
+}
+
+#order_module2 #orderWidget {
+	width: 500px;
+	margin: -20px auto 0 auto;
+}
+
+#order_module2 #home_tests1 {
+	width: 255px;
+	height: 375px;
+	float: left;
+	overflow: hidden;
+}
+
+#order_module2 #home_tests1 .header {
+	width: 255px;
+	height: 118px;
+	display: block;
+	text-indent: -9999px;
+}
+
+#order_module2 #home_tests1 .content {
+	padding: 0 0 0 30px;
+}
+
+#order_module2 #home_tests1 ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+#order_module2 #home_tests1 li {
+	display: block;
+	padding-bottom: 4px;
+	color: #5c5c5c;
+	font-size: 16px;
+	line-height: 18px;
+	list-style: none;
+}
+
+#order_module2 #home_tests1 li input {
+	margin: 0 8px 0 0;
+	padding: 0;
+}
+
+#order_module2 #home_tests1 li.price {
+	padding-left: 22px;
+	padding-bottom: 16px;
+	color: #e75716;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 18px;
+}
+
+#order_module2 #your_order {
+	float: right;
+	width: 150px;
+	height: 375px;
+	text-align: right;
+	border: 0;
+}
+
+#order_module2 .your_order_side {
+	width: 100% !important;
+}
+
+#order_module2 #your_order .total {
+	padding: 230px 25px 6px 0;
+	color: #023a4c;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 17px;
+	font-weight: bold;	
+	letter-spacing: -1px;
+}
+
+#order_module2 #your_order #total_price {
+	padding: 4px 0 18px 0;
+	color: #e86b2c;
+	font-size: 19px;
+	font-weight: bold;
+	text-align: right;
+}
+
+#order_module2 #your_order .submit {
+	clear: both;
+	margin: 0;
+}
+
+
+
+#order_side_widget ul li {
+	padding-bottom: 2px;
+}
+
+#right_col p {
+	padding: 25px 15px;
+	color: #7a7a7a;
+	font-size: 12px;
+}
+
+
+
+#order #trustbuilders {
+	clear: both;
+    padding: 15px 0 10px 0;
+}
+
+#order #trustbuilders .col {
+	float: left;
+	width: 327px;
+}
+
+#order #trustbuilders .col-last {
+	float: left;
+	width: 306px;
+}
+
+#order #trustbuilders .box {
+	width: 295px;
+	height: 360px;
+	box-shadow: 0 0 5px #777;
+}
+#order #trustbuilders .box:hover { box-shadow: 0 0 12px #636363; }
+
+#order #trustbuilders .box p {
+	padding: 20px 21px 22px 21px;
+	color: #646262;
+    font-family: georgia, arial, tahoma, verdana, helvetica, sans-serif;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 22px;
+	text-align: center;
+}
+#order #trustbuilders .box:hover p { color: #444; }
+
+#order #trustbuilders .box p img {
+	margin: 0 0 10px 0;
+}
+
+#order #trustbuilders .box p small {
+	display: block;
+	padding: 12px 0 0 0;
+	color: #848282;
+    font-family: arial, tahoma, verdana, helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 16px;
+	text-align: right;
+}
+
+
+
+#order #faqs {
+	clear: both;
+    padding: 30px 0 10px 0;
+}
+
+#order #faqs h2 {
+    margin: 0;
+    padding: 20px 0 18px 0;
+    color: #1f6794;
+    font-family: 'Open Sans Condensed',arial,tahoma,verdana,helvetica,sans-serif;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: bold;
+    letter-spacing: -1px;
+    line-height: 40px;
+}
+
+#order #faqs .col3 {
+    float: left;
+	width: 328px;
+}
+
+#order #faqs .col3 h3 {
+    padding-right: 25px;
+	color: #818181;
+	font-size: 14px;
+	line-height: 21px;
+}
+
+#order #faqs .col3 p {
+    padding-right: 25px;
+	line-height: 20px;
+}
+
+#order #faqs .col3-last {
+    float: left;
+	width: 304px;
+}
+
+#order #faqs .col3-last h3 {
+    padding-right: 0;
+	color: #818181;
+	font-size: 14px;
+	line-height: 21px;
+}
+
+#order #faqs .col3-last p {
+    padding-right: 0;
+	line-height: 20px;
+}
+
+
+
+#order #why-us {
+	clear: both;
+    padding: 55px 0 10px 0;
+}
+
+#order #why-us #col1, #order #why-us #col2 {
+    float: left;
+	width: 328px;
+}
+
+#order #why-us #col3 {
+    float: left;
+	width: 304px;
+}
+
+#order #why-us .box {
+	width: 300px;
+	border: 1px solid #c2c2c2;
+    border-radius: 8px 8px 8px 8px;
+}
+
+#order #why-us .box h3 {
+    padding: 10px 0 11px 0;
+	color: #fff;
+    font-family: 'Open Sans Condensed',arial,tahoma,verdana,helvetica,sans-serif;
+	font-size: 24px;
+	line-height: 32px;
+	text-align: center;
+	background: #1f6794;
+    border-radius: 8px 8px 0 0;
+}
+
+#order #why-us #col1 .box { height: 280px; }
+
+.textItem { width: 250px; }
+
+#order #why-us #col1 .box p {
+	padding: 10px 25px 11px 25px;
+    font-family: georgia, arial, tahoma, verdana, helvetica, sans-serif;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 22px;
+	text-align: center;
+}
+
+#order #why-us #col1 .box p small {
+	display: block;
+	padding: 15px 0 0 0;
+	color: #848282;
+    font-family: arial, tahoma, verdana, helvetica, sans-serif;
+    font-size: 12px;
+    font-style: normal;
+    line-height: 16px;
+	text-align: right;
+}
+
+#order #why-us .box p, #order #why-us .box ul {
+    padding: 10px 25px;
+	line-height: 20px;
+}
+
+#order #why-us .box li {
+	display: block;
+	padding: 0 0 8px 25px;
+	background: transparent url(../images/order-widget-checkmark.png) left 3px no-repeat;
+}
+
+#order #why-us #col3 .box p {
+    padding: 0 25px;
+}

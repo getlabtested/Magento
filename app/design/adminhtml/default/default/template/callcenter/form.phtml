@@ -1,0 +1,432 @@
+<form method="post" id="create-order-form" action="/callcenter/adminhtml_callcenter/create">
+
+
+<table border="0">
+<tbody><tr>
+<td valign="top">
+       <!--=================TEST SELECTION SECTION=======================================-->
+        <table border="0">
+        <tbody><tr>
+        <td colspan="2" style="color:#DF6323;font-weight:bold;font-size:12pt;border-bottom:1px solid #CCCCCC">Select Tests</td>
+        </tr>
+        <tr>
+        <td colspan="2">NY<input type="radio" value="NY" name="res">&nbsp;&nbsp;&nbsp;NJ<input type="radio" value="NJ" name="res">&nbsp;&nbsp;&nbsp;RI<input type="radio" value="RI" name="res"></td>
+        </tr>
+        <tr>
+        <td colspan="2" style="font-weight:bold;padding-top:10px;padding-bottom:5px">Lab Tests</td>
+        </tr>
+        <tr>
+        <td colspan="2">
+          <table width="100%">
+            <tbody><tr>
+<td>Chlamydia:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="17303" name="centerTests"></td>
+<td>Gonorrhea:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="17304" name="centerTests"></td>
+<td>Hepatitis B:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="498" name="centerTests"></td>
+</tr>
+<tr>
+<td>Hepatitis C:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="37677" name="centerTests"></td>
+<td>Herpes I:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="3636" name="centerTests"></td>
+<td>Herpes II:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="3640" name="centerTests"></td>
+</tr>
+<tr>
+<td>HIV:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="37694" name="centerTests"></td>
+<td>Syphilis:</td><td style="padding-right:15px"><input type="checkbox" onclick="createTestString('center',this.checked)" value="36126" name="centerTests"></td>
+          </tr></tbody></table>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="2">
+          <table>
+            <tbody><tr>
+<td style="border-top:1px solid #999999">Herpes Inhibition:</td><td style="padding-right:15px;border-top:1px solid #999999"><input type="checkbox" onclick="createTestString('center','')" value="17171" name="centerTests"></td>
+<td style="border-top:1px solid #999999">HIV (PCR):</td><td style="padding-right:15px;border-top:1px solid #999999"><input type="checkbox" onclick="createTestString('center','')" value="8401" name="centerTests"></td>
+          </tr></tbody></table>
+        </td>
+        </tr>
+        <tr>
+                <td>Heart Panel Test: <input type="checkbox" onclick="createTestString('centerGHT','')" value="7600,496,484" name="centerTestsGHT"></td>
+        </tr>
+        <tr>
+        <td style="font-weight:bold;padding-top:10px;padding-bottom:5px">Home Tests</td>
+        <!--
+        <td align="right" valign="top" rowspan=4>
+            <table style="font-family:arial;font-size:9pt;padding-right:5px;padding-left:5px" bgcolor="#F4F4F4" width="150">
+            <tr>
+            <td align="center" style="font-weight:bold">Pricing and Packages</td>
+            </tr>
+            <tr>
+            <td> - <a href="#" style="color:#DF6323" onclick="setTestPackage('priceChart'); return false" class="info">Pricing Chart<span><img id="priceChart" src="img/priceChart.jpg" alt="Pricing Chart" /></span></a></td>
+            </tr>
+            <tr>
+            <td> - <a href="#" style="color:#DF6323" onclick="setTestPackage('mostRec'); return false" class="info">Most Recommended<span><img id="priceChart4pk" src="img/priceChart4pk.jpg" alt="Most Recommended" /></span></a></td>
+            </tr>
+            <tr>
+            <td> - <a href="#" style="color:#DF6323" onclick="setTestPackage('complete'); return false" class="info">8 Pack<span><img id="priceChart8pk" src="img/priceChart8pk.jpg" alt="8 Pack" /></span></a></td>
+            </tr>
+            </table>
+        </td>
+        -->
+        </tr>
+        <tr>
+        <td colspan="2">
+          <table>
+            <tbody><tr>
+<td>Chlamydia:</td><td style="padding-right:10px"><input type="checkbox" onclick="createTestString('home','')" value="11361" name="homeTests"></td>
+<td>Gonorrhea:</td><td style="padding-right:10px"><input type="checkbox" onclick="createTestString('home','')" value="11362" name="homeTests"></td>
+<td>Trichomoniasis:</td><td style="padding-right:10px"><input type="checkbox" onclick="createTestString('home','')" value="19550" name="homeTests"></td>
+</tr>
+          </tbody></table>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="2">
+          <table>
+            <tbody><tr>
+<td>HIV (expedited)  :</td><td style="padding-right:10px"><input type="checkbox" onclick="createTestString('home','')" value="pp102" name="homeTests"></td>
+          </tr></tbody></table>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="2" style="font-weight:bold;padding-top:10px;padding-bottom:5px" id="anchor1" name="anchor1">Affiliates/Promotion Codes</td>
+        </tr>
+        <tr>
+        <td colspan="2">
+            <table>
+            <tbody><tr>
+            <td>Affiliate:</td>
+            <td style="padding-left:5px">
+             <select onchange="setAffiliateDiscount(this.value);createTestString(document.internalOrderForm.testLoc.value,'')" name="affiliateCode">
+             <option value="">
+              </option><option value="CJ-2min">2min CJ</option><option value="360Menopause">360Menopause</option><option value="GetFav-50sec">50sec Get Fave</option><option value="AT&amp;T">AT&amp;T</option><option value="AdMob">AdMob</option><option value="AdWords">AdWords</option><option value="chat">Chat</option><option value="FaveGST">Fave GST</option><option value="ght">GetHeartTested.com</option><option value="Mac-School">Mac-School</option><option value="MensSexualHealth">Mens Sexual Health</option><option value="MobileGST">MobileGST</option><option value="NY-NJ-RI">NY-NJ-RI</option><option value="NewPub">New Publisher-STDtesting</option><option value="STDTester">STD Tester</option><option value="std">STDtesting.com</option><option value="share">ShareASale</option><option value="USALab">USA Lab</option><option value="yourstdhelp">YourSTDHelp             </option></select>
+            </td>
+            </tr>
+            <tr>
+            <td>Promo Code:</td>
+            <td style="padding-left:5px">
+             <select onchange="setPromoDiscount(this.value);createTestString(document.internalOrderForm.testLoc.value,'')" name="promoCode" id="promoCode-select">
+             <option value="">
+              </option><option value="31">1clubfm</option><option value="2">65432</option><option value="9">99999</option><option value="35">EZSAVE</option><option value="38">GroupOn100</option><option value="26">I-$10</option><option value="27">I-$15</option><option value="24">I-$20</option><option value="25">I-$5</option><option value="21">I-15%</option><option value="18">I-20%</option><option value="22">I-25%</option><option value="19">I-5%</option><option value="118">MSU</option><option value="115">SEXPERATION</option><option value="116">TODAY</option><option value="117">WOMEN</option><option value="37">april</option><option value="29">checkout</option><option value="34">concerned</option><option value="36">couponcabin</option><option value="14">em20</option><option value="32">fatwallet</option><option value="33">gstlovesyou</option><option value="12">kiss</option><option value="30">prevcust</option><option value="40">takecharge             </option></select>
+            </td>
+            </tr>
+            <tr>
+            <td>Call Reasons:</td>
+            <td style="padding-left:5px">
+              <select name="callReasons">
+                <option value="">Please Select</option>
+                 
+                  <option value="4">Serious Interest</option>
+                 
+                  <option value="6">Wrong Number</option>
+                 
+                  <option value="7">Hang-up</option>
+                 
+                  <option value="1">Customer Service/Counseling</option>
+                 
+                  <option value="3">General Inquiry / STD Information</option>
+                 
+                  <option value="2">Free Testing</option>
+                 
+                  <option value="5">Tests Not Offered</option>
+                 
+                  <option value="8">Solicitation</option>
+                            </select>  
+            </td>
+            </tr>
+            </tbody></table>
+        </td>
+        </tr>
+                <tr>
+        <td colspan="2" style="padding-top:5px">
+            <table width="275px" bgcolor="#E6E6E6">
+            <tbody><tr>
+            <td style="padding-top:10px;font-size:12pt">Discount: <span id="discount" style="font-weight:bold;color:#566E1F;font-size:12pt">--</span></td>
+            </tr>
+            <tr>
+            <td style="padding-top:5px;font-size:12pt">Total Price: <input type="text" onblur="revisePrice(this.value)" value="$0.00" name="totalCost" id="totalCost" size="10" style="font-weight:bold;color:#566E1F;font-size:12pt"></td>
+            </tr>
+            </tbody></table>
+        </td>
+        </tr>
+        <tr>
+        <td colspan="2">
+        <br>
+        <table>
+            <tbody><tr>
+            <td style="color:#DF6323;font-weight:bold;font-size:12pt;padding-bottom:10px">Testing Locations</td>
+            </tr>
+            <tr>
+            <td style="font-weight:bold">Zipcode: <input type="text" value="" name="locZip"> <input type="button" value="Search" style="width:80px" onclick="loadLocs()"></td>
+            </tr>
+        </tbody></table>
+        </td>
+        </tr>
+        </tbody></table>
+        <!--=================END TEST SELECTION SECTION=======================================-->
+</td>
+<td style="padding-left:5px;border-right:1px solid #CCCCCC">
+        <!--=================CUSTOMER INFO SECTION=======================================-->
+        <table width="490" border="0">
+        <tbody><tr>
+        <td style="color:#DF6323;font-weight:bold;font-size:12pt;border-bottom:1px solid #CCCCCC">Customer Information</td>
+        </tr>
+        <tr>
+        <td style="padding-top:10px">
+            <table>
+            <tbody><tr>
+            <td style="font-weight:bold">First Name</td><td style="font-weight:bold">Last Name</td><td style="font-weight:bold">Email</td>
+            </tr>
+            <tr>
+            <td style="padding-right:10px"><input type="text" value="" name="fname" size="16"></td><td style="padding-right:10px"><input type="text" value="" name="lname" size="20"></td><td style="padding-right:10px"><input type="text" value="" size="25" name="email"></td>
+            </tr>
+            </tbody></table>
+        </td>
+        </tr>
+        <tr>
+        <td style="padding-top:10px">
+            <table>
+            <tbody><tr>
+            <td style="font-weight:bold">Date Of Birth</td><td style="font-weight:bold">Gender</td><td style="font-weight:bold">Results Notification</td>
+            </tr>
+            <tr>
+            <td style="padding-right:10px">
+			       <select name="dobmonth">
+	              <option value="01">Jan</option>
+<option value="02">Feb</option>
+<option value="03">Mar</option>
+<option value="04">Apr</option>
+<option value="05">May</option>
+<option value="06">June</option>
+<option value="07">July</option>
+<option value="08">Aug</option>
+<option value="09">Sep</option>
+<option value="10">Oct</option>
+<option value="11">Nov</option>
+<option value="12">Dec</option>
+	            </select>
+				      <select name="dobday">
+      				<option value="01">01</option>
+<option value="02">02</option>
+<option value="03">03</option>
+<option value="04">04</option>
+<option value="05">05</option>
+<option value="06">06</option>
+<option value="07">07</option>
+<option value="08">08</option>
+<option value="09">09</option>
+<option value="10">10</option>
+<option value="11">11</option>
+<option value="12">12</option>
+<option value="13">13</option>
+<option value="14">14</option>
+<option value="15">15</option>
+<option value="16">16</option>
+<option value="17">17</option>
+<option value="18">18</option>
+<option value="19">19</option>
+<option value="20">20</option>
+<option value="21">21</option>
+<option value="22">22</option>
+<option value="23">23</option>
+<option value="24">24</option>
+<option value="25">25</option>
+<option value="26">26</option>
+<option value="27">27</option>
+<option value="28">28</option>
+<option value="29">29</option>
+<option value="30">30</option>
+<option value="31">31</option>
+	            </select>
+				
+    				<select name="dobyear">
+    				<option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option><option value="1969">1969</option><option value="1968">1968</option><option value="1967">1967</option><option value="1966">1966</option><option value="1965">1965</option><option value="1964">1964</option><option value="1963">1963</option><option value="1962">1962</option><option value="1961">1961</option><option value="1960">1960</option><option value="1959">1959</option><option value="1958">1958</option><option value="1957">1957</option><option value="1956">1956</option><option value="1955">1955</option><option value="1954">1954</option><option value="1953">1953</option><option value="1952">1952</option><option value="1951">1951</option><option value="1950">1950</option><option value="1949">1949</option><option value="1948">1948</option><option value="1947">1947</option><option value="1946">1946</option><option value="1945">1945</option><option value="1944">1944</option><option value="1943">1943</option><option value="1942">1942</option><option value="1941">1941</option><option value="1940">1940</option><option value="1939">1939</option><option value="1938">1938</option><option value="1937">1937</option>    
+              </select>
+          
+			     </td>
+			      <td style="padding-right:10px"><input type="radio" value="Male" name="gender"> Male&nbsp;&nbsp;<input type="radio" value="Female" name="gender"> Female</td>
+			       <td style="padding-right:10px"><input type="radio" onclick="togglePhoneDisplay(0)" value="Email" checked="" name="resultsPref"> Email <input type="radio" onclick="togglePhoneDisplay('0')" value="Phone" name="resultsPref"> Phone</td>
+			       
+            </tr>
+            <tr>
+            <td align="right" style="padding-top:5px" colspan="6">
+                <table id="phoneSection">
+                <tbody><tr style="display: none;">
+                <td style="font-weight:bold">Phone</td>
+                </tr>
+                <tr style="display: none;">
+                <td>
+                <input type="text" maxlength="3" style="width: 30px" id="areacode" value="" name="areacode"> - 
+                <input type="text" maxlength="3" style="width: 30px" id="phone1" value="" name="phone1"> - 
+                <input type="text" maxlength="4" style="width: 50px" id="phone2" value="" name="phone2">
+                </td>
+                </tr>
+                </tbody></table>
+            </td>
+            </tr>
+            </tbody></table>
+        </td>
+        </tr>
+        
+        <tr>
+        <td>
+            <span style="color:#999999">* Required for home kits only</span>
+            <table style="font-family:arial;font-size:10pt;border:1px solid #CCCCCC">
+            <tbody><tr>
+            <td style="padding-top:10px;font-weight:bold">Address:</td>
+            </tr>
+            <tr>
+            <td><input type="text" size="70" value="" name="address"></td>
+            </tr>
+            <tr>
+            <td style="padding-top:10px">
+                <table>
+                <tbody><tr>
+                <td style="font-weight:bold">City</td><td style="font-weight:bold">State</td><td style="font-weight:bold">Zipcode</td>
+                </tr>
+                <tr>
+                <td style="padding-right:10px"><input type="text" value="" name="city"></td>
+                
+                <td style="padding-right:10px">
+                <select name="state">
+    					  <option value=""></option>    						<option value="AL">Alabama</option>
+    						<option value="AK">Alaska</option>
+    						<option value="AZ">Arizona</option>
+    						<option value="AR">Arkansas</option>
+    						<option value="CA">California</option>
+    						<option value="CO">Colorado</option>
+    						<option value="CT">Connecticut</option>
+    						<option value="DE">Delaware</option>
+    						<option value="DC">District of Columbia</option>
+    						<option value="FL">Florida</option>
+    						<option value="GA">Georgia</option>
+    						<option value="HI">Hawaii</option>
+    						<option value="ID">Idaho</option>
+    						<option value="IL">Illinois</option>
+    						<option value="IN">Indiana</option>
+    						<option value="IA">Iowa</option>
+    						<option value="KS">Kansas</option>
+    						<option value="KY">Kentucky</option>
+    						<option value="LA">Louisiana</option>
+    						<option value="ME">Maine</option>
+    						<option value="MD">Maryland</option>
+    						<option value="MA">Massachusetts</option>
+    						<option value="MI">Michigan</option>
+    						<option value="MN">Minnesota</option>
+    						<option value="MS">Mississippi</option>
+    						<option value="MO">Missouri</option>
+    						<option value="MT">Montana</option>
+    						<option value="NE">Nebraska</option>
+    						<option value="NV">Nevada</option>
+    						<option value="NH">New Hampshire</option>
+    						<!--<option value="NJ">New Jersey</option>-->
+    						<option value="NM">New Mexico</option>
+    						<!--<option value="NY">New York</option>-->
+    						<option value="NC">North Carolina</option>
+    						<option value="ND">North Dakota</option>
+    						<option value="OH">Ohio</option>
+    						<option value="OK">Oklahoma</option>
+    						<option value="OR">Oregon</option>
+    						<option value="PA">Pennsylvania</option>
+    						<!--<option value="RI">Rhode Island</option>-->
+    						<option value="SC">South Carolina</option>
+    						<option value="SD">South Dakota</option>
+    						<option value="TN">Tennessee</option>
+    						<option value="TX">Texas</option>
+    						<option value="UT">Utah</option>
+    						<option value="VT">Vermont</option>
+    						<option value="VA">Virginia</option>
+    						<option value="WA">Washington</option>
+    						<option value="WV">West Virginia</option>
+    						<option value="WI">Wisconsin</option>
+    						<option value="WY">Wyoming</option>
+    					</select>
+    					</td>
+                
+                <td><input type="text" value="" name="zipcode"></td>
+                </tr>
+                </tbody></table>
+            </td>
+            </tr>
+            </tbody></table>
+        </td>
+        </tr>
+        
+        <tr>
+        <td colspan="2" style="color:#DF6323;font-weight:bold;font-size:12pt;padding-bottom:10px">Payment Options:</td>
+        </tr>
+        
+        <tr>
+    		<td colspan="2" style="color:#DF6323;font-weight:bold;font-size:12pt;padding-bottom:10px"><span style="font-size:9pt;color:black"><input type="radio" onclick="togglePayDisplay(0)" value="now" id="payTypeN" name="payType"> Credit Card&nbsp;&nbsp;<input type="radio" onclick="togglePayDisplay(0)" value="eCheck" id="payTypeC" name="payType"> eCheck&nbsp;&nbsp;<input type="radio" onclick="togglePayDisplay(0)" value="later" id="payTypeL" name="payType"> Pay After Testing&nbsp;&nbsp;<input type="radio" onclick="togglePayDisplay(0)" value="PNM" id="payTypePNM" name="payType">Cash At 7-Eleven<input type="radio" onclick="togglePayDisplay(0)" value="group_on" name="payType" id="payTypeGON"><label for="payTypeGON">GroupOn</label></span></td>
+    		</tr>
+        
+        <tr>
+        <td>
+            <table id="payNowSection">
+            <tbody><tr style="display: none;">
+            <td style="font-weight:bold">Card Number</td><td style="font-weight:bold">Exp Date</td><td style="font-weight:bold">CVV</td>
+            </tr>
+            <tr style="display: none;">
+            <td style="padding-right:10px"><input type="text" maxlength="16" value="" name="ccnumber"></td>
+            <td>
+        			<select name="ExpMon">
+                    <option selected="" value="01">1 - January</option><option value="02">2 - February</option><option value="03">3 - March</option><option value="04">4 - April</option><option value="05">5 - May</option><option value="06">6 - June</option><option value="07">7 - July</option><option value="08">8 - August</option><option value="09">9 - September</option><option value="10">10 - October</option><option value="11">11 - November</option><option value="12">12 - December</option>                  </select> 
+                  <select name="ExpYear">
+                    <option value="11">2011</option><option value="12">2012</option><option value="13">2013</option><option value="14">2014</option><option value="15">2015</option><option value="16">2016</option><option value="17">2017</option><option value="18">2018</option><option value="19">2019</option><option value="20">2020</option><option value="21">2021</option><option value="22">2022</option><option value="23">2023</option><option value="24">2024</option><option value="25">2025</option>                  </select>&nbsp;&nbsp;&nbsp;
+        			</td>
+        			<td><input type="text" maxlength="4" style="width: 45px" id="cvv2" value="" name="cvv2"></td>
+            </tr>
+            </tbody></table>
+            
+            <table cellspacing="0" cellpadding="0" border="0" style="font-family:arial;font-size:10pt;font-weight:bold" id="payLaterSection">
+      			<tbody><tr style="display: none;">
+      			<td style="font-size:9pt;font-weight:normal" colspan="10"><input type="checkbox" value="" id="agreetotermsPL" name="agreetotermsPL1">Customer understands that they must pay in full before receiving results</td>
+      			</tr>
+      			</tbody></table>
+      			
+      			<table cellspacing="0" cellpadding="0" border="0" style="font-family:arial;font-size:10pt;font-weight:bold" id="eCheckSection">
+      			<tbody><tr style="display: none;">
+      			<td style="font-weight:bold">Routing Number</td><td style="font-weight:bold">Account Number <a style="font-size:7pt;color:black;" onclick="window.open('../bankNumbers.html','bankNums','width=600,height=400,toolbar=no,directories=no,')" href="javascript: void(0)"><img width="19" height="20" border="0/" src="../images/question.jpg"></a></td>
+      			</tr>
+      			<tr style="display: none;">
+      			<td style="padding-right:10px"><input type="text" maxlength="16" value="" name="routing"></td><td style="padding-right:10px"><input type="text" maxlength="16" value="" name="checking"></td>
+      			</tr>
+      			</tbody></table>
+      			
+      			<table cellspacing="0" cellpadding="0" border="0" style="font-family:arial;font-size:10pt;font-weight:bold" id="pnmSection">
+      			<tbody><tr style="display: none;">
+      			<td style="font-weight:normal">Customer may pay cash for testing at participating 7-Eleven stores. <a onclick="window.open('http://getstdtested.com/paynearme-locations?zipcode=','pnm','location=0,status=0,scrollbars=1,width=850,height=800')" href="javascript: void(0)">See locations by zipcode.</a></td>
+      			</tr>
+            <tr style="display: none;">
+      			<td style="font-size:9pt;font-weight:normal;padding-top:10px" colspan="10"><input type="checkbox" value="" id="agreetotermsPL2" name="agreetotermsPL2">Customer understands that they must pay in full before receiving results</td>
+      			</tr>
+      			</tbody></table>
+                <table cellspacing="0" cellpadding="0" border="0" style="font-family:arial;font-size:10pt;font-weight:bold" id="gonSection">
+                <tbody><tr style="display: none;">
+                <td style="font-weight:normal"><label for="gonNum">GroupOn #: </label><input type="text" name="gonNum" id="gonNum"></td>
+                </tr>
+                </tbody></table>
+        </td>
+        </tr>
+        <tr>
+        <td align="center"><br><input type="submit" onclick="return validateOrderForm2()" style="font-weight:bold;font-size:12pt;float:left" value="Phone Only" name="submit"><input type="submit" onclick="return validateOrderForm()" style="font-weight:bold;font-size:12pt;" value="Submit Order"></td>
+        </tr>
+        </tbody></table>
+        <!--=================END CUSTOMER INFO SECTION=======================================-->
+</td>
+</tr>
+
+
+</tbody></table>
+<br>
+<table width="90%" cellspacing="0" cellpadding="0" style="font-family:arial;font-size:10pt;border-top:1px solid #CCCCCC">
+    
+    
+    <tbody><tr>
+    <td>
+    <!--<iframe name="locationFrame" id="locationFrame" src="locationsFrame.php" width="900" height="400" frameborder="0">-->
+    <div id="locationsSection"></div>
+    </td>
+    </tr>
+</tbody></table>
+
+	
+</form>

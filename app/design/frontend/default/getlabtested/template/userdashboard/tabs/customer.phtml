@@ -1,0 +1,110 @@
+<h2>Update my information</h2>           
+  <?php echo $this->getMessagesBlock()->getGroupedHtml() ?>
+    
+<form action="<?php echo $this->getSaveUrl() ?>" method="post" id="form-validate" enctype="multipart/form-data">
+<?php echo $this->getBlockHtml('formkey')?>
+        <input type="hidden" name="success_url" value="<?php echo Mage::getUrl('my-results');?>" />
+        <input type="hidden" name="error_url" value="<?php  echo Mage::getUrl('my-results');?>" />
+<label>First Name: </label> 
+                                    <input type="text" name="firstname" id="firstname" class="text required-entry" value="<?php echo $this->htmlEscape($this->getCustomer()->getFirstname()) ?>">
+                                    <label>Last Name: </label> 
+                                    <input type="text" name="lastname"  id="lastname" class="text required-entry" value="<?php echo $this->htmlEscape($this->getCustomer()->getLastname()) ?>">
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="sep10">&nbsp;</div>
+										
+										
+										
+                                    <label>Street Address: </label> 
+                                    <input type="text" name="street[]" id="street_1" class="text long required-entry" value="<?php echo $this->htmlEscape($this->getAddress()->getData('street')); ?>">
+                                    <label>Apt.#: </label> 
+                                    <input type="text" name="apt" id="apt" class="text size3" value="<?php echo $this->htmlEscape($this->getAddress()->getData('apt')); ?>" >
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="sep10">&nbsp;</div>
+                                    <label>City: </label> 
+                                    <input type="text required-entry" name="city" class="text required-entry" value="<?php echo $this->htmlEscape($this->getAddress()->getData('city')); ?>">
+                                    
+  <div class="clear">&nbsp;</div>
+                                    <div class="sep10">&nbsp;</div>
+                                    
+                                     <label for="region_id" class="required"><?php echo $this->__('State/Province') ?></label>
+                                     <select id="region_id" name="region_id" title="<?php echo $this->__('State/Province') ?>" class="validate-select required-entry" style="display:none;">
+                                            <option value=""><?php echo $this->__('Please select region, state or province') ?></option>
+                                      </select>
+									<script type="text/javascript">
+                                        $('region_id').setAttribute('defaultValue',  "<?php echo $this->getAddress()->getRegionId() ?>");
+                                    </script>
+                                    
+                                    <input type="text" id="billing:region" name="billing[region]" value="<?php echo $this->htmlEscape($this->getAddress()) ?>"  title="<?php echo $this->__('State/Province') ?>" class="input-text required-entry" style="display:none;" />  
+                                   
+                                    <div style="display:none">
+                                    <label for="billing:country_id" class="required"><?php echo $this->__('Country') ?></label>
+                                    <?php echo $this->getCountryHtmlSelect('billing') ?>
+                                     </div>
+                                    <label>Zip Code: </label> 
+                                    <input type="text" name="postcode" id="zip" class="text size4 required-entry" value="<?php echo $this->htmlEscape($this->getAddress()->getPostcode()); ?>">
+                                    <div class="clear">&nbsp;</div>
+                                    <div class="sep10">&nbsp;</div>
+                                    <label>Phone Number: </label> 
+                                     <input type="text" name="telephone" id="telephone" class="text long required-entry" value="<?php echo $this->htmlEscape($this->getAddress()->getData('telephone')); ?>">
+                                  <!--  <input type="text" name="phone_1" class="text size3"> - <input type="text" name="phone_2" class="text size3"> -  <input type="text" name="phone_3" class="text size4">
+                                  -->  <label>E-mail: </label> 
+                                    <input type="text" name="email" class="text" value="<?php echo $this->htmlEscape($this->getCustomer()->getEmail()) ?>">
+                                    
+                                    <input type="submit" value="save" class="submit btn_orange_32_reflection">
+                                </form>
+                                
+                                <h3>Notifications</h3>
+                                <form>
+                                	<p><span class="orange">Want a friendly reminder to test again?</span></p>
+                                    <ul>
+                                    	<li><input type="radio" value="no" name="reminder"> <label>No Reminder</label></li>
+                                        <li><input type="radio" value="1_month" name="reminder"> <label>1 Month</label></li>
+                                        <li><input type="radio" value="3_months" name="reminder"> <label>3 Months</label></li>
+                                        <li><input type="radio" value="6_months" name="reminder"> <label>6 Months</label></li>
+                                    </ul>
+                                    <p><span class="orange">Would you like to receive discounts and updates?</span></p>
+                                    <ul>
+                                    	<li><input type="radio" value="yes" name="updates"> <label>Yes</label></li>
+                                        <li><input type="radio" value="no" name="updates"> <label>No</label></li>
+                                    </ul>
+                                    
+                                    <p><span class="orange">E-mail Address</span></p>
+                                    <input type="text" name="e-mail" class="text">
+                                    <input type="submit" value="save" class="submit btn_orange_32_reflection">
+                                    
+                                </form>
+                                
+<script type="text/javascript">
+//<![CDATA[
+    var billing = new Billing('co-billing-form', '<?php echo $this->getUrl('checkout/onepage/getAddress') ?>address/', '<?php echo $this->getUrl('checkout/onepage/saveBilling') ?>');
+    var billingForm = new VarienForm('co-billing-form');
+
+    //billingForm.setElementsRelation('billing:country_id', 'billing:region', '<?php echo $this->getUrl('directory/json/childRegion') ?>', '<?php echo $this->__('Select State/Province...') ?>');
+    $('billing-address-select') && billing.newAddress(!$('billing-address-select').value);
+
+    var billingRegionUpdater = new RegionUpdater('country', 'region', 'region_id', countryRegions, undefined, 'postcode');
+//]]>
+</script>
+<script type="text/javascript">
+//<![CDATA[
+    var dataForm = new VarienForm('form-validate', true);
+    function setPasswordForm(arg){
+        if(arg){
+            $('current_password').up(4).show();
+            $('current_password').addClassName('required-entry');
+            $('password').addClassName('required-entry');
+            $('confirmation').addClassName('required-entry');
+
+        }else{
+            $('current_password').up(4).hide();
+            $('current_password').removeClassName('required-entry');
+            $('password').removeClassName('required-entry');
+            $('confirmation').removeClassName('required-entry');
+        }
+    }
+    <?php if($this->getCustomer()->getChangePassword()): ?>
+        setPasswordForm(true);
+    <?php endif; ?>
+//]]>
+</script>
+

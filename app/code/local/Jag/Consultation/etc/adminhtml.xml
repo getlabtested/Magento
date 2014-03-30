@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<config>
+	<menu>
+		<consultation module="consultation">
+			<title>Consultation</title>
+			<sort_order>71</sort_order>               
+			<children>
+				<consultation module="consultation">
+					<title>Manage Consultation</title>
+					<sort_order>0</sort_order>
+					<action>consultation/adminhtml_consultation</action>
+				</consultation>
+			</children>
+		</consultation>
+	</menu>
+  <acl>
+    <resources>
+      <admin>
+        <children>
+          <consultation translate="title" module="consultation">
+          		<title>Consultation</title>
+                <sort_order>40</sort_order>
+	            <children>
+		              <consultation translate="title">
+		                <title>Manage Consultation</title>
+		                <sort_order>100</sort_order>
+		              </consultation>
+	            </children>
+          </consultation>
+        </children>
+      </admin>
+    </resources>
+  </acl>
+</config>

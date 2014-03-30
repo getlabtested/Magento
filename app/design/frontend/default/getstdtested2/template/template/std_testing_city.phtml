@@ -1,0 +1,213 @@
+<?php
+
+	$cities = $this->getCityList();
+
+
+	$state =  $this->getCurState();
+	
+	$stateFull = $this->getCurStateFull();
+$baseDir = Mage::getBaseDir();
+		
+	$count = count($cities);
+	$col = round($count/2);		
+		
+?>
+            <div class="clear"></div>
+            <div class="sep10"></div>
+            
+            <div id="breadcrumbs">
+            	<a href="/std-test-centers">All National STD Testing Centers</a>
+                <span class="separator"> > </span>
+                <b><a href="#" class="current"><?php echo ucwords($stateFull);?> STD Testing</a></b>
+            </div> <!-- /breadcrumbs -->
+            	
+            <div id="content">
+
+				<div id="left_col">
+                	
+                    <div style="width:650px;" id="std_testing_cities_module">
+                        <h1 class="page-title"><?php echo ucwords($stateFull);?> STD Testing</h1>
+                        <h2>Find a private testing location in <?php echo  ucwords($stateFull);?></h2>
+                        <p><?php echo  ucwords($stateFull);?> STD Testing: With getstdtested.com you have options. From at home STD testing to testing in a local <?php echo  ucwords($stateFull);?> facility near your home or office, STD testing is now more convenient, private, and just as accurate as testing administered by doctors and hospitals nationwide. Prices start as low as $30 and include access to our trained STD counselors and in-house physician network. STD treatment also available.</p>
+                        <h3>Many <?php echo  ucwords($stateFull);?> labs open until 5:00 p.m. or later. Order and test as soon as today.</h3>
+                        <p>
+                        	<a href="/std-testing-options"><img src="/media/images/btn_orange_test_prices.png" style="float: left; margin-right: 20px;"/></a>
+                            <b>STD tests include:</b> chlamydia test, gonorrhea test, hiv test, trichomoniasis test, hepatitis b test, hepatitis c test, syphilis test, oral herpes test, and genital herpes test. <span class="blue">Prices start at $30.</span>
+                        </p>
+                        <div class="clear"></div>
+                        <div class="sep15"></div>
+                        
+                        <h2 style="margin-top:20px; margin-bottom:0px; padding-bottom:10px;">STD Testing Centers in <?php echo ucwords($stateFull);?>:</h2>
+                        
+		<div class="cities_list location_list">
+		<ul>
+                        
+<?php                        
+    
+    $x = 0;  
+    
+    foreach ($cities as $city) {
+        	
+    	?>          
+                        
+			<li>
+			<a href="/std-test-centers/<?php echo str_replace(" ","-",strtolower($city->getData('stateFull')))."-".strtolower($city->getState());?>/<?php echo str_replace(" ","-",strtolower($city->getCity()));?>"><?php echo ucwords(strtolower($city->getCity())).", ".$city->getState();?> STD Testing Centers</a></li>
+			
+		<?php 
+			
+		if ($x == $col-1) {
+		
+		?>
+		
+		</ul>
+		</div>
+			
+		<div class="cities_list location_list">
+		<ul>
+		
+		<?php
+		
+		}
+	
+	$x++;
+		
+	}
+
+?>
+
+		</ul>
+	</div>
+                                               
+                    </div> <!-- /std_testing_cities_module -->
+                    
+                </div> <!-- /left_col -->
+                
+                <div id="right_col">
+                
+                
+                
+                	<div id="blocks-widgets">
+						<div class="bg_white">
+							<div id="steps_side_widget" class="box_blue_header">
+								<div class="header">
+									<h3>PEACE OF MIND IN 4 EASY STEPS</h3>
+								</div>
+								<div class="content">
+									<p class="list">1 <span class="blue">order</span></p>
+									<p class="list">2 <span class="blue">test</span></p>
+									<p class="list">3 <span class="blue">results</span></p>
+									<p class="list">4 <span class="blue">treatment</span></p>
+									<div class="clear">&nbsp;</div>
+								</div>
+							</div>
+						<!-- /steps_side_widget --></div>
+					</div>
+					
+					<div id="blocks-widgets">
+						<div class="bg_white">
+							<div id="question_side_widget" class="box_blue_header box_quote_left">
+								<div class="header">
+									<h3>Questions?</h3>
+									<p>Or To Order By Phone.</p>
+								</div>
+								<div class="content">
+									<p><span class="blue">Call us at:</span> <span class="orange">866-749-6269</span></p>
+									<p>M-F 7am-7pm <br />Sat-Sun 9am-3pm CST</p>
+								</div>
+							</div>
+						<!-- /question_side_widget --></div>
+					</div>
+
+					<div id="blocks-widgets">
+						<div class="bg_white">
+							<div id="hassle_free_widget" class="box_blue_header" style="background: none; border: none;">
+								<div class="content" style="font-size: 12px;">
+									<p><span class="blue" style="font-size: 14px;">HASSLE FREE STD TESTING</span></p>
+									<p><span class="orange">Test Today.</span> No appointments needed. Test at your convenience. Most lab visits are less then 15 minutes.</p>
+									<p><span class="orange">Complete privacy.</span> No insurance reporting. Our labs test people for a variety of reasons so no one will know why you're there and what you're getting tested for. At-home STD testing also available.</p>
+									<p><span class="orange">Quick Results.</span> Get results in 1 to 5 business days; faster than your doctor's office.</p>
+									<p><span class="orange">High level of accuracy.</span> Same tests administered by doctors and hospitals nationwide.</p>
+									<p><span class="orange">Painless testing.</span> Lab testing involves either a painless urine sample and/or simple blood draw.</p>
+									<p><span class="orange">Private Treatment.</span> In-house physician network available to provide treatment for curable STDs including chlamydia, gonorrhea, and trichomonasis. We can also provide medication to control herpes outbreaks.</p>
+									<p><span class="orange">Free Physician Consult.</span> In-house physicians available to answer questions and prescribe treatment.</p>
+								</div>
+							</div>
+						<!-- /hassle_free_widget --></div>
+					</div>
+                
+
+
+                </div> <!-- /right_col -->
+                
+            </div> <!-- /content -->
+            
+        <!-- /div> <!-- /.all -->
+    <!-- /div> <!-- /.bg_white -->
+    
+    <!-- div id="footer" class="all">
+    	<div id="menu_tests" class="border-right column">
+        	<h4>STD Tests</h4>
+        	<table>
+            	<tr>
+                	<td>
+                    	<ul>
+                        	<li><a href="#">Chlamydia Test </a></li>
+                            <li><a href="#">Gonorrhea Test </a></li>
+                            <li><a href="#">HIV Test</a></li>
+                            <li><a href="#">Syphllis Test</a></li>
+                            <li><a href="#">Hepatitis B Test </a></li>
+                        </ul>
+                    </td>
+                    <td>
+                    	<ul>
+                        	<li><a href="#">Hepatitits C Test </a></li>
+                            <li><a href="#">Home Tests </a></li>
+                            <li><a href="#">Oral Herpes Test </a></li>
+                            <li><a href="#">Genital Herpes Test </a></li>
+                            <li><a href="#">Trichomoniasis Test </a></li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+        </div> <!-- /menu_test -->
+        <!-- div id="menu_popular" class="border-right column">
+        	<h4>Popular Content</h4>
+            <ul>
+                <li><a href="#">STD Tests & Prices</a></li>
+                <li><a href="#">How STD Testing Works</a></li>
+                <li><a href="#">Find STD Test Location</a></li>
+                <li><a href="#">View STD Test results</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </div> <!-- /menu_popular -->
+        <!-- div id="menu_pinpoint" class="border-right column">
+        	<h4>Meet PinpointMD</h4>
+            <ul>
+                <li><a href="#">About Us</a></li>
+                <li><a href="#">Medical Advisory Board</a></li>
+                <li><a href="#">STD Counselors  </a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Site Map</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div> <!-- /menu_popular -->
+        <!-- div id="menu_contact" class="column">
+        	<div class="box_dark">
+            	<h4>Test for STDs in Complete Privacy</h4>
+                <p>Fast, easy, and as accurate as hospital testing.</p>
+                <a class="btn_orange" href="#">order now</a>
+                <div class="clear"></div>
+            </div>
+            <h4 class="social">
+            	Stay in Touch: 
+                <a href="#" target="_blank" class="fb"><img src="images/icon_fb.png" /></a>
+                <a href="#" target="_blank" class="twitter"><img src="images/icon_tweeter.png" /></a>
+            </h4>
+            <div class="address">
+            	<div class="left">25 E. Washington St., Ste. 400 </div>
+               	<div class="right">Chicago, IL 60610</div>
+            </div>
+        </div> <!-- /menu_contact -->
+        <!--div class="clear"></div>
+    </div> <!-- /footer -->

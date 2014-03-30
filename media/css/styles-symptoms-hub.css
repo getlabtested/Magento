@@ -1,0 +1,144 @@
+/* Symptoms Hub Page template styles */
+
+
+#trustbuilders {
+	width: 960px;
+	height: 140px;
+	background: transparent url('/media/images/trust-builders.jpg') left bottom no-repeat;
+}
+#trustbuilders strong {
+	display: block;
+	margin: 0;
+	padding: 49px 0 0 0;
+	color: #0c6e8e;
+	font-family: Tahoma,Geneva,sans-serif;
+	font-size: 19px;
+	font-weight: bold;
+}
+
+#content .box_blue_header h3 {
+	padding: 1px 0 3px 0;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+}
+#content .box_blue_header a {
+	color: #0C6E8E;
+	font-weight: bold;
+	text-decoration: underline;
+}
+#content .box_blue_header a:hover {
+	color: #0C6E8E;
+	text-decoration: none;
+}
+
+#content .box_blue_header .btn_orange {
+    display: block;
+    width: auto;
+    height: 20px;
+    padding: 10px 15px;
+    color: #fff;
+    font-family: Tahoma,Geneva,sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-transform: uppercase;
+	text-decoration: none;
+    background: none repeat scroll 0 0 #E97640;
+    border-radius: 10px 10px 10px 10px;
+}
+
+#content .box_blue_header #widget6 .btn_orange {
+	font-size: 14px;
+	font-weight: normal;
+}
+
+#content .box_blue_header .btn_orange:hover {
+	color: #fff;
+	background: #fe8e59;
+}
+
+.image-gallery-hover {
+	float: left;
+	display: block;
+	width: 80px; 
+	height: 80px;
+	margin: 0 15px 0 0;
+	background: #444;
+	cursor: default;
+}
+
+.image-gallery-hover img {
+	opacity:0.12;
+	filter:alpha(opacity=12);
+}
+
+.image-gallery-hover:hover img {
+	opacity:1.0;
+	filter:alpha(opacity=100);
+}
+
+#patientQuote { 
+	width: 300px;
+	height: 285px;
+	margin: 25px 0 0 0;
+	background-image:url(/media/images/herpes-std-testing-customer-quote.jpg); 
+	background-position:bottom right; 
+	background-repeat:no-repeat; 
+}
+
+#patientQuote .quote { 
+	width: 170px; 
+}
+
+#content-secondary-wrap {
+	clear: both;
+	padding: 15px 0;
+	background: #d0d0d0;
+}
+
+#content-secondary {
+	width: 960px;
+	margin: 0 auto;
+	color: #666;
+}
+
+#content-secondary #left_col {
+	width: 580px;
+	float: left;
+}
+
+#content-secondary #right_col {
+	width: 360px;
+	float: right;
+	padding: 12px 0 0 0;
+}
+
+#content-secondary small {
+	color: #777;
+	font-size: 11px;
+}
+
+#content-secondary #news-tweets {
+	margin: 0 0 20px 0;
+	background: #ddd;
+    border: 1px solid #ababab;
+    border-radius: 5px 5px 5px 5px;
+}
+
+#content-secondary #news-tweets h3 {
+	margin: 0;
+	padding: 0 0 8px 0;
+}
+
+#content-secondary .health-news { list-style: none; padding: 0; margin: 0;}
+#content-secondary .news {margin: 6px 0px; padding: 3px;}
+#content-secondary .alt0 {background-color:#ECECEC;}
+#content-secondary .alt1 {}
+
+#content-secondary .health-twitter { list-style: none; padding: 0; margin: 0;}
+#content-secondary .tweet {margin: 6px 0px; padding: 3px;}
+#content-secondary .alt0 {background-color:#ECECEC;}
+#content-secondary .alt1 {}
+
+
