@@ -199,6 +199,10 @@ background-color: #EFEFEF;
 	width: 100%;
 }
 
+#order-addresses .box-left{
+    width: 100%;
+}
+
 #select-callreason-div {
 	
 	float: left;

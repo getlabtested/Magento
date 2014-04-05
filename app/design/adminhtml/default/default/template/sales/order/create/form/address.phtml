@@ -41,8 +41,11 @@ else:
     </script>
     <?php
 endif; ?>
+<?php if ($this->getIsShipping()) {?>
+<div class="entry-edit" id="shipping_address_entry_edit">
+<?php }else{ ?>
 <div class="entry-edit">
-
+<?php } ?>
     <div class="entry-edit-head">
         <h4 class="icon-head fieldset-legend <?php echo $this->getHeaderCssClass() ?>"><?php echo $this->getHeaderText() ?></h4>
      </div>
@@ -83,8 +86,9 @@ endif; ?>
     <?php $hideElement = 'address-' . ($this->getIsShipping() ? 'shipping' : 'billing') . '-overlay'; ?>
     <div style="display:none;" id="<?php echo $hideElement ?>" class="overlay"><span><?php echo $this->__('Shipping address selection is not applicable') ?></span></div>
     <script type="text/javascript">
-        order.bindAddressFields('<?php echo $_fieldsContainerId ?>');
-        order.bindAddressFields('<?php echo $_addressChoiceContainerId ?>');
+        <?php /* order.bindAddressFields('<?php echo $_fieldsContainerId ?>'); */?>
+        <?php /* order.bindAddressFields('<?php echo $_addressChoiceContainerId ?>'); */?>
+        order.bindAddressFields('shipping_same_as_billing');
         <?php if($this->getIsShipping() && $this->getIsAsBilling()): ?>
         order.disableShippingAddress(true);
         <?php endif; ?>

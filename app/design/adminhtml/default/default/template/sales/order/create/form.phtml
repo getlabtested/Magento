@@ -73,8 +73,6 @@ Mage::getSingleton('admin/session')->unsLastInfo();
 	
 	function updateTotal(id,priceOpt) {
 		
-		
-		
 		if (priceOpt < 1 || priceOpt == null) {
 			
 			priceOpt = 0;
@@ -223,19 +221,25 @@ Mage::getSingleton('admin/session')->unsLastInfo();
     );
     }
 		
-		function selectLab(labId,labType,labZip) {
+    function selectLab(labId,labType,labZip) {
 
-			document.getElementById('lab-type').value = labType;
+        document.getElementById('lab-type').value = labType;
 
-			document.getElementById('lab-id').value = labId;
-			
-			document.getElementById('lab-zip').value = labZip;
-			
-			document.getElementById('serilab').value = document.getElementById(labId+'-ser').innerHTML;
-	
-		}
-				 
-	
+        document.getElementById('lab-id').value = labId;
+
+        document.getElementById('lab-zip').value = labZip;
+
+        document.getElementById('serilab').value = document.getElementById(labId+'-ser').innerHTML;
+
+    }
+
+    function toggleShippingAddressDisplay(display_shipping_address)
+    {
+        var display_value = (display_shipping_address) ? 'block' : 'none';
+        var order_shipping_address_element = document.getElementById('shipping_address_entry_edit');
+        order_shipping_address_element.style = 'display:' + display_value;
+    }
+
 </script>
 <form id="edit_form" action="<?php echo $this->getSaveUrl() ?>" method="post" enctype="multipart/form-data">
 	<input id="lab-id" type="hidden" name="lab-id" value="<?php echo ($s['lab-id']?$s['lab-id']:"");?>">
@@ -369,7 +373,7 @@ Mage::getSingleton('admin/session')->unsLastInfo();
 		    		<?php $products = $this->getProductsByPostedStoreId();?>
 		    		<?php foreach ($products as $product) { ?>
 		    		<div class="product-checkbox">
-		    			<input onclick="updateTotal(this.id);document.getElementById('labordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<input onclick="updateTotal(this.id);document.getElementById('labordertype').checked='checked';toggleShippingAddressDisplay(false);" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
 		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
 		    		</div>
 		    		<? } ?>
@@ -388,7 +392,7 @@ Mage::getSingleton('admin/session')->unsLastInfo();
 		    		<?php $products = $this->getNnrLabProducts();?>
 		    		<?php foreach ($products as $product) { ?>
 		    		<div class="product-checkbox">
-		    			<input onclick="updateTotal(this.id<?php echo ($product->getPriceOptOne() > 0?",".$product->getPriceOptOne():"")?>);document.getElementById('labordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<input onclick="updateTotal(this.id<?php echo ($product->getPriceOptOne() > 0?",".$product->getPriceOptOne():"")?>);document.getElementById('labordertype').checked='checked';toggleShippingAddressDisplay(false);" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
 		    			<label <?php echo ($product->getSku()=='nnr-lab-testing'?"style='color:#FF0000; font-weight:bold;'":"") ;?> for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
 		    		</div>
 		    		<? } ?>
@@ -407,7 +411,7 @@ Mage::getSingleton('admin/session')->unsLastInfo();
 		    		<?php $products = $this->getHomeProducts();?>
 		    		<?php foreach ($products as $product) { ?>
 		    		<div class="product-checkbox">
-		    			<input onclick="updateTotal(this.id);document.getElementById('homeordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<input onclick="updateTotal(this.id);document.getElementById('homeordertype').checked='checked';toggleShippingAddressDisplay(true);" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
 		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
 		    		</div>
 		    		<? } ?>
@@ -427,7 +431,7 @@ Mage::getSingleton('admin/session')->unsLastInfo();
 		    		<?php $products = $this->getNnrHomeProducts();?>
 		    		<?php foreach ($products as $product) { ?>
 		    		<div class="product-checkbox">
-		    			<input onclick="updateTotal(this.id);document.getElementById('homeordertype').checked='checked';" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
+		    			<input onclick="updateTotal(this.id);document.getElementById('homeordertype').checked='checked';toggleShippingAddressDisplay(true);" id="<?php echo $product->getId();?>" name="products[<?php echo $product->getId();?>]" type="checkbox" value="1" />
 		    			<label for="<?php echo $product->getSku();?>"><?php echo $product->getName();?></label>
 		    		</div>
 		    		<? } ?>

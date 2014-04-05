@@ -278,8 +278,27 @@ $orderStoreDate = $this->formatDate($_order->getCreatedAtStoreDate(), 'medium', 
                 	
                 	
                 					
-				<?php } ?>                
-               
+				<?php } ?>
+
+                 <?php if ($orderType == "Home") {
+                    $customerShippingAddressId = $_order->getShippingAddressId();
+                    if ($customerShippingAddressId)
+                    {
+                        $shipping_address = Mage::getModel('sales/order_address')->load($customerShippingAddressId);
+                        $shipping_address_data = $shipping_address->getData();
+                    } ?>
+                    <tr>
+                        <td class="label"><label><?php echo Mage::helper('sales')->__('Shipping Address') ?></label></td>
+                        <td class="value">
+                            <?php echo $shipping_address_data['firstname'];?> <?php echo $shipping_address_data['lastname'];?><br>
+                            <?php echo $shipping_address_data['street'];?> <br>
+                            <?php echo $shipping_address_data['city'];?> <?php echo $shipping_address_data['region'];?>, <?php echo $shipping_address_data['postcode'];?><br>
+                            <?php echo $shipping_address_data['telephone'];?> <br>
+                        </td>
+                    </tr>
+
+                <?php } ?>
+
                 </table>
             </div>
         </fieldset>        

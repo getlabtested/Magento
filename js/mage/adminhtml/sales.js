@@ -130,6 +130,11 @@ AdminOrder.prototype = {
         }
     },
 
+    bindAddressField : function(element_id) {
+        var element = document.getElementById(element_id);
+        Event.observe(element, 'change', this.changeAddressField.bind(this));
+    },
+
     changeAddressField : function(event){
         var field = Event.element(event);
         var re = /[^\[]*\[([^\]]*)_address\]\[([^\]]*)\](\[(\d)\])?/;
