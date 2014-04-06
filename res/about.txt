@@ -1,0 +1,1 @@
+File to allow for git to store the res folder
