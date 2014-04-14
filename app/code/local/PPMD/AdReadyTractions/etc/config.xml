@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<config>
+    <modules>
+        <PPMD_AdReadyTractions>
+            <version>0.0.1</version>
+        </PPMD_AdReadyTractions>
+    </modules>
+
+    <global>
+        <models>
+            <ppmd_ad_ready_tractions>
+                <class>PPMD_AdReadyTractions_Model</class>
+            </ppmd_ad_ready_tractions>
+        </models>
+    
+        <helpers>
+            <ppmd_ad_ready_tractions>
+                <class>PPMD_AdReadyTractions_Helper</class>
+            </ppmd_ad_ready_tractions>
+        </helpers>
+    
+        <blocks>
+            <ppmd_ad_ready_tractions>
+                <class>PPMD_AdReadyTractions_Block</class>
+            </ppmd_ad_ready_tractions>
+        </blocks>
+    </global>
+
+    <frontend>
+        <layout>
+            <updates>
+                <ad_ready_tractions_code>
+                    <file>ad_ready_tractions.xml</file>
+                </ad_ready_tractions_code>
+            </updates>
+        </layout>
+    </frontend>
+</config>

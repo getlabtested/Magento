@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<layout version="0.1.0">
+    <default>
+        <reference name="content">
+            <block type="ppmd_ad_ready_tractions/code_noncheckout" name="ppmd_ad_ready_tractions_code" output="toHtml"/>
+        </reference>
+    </default>
+</layout>
